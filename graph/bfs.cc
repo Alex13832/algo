@@ -2,15 +2,16 @@
 #include "graph.h"
 using namespace std;
 
-void Graph::BFS(int s){
+vector<int> Graph::BFS(int s){
 	vector<bool> visited(V,false);
 	vector<int> q;
+	vector<int> res;
 	visited[s] = true;
 	q.push_back(s);
 
 	while(!q.empty()) {
 		s = q.front();
-		cout << s << " ";
+		res.push_back(s);
 		q.erase(q.begin());
 
 		for (auto i = adj[s].begin(); i != adj[s].end(); ++i) {
@@ -20,4 +21,6 @@ void Graph::BFS(int s){
 			}
 		}			
 	}
+	
+	return res;
 }

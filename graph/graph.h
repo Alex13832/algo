@@ -2,6 +2,7 @@
 #define GRAPH_H
 #include <iostream>
 #include <list>
+#include <vector>
 
 class Graph {
 	int V;
@@ -9,7 +10,7 @@ class Graph {
 public:
 	Graph(int V);
 	void addEdge(int u, int v);
-	void BFS(int s);
+	std::vector<int> BFS(int s);
 };
 
 #endif
