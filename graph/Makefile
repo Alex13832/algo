@@ -15,12 +15,14 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = graph
+PROGS = test
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-graph: graph.o
+test: test.o
+
+test.o: test.cc
 
 # Phony targets
 .PHONY: all clean
