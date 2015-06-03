@@ -9,11 +9,12 @@ std::vector<int> Graph::DFS(int s) {
 	vector<int> res;
 	vector<int> stack;
 	stack.push_back(s);
+
 	while(!stack.empty()){
 		int v = stack.back();
 		res.push_back(v);
 		stack.pop_back();
-		cout << v << " ";
+
 		if(!discovered[v]) {
 			discovered[v] = true;
 

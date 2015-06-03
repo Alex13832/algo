@@ -38,7 +38,7 @@ int main() {
 		cout << "BFS fail" << endl;
 	}
 
-	if (test_BFS(g)) {
+	if (test_DFS(g)) {
 		cout << "DFS pass" << endl;
 	} else {
 		cout << "DFS fail" << endl;
