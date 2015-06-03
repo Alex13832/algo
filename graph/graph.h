@@ -11,6 +11,7 @@ public:
 	Graph(int V);
 	void addEdge(int u, int v);
 	std::vector<int> BFS(int s);
+	std::vector<int> DFS(int s);
 };
 
 #endif
