@@ -1,6 +1,4 @@
 //DFS implementation using a stack
-#include <vector>
-#include <iostream>
 #include "graph.h"
 using namespace std;
 
