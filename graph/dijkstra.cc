@@ -4,61 +4,70 @@
 #include <climits>
 using namespace std;
 
-// -1 infinity
-// -2 undefined
-
-bool mySort(pair<int,int> i, pair<int,int> j) {
-	return i.second < j.second;
+pair<uint,uint> getSmallest(vector<pair<uint,uint>>& vec) {
+	uint smallest = UINT_MAX;
+	pair<uint,uint> p_small;
+	int smallIndex = 0;
+	int index = 0;
+	for(auto i: vec) {
+		if (i.second < smallest) {
+			smallest = i.second;
+			p_small = i;
+			smallIndex = index;
+		}
+		index = 0;
+	}
+	
+	vec.erase(vec.begin()+smallIndex);
+	return p_small;
 }
 
+void Graph::dijkstra(const int s) {
+	vector<uint> dist(V,UINT_MAX);
+	dist[s] = 0;
+	vector<uint> prev(V,0);
+	vector<pair<uint,uint>> q;
 
-
-void Graph::dijkstra(int s) {
-	vector<int> dist(V,0);
-	vector<int> prev(V,0);
-	vector<pair<int,int>> q;
-
-
-	for(size_t i = 0; i < sizeof(adj); i++) {
-		if ( i != s ) {
-			dist[i] = INT_MAX;
-			prev[i] = -2;	
-		}
-
-		q.push_back(pair<int,int>(i,dist[i]));
+	for(size_t i = 0; i < V; i++) {
+		q.push_back(pair<uint,uint>(i,dist[i]));
 	}
-
-	sort(q.begin(),q.end(),mySort);
+		
 
 	while (!q.empty()) {
-		pair<int,int> p = q[0];
-		q.erase(q.begin());
-		int u = p.first;
-
+		pair<uint,uint> p = getSmallest(q);
+		
+		cout << p.first << endl;
+		
+		uint u = p.first;
+				
 		for (auto v = adj[u].begin(); v != adj[u].end(); ++v) {
-			int alt = dist[u] + getEdgeWeight(u,*v);
-			
+			int alt = (dist[u] + getEdgeWeight(u,*v));				
+								
 			if (alt < dist[*v]) {
 				dist[*v] = alt;
 				prev[*v] = u;
-
-				for(auto p2: q) {
-					if (p2.first == v) {
-						cout << p2.first << endl;
+				
+				for (auto &node: q) {
+					if (node.first == *v) {
+						node.second = alt;
 					}
 				}
 				
-			}	
-
+			}
+				
 		}
-			
-		sort(q.begin(),q.end(),mySort);
-
+				
 	}
-
-
 	
-			
-
+	for (auto m: dist){
+		cout << m << " ";
+	}
+	
+	cout << endl;
+	
+	for (auto m: prev){
+		cout << m << " ";
+	}
+	
 
 }

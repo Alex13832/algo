@@ -22,25 +22,32 @@ bool test_DFS(Graph g){
 	return comp;
 }
 
-bool test_pair() {
-	Graph g(4);
+
+void test_dijkstra() {
+	Graph g(6);
 	g.addEdge(0,1);
 	g.addEdge(0,2);
-	g.addEdge(2,3);
 	g.addEdge(1,3);
-	g.addEdgeWeight(0,1,10);
-	g.addEdgeWeight(0,2,20);
-	g.addEdgeWeight(2,3,30);
-	g.addEdgeWeight(1,3,40);
+	g.addEdge(1,2);
+	g.addEdge(2,3);
+	g.addEdge(2,4);
+	g.addEdge(3,4);
+	g.addEdge(3,5);
+	g.addEdge(4,5);
+
+	g.addEdgeWeight(0,1,4);
+	g.addEdgeWeight(0,2,2);
+	g.addEdgeWeight(1,3,5);
+	g.addEdgeWeight(1,2,1);
+	g.addEdgeWeight(2,3,8);
+	g.addEdgeWeight(2,4,10);
+	g.addEdgeWeight(3,4,2);
+	g.addEdgeWeight(3,5,6);
+	g.addEdgeWeight(4,5,3);
+	
 	g.dijkstra(0);
 
-	auto ews = g.getEdgeWeights();
-	int sum = 0;
-	for (auto w: ews) {
-		sum += w.second;
-	}
 	
-	return sum == 100;
 }
 
 
@@ -67,10 +74,6 @@ int main() {
 		cout << "DFS fail" << endl;
 	}
 	
-	if (test_pair()) {
-		cout << "Pair pass" << endl;
-	} else {
-		cout << "Pair fail" << endl;
-	}
+	test_dijkstra();
  	
 }	

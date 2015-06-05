@@ -11,8 +11,10 @@ void Graph::addEdge(int u, int v){
 }
 
 void Graph::addEdgeWeight(int u, int v, int w){
-	auto p = pair<int,int>(u,v);
-	ews.insert(pair<pair<int,int>,int>(p,w));	
+	auto p1 = pair<int,int>(u,v);
+	ews.insert(pair<pair<int,int>,int>(p1,w));	
+	//auto p2 = pair<int,int>(v,u);
+	//ews.insert(pair<pair<int,int>,int>(p2,w));
 }
 
 map<pair<int,int>,int> Graph::getEdgeWeights() {
