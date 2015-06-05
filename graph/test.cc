@@ -2,6 +2,7 @@
 #include "graph.cc"
 #include "bfs.cc"
 #include "dfs.cc"
+#include "dijkstra.cc"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -31,6 +32,7 @@ bool test_pair() {
 	g.addEdgeWeight(0,2,20);
 	g.addEdgeWeight(2,3,30);
 	g.addEdgeWeight(1,3,40);
+	g.dijkstra(0);
 
 	auto ews = g.getEdgeWeights();
 	int sum = 0;

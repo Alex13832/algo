@@ -22,7 +22,7 @@ all: $(PROGS)
 # Targets rely on implicit rules for compiling and linking
 test: test.o
 
-test.o: test.cc
+
 
 # Phony targets
 .PHONY: all clean

@@ -4,10 +4,11 @@
 #include <list>
 #include <vector>
 #include <map>
+#include <algorithm>
 
 class Graph {
 	int V;
-	std::list<int> *adj;
+	std::vector<int> *adj;
 	std::map<std::pair<int,int>,int> ews; //Edge-Weights
 public:
 	Graph(int V);
@@ -19,7 +20,10 @@ public:
 
 	std::vector<int> BFS(int s);
 	std::vector<int> DFS(int s);
+	void dijkstra(int s);	
 	std::map<std::pair<int,int>,int> getEdgeWeights();
+	int getEdgeWeight(int u, int v);
+	
 };
 
 #endif
