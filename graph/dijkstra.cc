@@ -4,70 +4,41 @@
 #include <climits>
 using namespace std;
 
-pair<uint,uint> getSmallest(vector<pair<uint,uint>>& vec) {
+int getSmallest(vector<uint>& dist, vector<bool> visited) {
 	uint smallest = UINT_MAX;
-	pair<uint,uint> p_small;
 	int smallIndex = 0;
 	int index = 0;
-	for(auto i: vec) {
-		if (i.second < smallest) {
-			smallest = i.second;
-			p_small = i;
+	for(auto i: dist) {
+		if (i < smallest && visited[index] == false) {
+			smallest = i;
 			smallIndex = index;
 		}
-		index = 0;
+		index++;
 	}
-	
-	vec.erase(vec.begin()+smallIndex);
-	return p_small;
+
+	return smallIndex;
 }
 
-void Graph::dijkstra(const int s) {
+vector<uint> Graph::dijkstra(const int s) {
 	vector<uint> dist(V,UINT_MAX);
+	vector<uint> prev(V);
+	vector<bool> visited(V,false);
+
 	dist[s] = 0;
-	vector<uint> prev(V,0);
-	vector<pair<uint,uint>> q;
 
-	for(size_t i = 0; i < V; i++) {
-		q.push_back(pair<uint,uint>(i,dist[i]));
-	}
-		
+	while (find(visited.begin(),visited.end(),false) != visited.end()) {
+		int i = getSmallest(dist,visited);
 
-	while (!q.empty()) {
-		pair<uint,uint> p = getSmallest(q);
-		
-		cout << p.first << endl;
-		
-		uint u = p.first;
-				
-		for (auto v = adj[u].begin(); v != adj[u].end(); ++v) {
-			int alt = (dist[u] + getEdgeWeight(u,*v));				
-								
-			if (alt < dist[*v]) {
-				dist[*v] = alt;
-				prev[*v] = u;
-				
-				for (auto &node: q) {
-					if (node.first == *v) {
-						node.second = alt;
-					}
-				}
-				
+		for (auto j = adj[i].begin(); j != adj[i].end(); ++j) {
+
+			if(dist[*j] > (dist[i] + getEdgeWeight(i,*j))) {
+				dist[*j] = dist[i] + getEdgeWeight(i,*j);
+				prev[*j] = i;
 			}
-				
 		}
-				
-	}
-	
-	for (auto m: dist){
-		cout << m << " ";
-	}
-	
-	cout << endl;
-	
-	for (auto m: prev){
-		cout << m << " ";
-	}
-	
 
+		visited[i] = true;		
+	}
+	
+	return dist;
 }
