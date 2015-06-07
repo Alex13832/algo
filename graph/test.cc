@@ -136,11 +136,10 @@ void test_prim2(){
 		string token;
 		while ((pos = s.find(delimiter)) != string::npos) {
 		    	token = s.substr(0, pos);
-		    
 			try {
 				int weight = stoi(token);
 				total.push_back(weight);
-				g.addEdge(row,weight,col); 
+				g.addEdge(col,weight,row); 
 
 			} catch (std::invalid_argument&) { }
 
@@ -151,15 +150,17 @@ void test_prim2(){
 		try {
 
 			int weight = stoi(s);
-			g.addEdge(row,weight,col);
+			total.push_back(weight);
+			g.addEdge(col,weight,row);
 			
 		} catch (std::invalid_argument&) { }
+ 		
 
 		row++;
 		col = 0;
 	}
 
-	int totsum = accumulate(total.begin(),total.end(),0);
+	int totsum = accumulate(total.begin(),total.end(),0)/2;
 	cout << "totsum " << totsum <<endl;
 	vector<uint> weights = g.prim(0);
 	int wsum = accumulate(weights.begin(),weights.end(),0);
