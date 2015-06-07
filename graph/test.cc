@@ -124,10 +124,8 @@ void test_prim2(){
 	vector<int> total;
 	ifstream infile("testfiles/p107_network.txt");
 	string line;
-	stringstream ss;
 	int row = 0;
 	int col = 0;
-	int w = 0;
 	while (getline(infile, line)){	
 		string s = line;
 		string delimiter = ",";
@@ -155,7 +153,6 @@ void test_prim2(){
 			
 		} catch (std::invalid_argument&) { }
  		
-
 		row++;
 		col = 0;
 	}

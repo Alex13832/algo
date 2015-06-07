@@ -13,17 +13,13 @@ void Graph::addEdge(int u, int v){
 
 // [u]---[weight w]---[v]
 void Graph::addEdge(int u, int w, int v) {
-	
-		adj[u].push_back(v);
-		pair<int,int> p1 = pair<int,int>(u,v);
-		ews.insert(pair<pair<int,int>,int>(p1,w));
-	
+	adj[u].push_back(v);
+	pair<int,int> p1 = pair<int,int>(u,v);
+	ews.insert(pair<pair<int,int>,int>(p1,w));
 
-	
-		adj[v].push_back(u);
-		auto p2 = pair<int,int>(v,u);
-		ews.insert(pair<pair<int,int>,int>(p2,w));
-		
+	adj[v].push_back(u);
+	auto p2 = pair<int,int>(v,u);
+	ews.insert(pair<pair<int,int>,int>(p2,w));	
 }
 
 
