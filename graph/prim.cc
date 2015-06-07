@@ -1,4 +1,5 @@
 //Implementation of Prim's Algorithm
+//The output is a minimum spanning tree (MST)
 #include <climits>
 #include <queue>
 #include "graph.h"

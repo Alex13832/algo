@@ -1,5 +1,5 @@
 //Dijkstra's algorithm for finding the shortest path. 
-// Alexander Karlsson, 2015
+//Alexander Karlsson, 2015
 #include "graph.h"
 #include <climits>
 using namespace std;
