@@ -5,6 +5,7 @@
 #include "dijkstra.cc"
 #include "dijkstra_pq.cc"
 #include "prim.cc"
+#include "bellman_ford.cc"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -168,6 +169,20 @@ void test_prim2(){
 
 }
 
+void test_bellman_ford() {
+	Graph g(5);
+	g.addDirEdge(0,4,2);
+	g.addDirEdge(0,-1,1);
+	g.addDirEdge(1,3,2);
+	g.addDirEdge(3,5,2);
+	g.addDirEdge(3,1,1);
+	g.addDirEdge(1,2,3);
+	g.addDirEdge(4,-3,3);
+	g.addDirEdge(1,2,4);
+	g.bellman_ford(0);
+
+}
+
 
 int main() {
 	Graph g(7);
@@ -205,5 +220,6 @@ int main() {
 	}
 	test_prim2();
 		
+	test_bellman_ford();
  	
 }	

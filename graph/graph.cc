@@ -22,6 +22,15 @@ void Graph::addEdge(int u, int w, int v) {
 	ews.insert(pair<pair<int,int>,int>(p2,w));	
 }
 
+void Graph::addDirEdge(int u, int v) {
+	adj[u].push_back(v);	
+}
+
+void Graph::addDirEdge(int u, int w, int v) {
+	adj[u].push_back(v);
+	pair<int,int> p1 = pair<int,int>(u,v);
+	ews.insert(pair<pair<int,int>,int>(p1,w));	
+}
 
 map<pair<int,int>,int> Graph::getEdgeWeights() {
 	return ews;

@@ -9,7 +9,7 @@ struct comp_dijkstra {
   {return lhs.second>rhs.second;}
 };
 
-vector<uint> Graph::dijkstra_pq(int s) {
+vector<uint> Graph::dijkstra_pq(const int s) {
 	priority_queue<pair<uint,uint>, vector<pair<uint,uint>>,comp_dijkstra> pq;
 	vector<uint> dist(V,UINT_MAX);
 	vector<int> prev(V,0);
