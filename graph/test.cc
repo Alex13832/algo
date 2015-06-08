@@ -3,6 +3,7 @@
 #include "bfs.cc"
 #include "dfs.cc"
 #include "dijkstra.cc"
+#include "dijkstra_pq.cc"
 #include "prim.cc"
 #include <iostream>
 #include <vector>
@@ -52,7 +53,7 @@ bool test_dijkstra() {
 	g2.addEdge(3,2,4);
 	g2.addEdge(3,6,5);
 	
-	vector<uint> dist2 = g2.dijkstra(0);
+	vector<uint> dist2 = g2.dijkstra_pq(0);
 	int res2 = dist2[5];
 	bool b = res2 == 13;
 
