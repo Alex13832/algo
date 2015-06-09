@@ -20,7 +20,7 @@ public:
 	std::vector<int> DFS(int s);
 	std::vector<uint> dijkstra(int s);
 	std::vector<uint> dijkstra_pq(int s);
-	void bellman_ford(int s);
+	std::vector<int> bellman_ford(int s);
 	std::vector<uint> prim(int s);	
 	std::map<std::pair<int,int>,int> getEdgeWeights();
 	int getEdgeWeight(int u, int v);

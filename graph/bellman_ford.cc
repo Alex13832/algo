@@ -35,6 +35,4 @@ vector<int> Graph::bellman_ford(int s) {
 	}
 
 	return dist;
-	//TODO test negative-weight cycle 
-	//TODO test huge case
 }
