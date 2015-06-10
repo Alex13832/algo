@@ -16,6 +16,8 @@ public:
 	void addEdge(int u, int w, int v); //undirected
 	void addDirEdge(int u, int v); //directed
 	void addDirEdge(int u, int w, int v); //directed
+	void removeEdge(int u, int v);
+	std::vector<int> * getAdjacent();
 	std::vector<int> BFS(int s);
 	std::vector<int> DFS(int s);
 	std::vector<uint> dijkstra(int s);

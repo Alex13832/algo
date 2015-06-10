@@ -36,9 +36,31 @@ map<pair<int,int>,int> Graph::getEdgeWeights() {
 	return ews;
 }
 
+std::vector<int> * Graph::getAdjacent() {
+	return adj;
+}
+
 int Graph::getEdgeWeight(int u, int v) {
 	auto p1 = pair<int,int>(u,v);
 	return ews[p1];
+}
+
+void Graph::removeEdge(int u, int v) {
+	auto itu = find(adj[u].begin(),adj[u].end(),v);
+	if (itu != adj[u].end()) {
+		adj[u].erase(itu);
+	}
+	
+	auto itv = find(adj[v].begin(),adj[v].end(),u);
+	if (itv != adj[v].end()) {
+		adj[v].erase(itv);
+	}
+
+	
+	ews.erase(pair<int,int>(u,v));
+	ews.erase(pair<int,int>(v,u));
+
+
 }
 
 

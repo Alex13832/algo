@@ -6,6 +6,7 @@
 #include "dijkstra_pq.cc"
 #include "prim.cc"
 #include "bellman_ford.cc"
+#include "ford_fulkerson.cc"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -199,9 +200,31 @@ bool test_bellman_ford() {
 	return a && negCycle;
 }
 
+void test_ford_fulkersson() {
+	Graph g(6);
+	g.addDirEdge(1,16,1);
+	g.addDirEdge(0,13,2);
+	g.addDirEdge(1,10,2);
+	g.addDirEdge(2,4,1);
+	g.addDirEdge(1,12,3);
+	g.addDirEdge(3,9,2);
+	g.addDirEdge(2,14,4);
+	g.addDirEdge(4,7,3);
+	g.addDirEdge(4,4,5);
+	g.addDirEdge(3,20,5);
+
+
+	
+	ford_fulkersson(g,0,3);
+
+
+
+}
+
+
 
 int main() {
-	Graph g(7);
+	/*Graph g(7);
 	g.addEdge(0, 1);
 	g.addEdge(0, 2);
 	g.addEdge(1, 3);
@@ -240,6 +263,8 @@ int main() {
 		cout << "Bellman-Ford pass" << endl;
 	} else {
 		cout << "Bellman-Ford fail" << endl;
-	}
- 	
+	} */
+
+	test_ford_fulkersson();
+
 }	
