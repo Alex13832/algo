@@ -2,22 +2,24 @@
 #include "graph.h"
 using namespace std;
 
-std::vector<int> Graph::DFS(int s) {
-	vector<bool> discovered(V,false);
+std::vector<int> DFS(Graph G, int s) {
+	vector<bool> explored(G.size(),false);
 	vector<int> res;
 	vector<int> stack;
 	stack.push_back(s);
+	vector<int> prev(G.size(),0);
 
 	while(!stack.empty()){
 		int v = stack.back();
 		res.push_back(v);
 		stack.pop_back();
 
-		if(!discovered[v]) {
-			discovered[v] = true;
+		if(!explored[v]) {
+			explored[v] = true;
 
-			for (auto i = adj[v].rbegin(); i != adj[v].rend(); ++i) {
+			for (auto i = G.adj[v].rbegin(); i != G.adj[v].rend(); ++i) {
 				stack.push_back(*i);
+				prev[*i] = v;
 			}
 		}	
 	}	

@@ -4,10 +4,10 @@
 #include <climits>
 using namespace std;
 
-vector<uint> Graph::dijkstra(const int s) {
-	vector<uint> dist(V,UINT_MAX);
-	vector<uint> prev(V);
-	vector<bool> visited(V,false);
+vector<uint> dijkstra(Graph G, const int s) {
+	vector<uint> dist(G.size(),UINT_MAX);
+	vector<uint> prev(G.size());
+	vector<bool> visited(G.size(),false);
 	dist[s] = 0;
 
 	while (find(visited.begin(),visited.end(),false) != visited.end()) {
@@ -18,8 +18,8 @@ vector<uint> Graph::dijkstra(const int s) {
 			k++;	
 		});
 
-		for (auto j: adj[i]) {
-			uint alt = dist[i] + getEdgeWeight(i,j);
+		for (auto j: G.adj[i]) {
+			uint alt = dist[i] + G.getEdgeWeight(i,j);
 			if(dist[j] > alt) {
 				dist[j] = alt;
 				prev[j] = i;

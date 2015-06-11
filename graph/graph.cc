@@ -11,7 +11,6 @@ void Graph::addEdge(int u, int v){
 	adj[u].push_back(v);
 }
 
-// [u]---[weight w]---[v]
 void Graph::addEdge(int u, int w, int v) {
 	adj[u].push_back(v);
 	pair<int,int> p1 = pair<int,int>(u,v);
@@ -32,14 +31,6 @@ void Graph::addDirEdge(int u, int w, int v) {
 	ews.insert(pair<pair<int,int>,int>(p1,w));	
 }
 
-map<pair<int,int>,int> Graph::getEdgeWeights() {
-	return ews;
-}
-
-std::vector<int> * Graph::getAdjacent() {
-	return adj;
-}
-
 int Graph::getEdgeWeight(int u, int v) {
 	auto p1 = pair<int,int>(u,v);
 	return ews[p1];
@@ -56,11 +47,7 @@ void Graph::removeEdge(int u, int v) {
 		adj[v].erase(itv);
 	}
 
-	
 	ews.erase(pair<int,int>(u,v));
 	ews.erase(pair<int,int>(v,u));
 
-
 }
-
-

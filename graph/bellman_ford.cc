@@ -5,11 +5,11 @@
 #include <climits>
 using namespace std;
 
-vector<int> Graph::bellman_ford(int s) {
-	vector<int> dist(V,INT_MAX);
+vector<int> bellman_ford(Graph G, int s) {
+	vector<int> dist(G.size(),INT_MAX);
 	dist[s] = 0;
-	vector<int> prev(V,-1);
-	map<pair<int,int>,int> ew = getEdgeWeights();
+	vector<int> prev(G.size(),-1);
+	map<pair<int,int>,int> ew = G.getEdgeWeights();
 
 	for (size_t i = 1; i < dist.size(); i++) {
 		for (auto e: ew){

@@ -1,9 +1,9 @@
-//BFS implemented using a queueueueueueueueue
+//BFS implemented using a queue
 #include "graph.h"
 using namespace std;
 
-vector<int> Graph::BFS(int s){
-	vector<bool> visited(V,false);
+vector<int> BFS(Graph G, int s){
+	vector<bool> visited(G.size(),false);
 	vector<int> q;
 	vector<int> res;
 	visited[s] = true;
@@ -14,7 +14,7 @@ vector<int> Graph::BFS(int s){
 		res.push_back(s);
 		q.erase(q.begin());
 
-		for (auto i = adj[s].begin(); i != adj[s].end(); ++i) {
+		for (auto i = G.adj[s].begin(); i != G.adj[s].end(); ++i) {
 			if(!visited[*i]) {
 				visited[*i] = true;
 				q.push_back(*i);

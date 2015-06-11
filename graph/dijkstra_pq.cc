@@ -9,10 +9,10 @@ struct comp_dijkstra {
   {return lhs.second>rhs.second;}
 };
 
-vector<uint> Graph::dijkstra_pq(const int s) {
+vector<uint> dijkstra_pq(Graph G, const int s) {
 	priority_queue<pair<uint,uint>, vector<pair<uint,uint>>,comp_dijkstra> pq;
-	vector<uint> dist(V,UINT_MAX);
-	vector<int> prev(V,0);
+	vector<uint> dist(G.size(),UINT_MAX);
+	vector<int> prev(G.size(),0);
 	dist[s] = 0;
 	pq.push(pair<uint,uint>(s,0));
 
@@ -21,17 +21,14 @@ vector<uint> Graph::dijkstra_pq(const int s) {
 		pq.pop();
 		uint u = U.first;
 		
-		for (auto v: adj[u]) {
-			uint alt = dist[u] + getEdgeWeight(u,v);
+		for (auto v: G.adj[u]) {
+			uint alt = dist[u] + G.getEdgeWeight(u,v);
 			if (alt < dist[v]) {
 				dist[v] = alt;
 				prev[v] = u;	
 				pq.push(pair<int,int>(v,alt));
 			}
 		}	
-	}
-	for (auto p: prev) {
-		cout << p << " ";
 	}
 
 	return dist;

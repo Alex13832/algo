@@ -2,11 +2,11 @@
 #include "graph.cc"
 #include "bfs.cc"
 #include "dfs.cc"
+#include "dfs_path.cc"
 #include "dijkstra.cc"
 #include "dijkstra_pq.cc"
 #include "prim.cc"
 #include "bellman_ford.cc"
-#include "ford_fulkerson.cc"
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -16,14 +16,14 @@ using namespace std;
 
 bool test_BFS(Graph g){
 	vector<int> values = {0,1,2,3,4,5,6};
-	vector<int> res = g.BFS(0);
+	vector<int> res = BFS(g,0);
 	bool comp = equal(res.begin(),res.end(),values.begin());
 	return comp;
 }
 
 bool test_DFS(Graph g){
 	vector<int> values = {0,1,3,4,2,5,6};
-	vector<int> res = g.DFS(0);
+	vector<int> res = DFS(g,0);
 	bool comp = equal(res.begin(),res.end(),values.begin());
 	return comp;
 }
@@ -40,7 +40,7 @@ bool test_dijkstra() {
 	g.addEdge(3,6,5);
 	g.addEdge(4,2,6);
 	g.addEdge(6,2,5);
-	vector<uint> dist = g.dijkstra(0);
+	vector<uint> dist = dijkstra(g,0);
 	int res1 = dist[5];
 	bool a = res1 == 12;
 
@@ -55,7 +55,7 @@ bool test_dijkstra() {
 	g2.addEdge(3,2,4);
 	g2.addEdge(3,6,5);
 	
-	vector<uint> dist2 = g2.dijkstra_pq(0);
+	vector<uint> dist2 = dijkstra_pq(g2,0);
 	int res2 = dist2[5];
 	bool b = res2 == 13;
 
@@ -75,7 +75,7 @@ bool test_prim() {
 	g.addEdge(5,8,4);
 	g.addEdge(5,11,6);
 	g.addEdge(3,9,1);
-	vector<uint> net1 =g.prim(0);
+	vector<uint> net1 = prim(g, 0);
 	uint sum1 = accumulate(net1.begin(),net1.end(),0);
 	bool a = sum1 == 39;
 
@@ -94,7 +94,7 @@ bool test_prim() {
 	g2.addEdge(6,9,7);
 	g2.addEdge(6,2,8);
 	g2.addEdge(7,11,8);
-	vector<uint> net2 =g2.prim(0);
+	vector<uint> net2 = prim(g2,0);
 	uint sum2 = accumulate(net2.begin(),net2.end(),0);
 	bool b = sum2 == 43;
 	
@@ -112,7 +112,7 @@ bool test_prim() {
 	g3.addEdge(2,31,5);
 	g3.addEdge(4,11,6);
 	g3.addEdge(5,27,6);
-	vector<uint> net3 = g3.prim(0);
+	vector<uint> net3 = prim(g3,0);
 	int sum3 = accumulate(net3.begin(),net3.end(),0);
 	bool c = sum3 == 93;
 	
@@ -162,7 +162,7 @@ void test_prim2(){
 
 	int totsum = accumulate(total.begin(),total.end(),0)/2;
 	cout << "totsum " << totsum <<endl;
-	vector<uint> weights = g.prim(0);
+	vector<uint> weights = prim(g,0);
 	int wsum = accumulate(weights.begin(),weights.end(),0);
 	cout << "wsum " << wsum << endl;
 	int saved = totsum - wsum;
@@ -180,7 +180,7 @@ bool test_bellman_ford() {
 	g.addDirEdge(1,2,3);
 	g.addDirEdge(4,-3,3);
 	g.addDirEdge(1,2,4);
-	vector<int> ws = g.bellman_ford(0);
+	vector<int> ws = bellman_ford(g,0);
 	int sum = accumulate(ws.begin(),ws.end(),0);
 	bool a = sum == 0;
 
@@ -192,7 +192,7 @@ bool test_bellman_ford() {
 	g2.addDirEdge(1,4,2);
 	bool negCycle = false;
 	try {
-		g2.bellman_ford(0);
+		bellman_ford(g2,0);
 	} catch(std::invalid_argument) {
 		negCycle = true;	
 	}
@@ -200,38 +200,33 @@ bool test_bellman_ford() {
 	return a && negCycle;
 }
 
-void test_ford_fulkersson() {
+void test_dfs_rec() {
+
 	Graph g(6);
-	g.addDirEdge(1,16,1);
-	g.addDirEdge(0,13,2);
-	g.addDirEdge(1,10,2);
-	g.addDirEdge(2,4,1);
-	g.addDirEdge(1,12,3);
-	g.addDirEdge(3,9,2);
-	g.addDirEdge(2,14,4);
-	g.addDirEdge(4,7,3);
-	g.addDirEdge(4,4,5);
-	g.addDirEdge(3,20,5);
+	g.addDirEdge(0, 1);
+	g.addDirEdge(0, 2);
+	g.addDirEdge(1, 2);
+	g.addDirEdge(1, 3);
+	g.addDirEdge(2, 3);
+	g.addDirEdge(3, 4);
+	g.addDirEdge(3, 5);
+	g.addDirEdge(4, 5);
 
-
-	
-	ford_fulkersson(g,0,3);
-
-
+	pathDFS(g, 0,5);
 
 }
 
 
 
 int main() {
-	/*Graph g(7);
+	Graph g(7);
 	g.addEdge(0, 1);
 	g.addEdge(0, 2);
 	g.addEdge(1, 3);
 	g.addEdge(1, 4);
 	g.addEdge(2, 5);
 	g.addEdge(2, 6);
-	g.BFS(0);
+	BFS(g,0);
 	cout << endl;
 
 	if (test_BFS(g)) {
@@ -263,8 +258,8 @@ int main() {
 		cout << "Bellman-Ford pass" << endl;
 	} else {
 		cout << "Bellman-Ford fail" << endl;
-	} */
+	} 
 
-	test_ford_fulkersson();
+	test_dfs_rec();
 
 }	
