@@ -15,9 +15,9 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 		if(!discovered[v]) {
 			discovered[v] = true;
 
-			for (auto i = G.adj[v].rbegin(); i != G.adj[v].rend(); ++i) {
-				stack.push_back(*i);
-				prev[*i] = v;
+			for (auto i: G.adj[v]) {
+				stack.push_back(i);
+				prev[i] = v;
 			}
 		}	
 	}	
@@ -35,6 +35,8 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 	if ((path.back()-path.front() > 1) && path.size() == 2) {
 		ispath = false;
 	}
-	
+	for (auto c: path) {
+		cout << c << " ";
+	}
 	return pair<vector<int>,bool>(path,ispath);
 }
