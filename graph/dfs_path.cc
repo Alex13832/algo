@@ -35,8 +35,6 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 	if ((path.back()-path.front() > 1) && path.size() == 2) {
 		ispath = false;
 	}
-	for (auto c: path) {
-		cout << c << " ";
-	}
+
 	return pair<vector<int>,bool>(path,ispath);
 }
