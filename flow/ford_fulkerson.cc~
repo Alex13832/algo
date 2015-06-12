@@ -1,4 +1,5 @@
-#include "graph.h"
+#include "../graph/graph.h"
+#include "../graph/dfs_path.cc"
 #include <algorithm>
 #include <climits>
 using namespace std;
