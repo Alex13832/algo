@@ -17,9 +17,10 @@ void test_ford_fulkerson() {
 	g.addDirEdge(2,11,4);
 	g.addDirEdge(4,7,3);
 	g.addDirEdge(4,4,5);
-	g.addDirEdge(3,19,5); 
+	g.addDirEdge(3,19,5);
 
 	int a = ford_fulkerson(g,0,5);
+	cout << a << endl;
 
 	Graph g2(6);
 	g2.addDirEdge(0,10,1);
@@ -33,6 +34,7 @@ void test_ford_fulkerson() {
 	g2.addDirEdge(4,10,5);
 	
 	int b = ford_fulkerson(g2,0,5);
+	cout << b << endl;
 
 }
 
