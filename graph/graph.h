@@ -21,6 +21,7 @@ public:
 	std::vector<int> * getAdjacent() {return adj;}
 	std::map<std::pair<int,int>,int> getEdgeWeights(){return ews;}
 	int getEdgeWeight(int u, int v);
+	void setEdgeWeight(int u, int w, int v);
 };
 
 #endif

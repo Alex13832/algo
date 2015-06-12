@@ -36,6 +36,11 @@ int Graph::getEdgeWeight(int u, int v) {
 	return ews[p1];
 }
 
+void Graph::setEdgeWeight(int u, int w, int v) {
+	auto p1 = pair<int,int>(u,v);
+	ews[p1] = w;
+}
+
 void Graph::removeEdge(int u, int v) {
 	auto itu = find(adj[u].begin(),adj[u].end(),v);
 	if (itu != adj[u].end()) {
