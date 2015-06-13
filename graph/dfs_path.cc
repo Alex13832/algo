@@ -34,6 +34,7 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 
 	bool ispath = true;
 	if (path.front() != s || path.back() != t) ispath = false;
+
 	if (find(path.begin(),path.end(),-1) != path.end()) ispath = false;
 
 	if ((path.back()-path.front() > 1) && path.size() == 2) {
