@@ -34,10 +34,6 @@ vector<int> bellman_ford(Graph G, int s) {
 			throw std::invalid_argument( "Graph contains a negative-weight cycle" );
 		}
 	}
-	for (auto p: prev) {
-		cout << p << " ";
-	}
-	cout << endl;
 
 	return dist;
 }
