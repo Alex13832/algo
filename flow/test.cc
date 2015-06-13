@@ -10,14 +10,14 @@ using namespace std;
 
 void test_ford_fulkerson() {
 	Graph g(6);
-	g.addDirEdge(0,11,1); //23
-	g.addDirEdge(0,12,2);
-	g.addDirEdge(2,1,1);
-	g.addDirEdge(1,12,3);
-	g.addDirEdge(2,11,4);
-	g.addDirEdge(4,7,3);
-	g.addDirEdge(4,4,5);
-	g.addDirEdge(3,19,5);
+	g.addDirEdge(0,110,1); //23
+	g.addDirEdge(0,120,2);
+	g.addDirEdge(2,10,1);
+	g.addDirEdge(1,120,3);
+	g.addDirEdge(2,110,4);
+	g.addDirEdge(4,70,3);
+	g.addDirEdge(4,40,5);
+	g.addDirEdge(3,190,5);
 
 	int a = ford_fulkerson(g,0,5);
 	cout << a << endl;
