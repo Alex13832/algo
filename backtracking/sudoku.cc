@@ -1,3 +1,7 @@
+/**
+* A backtracking algorithm for solving a sudoku game.
+* File input as arg: files/<file>.txt
+*/
 #include <iostream>
 #include <algorithm>
 #include <fstream>
