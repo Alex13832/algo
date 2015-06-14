@@ -4,7 +4,7 @@
 using namespace std;
 
 pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
-	vector<bool> discovered(G.size(),false);
+	vector<bool> explored(G.size(),false);
 	vector<int> stack;
 	stack.push_back(s);
 	vector<int> prev(G.size(),-1);
@@ -13,8 +13,8 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 	while(!stack.empty() && v != t){
 		v = stack.back();
 		stack.pop_back();
-		if(!discovered[v]) {
-			discovered[v] = true;
+		if(!explored[v]) {
+			explored[v] = true;
 
 			for (auto i: G.adj[v]) {
 				stack.push_back(i);
