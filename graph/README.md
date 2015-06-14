@@ -31,3 +31,10 @@ DFS is an algorithm for traversing/searching trees and graphs. The algorithm sta
 <p align="center">
 <img src="images/dfs.png" height="300" alt="Screenshot"/>
 </p>
+
+#### DFS, path-search
+A variant of the ordinary DFS algorithm. This version finds a path from the source vertex s and the destination vertex t, although not necessarily the shortest. 
+
+<p align="center">
+<img src="images/dfs_path.png" height="300" alt="Screenshot"/>
+</p>
