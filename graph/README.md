@@ -22,3 +22,12 @@ BFS is an algorithm for graph/tree traversing/searching. The traversing starts a
 <p align="center">
 <img src="images/bfs.png" height="300" alt="Screenshot"/>
 </p>
+
+### Depth-First Search (DFS)
+DFS is an algorithm for traversing/searching trees and graphs. The algorithm starts at a given node and explores ad "deep" as possible along each branch before backtracking.
+
+[BFS, Wikipedia](https://en.wikipedia.org/wiki/Depth-first_search)
+
+<p align="center">
+<img src="images/dfs.png" height="300" alt="Screenshot"/>
+</p>
