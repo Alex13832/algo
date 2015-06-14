@@ -15,7 +15,7 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = sudoku sudoku2
+PROGS = sudoku
 
 all: $(PROGS)
 
