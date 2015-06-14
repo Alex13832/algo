@@ -5,14 +5,15 @@
 #include <iostream>
 #include <algorithm>
 #include <fstream>
-#include <vector>
 #include <stdio.h>
 #include <time.h>
 #include <string>
 using namespace std;
 
+#define N 9
+
  /* Checks if a row is valid*/
-bool row_valid(vector<vector<int>> grid, int row, int num) {
+bool row_valid(int grid[N][N], int row, int num) {
 	for (size_t i = 0; i < 9; ++i) {
 		if (grid[row][i] == num) return false;
 	}
@@ -20,7 +21,7 @@ bool row_valid(vector<vector<int>> grid, int row, int num) {
 }
 
 /* Checks if a column is valid */
-bool col_valid(vector<vector<int>> grid, int col, int num) {
+bool col_valid(int grid[N][N], int col, int num) {
 	for (size_t i = 0; i < 9; ++i) {
 		if (grid[i][col] == num) return false;
 	}
@@ -28,7 +29,7 @@ bool col_valid(vector<vector<int>> grid, int col, int num) {
 }
 
 /* Checks if a 3x3 cell is valid */
-bool cell_valid(vector<vector<int>> grid, int row, int col, int num) {
+bool cell_valid(int grid[N][N], int row, int col, int num) {
 	int r1 = row - row%3;
 	int r2 = r1 + 3;
 	int c1 = col - col%3;
@@ -44,7 +45,7 @@ bool cell_valid(vector<vector<int>> grid, int row, int col, int num) {
 
 
 
-bool sudoku(vector<vector<int>>& grid, int x, int y) {
+bool sudoku(int grid[N][N], int x, int y) {
 	while (x < 9 && grid[x][y] != 0) {
 		y++;
 		if (y == 9) {
@@ -67,7 +68,7 @@ bool sudoku(vector<vector<int>>& grid, int x, int y) {
 }
 
 
-void read_grid(vector<vector<int>> & grid, string file){
+void read_grid(int grid[N][N], string file){
 	ifstream infile(file);
 	string line;
 	int row = 0;
@@ -123,7 +124,7 @@ int main(int argc, const char *argv[]) {
 		file = "files/difficult.txt";
 	}
 
-	vector<vector<int>> grid(9,vector<int>(9,0));
+	int grid[N][N];
 	read_grid(grid,file);
 	
 	t0 = clock(); // Only algorithm time
