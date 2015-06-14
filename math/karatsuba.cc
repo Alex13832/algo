@@ -29,7 +29,6 @@ ulong karatsuba(ulong nbr1, ulong nbr2) {
 
 	int mid = max(size(nbr1),size(nbr2))/2;
 
-	
 	pair<ulong,ulong> spl1 = split(nbr1, mid);
 	ulong high1 = spl1.first;
 	ulong low1 = spl1.second;
