@@ -2,7 +2,7 @@
 *Class for calculcation of prime numbers.
 *Algorithm: Sieve of Eratosthenes, 
 ---------------------------------------------------------------------------- */
-#include "prime.h"
+#include "prime_eratosthenes.h"
 #include <iostream>
 #include <vector>
 #include <algorithm>
