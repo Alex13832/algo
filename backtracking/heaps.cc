@@ -15,7 +15,7 @@ void swap(string& str, int i, int j) {
 	str[i] = b;
 }
 /* Heaps algorithm */
-void heap(size_t n, string& str) {	
+void heaps(size_t n, string& str) {	
 	if (n == 1) {
 		cout << str << endl;
 		count ++;
@@ -35,6 +35,8 @@ int main() {
 	string obj;
 	cin >> obj;
 	int n = obj.length();
+	cout << "-------------------" << endl;
 	heaps(n,obj);
+	cout << "-------------------" << endl;
 	cout << "count " << count << endl;
 }
