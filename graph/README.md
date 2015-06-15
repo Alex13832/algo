@@ -45,3 +45,10 @@ A variant of the ordinary DFS algorithm. This version finds a path from the sour
 <p align="center">
 <img src="images/dijkstra.png" height="250" alt="Screenshot"/>
 </p>
+
+#### Prim's Algorithm
+Finds a minimum spanning tree (MST) for a weighted undirected graph.
+
+<p align="center">
+<img src="images/prim.png" height="250" alt="Screenshot"/>
+</p>
