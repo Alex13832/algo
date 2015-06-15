@@ -24,7 +24,6 @@ void heap(size_t n, string& str) {
 			heaps(n-1, str);
 			if (n % 2 == 0) {
 				swap(str,i,n-1);
-				
 			} else {
 				swap(str,0,n-1);
 			}	
