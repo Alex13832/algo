@@ -7,3 +7,8 @@ Backtracking Algorithms
 <p align="center">
 <img src="files/images/sudoku.png" height="270" alt="Screenshot"/>
 </p>
+
+### Heap's Algorithm
+Returns all permutation of a string. 
+
+Example: heaps(123) -> 123, 213, 312, 132, 231, 321. 

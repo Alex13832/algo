@@ -7,38 +7,30 @@
 using namespace std;
 int count = 0;
 
-string swap(string str, int i, int j) {
-	string tmp = str;
-	tmp[j] = str[i];
-	tmp[i] = str[j];
-	str = tmp;
-	return str;	
+/* Swaps str[i] <-> str[j]*/
+void swap(string& str, int i, int j) {
+	char a = str[i];
+	char b = str[j];
+	str[j] = a;
+	str[i] = b;
 }
-
-string heaps(size_t n, string str) {	
+/* Heaps algorithm */
+void heap(size_t n, string& str) {	
 	if (n == 1) {
 		cout << str << endl;
 		count ++;
-		return str;	
 	} else {
-
 		for (size_t i = 0; i < n; i++) {
-			str = heaps(n-1, str);
-			
+			heaps(n-1, str);
 			if (n % 2 == 0) {
-				str = swap(str,i,n-1);
+				swap(str,i,n-1);
 				
 			} else {
-				str = swap(str,0,n-1);
-
+				swap(str,0,n-1);
 			}	
-			
 		}
 	}
-	return str;
 }
-
-
 
 int main() {
 	string obj;
@@ -46,5 +38,4 @@ int main() {
 	int n = obj.length();
 	heaps(n,obj);
 	cout << "count " << count << endl;
-
 }
