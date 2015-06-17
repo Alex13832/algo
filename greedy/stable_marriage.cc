@@ -29,10 +29,10 @@ void stable_marriage(vector<vector<int>> men_pref, vector<vector<int>> women_pre
 	while (man_free) {
 		int w = men_pref[m].front();
 		men_pref[m].erase(men_pref[m].begin());
+		
 		if (engaged_women[w-1] == 0) {
 			engaged_women[w-1] = m+1;
 			engaged_men[m] = w;
-
 		} else {
 			m2 = engaged_women[w-1] - 1;
 
