@@ -17,17 +17,15 @@ using namespace std;
 
 /* Gale-Shapley algorithm*/
 void stable_marriage(vector<vector<int>> men_pref, vector<vector<int>> women_pref) {
-	
 	int couples = men_pref[0].size();
 	vector<int> engaged_men(couples, false);
 	vector<int> engaged_women(couples, false);
 
-	/* While there is a man  who is not engaged 
-  	   and has not proposed to every woman on his list */
-
 	int m = 0, m2 = 0;
 	bool man_free = true;
 	
+	/** While there is a man  who is not engaged 
+  	   and has not proposed to every woman on his list */
 	while (man_free) {
 		int w = men_pref[m].front();
 		men_pref[m].erase(men_pref[m].begin());
@@ -53,14 +51,9 @@ void stable_marriage(vector<vector<int>> men_pref, vector<vector<int>> women_pre
 			if (engaged_men[i] == 0) m = i;
 		}
 
-
 		if ( find(engaged_men.begin(),engaged_men.end(),0) == engaged_men.end()) {
 			man_free = false;
 		}
-		
-
-	
-		cout<< "m " << m << endl;
 	}
 
 	/* Print result */

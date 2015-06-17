@@ -7,9 +7,9 @@ using namespace std;
 vector<vector<int>> read_file(string file) {
 	ifstream infile(file);
 	vector<vector<int>> vec;
-
 	string line;
 	int person = 0;
+
 	while (getline(infile, line)){	
 		
 		string s = line;
@@ -19,24 +19,20 @@ vector<vector<int>> read_file(string file) {
 		size_t pos = 0;
 		string token;
 		
-
 		while ((pos = s.find(delimiter)) != string::npos) {
 		    	token = s.substr(0, pos);
+			
 			try {
-				
 				int num = stoi(token);
 				vec[person].push_back(num);
-
 			} catch (std::invalid_argument&) { }
 			
-		    	s.erase(0, pos + delimiter.length());
-		    	
+		    	s.erase(0, pos + delimiter.length());	
 		}
 
 		try {
 			int num = stoi(s);
 			vec[person].push_back(num);
-
 		} catch (std::invalid_argument&) { }
  		
 		person++;
