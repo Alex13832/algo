@@ -24,7 +24,7 @@ void stable_marriage(vector<vector<int>> men_pref, vector<vector<int>> women_pre
 	int m = 0, m2 = 0;
 	bool man_free = true;
 	
-	/** While there is a man  who is not engaged 
+	/** While there is a man who is not engaged 
   	   and has not proposed to every woman on his list */
 	while (man_free) {
 		int w = men_pref[m].front();
