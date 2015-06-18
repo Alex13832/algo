@@ -41,13 +41,7 @@ int ford_fulkerson(Graph Gf, const int s, const int t) {
 			Gf.setEdgeWeight(v,cf_min,u);	
 		}
 		max_flow += cf_min;
-	cout << "-----------------------------" << endl;	
-	for (auto p: cf) {
-		cout << "u " << p.first.first << " v " << p.first.second;
-		cout << " w " << p.second << endl; 
 	}
-	}
-
 
 	return max_flow;
 }
