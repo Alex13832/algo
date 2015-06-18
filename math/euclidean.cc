@@ -1,7 +1,7 @@
 /** -------------------------------------------------------
 * Implementation of the Euclidean Algorithm. The algorithm 
 * is used for finding the greatest common divisor (gcd) of
-*  two integers a an b.
+* two integers a an b.
 * Alexander Karlsson, 2015-06-18
 * --------------------------------------------------------- */
 #include <iostream>
