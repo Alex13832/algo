@@ -15,12 +15,12 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = rabin_karp longest_common_substr
+PROGS = test_lcs
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-rabin_karp: rabin_karp.o
+test_lcs: test_lcs.o
 longest_common_substr: longest_common_substr.o
 
 # Phony targets
