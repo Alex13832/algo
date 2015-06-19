@@ -6,3 +6,7 @@ Finds the position where the object is located. The algorithm begins by comparin
 
 ### Linear Search
 Finds the element by iterate through the list until the element is found. Can be used on unsorted list for instance.
+
+### Selection Algorithms
+Finds the kth smallest/largest element(s) in a sequence.
+
