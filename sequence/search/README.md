@@ -1,4 +1,4 @@
-Search and Sort Algorithms
+Sequence Search Algorithms
 ======================================
 
 ### Binary Search
