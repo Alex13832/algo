@@ -1,7 +1,7 @@
 /**--------------------------------------------------------
 * Longest common substring implementation, using 
 * dynamic programming
-* Alexander Karlsson 2016-06-19
+* Alexander Karlsson 2015-06-19
 * --------------------------------------------------------- */
 #include <iostream>
 #include <vector>
