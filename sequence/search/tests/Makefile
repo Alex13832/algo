@@ -15,13 +15,14 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_binary_search test_linear_search
+PROGS = test_binary_search test_linear_search test_k_max_min
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 test_binary_search: test_binary_search.o
 test_linear_search: test_linear_search.o
+test_k_max_min: test_k_max_min.o
 
 # Phony targets
 .PHONY: all clean
