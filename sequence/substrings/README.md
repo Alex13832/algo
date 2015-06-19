@@ -1,4 +1,4 @@
-Pattern Algorithms
+Substring Algorithms
 ===============================
 
 #### Rabin-Karp Algorithm
