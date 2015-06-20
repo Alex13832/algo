@@ -12,6 +12,6 @@ A representation of "links" may be represented like in the picture below. "Take 
 [PageRank, Wikipedia](https://en.wikipedia.org/wiki/PageRank)
 
 <p align="center">
-<img src="images/pagerank.png" height="320" alt="Screenshot"/>
+<img src="images/pagerank.png" height="350" alt="Screenshot"/>
 </p>
 
