@@ -1,4 +1,4 @@
-Network Algorithm
+Network Algorithms
 ============================
 
 ### PageRank Algorithm
