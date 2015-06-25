@@ -8,5 +8,5 @@ Reults of big input data sets may conveniently be plotted in matlab, or python o
 The points magenta points constructs the convex hull polygon of an example input. 
 
 <p align="center">
-<img src="images/conv_hull.png" height="230" alt="Screenshot"/>
+<img src="images/conv_hull.png" height="350" alt="Screenshot"/>
 </p>
