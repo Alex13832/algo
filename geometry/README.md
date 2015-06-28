@@ -5,7 +5,7 @@ Computational Geometry
 Finds the closest pair of points of some input set of points.
 
 <p align="center">
-<img src="images/closest.png" height="350" alt="Screenshot"/>
+<img src="images/closest.png" height="275" alt="Screenshot"/>
 </p>
 
 
