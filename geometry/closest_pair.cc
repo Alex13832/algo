@@ -1,7 +1,14 @@
+/** ---------------------------------------------------------
+* Implementation that finds the closest pair of points
+* in the plane of some input set of points. Divide and 
+* Conquer style. 
+* Alexander Karlsson, 2015-06-28
+* ----------------------------------------------------------- */
 #include <iostream>
 #include <vector>
 #include <cmath>
 #include "float.h"
+#include <algorithm>
 using namespace std;
 
 struct point {
@@ -15,64 +22,53 @@ struct x_comp {
 
 struct y_comp {
   bool operator() (const  point p1, const point p2) const
-  {return p1.y > p2.y;}
+  {return p1.y < p2.y;}
 };
 
 double dist(point p1, point p2) {
-	cout << "p1x " << p1.x << " p1y " << p1.y << " p2x " << p2.x << " p2y " << p2.y <<endl;
 	double c = pow((double)p1.x - (double)p2.x, 2) + pow((double)p1.y - (double)p2.y, 2);
-	cout << "c " << sqrt(c) << endl;
 	return sqrt(c); 
 }
 
-pair<double,pair<point,point>> closest_pair(vector<point> xp, vector<point> yp) {
-	cout << "häst 1 " << endl;
+/* Divide and Conquer algorithm that finds the cloest pair of points  */
+pair<double,pair<point,point>> closest_pair(vector<point>& xp, vector<point>& yp) {
 	int N = xp.size();
 	
 	/* Brute force if size <= 3 */
 	if (N <= 3) { 
 		double min_dist = DBL_MAX;
-		point xp_min;
-		point yp_min;
-		for (size_t i = 0; i < xp.size(); i++) {
-			for (size_t j = 0; j < yp.size(); j++) {
-				if(xp[i].x != yp[j].x && xp[i].y != yp[j].y){
-					cout << " gurka " << endl;
-					if (min_dist < dist(xp[i],yp[j])) {
-						min_dist = dist(xp[i],yp[j]);
-						xp_min = xp[i]; yp_min = yp[j];
+		point xp_min, yp_min;
+
+		for (auto px: xp) {
+			for (auto py: yp) {
+
+				if(!(px.x == py.x && px.y == py.y)){
+					if (dist(px,py) < min_dist) {
+						min_dist = dist(px,py);
+						xp_min = px; yp_min = py;
 					}
 				}
 			}	
 		}
-		cout << "häst2 " << endl;
+
 		pair<point,point> pr(xp_min,yp_min);
-		pair<double,pair<point,point>> pm(min_dist,pr);
-		return pm;
+		return pair<double,pair<point,point>>(min_dist,pr);
 	}
 	
-	cout << "häst 3 " << endl;
-	vector<point> xL(ceil(N/2));
-	vector<point> xR(ceil(N/2)+1);
+	vector<point> xL(ceil(N/2)), xR(ceil(N/2)), yL, yR;
 	
 	copy(xp.begin(), xp.begin()+ceil(N/2), xL.begin());
-	copy(xp.begin()+ceil(N/2)+1, xp.end(), xR.begin());
-	
-	
+	copy(xp.begin()+ceil(N/2), xp.end(), xR.begin());
 	point xmid = xp[ceil(N/2)];
-	vector<point> yL;
-	vector<point> yR;
-	cout << "häst 4 " << endl;
 	
 	for (size_t i = 0; i < yp.size(); ++i) {
 		if (yp[i].x <= xmid.x) yL.push_back(yp[i]);
-		if (yp[i].x > xmid.x) yR.push_back(yp[i]);
+		else yR.push_back(yp[i]);
 	}
-	
+
 	/* Recursive calls */	
-	pair<double,pair<point,point>> cL = closest_pair(xL,yL);
-	pair<double,pair<point,point>> cR = closest_pair(xR,yR);
-	cout << "häst 5 " << endl;
+	pair<double,pair<point,point>> cL = closest_pair(xL,yL), cR = closest_pair(xR,yR);
+
 	double dist_min = cR.first;
 	pair<point,point> p_min = cR.second;
 	
@@ -85,76 +81,30 @@ pair<double,pair<point,point>> closest_pair(vector<point> xp, vector<point> yp) 
 	for (size_t i = 0; i < xp.size(); ++i) {
 		if (abs(xmid.x - xp[i].x) < dist_min) ys.push_back(xp[i]);
 	}
-	
-	
-	cout << "häst 6 " << endl;
-	int Ns = ys.size();
-	
+
 	double closest_dist = dist_min;
 	pair<point,point> closest_pair = p_min;
 	
-	for (size_t i = 0; i < Ns; ++i) {
-		int k = i+1;
+	for (size_t i = 0; i < ys.size(); ++i) {
+		size_t k = i+1;
 		
-		while (k <= Ns && ((ys[k].y - ys[i].y) < dist_min)) {
+		while (k < ys.size() && ((ys[k].y - ys[i].y) < dist_min)) {
 			if (dist(ys[k],ys[i]) < closest_dist) {
 				closest_dist = dist(ys[k],ys[i]);
 				closest_pair = pair<point,point>(ys[k],ys[i]);
 			}
 			k++;
-		
 		}
-	
 	}
 	
-	pair<double,pair<point,point>> pm(closest_dist, closest_pair);
-	return pm;
+	return pair<double,pair<point,point>>(closest_dist, closest_pair);
 }
 
-
-int main() {
-
-	point p1;
-	p1.x = 117;
-	p1.y = 1900;
-	
-	point p2;
-	p2.x = 211111;
-	p2.y = 2;
-	
-	point p3;
-	p3.x = 100;
-	p3.y = 100;
-	
-	point p4;
-	p4.x = 110;
-	p4.y = 110;
-	
-	point p5;
-	p5.x = 400;
-	p5.y = 400;
-	
-	point p6;
-	p6.x = 1234;
-	p6.y = 8999;
-	
-	
-	vector<point> points{p1,p2,p3,p4,p5};
-	
-	vector<point> px = points;
-	vector<point> py = points;
-	
-	sort(px.begin(),px.end(),x_comp());
-	sort(py.begin(),py.end(),y_comp());
-	cout << "--------------"<< endl;
-	for(auto pp: py) {
-		cout <<pp.x << " ";
-	}
-	cout << endl;
-	pair<double,pair<point,point>> closest = closest_pair(px,py);
-	cout << closest.first << endl;
-	
-	
-
-
-}
+/* Sort pts before finding the closest pair of points*/
+ pair<double,pair<point,point>> closest_pair_of_points(vector<point> pts) {
+ 	vector<point> ptsx = pts;
+ 	vector<point> ptsy = pts;
+ 	sort(ptsx.begin(), ptsx.end(), x_comp());
+ 	sort(ptsy.begin(), ptsy.end(), y_comp());
+ 	return closest_pair(ptsx,ptsy);
+ }

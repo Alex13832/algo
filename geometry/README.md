@@ -1,6 +1,14 @@
 Computational Geometry
 ===================================
 
+### Closest Pair of Points
+Finds the closest pair of points of some input set of points.
+
+<p align="center">
+<img src="images/closest.png" height="350" alt="Screenshot"/>
+</p>
+
+
 ### Quickhull Algorithm
 Finds the set of points that constructs the convex hull of some input data set of points.
 Reults of big input data sets may conveniently be plotted in matlab, or python or any other tool that is good at plotting.
