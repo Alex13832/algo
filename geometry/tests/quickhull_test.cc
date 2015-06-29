@@ -3,11 +3,14 @@
 * Alexander Karlsson, 2015-06-25 
 * ----------------------------------------------------- */
 #include "../quickhull.cc"
+#include "../../matplotlibcpp.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
 #include <string>
 using namespace std;
+namespace plt = matplotlibcpp;
+
 
 /* Read the data points to be processed by quickhull */
 vector<point> read_file(string file) {
@@ -58,5 +61,23 @@ int main() {
 	vector<point> pts = read_file("testfiles/convexhull/data.txt");
 	sort(pts.begin(),pts.end(), point_comp());
 	vector<point> convhull = quickhull(pts);
-	write_to_file(convhull, "convex_hull_res.txt");
+	//write_to_file(convhull, "convex_hull_res.txt");
+
+	vector<int> x,y,chx,chy;
+	for(auto p: pts) {
+		x.push_back(p.x);
+		y.push_back(p.y);
+	}
+
+	for(auto p: convhull) {
+		chx.push_back(p.x);
+		chy.push_back(p.y);
+	}
+
+	plt::plot(x,y,"ko");
+	plt::plot(chx,chy,"ro");
+	plt::xlim(0, 15);
+	plt::ylim(0, 15);
+	plt::show();
+
 }

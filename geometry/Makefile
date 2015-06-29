@@ -6,21 +6,22 @@ CC  = clang++
 
 # Define preprocessor, compiler, and linker flags. Uncomment the # lines
 # if you use clang++ and wish to use libc++ instead of GNU's libstdc++.
-CXXFLAGS =  -g -O2 -Wall -W -pedantic-errors
+CXXFLAGS =  -g -O2 -Wall -W
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast 
 CXXFLAGS += -std=c++11 
-LDFLAGS =   -g 
+LDFLAGS =   -g -lpython2.7 
 #CPPFLAGS =  -stdlib=libc++
 #CXXFLAGS += -stdlib=libc++
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = closest_pair
+PROGS = test
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-closest_pair: closest_pair.o
+test: test.o -lpython2.7
+
 
 # Phony targets
 .PHONY: all clean
