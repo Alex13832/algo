@@ -1,6 +1,8 @@
 Computational Geometry
 ===================================
 
+`geometry2d.cc` contains the basic stuff. 
+
 ### Closest Pair of Points
 Finds the closest pair of points of some input set of points.
 

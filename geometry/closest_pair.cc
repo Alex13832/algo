@@ -9,21 +9,8 @@
 #include <cmath>
 #include "float.h"
 #include <algorithm>
+#include "geometry2d.cc"
 using namespace std;
-
-struct point {
-	int x,y;
-};
-
-struct x_comp {
-  bool operator() (const  point p1, const point p2) const
-  {return p1.x < p2.x;}
-};
-
-struct y_comp {
-  bool operator() (const  point p1, const point p2) const
-  {return p1.y < p2.y;}
-};
 
 double dist(point p1, point p2) {
 	double c = pow((double)p1.x - (double)p2.x, 2) + pow((double)p1.y - (double)p2.y, 2);

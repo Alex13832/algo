@@ -59,7 +59,7 @@ void write_to_file(vector<point> chull, string filename) {
 
 int main() {
 	vector<point> pts = read_file("testfiles/convexhull/data.txt");
-	sort(pts.begin(),pts.end(), point_comp());
+	sort(pts.begin(),pts.end(), x_comp());
 	vector<point> convhull = quickhull(pts);
 	//write_to_file(convhull, "convex_hull_res.txt");
 

@@ -11,19 +11,12 @@
 #include <climits>
 #include <cmath>
 #include <numeric>
+#include "geometry2d.cc"
 using namespace std;
 
 #define DBL_MIN 2.2250738585072014e-308
 
 /* ------------------------------------------------------------- */
-struct point {
-	int x, y;
-};
-
-struct point_comp {
-  bool operator() (const  point p1, const point p2) const
-  {return p1.x < p2.x;}
-};
 
 /* Determines which side of a line a point is located */
 int location(point a, point b, point p) {

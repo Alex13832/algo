@@ -15,13 +15,14 @@ LDFLAGS =   -g -lpython2.7
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = quickhull_test closest_pair_test
+PROGS = quickhull_test closest_pair_test intersection_test
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 quickhull_test: quickhull_test.o
 closest_pair_test: closest_pair_test.o
+intersection_test: intersection_test.o
 
 # Phony targets
 .PHONY: all clean
