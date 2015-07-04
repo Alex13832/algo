@@ -128,6 +128,7 @@ int main(int argc, const char *argv[]) {
 		return 0;
 	}
 
+
 	sort(pts.begin(),pts.end(),x_comp());
 	lexisort(pts);
 	vector<edge> connected = triangulation(pts);
