@@ -24,8 +24,8 @@ vector<edge> triangulation(vector<point>& pts) {
 	e2.p1 = pts[1]; e2.p2 = pts[2];
 	vector<edge> edges{e0,e1,e2};
 
-	/* From this point add points to the only triangly incrementally. */
-	for (size_t i = 0; i < pts.size(); ++i){
+	/* From this point add points to the only triangl incrementally. */
+	for (size_t i = 3; i < pts.size(); ++i){
 		point& p0 = pts[i];
 		
 		/* Target point pi */
