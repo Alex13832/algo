@@ -26,5 +26,5 @@ This algorthm finds a triangulation of some input set of points.
 See the example below for an example.
 
 <p align="center">
-<img src="images/triangul.png" height="350" alt="Screenshot"/>
+<img src="images/triangul2.png" height="350" alt="Screenshot"/>
 </p>
