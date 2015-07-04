@@ -17,24 +17,28 @@ vector<edge> triangulation(vector<point>& pts) {
 	vector<point> visited{pts[0],pts[1],pts[2]};
 	bool intersection = false;
 
+	/* The three first points constructs a triangle*/
 	edge e0,e1,e2;
 	e0.p1 = pts[0]; e0.p2 = pts[1];
 	e1.p1 = pts[0]; e1.p2 = pts[2];
 	e2.p1 = pts[1]; e2.p2 = pts[2];
 	vector<edge> edges{e0,e1,e2};
 
+	/* From this point add points to the only triangly incrementally. */
 	for (size_t i = 0; i < pts.size(); ++i){
 		point& p0 = pts[i];
-	
+		
+		/* Target point pi */
 		for (auto pi = visited.rbegin(); pi!=visited.rend(); ++pi) {
 
+			/* Verify that the segment p0-pi doesn't intersect e */
 			for (auto e = edges.rbegin(); e!=edges.rend(); ++e) {
 				point pk = e->p1;
 				point pj = e->p2;
 
 				if (segment_intersect(p0,*pi,pj,pk)) {
 					intersection = true;
-					break;
+					break; // as soon as something intersects
 				}
 			}		
 

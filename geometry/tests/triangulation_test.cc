@@ -1,7 +1,3 @@
-#include "../triangulation.cc"
-#include "../../matplotlibcpp.h"
-#include <iostream>
-#include <fstream>
 /** -----------------------------------------------------------
 * Tests for triangulation.cc 
 * The test is not a proof. Use the plot to visually "verify". 
@@ -10,6 +6,10 @@
 * for the same input.
 * Alexander Karlsson, 2015-06-04
 * ------------------------------------------------------------- */
+#include "../triangulation.cc"
+#include "../../matplotlibcpp.h"
+#include <iostream>
+#include <fstream>
 #include <vector>
 #include <algorithm>
 #include <numeric>
