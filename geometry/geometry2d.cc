@@ -3,7 +3,6 @@ using namespace std;
 
 struct point {
 	int x, y;
-	vector<point> adj;
 
 	bool operator==(const point& p) {
 		return x == p.x && y == p.y;
@@ -35,17 +34,6 @@ struct y_comp {
 };
 
 
-// Given three colinear points p, q, r, the function checks if
-// point q lies on line segment 'pr'
-bool onSegment(point p, point q, point r)
-{
-    if (q.x <= max(p.x, r.x) && q.x >= min(p.x, r.x) &&
-        q.y <= max(p.y, r.y) && q.y >= min(p.y, r.y))
-       return true;
- 
-    return false;
-}
-
 /* Distance funtion */
 double distance(point a, point b, point c) {
 	int abx = b.x - a.x;
@@ -54,7 +42,6 @@ double distance(point a, point b, point c) {
 	if (dist < 0) return -1.0*dist;
 	return dist;
 }
-
 
 /** ------------------------------------------------------------------
 * Functions for determining if two line segments intersect.
