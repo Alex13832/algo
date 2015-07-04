@@ -15,12 +15,12 @@ LDFLAGS =   -g -lpython2.7
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test
+PROGS = triangulation
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-test: test.o -lpython2.7
+triangulation: triangulation.o
 
 
 # Phony targets

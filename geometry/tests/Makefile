@@ -10,12 +10,13 @@ CXXFLAGS =  -g -O2 -Wall -W -pedantic-errors
 CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast 
 CXXFLAGS += -std=c++11 
 LDFLAGS =   -g -lpython2.7 
+CPPFLAGS = -std=c++11
 #CPPFLAGS =  -stdlib=libc++
 #CXXFLAGS += -stdlib=libc++
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = quickhull_test closest_pair_test intersection_test
+PROGS = quickhull_test closest_pair_test intersection_test triangulation_test
 
 all: $(PROGS)
 
@@ -23,6 +24,7 @@ all: $(PROGS)
 quickhull_test: quickhull_test.o
 closest_pair_test: closest_pair_test.o
 intersection_test: intersection_test.o
+triangulation_test: triangulation_test.o
 
 # Phony targets
 .PHONY: all clean

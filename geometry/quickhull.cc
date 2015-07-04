@@ -27,15 +27,6 @@ int location(point a, point b, point p) {
 	return -1;
 }
 
-/* Distance funtion */
-int distance(point a, point b, point c) {
-	int abx = b.x - a.x;
-	int aby = b.y - a.y;
-	int dist = abx*(a.y-c.y) - aby*(a.x-c.x);
-	if (dist < 0) return -1*dist;
-	return dist;
-}
-
 /* ------------------------------------------------------------- */
  
 /* Subroutine of quickhull */
