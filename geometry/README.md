@@ -23,7 +23,7 @@ The magenta points constructs the convex hull polygon of an example input.
 
 ### Triangulation
 This algorithm finds a triangulation of some input set of points.
-See the example below for an example.
+See the example below.
 
 <p align="center">
 <img src="images/triangul2.png" height="350" alt="Screenshot"/>
