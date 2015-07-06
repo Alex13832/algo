@@ -46,10 +46,7 @@ vector<edge> triangulation(vector<point>& pts) {
 				edge e1;
 				e1.p1 = p0;
 				e1.p2 = *pi;
-
-				if (p0 != *pi && find(edges.begin(),edges.end(),e1) == edges.end()) {
-					 edges.push_back(e1);
-				}
+				edges.push_back(e1);
 			}
 
 			intersection = false;

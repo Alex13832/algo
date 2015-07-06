@@ -16,7 +16,9 @@
 #include <chrono>
 #include <random>
 #include <ctime>        
-#include <cstdlib>     
+#include <cstdlib> 
+#include <stdio.h>
+#include <time.h>    
 using namespace std;
 namespace plt = matplotlibcpp;
 
@@ -131,7 +133,13 @@ int main(int argc, const char *argv[]) {
 
 	sort(pts.begin(),pts.end(),x_comp());
 	lexisort(pts);
+
+	clock_t t0, t1;
+	t0 = clock();
 	vector<edge> connected = triangulation(pts);
+	t1 = clock();
+	printf ("Used %g CPU seconds\n",
+	(t1 - t0) / (double)CLOCKS_PER_SEC);
 
 	int x_max = 0, y_max = 0;
 	vector<int> X,Y;
