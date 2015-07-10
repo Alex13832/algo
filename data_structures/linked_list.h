@@ -1,5 +1,5 @@
 /** -------------------------------------------------------
-* LinkedList implementation
+* Singly Linked List implementation
 * Alexander Karlsson, 2015-07-10
 * --------------------------------------------------------- */
 #ifndef LinkedList_H
@@ -96,11 +96,11 @@ public:
 	T removeAt(int index) {
 		if (index >= size) {
 			--size;
-			return removeLast();
+			return pop_back();
 
 		} else if (index == 0) {
 			--size;	
-			return removeFirst();
+			return pop_front();
 
 		} else {
 			Node<T> *temp1 = first, *temp2 = first;

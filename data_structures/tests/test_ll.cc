@@ -1,4 +1,4 @@
-#include "linked_list.h"
+#include "../linked_list.h"
 #include <iostream>
 #include <string>
 using namespace std;
@@ -24,7 +24,7 @@ int main() {
 	L.pop_front();
 	L.print();
 	cout << "remove last" << endl;
-	L.pop_last();
+	L.pop_back();
 	L.print();
 
 	int k = 2;
