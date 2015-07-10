@@ -19,7 +19,7 @@ void SinglyLinkedList<T>::init() {
 template <typename T>
 void SinglyLinkedList<T>::push_back(T t) {
 	if(size == 0) {
-		init();
+		init(); // Same as callaing constructor
 	} else {
 		Node<T> *temp = new Node<T>;
 		temp->value = t;
@@ -44,10 +44,10 @@ void SinglyLinkedList<T>::push_front(T t) {
 
 template <typename T>
 void SinglyLinkedList<T>::insertAt(int index, T t)  {
-	if (index == 0) {
-		push_front(t);
+	if (index == 0) { 
+		push_front(t); // case already implmented
 	} else if (index >= size) {
-		push_back(t);
+		push_back(t); // This case also
 
 	} else {
 
@@ -69,12 +69,13 @@ void SinglyLinkedList<T>::insertAt(int index, T t)  {
 
 template <typename T>
 void SinglyLinkedList<T>::pop_front() {
-	if (size == 0) {
-		return;
+	if (size == 0) { 
+		return; // Trying to remove from an empty list
 	}
 
+	/* Special case when size == 1 */
 	if (size == 1) {
-		first = NULL;
+		first = NULL; 
 		--size;
 		return;
 	}
@@ -86,9 +87,10 @@ void SinglyLinkedList<T>::pop_front() {
 template <typename T>
 void SinglyLinkedList<T>::pop_back() {
 	if (size == 0) {
-		return;
+		return; // Trying to remove from an empty list
 	}
 
+	/* Special case when size == 1 */
 	if (size == 1) {
 		first = NULL;
 		--size;
@@ -108,10 +110,12 @@ void SinglyLinkedList<T>::pop_back() {
 
 template <typename T>
 void SinglyLinkedList<T>::removeAt(int index) {
+	/* same as calling pop_back() */
 	if (index >= size) {
 		--size;
 		pop_back();
 
+	/* same as calling pop_front() */
 	} else if (index == 0) {
 		--size;	
 		pop_front();
