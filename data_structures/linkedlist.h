@@ -22,6 +22,8 @@ public:
 	virtual void pop_back() = 0;
 	/* Removes at a given index */
 	virtual void removeAt(int index) = 0;
+	/* Clears the list */
+	virtual void clear() = 0;
 	/* Returns the first element */
 	virtual T front() = 0;
 	/* Returns the last element */
@@ -35,3 +37,5 @@ public:
 
 
 #endif
+
+

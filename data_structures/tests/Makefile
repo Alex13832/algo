@@ -16,12 +16,13 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_ll
+PROGS = test_ll test_dl
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 test_ll: test_ll.o
+test_dl: test_dl.o
 
 # Phony targets
 .PHONY: all clean

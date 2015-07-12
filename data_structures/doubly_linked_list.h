@@ -1,19 +1,19 @@
 /** -------------------------------------------------------
-* Singly Linked List declaration
-* Alexander Karlsson, 2015-07-10
+* Doubly Linked List declaration
+* Alexander Karlsson, 2015-07-12
 * --------------------------------------------------------- */
-#ifndef SINGLYLINKEDLIST_H
-#define SINGLYLINKEDLIST_H
+#ifndef DOUBLYLINKEDLIST_H
+#define DOUBLYLINKEDLIST_H
 #include <iostream>
 #include "linkedlist.h"
 
-template <typename T> class SinglyLinkedList : public LinkedList<T> {
+template <typename T> class DoublyLinkedList : public LinkedList<T> {
 public:
 
 	typedef T value_type;
 
 	/* Constructor */
-	SinglyLinkedList();
+	DoublyLinkedList();
 	void init();
 	void push_back(T t);
 	void push_front(T t);
@@ -25,12 +25,13 @@ public:
 	T front();
 	T back();
 	T at(int index);
-	int length();
+	int length(); 
 	/* Prints the element at every node */
 	void print();
+	void print_rev();
 
 private:
-	Node<T> *first = new Node<T>,*tail = new Node<T>;
+	Node<T> *first = new Node<T>, *tail = new Node<T>;
 	int size = 0;
 };
 
