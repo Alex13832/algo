@@ -1,61 +1,55 @@
-/** -------------------------------------------------------
+/** ------------------------------------------------------------
 * Singly Linked List implementation
 * Alexander Karlsson, 2015-07-10
-* --------------------------------------------------------- */
+* -------------------------------------------------------------- */
 #include "singly_linked_list.h"
+#include "linked_list.cc"
 using namespace std;
 
 template <typename T>
 SinglyLinkedList<T>::SinglyLinkedList() {
-	first = NULL;
-}
-
-template <typename T>
-void SinglyLinkedList<T>::init() {
-	tail = new Node<T>;
-	first = tail;
-	tail->next = NULL;
+	this->first = NULL;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::push_back(T t) {
-	if(size == 0) {
-		init(); // Same as callaing constructor
-		first->value = t;
+	if(this->size == 0) {
+		LinkedList<T>::init();
+		this->first->value = t;
 	} else {
 		Node<T> *temp = new Node<T>;
 		temp->value = t;
-		tail->next = temp;
-		tail = temp;
+		this->tail->next = temp;
+		this->tail = temp;
 	}
-	size++;
+	this->size++;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::push_front(T t) {
-	if (size == 0) {
-		init();
-		first->value = t;
+	if (this->size == 0) {
+		LinkedList<T>::init();
+		this->first->value = t;
 	} else {
 		Node<T> *node = new Node<T>;
 		node->value = t;
-		node->next = first;
-		first = node;	
+		node->next = this->first;
+		this->first = node;	
 	}
 	
-	size++;
+	this->size++;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::insertAt(int index, T t)  {
 	if (index == 0) { 
 		push_front(t); // case already implmented
-	} else if (index >= size) {
+	} else if (index >= this->size) {
 		push_back(t); // This case also
 
 	} else {
 
-		Node<T> *node = new Node<T>, *temp1 = first, *temp2 = first;
+		Node<T> *node = new Node<T>, *temp1 = this->first, *temp2 = this->first;
 		node->value = t;
 		int k = 0;
 		while (k != index) {
@@ -68,68 +62,68 @@ void SinglyLinkedList<T>::insertAt(int index, T t)  {
 		node->next = temp2;
 
 	}
-	++size;
+	++this->size;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::pop_front() {
-	if (size == 0) {
-		first = NULL;
-		tail = NULL;
+	if (this->size == 0) {
+		this->first = NULL;
+		this->tail = NULL;
 		return;
 	}
 
-	if (size == 1) {
-		first = NULL;
-		tail = NULL;
-		--size;
+	if (this->size == 1) {
+		this->first = NULL;
+		this->tail = NULL;
+		--this->size;
 		return;
 	} 
 
-	first = first->next;
-	--size;
+	this->first = this->first->next;
+	--this->size;
 }
 
 template <typename T>
 void SinglyLinkedList<T>::pop_back() {
-	if (size == 0) {
+	if (this->size == 0) {
 		return; // Trying to remove from an empty list
 	}
 
 	/* Special case when size == 1 */
-	if (size == 1) {
-		first = NULL;
-		--size;
+	if (this->size == 1) {
+		this->first = NULL;
+		--this->size;
 		return;
 	}
 
-	Node<T> *temp = first;
+	Node<T> *temp = this->first;
 	while (temp->next) {
-		tail = temp;
+		this->tail = temp;
 		temp = temp->next;
 	}
 	
-	--size;
+	--this->size;
 
-	tail->next = NULL;	
+	this->tail->next = NULL;	
 }
 
 template <typename T>
 void SinglyLinkedList<T>::removeAt(int index) {
-		if (size == 0) {
-		first = NULL;
-		tail = NULL;
+		if (this->size == 0) {
+		this->first = NULL;
+		this->tail = NULL;
 		return;
 	}
 
-	if (size == 1 && index == size-1) {
-		first = NULL;
-		tail = NULL;
-		--size;
+	if (this->size == 1 && index == this->size-1) {
+		this->first = NULL;
+		this->tail = NULL;
+		--this->size;
 		return;
 	}
 
-	if (index > size-1) {
+	if (index > this->size-1) {
 		return; // Should not remove something	
 	}
 
@@ -138,73 +132,18 @@ void SinglyLinkedList<T>::removeAt(int index) {
 		return;
 	}
 
-	if(index == size-1) {
+	if(index == this->size-1) {
 		pop_back(); //case already implemented
 		return;
 	}
 
 	int k = 0;
-	Node<T> *temp = first;
+	Node<T> *temp = this->first;
 	while (k != index-1) {
 		k++;
 		temp = temp->next;
 	}
 
 	temp->next = temp->next->next;
-	--size;
+	--this->size;
 }
-
-template <typename T>
-void SinglyLinkedList<T>::clear() {
-	Node<T> *temp = first, *old;
-	while (temp) {
-		old = temp;
-		temp = temp->next;
-		delete old;
-		old = NULL;
-	}
-
-	first = NULL;
-	size = 0;
-}
-
-template <typename T>
-T SinglyLinkedList<T>::front() {
-	return first->value;
-}
-
-template <typename T>
-T SinglyLinkedList<T>::back() {
-	return tail->value;
-}
-
-
-template <typename T>
-T SinglyLinkedList<T>::at(int index) {
-	/* Let the return value for these two cases be 0'*/
-	if ((size == 0) || (index >= size)) return 0;
-
-	int k = 0;
-	Node<T> *temp = first;
-	while (k != index) {
-		k++;
-		temp = temp->next;
-	} 
-
-	return temp->value;
-}
-
-template <typename T>
-int SinglyLinkedList<T>::length() {
-	return size;
-}
-
-template <typename T>
-void SinglyLinkedList<T>::print() {
-	Node<T> *temp = first;
-	while (temp) {
-		cout << temp->value << endl;
-		temp = temp->next;
-	}
-}
-
