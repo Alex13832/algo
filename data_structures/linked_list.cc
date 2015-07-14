@@ -6,6 +6,21 @@
 using namespace std;
 
 template <typename T>
+LinkedList<T>::~LinkedList() {
+	Node<T> *temp = this->first, *old;
+	while (temp) {
+		old = temp;
+		temp = temp->next;
+		delete old;
+		old = NULL;
+	}
+	delete this->first;
+	delete this->tail;
+	this->first = NULL;
+	this->tail = NULL;
+}
+
+template <typename T>
 void LinkedList<T>::init() {
 	tail = new Node<T>;
 	first = tail;
@@ -38,7 +53,7 @@ T LinkedList<T>::back() {
 }
 
 template <typename T>
-T LinkedList<T>::at(int index) {
+T LinkedList<T>::at(const int index) {
 	if ((size == 0) || (index >= size)) return 0;
 
 		int k = 0;

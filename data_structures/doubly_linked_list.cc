@@ -12,6 +12,21 @@ DoublyLinkedList<T>::DoublyLinkedList() {
 }
 
 template <typename T>
+DoublyLinkedList<T>::~DoublyLinkedList() {
+	Node<T> *temp = this->first, *old;
+	while (temp) {
+		old = temp;
+		temp = temp->next;
+		delete old;
+		old = NULL;
+	}
+	//delete this->first;
+	//delete this->tail;
+	this->first = NULL;
+	this->tail = NULL;
+}
+
+template <typename T>
 void DoublyLinkedList<T>::push_back(T t) {
 	if (this->size == 0){ 
 		LinkedList<T>::init();

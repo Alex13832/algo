@@ -12,12 +12,13 @@ class SinglyLinkedList : public LinkedList<T> {
 public:
 
 	SinglyLinkedList();
-	void push_back(T t);
-	void push_front(T t);
-	void insertAt(int index, T t);
+	~SinglyLinkedList();
+	void push_back(const T t);
+	void push_front(const T t);
+	void insertAt(const int index, const T t);
 	void pop_front(); 
 	void pop_back();
-	void removeAt(int index);
+	void removeAt(const int index);
 
 };
 

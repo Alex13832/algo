@@ -12,7 +12,22 @@ SinglyLinkedList<T>::SinglyLinkedList() {
 }
 
 template <typename T>
-void SinglyLinkedList<T>::push_back(T t) {
+SinglyLinkedList<T>::~SinglyLinkedList() {
+	Node<T> *temp = this->first, *old;
+	while (temp) {
+		old = temp;
+		temp = temp->next;
+		delete old;
+		old = NULL;
+	}
+	//delete this->first;
+	//delete this->tail;
+	this->first = NULL;
+	this->tail = NULL;
+}
+
+template <typename T>
+void SinglyLinkedList<T>::push_back(const T t) {
 	if(this->size == 0) {
 		LinkedList<T>::init();
 		this->first->value = t;
@@ -26,7 +41,7 @@ void SinglyLinkedList<T>::push_back(T t) {
 }
 
 template <typename T>
-void SinglyLinkedList<T>::push_front(T t) {
+void SinglyLinkedList<T>::push_front(const T t) {
 	if (this->size == 0) {
 		LinkedList<T>::init();
 		this->first->value = t;
@@ -41,7 +56,7 @@ void SinglyLinkedList<T>::push_front(T t) {
 }
 
 template <typename T>
-void SinglyLinkedList<T>::insertAt(int index, T t)  {
+void SinglyLinkedList<T>::insertAt(const int index, const T t)  {
 	if (index == 0) { 
 		push_front(t); // case already implmented
 	} else if (index >= this->size) {
@@ -109,7 +124,7 @@ void SinglyLinkedList<T>::pop_back() {
 }
 
 template <typename T>
-void SinglyLinkedList<T>::removeAt(int index) {
+void SinglyLinkedList<T>::removeAt(const int index) {
 		if (this->size == 0) {
 		this->first = NULL;
 		this->tail = NULL;

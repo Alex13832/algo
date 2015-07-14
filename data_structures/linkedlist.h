@@ -15,7 +15,8 @@ class LinkedList {
 public:
 
 	typedef T value_type;
-	/* Reuse of code in constructor here */
+	
+	virtual ~LinkedList() = 0;
 	void init();
 	/* Clears the list */
 	void clear();
@@ -24,21 +25,21 @@ public:
 	/* Returns the last element */
 	T back();
 	/* Returns the element at index */
-	T at(int index);
+	T at(const int index);
 	/* Returns the length of the list */
 	int length();
 	/* Inserts an element t at the back of the list*/
-	virtual void push_back(T t) = 0;
+	virtual void push_back(const T t) = 0;
 	/* Inserts an element t at the front of the list*/
-	virtual void push_front(T t) = 0;
+	virtual void push_front(const T t) = 0;
 	/* Inserts an element t at a given index*/
-	virtual void insertAt(int index, T t) = 0;
+	virtual void insertAt(const int index, const T t) = 0;
 	/* Removes the front element */
 	virtual void pop_front() = 0;
 	/* Removes the last element of the list*/
 	virtual void pop_back() = 0;
 	/* Removes at a given index */
-	virtual void removeAt(int index) = 0;
+	virtual void removeAt(const int index) = 0;
 
 	void print();
 	void print_rev();

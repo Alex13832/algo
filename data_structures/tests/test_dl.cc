@@ -220,6 +220,11 @@ int main() {
 
 
 
-	// TODO detele...
-
+	delete DL;
+	delete DL2;
+	delete DL3;
+	delete DL4;
+	delete DL5;
+	delete DL6;
+	delete DL7; 
 }

@@ -171,8 +171,6 @@ int main() {
 	DL7->push_back(3);
 	cout << "at(1) " << DL7->at(1) << " at(2) " << DL7->at(2) << endl;
 
-
-
-	//TODO delete...
+	
 
 }

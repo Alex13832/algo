@@ -12,6 +12,7 @@ class DoublyLinkedList : public LinkedList<T> {
 public:
 	
 	DoublyLinkedList();
+	~DoublyLinkedList();
 	void push_back(T t);
 	void push_front(T t);
 	void insertAt(int index, T t);
