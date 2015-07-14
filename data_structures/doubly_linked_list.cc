@@ -20,8 +20,7 @@ DoublyLinkedList<T>::~DoublyLinkedList() {
 		delete old;
 		old = NULL;
 	}
-	//delete this->first;
-	//delete this->tail;
+
 	this->first = NULL;
 	this->tail = NULL;
 }
