@@ -89,3 +89,14 @@ void LinkedList<T>::print_rev() {
 		temp = temp->prev;
 	}
 }
+
+/*
+iterator begin() {
+	return first->value;
+}
+
+iterator end() {
+	return tail->end;
+}
+
+*/
