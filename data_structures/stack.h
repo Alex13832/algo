@@ -12,9 +12,8 @@ template <typename T> class Stack {
 public:
 
 	typedef T value_type;
-
-	Stack() {} //{ *list = new SinglyLinkedList<T>; };
-
+	
+	Stack() {}
 	~Stack() {delete list; }
 
 	/* Add new item onto stack */
@@ -30,12 +29,11 @@ public:
 		return item;
 	}
 
-	/* Returns the number of item on the stack*/
+	/* Returns the number of items on the stack*/
 	int height() { return list->length();}
 
 	bool empty() {return list->length() == 0;}
 	
-
 private:
 	LinkedList<T> *list = new SinglyLinkedList<T>;
 };
