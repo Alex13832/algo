@@ -7,6 +7,7 @@
 
 #include "singly_linked_list.cc"
 
+
 template <typename T> class Stack {
 
 public:
