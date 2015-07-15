@@ -12,14 +12,14 @@ template <typename T> class Stack {
 public:
 
 	typedef T value_type;
-	
+
 	Stack() {}
 	~Stack() {delete list; }
 
 	/* Add new item onto stack */
 	void push(T item) { list->push_front(item); }
 
-	/* Return the top element of the stack*/
+	/* Returns the top element of the stack*/
 	T peak() { return list->front(); }
 
 	/* Return and remove the top element of the stack*/
