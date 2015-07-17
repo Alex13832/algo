@@ -172,8 +172,22 @@ int main() {
 	cout << "at(1) " << DL7->at(1) << " at(2) " << DL7->at(2) << endl;
 
 
-	
-	
-	//DL7.begin();
-	//DL7.end();
+	/* Test iterators */
+	cout << "----------------------------------------------" << endl;
+	cout << "Iterator test " << endl;
+	cout << endl;
+
+	for (auto it = DL7->begin(); it!= DL7->end(); ++it) {
+		cout << (*it) << " ";
+	}
+	cout << endl;
+
+
+	delete DL;
+	delete DL2;
+	delete DL3;
+	delete DL4;
+	delete DL5;
+	delete DL6;
+	delete DL7; 
 }

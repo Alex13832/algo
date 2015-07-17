@@ -8,6 +8,7 @@
 
 #include <iostream>
 #include "node.h"
+#include "iterators.cc"
 
 template <typename T>  
 class LinkedList {
@@ -43,6 +44,13 @@ public:
 
 	void print();
 	void print_rev();
+
+	using iterator = ListIterator<T>;
+	iterator begin() { return iterator(first); }
+	iterator end() { return iterator(nullptr); }
+	using iterator2= RListIterator<T>;
+	iterator2 rbegin() { return iterator2(tail); }
+	iterator2 rend() { return iterator2(nullptr); } 
 
 protected:
 	Node<T> *first = new Node<T>, *tail = new Node<T>;

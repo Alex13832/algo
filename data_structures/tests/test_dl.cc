@@ -218,6 +218,23 @@ int main() {
 	DL7->push_back(3);
 	cout << "at(1) " << DL7->at(1) << " at(2) " << DL7->at(2) << endl;
 
+	/* Test iterators */
+	cout << "----------------------------------------------" << endl;
+	cout << "Iterator test (forward) " << endl;
+	cout << endl;
+
+	for (auto it = DL7->begin(); it!= DL7->end(); ++it) {
+		cout << (*it) << " ";
+	}
+	cout << endl;
+
+	cout << "Iterator test (forward) " << endl;
+	cout << endl;
+
+	for (auto it = DL7->rbegin(); it!= DL7->rend(); ++it) {
+		cout << (*it) << " ";
+	}
+	cout << endl;
 
 
 	delete DL;
