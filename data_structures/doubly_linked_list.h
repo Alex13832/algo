@@ -19,6 +19,7 @@ public:
 	void pop_front(); 
 	void pop_back();
 	void removeAt(int index);
+	void swap(int index);
 
 
 };

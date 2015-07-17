@@ -237,6 +237,29 @@ int main() {
 	cout << endl;
 
 
+	/* Test swap */
+	DoublyLinkedList<int> *DL8 = new DoublyLinkedList<int>;
+	cout << "----------------------------------------------" << endl;
+	cout << "Test swap " << endl;
+	cout << endl;
+
+	DL8->push_back(0);
+	DL8->push_back(1);
+	DL8->push_back(2);
+	DL8->push_back(3);
+	DL8->swap(2);
+
+	DL8->print();
+	cout << "reverse ------" << endl;
+	DL8->print_rev();
+ 	DL8->swap(3);
+
+ 	cout << endl;
+ 	DL8->print();
+	cout << "reverse ------" << endl;
+	DL8->print_rev();
+
+
 	delete DL;
 	delete DL2;
 	delete DL3;

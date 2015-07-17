@@ -42,12 +42,14 @@ public:
 	/* Removes at a given index */
 	virtual void removeAt(const int index) = 0;
 
+	//void swap(int index);
+
 	void print();
 	void print_rev();
 
-	using iterator = ListIterator<T>;
-	iterator begin() { return iterator(first); }
-	iterator end() { return iterator(nullptr); }
+	using iterator1 = ListIterator<T>;
+	iterator1 begin() { return iterator1(first); }
+	iterator1 end() { return iterator1(nullptr); }
 	using iterator2= RListIterator<T>;
 	iterator2 rbegin() { return iterator2(tail); }
 	iterator2 rend() { return iterator2(nullptr); } 

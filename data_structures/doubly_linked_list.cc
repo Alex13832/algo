@@ -1,7 +1,7 @@
 /** ------------------------------------------------------------
 * Doubly Linked List implementation
 * Alexander Karlsson, 2015-07-12
-* *------------------------------------------------------------- */
+* -------------------------------------------------------------- */
 #include "doubly_linked_list.h"
 #include "linked_list.cc"
 using namespace std;
@@ -166,4 +166,45 @@ void DoublyLinkedList<T>::removeAt(int index) {
 	temp->next->prev = temp;
 	--this->size;
 
+}
+
+template <typename T>
+void DoublyLinkedList<T>::swap(int index) {
+	if (index == 0) return;
+
+	if (index == 1) {
+		T item = this->at(1);
+		this->removeAt(1);
+		this->push_front(item);
+		return;
+	}
+
+	Node<T> *post = this->first, *pre;
+	if (index < (this->size)-1) {
+
+		int k = 0;
+
+		while (k != index) {
+			pre = post;
+			post = post->next;
+			k++;
+		}
+		
+		Node<T> *temp;
+
+		temp = post->next;
+		pre->prev->next = post;
+		post->prev = pre->prev;
+
+		post->next = pre;
+		pre->prev = post;
+	
+		pre->next = temp;
+		temp->prev = pre;
+	
+	} else {
+		T item = this->back();
+		this->pop_back();
+		this->insertAt(this->size-1,  item);
+	}
 }
