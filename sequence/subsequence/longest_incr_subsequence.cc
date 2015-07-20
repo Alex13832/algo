@@ -1,6 +1,6 @@
 /** ------------------------------------------------------------
 * This code will find the longest increasing subsequence
-* Alexander Karlsson 2015-07-20
+* Alexander Karlsson, 2015-07-20
 * -------------------------------------------------------------- */
 #include <vector>
 #include <iostream>
