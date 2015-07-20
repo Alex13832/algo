@@ -1,6 +1,6 @@
 /** ------------------------------------------------------------
 * This code will find the longest increasing subsequence
-* Alexander Karlsson, 2015-07-20
+* Alexander Karlsson 2015-07-20
 * -------------------------------------------------------------- */
 #include <vector>
 #include <iostream>
@@ -8,7 +8,7 @@
 using namespace std;
 
 /** Returns the longest increasing subsequenc of the input 
-input sequence seq */
+sequence seq */
 vector<int> longest_incr_subseq(const vector<int> seq) {
 
 	size_t N = seq.size(); 
