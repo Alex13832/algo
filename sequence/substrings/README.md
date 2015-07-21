@@ -1,6 +1,9 @@
 Substring Algorithms
 ===============================
 
+#### Boyer-Moore Algorithm
+An efficient string searchin algorithm. This implementation is slightly modified, it finds all occurrences of a substring.
+
 #### Longest Common Substring
 This algorithm finds the longest common substring between two strings using dynamic programming.
 
