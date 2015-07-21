@@ -1,9 +1,9 @@
-/** ------------------------------------------------------
-* Boyer-Moore algorithm for finding the location
-* of a substring. This implementation is modified, in
-* a way such that all locations of a substring are found.
+/** ------------------------------------------------------------------
+* Boyer-Moore algorithm for finding the location of a substring. 
+* This implementation is modified, in a way such that all locations 
+* of a substring are found.
 * Alexander Karlson, 2015-07-21 
-* -------------------------------------------------------- */
+* -------------------------------------------------------------------- */
 #include <iostream>
 #include <vector>
 #include <cmath>
