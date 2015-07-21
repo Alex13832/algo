@@ -23,9 +23,8 @@ int last_occurence(string str, char c) {
 /* Modified Boyer-Moore, finds all occurrences */
 vector<int> boyer_moore(string text, string pattern) {
 	int m = pattern.length(), n = text.length(), i = m-1, j = i;
+	int chunk = 0, w_length = m;
 	vector<int> matches;
-	int chunk = 0, w_length = pattern.length();
-
 
 	do {
 		if (pattern[j] == text[i]) {
@@ -33,7 +32,7 @@ vector<int> boyer_moore(string text, string pattern) {
 				matches.push_back(i+chunk);
 				text = text.substr(i+w_length);
 				chunk = chunk + i + w_length;
-				m = w_length, n = text.length(), i = m-1, j = i;
+				n = text.length(), i = m-1, j = i;
 			} else {
 				i--;
 				j--;
