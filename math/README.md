@@ -15,3 +15,6 @@ Is used for finding the greatest common divisor (gcd) of two integers a and b.
 A slightly faster multiplication algorithm than old-school O(n²)
 
 [Karatsuba Algorithm, Wikipedia](https://en.wikipedia.org/wiki/Karatsuba_algorithm)
+
+### Matrix Multiplication 
+The ordinary O(n^3) matrix multiplication algorithms. If the dimensions aren't humongous, this implementation should suffice.
