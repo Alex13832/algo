@@ -11,4 +11,4 @@ Data structures
  * Forward Method
  * Count Method
  * Transpose Method
- * Dynamic Array (DynArray). Called vector (c++), ArrayList (Java).
+* Dynamic Array (DynArray)
