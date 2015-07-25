@@ -9,7 +9,6 @@ using namespace std;
 
 template <typename T>
 DynArray<T>::DynArray(initializer_list<T> lst) {
-
 	for (auto item: lst) {
 		if (index >= limit) resize(limit*2);
 

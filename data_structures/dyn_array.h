@@ -52,7 +52,7 @@ private:
 	size_t index = 0;
 	
 	/** Private method that makes the local array bigger when 
-	there more space is needed */
+	more space is needed */
 	void resize(size_t s);
 
 };
