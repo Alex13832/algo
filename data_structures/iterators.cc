@@ -1,7 +1,7 @@
 /** ------------------------------------------------------------
 * Implementation of iterator operations.
 * Can be used for begin(), end(), rbegin() and rend()
-* Alexander Karlsson, 2015-07-17
+* Alexander Karlsson, begun 2015-07-17
 * -------------------------------------------------------------- */
 using namespace std;
 
@@ -48,3 +48,5 @@ template <typename T> struct RListIterator {
 	}
 
 };
+
+

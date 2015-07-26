@@ -64,6 +64,30 @@ int main() {
 	darr5.removeAt(5);
 	darr5.printAll();
 	
+	cout << "Test iterators " << endl;
+	darr5.push_back(12345);
+	for (auto it = darr5.begin(); it!=darr5.end(); ++it) {
+		cout << *it << " ";
+	}	
+	cout << endl;
+	
+	cout << "Test r-iterators" << endl;
+	for (auto it = darr5.rbegin(); it!=darr5.rend(); ++it) {
+		cout << *it << " ";
+	}
+	cout << endl;
+	
+	/* Test for-each, also with reference */
+	for (auto& it: darr5) {
+		it *= 2;
+		cout << it << " ";
+	}
+	cout << endl;
+	
+	for (auto it: darr5) {
+		cout << it << " ";
+	}
+	cout << endl;
 	
 
 }

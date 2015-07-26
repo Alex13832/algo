@@ -2,11 +2,13 @@
 * Declaration of a dynamic array implementation DynArray.
 * Alexander Karlsson, 2015-07-25
 * -------------------------------------------------------------- */
+
 #ifndef DYNARRAY_H
 #define DYNARRAY_H
 
 #include <memory>
 #include <iostream>
+#include "dynarray_iterators.cc"
 	
 template <typename T> class DynArray {
 public:
@@ -45,10 +47,22 @@ public:
 	
 	/* Prints all :) */
 	void printAll();
+	
+	/* Forward iterator */ 
+	using iterator1 = DynArrayIterator<T>;
+	iterator1 begin() { return iterator1(0, &items); }
+	iterator1 end() { return iterator1(index, &items); }
+	
+	/* Reverse iterator */
+	using iterator2 = RDynArrayIterator<T>;
+	iterator2 rbegin() { return iterator2(index-1, &items); }
+	iterator2 rend() {return iterator2(-1, &items); }
 
+protected:
+	T* items = new T[8];
 private:
 	size_t limit = 8;
-	T* items = new T[8];
+
 	size_t index = 0;
 	
 	/** Private method that makes the local array bigger when 
