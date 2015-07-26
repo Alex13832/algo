@@ -14,7 +14,7 @@ template <typename T> class DynArray {
 public:
 
 	typedef T value_type;
-
+	DynArray();
 	/* Constructor with initializer list */
 	DynArray(std::initializer_list<T> lst);
 	/* Constructor with different size */

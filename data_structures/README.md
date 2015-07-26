@@ -3,6 +3,9 @@ Data structures
 
 #### Implemented data structures
 
+* Binary Heap
+* Dynamic Array (DynArray)
+* Graph
 * Singly Linked List
 * Doubly Linked List
 * Stack
@@ -11,5 +14,5 @@ Data structures
  * Forward Method
  * Count Method
  * Transpose Method
-* Dynamic Array (DynArray)
-* Graph
+
+

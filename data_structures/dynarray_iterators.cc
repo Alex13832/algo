@@ -1,3 +1,8 @@
+/** ------------------------------------------------------------
+* Iterators for DynArray. Supports begin(), end(),
+* rbegin(), rend().
+* Alexander Karlsson, 2015-07-26
+* -------------------------------------------------------------- */
 #include <iostream>
 using namespace std;
 
