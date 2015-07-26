@@ -12,3 +12,4 @@ Data structures
  * Count Method
  * Transpose Method
 * Dynamic Array (DynArray)
+* Graph
