@@ -65,7 +65,7 @@ private:
 
 	size_t index = 0;
 	
-	/** Private method that makes the local array bigger when 
+	/** Private function that makes the local array bigger when 
 	more space is needed */
 	void resize(size_t s);
 
