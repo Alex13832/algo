@@ -2,7 +2,8 @@
 //The output is a minimum spanning tree (MST)
 #include <climits>
 #include <queue>
-#include "graph.h"
+#include <numeric>
+#include "../data_structures/graph.h"
 using namespace std;
 
 struct comp {

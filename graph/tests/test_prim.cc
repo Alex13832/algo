@@ -1,4 +1,4 @@
-#include "../graph.cc"
+#include "../../data_structures/graph.cc"
 #include "../prim.cc"
 #include <fstream>
 #include <vector>

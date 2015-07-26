@@ -1,5 +1,5 @@
 //BFS implemented using a queue
-#include "graph.h"
+#include "../data_structures/graph.h"
 #include <list>
 using namespace std;
 

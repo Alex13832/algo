@@ -1,5 +1,5 @@
 //DFS implementation using a stack
-#include "graph.h"
+#include "../data_structures/graph.h"
 using namespace std;
 
 std::vector<int> DFS(Graph G, int s) {

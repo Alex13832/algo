@@ -1,4 +1,4 @@
-#include "../graph.cc"
+#include "../../data_structures/graph.cc"
 #include "../bellman_ford.cc"
 #include <vector>
 using namespace std;

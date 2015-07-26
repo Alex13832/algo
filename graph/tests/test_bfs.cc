@@ -3,7 +3,7 @@
 * Alexander Karlsson 2015-07-26
 * ----------------------------------------------*/
 
-#include "../graph.cc"
+#include "../../data_structures/graph.cc"
 #include "../bfs.cc"
 
 int main() {

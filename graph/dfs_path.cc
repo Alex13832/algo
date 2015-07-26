@@ -1,4 +1,4 @@
-#include "graph.h"
+#include "../data_structures/graph.h"
 #include <algorithm>
 #include <climits>
 using namespace std;

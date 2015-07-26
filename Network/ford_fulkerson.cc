@@ -1,4 +1,8 @@
-#include "../graph/graph.h"
+/** ---------------------------------------------------------------
+* Ford-Fulkerson algorithm implementation
+* 2015-07-06
+* ----------------------------------------------------------------- */
+#include "../data_structures/graph.h"
 #include "../graph/dfs_path.cc"
 #include <algorithm>
 #include <climits>

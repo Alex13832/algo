@@ -1,6 +1,6 @@
 #include "../dijkstra.cc"
 #include "../dijkstra_pq.cc"
-#include "../graph.cc"
+#include "../../data_structures/graph.cc"
 #include <vector>
 
 /* Test for dijkstra and dijkstra_pq*/

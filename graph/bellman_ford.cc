@@ -1,8 +1,9 @@
 //An implementation of the Bellman-Ford algorithm.
 //Computes shortest paths from a single source vertex 
 //to all of the other vertices in a weighted digraph
-#include "graph.h"
+#include "../data_structures/graph.h"
 #include <climits>
+#include <numeric>
 using namespace std;
 
 vector<int> bellman_ford(Graph G, int s) {
