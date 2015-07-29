@@ -1,4 +1,4 @@
-#include "../../data_structures/graph.h"
+#include "../../data_structures/graph.cc"
 #include "../ford_fulkerson.cc"
 #include <iostream>
 #include <vector>
