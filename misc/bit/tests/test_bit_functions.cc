@@ -7,7 +7,8 @@
 #include <iostream>
 using namespace std;
 
-int main() {
+/* Tests for overlow */
+void test_overflow() { 
 	cout << "Testing overflow " << endl;
 	
 	int a = INT_MAX-2;
@@ -31,6 +32,37 @@ int main() {
 		cout << "Not overflow, a + b = " << (a + b) << endl;
 	}
 	cout << endl;
-	
+}
 
+
+/* Tests for opposite signs */ 
+void test_opposite() {
+	cout << "Testing opposite signs" << endl;
+
+	int a = -5;
+	int b = 5;
+	
+	if (opposite(a,b)) cout << "opposite signs" << endl;
+	else cout << "Equal signs" << endl;
+
+	a = -5;
+	b = -5;
+
+	if (opposite(a,b)) cout << "opposite signs" << endl;
+	else cout << "Equal signs" << endl;
+	
+	a = 5;
+	b = 5;
+
+	if (opposite(a,b)) cout << "opposite signs" << endl;
+	else cout << "Equal signs" << endl;
+	
+}
+
+
+
+
+int main() {
+	test_overflow();
+	test_opposite();
 }
