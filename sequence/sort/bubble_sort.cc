@@ -1,7 +1,7 @@
 /** ------------------------------------------------------------
 * Implementation of the BubbleSort. Should be good for a 
 * small amount of items to be sorted.
-* Alexander Karlsson, begun 2015-07-30
+* Alexander Karlsson, 2015-07-30
 * -------------------------------------------------------------- */
 #include <iostream>
 #include <vector>

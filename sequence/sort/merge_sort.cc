@@ -1,6 +1,6 @@
 /** ------------------------------------------------------------
 * Implementation of the Merge Sort Algorithm
-* Alexander Karlsson, begun 2015-07-30
+* Alexander Karlsson, 2015-07-30
 * -------------------------------------------------------------- */
 #include <vector>
 #include <list>
