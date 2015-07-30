@@ -1,3 +1,7 @@
+/** ------------------------------------------------------------
+* Sorting tests 
+* Alexander Karlsson, begun 2015-06-21
+* -------------------------------------------------------------- */
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -7,6 +11,7 @@
 #include "../heapsort.cc"
 #include "../quicksort.cc"
 #include "../insertion_sort.cc"
+#include "../merge_sort.cc"
 using namespace std;
 
 int main() {
@@ -66,7 +71,7 @@ int main() {
 
 
 	/* INSERTION SORT */
-
+	
 	cout << "-------------------------------------------------------" << endl;
 	cout << "Insertion sort test  " << endl; 
 	cout << "-------------------------------------------------------" << endl;
@@ -88,6 +93,34 @@ int main() {
 	}
 
 	cout << endl;
+	cout << "-------------------------------------------------------" << endl; 
+
+
+	/* MERGE SORT */
+
 	cout << "-------------------------------------------------------" << endl;
+	cout << "Merge sort test  " << endl; 
+	cout << "-------------------------------------------------------" << endl;
+
+	random_shuffle(vec.begin(),vec.end());
+	t0 = clock();
+	vector<int> res = merge_sort(vec);
+	t1 = clock();
+	printf ("Used %g CPU seconds\n",
+	(t1 - t0) / (double)CLOCKS_PER_SEC);
+
+	cout << endl;
+	for (size_t i = 0; i < 4; i++) {
+		cout << res[i] << " ";
+	}
+	cout << endl;
+
+	for (size_t i = res.size()-4; i < res.size(); i++) {
+		cout << res[i] << " ";
+	}
+
+	cout << endl;
+	cout << "-------------------------------------------------------" << endl;
+
 
 }
