@@ -12,6 +12,7 @@
 #include "../quicksort.cc"
 #include "../insertion_sort.cc"
 #include "../merge_sort.cc"
+#include "../bubble_sort.cc"
 using namespace std;
 
 int main() {
@@ -73,7 +74,7 @@ int main() {
 	/* INSERTION SORT */
 	
 	cout << "-------------------------------------------------------" << endl;
-	cout << "Insertion sort test  " << endl; 
+	cout << "Insertion sort test * warning, slow! * " << endl; 
 	cout << "-------------------------------------------------------" << endl;
 	random_shuffle(vec.begin(),vec.end());
 	t0 = clock(); 
@@ -117,6 +118,33 @@ int main() {
 
 	for (size_t i = res.size()-4; i < res.size(); i++) {
 		cout << res[i] << " ";
+	}
+
+	cout << endl;
+	cout << "-------------------------------------------------------" << endl;
+
+
+	/* BUBBLE SORT */
+
+	cout << "-------------------------------------------------------" << endl;
+	cout << "Bubble sort test * warning, slow! * " << endl; 
+	cout << "-------------------------------------------------------" << endl;
+
+	random_shuffle(vec.begin(),vec.end());
+	t0 = clock();
+	vector<int> res2 = bubble_sort(vec);
+	t1 = clock();
+	printf ("Used %g CPU seconds\n",
+	(t1 - t0) / (double)CLOCKS_PER_SEC);
+
+	cout << endl;
+	for (size_t i = 0; i < 4; i++) {
+		cout << res2[i] << " ";
+	}
+	cout << endl;
+
+	for (size_t i = res2.size()-4; i < res2.size(); i++) {
+		cout << res2[i] << " ";
 	}
 
 	cout << endl;
