@@ -1,7 +1,7 @@
 Sorting Algorithms
 ================================
 
-### Bubble Sort 
+### Bubble Sort * Slow *
 Good for a small amount of items. Very slow for large input size.
 
 ### Heapsort
