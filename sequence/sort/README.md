@@ -1,10 +1,13 @@
 Sorting Algorithms
 ================================
 
+### Bubble Sort 
+Good for a small amount of items. Very slow for large input size.
+
 ### Heapsort
 Divides its input into a sorted and an unsorted region, and iteratively shrinks the unsorted region by extracting the largest element and moving tha to the sorted region.
 
-### Insertion sort
+### Insertion sort * Slow *
 Builds the final sorted array one item at a time. Each iteration, insertion sort removes one element from the unsorted list, finds the location where it should be inserted and inserts it.
 
 ### Merge Sort
