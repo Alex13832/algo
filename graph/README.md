@@ -49,6 +49,10 @@ A variant of the ordinary DFS algorithm. This version finds a path from the sour
 #### Kosaraju's Algorithm
 Generates the strongly connected components of a directed graph.
 
+<p align="center">
+<img src="images/kosaraju.png" height="250" alt="Screenshot"/>
+</p>
+
 #### Prim's Algorithm
 Finds a minimum spanning tree (MST) for a weighted undirected graph.
 
