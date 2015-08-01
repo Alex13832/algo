@@ -47,7 +47,8 @@ A variant of the ordinary DFS algorithm. This version finds a path from the sour
 </p>
 
 #### Kosaraju's Algorithm
-Generates the strongly connected components of a directed graph.
+Generates the strongly connected components (SCC) of a directed graph.
+The SCC parts are marked blue in the example below.
 
 <p align="center">
 <img src="images/kosaraju.png" height="250" alt="Screenshot"/>
