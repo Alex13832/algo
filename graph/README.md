@@ -51,7 +51,7 @@ An algorithm for finding shortest paths in a weighted graph with positive or neg
 This implementation supports path reconstruction.
 
 <p align="center">
-<img src="images/floydwarshall.png" height="250" alt="Screenshot"/>
+<img src="images/floydwarshall.png" height="320" alt="Screenshot"/>
 </p>
 
 #### Kosaraju's Algorithm
