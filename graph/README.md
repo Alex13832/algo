@@ -46,6 +46,14 @@ A variant of the ordinary DFS algorithm. This version finds a path from the sour
 <img src="images/dijkstra.png" height="250" alt="Screenshot"/>
 </p>
 
+#### Floyd-Warshall's Algorithm
+An algorithm for finding shortest paths in a weighted graph with positive or negative edge  weights. A single execution of the algorithm will find the lengths of the shortest paths between all pairs of vertices.
+This implementation supports path reconstruction.
+
+<p align="center">
+<img src="images/floydwarshall.png" height="250" alt="Screenshot"/>
+</p>
+
 #### Kosaraju's Algorithm
 Generates the strongly connected components (SCC) of a directed graph.
 The SCC parts are marked blue in the example below.
