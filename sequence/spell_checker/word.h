@@ -19,8 +19,6 @@ private:
     std::string word;
     std::vector<std::string> trigrams;
 
-
-
 };
 
 #endif // WORD_H

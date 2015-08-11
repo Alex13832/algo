@@ -19,7 +19,6 @@ public:
 	SpellChecker(std::string ifile, std::string ofile, std::string lang);
 	void spellCheck();
 
-
 private:
 	void standard_print(std::vector<char> spec_front, std::list<char> spec_back, 
         std::string word, ofstream& file, bool linebreak);
@@ -27,8 +26,6 @@ private:
 	std::string infile, outfile, language;
 	Dictionary dict;
 
-
 };
-
 
 #endif
