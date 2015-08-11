@@ -16,7 +16,7 @@
 class SpellChecker {
 
 public:
-	SpellChecker(std::string file, std::string lang);
+	SpellChecker(std::string ifile, std::string ofile, std::string lang);
 	void spellCheck();
 
 
@@ -24,7 +24,7 @@ private:
 	void standard_print(std::vector<char> spec_front, std::list<char> spec_back, 
         std::string word, ofstream& file, bool linebreak);
 	
-	std::string filename, language;
+	std::string infile, outfile, language;
 	Dictionary dict;
 
 

@@ -21,62 +21,23 @@ Dictionary::Dictionary() { }
 void Dictionary::init(string lang) {
     dict_file = lang;
     file = "lang_files/" + dict_file;
-    file_out = "lang_files/" + dict_file + "_out.txt";
     
-    if (!file_exists(file_out)) preProcess();
-    
-    readWordFile();
+    preProcess();
 }
 
 
 /* Routine for reading dictionary, storing tri-grams etc. */
 void Dictionary::preProcess() {
-    vector<string> wrds;
-
-    readLinesInFile(file, wrds);
-
     vector<string> trigs;
-    ofstream file(file_out);
+    ifstream infile(file);
+    string w;
 
-    for (auto w: wrds) {
+    while (getline(infile, w)) {
         trigs = getTrigrams(w);
-        int trigs_count = trigs.size();
-
-        file << w << " " << trigs_count << " ";
-        for (auto tr: trigs) file << tr << " ";
-        file << '\n';
-    }
-    file.close();
-}
-
-
-/* Reads the file with word and trigrams */
-void Dictionary::readWordFile() {
-    ifstream infile(file_out);
-    string line;
-
-    while (getline(infile, line)){
-        string str(line);
-        string buf; // buffer string
-        stringstream ss(str); // stream
-        vector<string> splitted;
-
-        while (ss >> buf) splitted.push_back(buf);
-        vector<string> trigs;
-     
-        string wrd = splitted[0];
-
-        words_content[wrd] = true;
-
-        for (auto it = splitted.begin()+2; it!=splitted.end(); ++it) {
-            trigs.push_back(*it);
-        }
-
-        Word W(wrd, trigs);
-        words[wrd.size()].push_back(W);
-
-        
-    }
+        Word W(w, trigs);
+        words[w.size()].push_back(W);
+        words_content[w] = true;
+    }     
 }
 
 
@@ -100,21 +61,6 @@ bool Dictionary::contains(string word) {
 bool Dictionary::file_exists(string filename) {
     ifstream infile(filename);
     return infile.good();
-}
-
-
-/* Read all the lines in the disk-dictionary,
- store them in words as lower case words */
-void Dictionary::readLinesInFile(string filename, vector<string>& wrds) {
-    ifstream infile(filename);
-    string line;
-
-    while (getline(infile, line)) {
-        string temp;
-        //for (size_t i = 0; i < line.length(); ++i) temp+=tolower(line[i]);
-        for (size_t i = 0; i < line.length(); ++i) temp+=(line[i]);
-        wrds.push_back(temp);
-    }
 }
 
 
@@ -167,8 +113,8 @@ struct Candidate {
 /* To be used when sorting the candidates according to their
  edit distances */
 struct candidate_comp {
-  bool operator() (const Candidate c1, const Candidate c2) const
-  {return c1.cost < c2.cost;}
+    bool operator() (const Candidate c1, const Candidate c2) const
+    {return c1.cost < c2.cost;}
 };
 
 
@@ -237,15 +183,11 @@ void Dictionary::addWord(string newWord) {
     //All words must be sorted.
     if (!words_content[newWord]) {
         words_content[newWord] = true;
-        
         vector<string> trigs = getTrigrams(newWord);
-        size_t amnt = trigs.size();
+
         Word W(newWord, trigs);
-
         words[newWord.length()].push_back(W);
-
         sort(words[newWord.length()].begin(), words[newWord.length()].end(), word_comp());
-
     }
 }
 
@@ -253,32 +195,21 @@ void Dictionary::addWord(string newWord) {
 /* Updates the dictionary, adds new words to the files stored on disk.
  Is only to be run at program termination. */
 void Dictionary::updateDictionary() {
-    ofstream file1(file_out), file2(file);
+    ofstream file1(file);
     vector<string> all_words;
 
     for (auto word_sub: words) {
         for (auto word: word_sub) {
-            vector<string> trigs = word.get_trigrams();
-            int s = trigs.size();
             string w = word.get_word();
-
             all_words.push_back(w);
-
-            file1 << w << " " << s << " ";
-            for (auto tr: trigs) file1 << tr << " ";
-            file1 << '\n';
-
         }
-
     }
-
-    file1.close();
 
     sort(all_words.begin(), all_words.end());
 
     for (auto w: all_words) {
-        file2 << w << "\n";
+        file1 << w << "\n";
     }
 
-    file2.close();
+    file1.close();
 }

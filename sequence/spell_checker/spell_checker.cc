@@ -10,21 +10,28 @@
 #include <sstream>
 #include <stdlib.h>
 #include <stdio.h> 
+#include <cstdio>
+#include <clocale>
 using namespace std;
 
-SpellChecker::SpellChecker(string file, string lang) {
-        filename = file;
+SpellChecker::SpellChecker(string ifile, string ofile, string lang) {
+        setlocale(LC_ALL, "en_US.UTF-8");
+
+        infile = ifile;
+        outfile = ofile;
+
         string dict_file;
 
         if (lang == "eng") { 
                 dict_file = "words_eng";
-        }
-
-        else if (lang == "swe") {
+        
+        } else if (lang == "swe") {
                 dict_file = "words_swe";      
-        } 
+        
+        } else if (lang == "esp") {
+                dict_file = "words_esp";
 
-        else {
+        } else {
                 cout << "Language not supported" << endl;
                 exit(EXIT_FAILURE);
         }
@@ -34,18 +41,16 @@ SpellChecker::SpellChecker(string file, string lang) {
 }
 
 
-
-
 /* Spell check-interface. Reads words from a file and checks if they
  are misspelled (not in the dictionary) and gives some suggestions. */
 void SpellChecker::spellCheck() {
         list<string> words; 
-        ifstream infile(filename);
-        string line;
+        ifstream infil(infile);
+        string line, temp;
         bool word_added = false;
 
         /* Get all text and split by whitespace */
-        while (getline(infile, line)){
+        while (getline(infil, line)){
                 string str(line);
                 string buf; 		// buffer string
                 stringstream ss(str);   // stream
@@ -57,7 +62,7 @@ void SpellChecker::spellCheck() {
         }
 
         /* Out-file, TODO use args */
-        ofstream file("result.txt");
+        ofstream file(outfile);
 
         /* Test all words */
         while (!words.empty()) {
@@ -68,75 +73,91 @@ void SpellChecker::spellCheck() {
 
                 if (word.length() > 2) {
 
-                        while (!isalpha(word[0])) {
+
+                        while (!isalpha(word[0]) && (int)word[0] != -61) {
                                 spec_front.push_back(word[0]);
                                 word = word.substr(1,word.length());
                         }
 
-                        while (!isalpha(word[word.length()-1])) {
+
+                        while (!isalpha(word[word.length()-1]) && (int)word[word.length()-2] != -61) {
                                 spec_back.push_front(word[word.length()-1]);
                                 word = word.substr(0,word.length()-1);
                         } 
+
                 }
 
-    	/* Don't care about them */
-        if (word.size() < 3) {
-                bool linebreak = false;
-                if (word == "\n") linebreak = true;
+                temp = word;
+                temp[0] = tolower(temp[0]);
 
-                standard_print(spec_front, spec_back, word, file, linebreak);
+            	/* Don't care about them */
+                if (word.size() < 3) {
+                        bool linebreak = false;
+                        if (word == "\n") linebreak = true;
 
-        }    	
+                        standard_print(spec_front, spec_back, word, file, linebreak);
 
-        /* Check if the word exists in the dictionary */
-        else if (dict.contains(word)) {
-                    
-                standard_print(spec_front, spec_back, word, file, false);
-    	
-        } else {   
-    		/* Get suggestions from dictionary */
-                vector<string> suggs = dict.get_suggestions(word);
-                
-                cout << endl;
-                cout << "Found misspelled word, " << "[";
-                cout << "\033[1;31m" << word << "\033[0;39m";
-                cout<< "]" << " suggestions:" << endl;
-    		
-                /* Print the suggestions with a number */
-                size_t k = 1;
-    		for (auto sugg: suggs) {
-    			cout << "(" << k << ") " << sugg << " ";
-                k++; 
-    		}
-    		cout << "(" << k++ << ")" << " None " << "(" << k++ << ")" 
-                << " Other " << "(" << k++ << ")" << " Add the word" << endl;
-    		
-                cout << "Enter your choice: ";
-    		
-                size_t ki = 0;
-    		while (ki <= 0 || ki > suggs.size()+3) cin >> ki;
+                }    	
 
-    		if (ki <= suggs.size()) {
-                        word = suggs[ki-1];
+                /* Check if the word exists in the dictionary */
+                else if (dict.contains(word) || dict.contains(temp)) {
+                            
+                        standard_print(spec_front, spec_back, word, file, false);
+            	
+                } else {   
+            		/* Get suggestions from dictionary */
+                        vector<string> suggs = dict.get_suggestions(word);
+                        
+                        cout << endl;
+                        cout << "Found misspelled word, " << "[";
+                        cout << "\033[1;31m" << word << "\033[0;39m";
+                        cout<< "]" << " suggestions:" << endl;
+            		
+                        /* Print the suggestions with a number */
+                        size_t k = 1;
+            		for (auto sugg: suggs) {
+            			cout << "(" << k << ") " << sugg << " ";
+                        k++; 
+            		}
 
-    		} else if (ki == suggs.size()+1) {
-    			// Do nothing
-    		
-                } else if (ki == suggs.size()+2) {
-    			string own;
-                        cout << "Enter your own: ";
-    			cin >> own;
-    			word = own;	
-    		
-                } else if (ki == suggs.size()+3) {
-                        dict.addWord(word);
-                        word_added = true;
-                }
+            		cout << "(" << k++ << ")" << " None " << "(" << k++ << ")" 
+                        << " Other " << "(" << k++ << ")" << " Add the word"
+                        << " (" << k++ << ") " << "Own and add" << endl;
+            		
+                        cout << "Enter your choice: ";
+            		
+                        size_t ki = 0;
+            		while (ki <= 0 || ki > suggs.size()+4) cin >> ki;
+
+            		if (ki <= suggs.size()) {
+                                word = suggs[ki-1];
+
+            		} else if (ki == suggs.size()+1) {
+            			// Do nothing
+            		
+                        } else if (ki == suggs.size()+2) {
+            			string own;
+                                cout << "Enter your own: ";
+            			cin >> own;
+            			word = own;	
+            		
+                        } else if (ki == suggs.size()+3) {
+                                dict.addWord(word);
+                                word_added = true;
+                        
+                        } else if (ki == suggs.size()+4) {
+                                string own; 
+                                cout << "Enter word to add: ";
+                                cin >> own;
+                                word = own;
+                                dict.addWord(word);
+                                word_added = true;
+                        }
 
 
-                standard_print(spec_front, spec_back, word, file, false);
-    	
-    	}
+                        standard_print(spec_front, spec_back, word, file, false);
+            	
+            	}
     		
     }
 
