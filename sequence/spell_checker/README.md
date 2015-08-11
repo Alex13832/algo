@@ -12,5 +12,5 @@ This program does NOT check grammar.
 If one is interested in the algorithms, the program use something called edit distance or the Levenshtein distance that computes a cost for changing a word A to a word B. The cost is based on inert, delete and substitution of a character. A list is maintained with some words of interest and sorted with respect to shortest edit distance. 
 
 <p align="center"> 
-<img src="images/use.png" height="350" alt="Screenshot"/> 
+<img src="images/use.png" height="600" alt="Screenshot"/> 
 </p> 
