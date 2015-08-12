@@ -6,7 +6,6 @@
 #include "word.cc"
 #include <fstream>
 #include <iostream>
-#include <string>
 #include <locale>
 #include <algorithm>
 #include <sstream>
