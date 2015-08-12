@@ -13,11 +13,9 @@
 #include <cmath>
 using namespace std;
 
-/* Constructor. The dictionary file must be processed if the 
- file with trigrams does not exist. */
 Dictionary::Dictionary() { }
 
-
+/* Must be run, reads the chosen dictionary */
 void Dictionary::init(string lang) {
     file = lang; // Dictionary file
     vector<string> trigs;
@@ -75,7 +73,6 @@ vector<string> Dictionary::getTrigrams(string word) {
     }
 
     sort(trigrams.begin(),trigrams.end());
-
     return trigrams;
 }
 
@@ -116,8 +113,7 @@ struct candidate_comp {
 /* Returns the cost of changing word_a to word_b according 
  to the Levenshtein distance, the smaller the better. */
 int distance(string word_a, string word_b) {
-    size_t a_size = word_a.length();
-    size_t b_size = word_b.length();
+    size_t a_size = word_a.length(), b_size = word_b.length();
     int d[d_size][d_size];
 
     for (size_t i = 1; i <= a_size; i++) d[i][0] = 1;
@@ -144,21 +140,15 @@ void Dictionary::rank_suggestions(vector<string> &suggestions, string word) {
     for (auto sugg: suggestions) {
         Candidate c;
         c.cand = sugg;
+        c.cost = distance(word,c.cand); // Edit distance (Levenshtein)
         candidates.push_back(c);
-    }
-
-    for (auto& candi: candidates) {
-
-        /* The actual edit distance here */
-        candi.cost = distance(word,candi.cand);
     }
 
     sort(candidates.begin(),candidates.end(),candidate_comp());
     suggestions.clear();
 
-    for (auto candidate: candidates) {
-        suggestions.push_back(candidate.cand);
-    }
+    for (auto candidate: candidates) suggestions.push_back(candidate.cand);
+ 
 }
 
 
@@ -171,11 +161,8 @@ void Dictionary::trim_suggestions(vector<string> &suggestions) {
 }
 
 
-/* Adds a new word to the dictionary, both in the ordinary 
- dictionary file and in the "trigrams-dictionary" file. */
+/* Adds a new word to the dictionary */
 void Dictionary::addWord(string newWord) {
-    //TODO: implement
-    //All words must be sorted.
     if (!words_content[newWord]) {
         words_content[newWord] = true;
         vector<string> trigs = getTrigrams(newWord);
@@ -201,10 +188,6 @@ void Dictionary::updateDictionary() {
     }
 
     sort(all_words.begin(), all_words.end());
-
-    for (auto w: all_words) {
-        file1 << w << "\n";
-    }
-
+    for (auto w: all_words) file1 << w << "\n";
     file1.close();
 }
