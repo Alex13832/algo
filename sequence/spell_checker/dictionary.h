@@ -32,7 +32,7 @@ private:
     void trim_suggestions(std::vector<std::string>& suggestions);
     std::vector<Word> words[max_word_size];
     std::map<std::string,bool> words_content;
-    std::string dict_file, file, file_out;
+    std::string file, file_out;
 };
 
 #endif // DICTIONARY_H

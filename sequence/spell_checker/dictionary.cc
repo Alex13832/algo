@@ -19,8 +19,7 @@ Dictionary::Dictionary() { }
 
 
 void Dictionary::init(string lang) {
-    dict_file = lang;
-    file = "lang_files/" + dict_file;
+    file = lang;
     
     preProcess();
 }

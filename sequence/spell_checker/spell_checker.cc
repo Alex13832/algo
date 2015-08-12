@@ -20,16 +20,16 @@ SpellChecker::SpellChecker(string ifile, string ofile, string lang) {
         infile = ifile;
         outfile = ofile;
 
-        string dict_file;
+        string dict_file = "lang_files/";
 
         if (lang == "eng") { 
-                dict_file = "words_eng";
+                dict_file += "words_eng";
         
         } else if (lang == "swe") {
-                dict_file = "words_swe";      
+                dict_file += "words_swe";      
         
         } else if (lang == "esp") {
-                dict_file = "words_esp";
+                dict_file += "words_esp";
 
         } else {
                 cout << "Language not supported" << endl;
