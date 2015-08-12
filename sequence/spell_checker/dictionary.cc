@@ -19,24 +19,20 @@ Dictionary::Dictionary() { }
 
 
 void Dictionary::init(string lang) {
-    file = lang;
-    
-    preProcess();
-}
-
-
-/* Routine for reading dictionary, storing tri-grams etc. */
-void Dictionary::preProcess() {
+    file = lang; // Dictionary file
     vector<string> trigs;
     ifstream infile(file);
     string w;
 
+    /* Store all words, but not those longer than max-length*/
     while (getline(infile, w)) {
-        trigs = getTrigrams(w);
-        Word W(w, trigs);
-        words[w.size()].push_back(W);
-        words_content[w] = true;
-    }     
+        if (w.length() <= max_word_size) {
+        	trigs = getTrigrams(w);
+        	Word W(w, trigs);
+        	words[w.size()].push_back(W);
+        	words_content[w] = true;
+        }
+    } 
 }
 
 

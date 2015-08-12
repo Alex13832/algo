@@ -11,8 +11,8 @@
 #include <map>
 #include "word.h"
 
-#define max_word_size 35 //25
-#define d_size 26
+#define max_word_size 30 //25
+#define d_size 31
 
 class Dictionary {
 public:
@@ -24,7 +24,6 @@ public:
     void updateDictionary();
 
 private:
-    void preProcess();
     bool file_exists(std::string filename);
     std::vector<std::string> getTrigrams(std::string word);
     void add_trigram_suggestions(std::vector<std::string>& suggestions, const std::string& word);
