@@ -16,12 +16,12 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_mat_mult
+PROGS = test_fft
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-test_mat_mult: test_mat_mult.o
+test_fft: test_fft.o
 
 # Phony targets
 .PHONY: all clean
