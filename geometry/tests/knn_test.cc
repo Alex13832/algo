@@ -54,7 +54,7 @@ int main() {
   	}
 
 
-	knn(items,train_data,10);
+	knn(items,train_data,3);
 
 
 

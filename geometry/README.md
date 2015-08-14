@@ -12,8 +12,8 @@ Finds the closest pair of points of some input set of points.
 
 ### K-Nearest Neighbors, knn or KNN
 This implementation is a knn classification algorithm (i hope), the output is a class membership. (Wikipedia) An object is classified by a majority vote of its neighbors.
-A classic example is a set of people who have told us on what political part they voted on, and where they live. Then a new person shows up, we know where this guy lives and wants to know on what party he or she likely would vote on. 
-My test is based on a toy-example of this example. I have four regions, where the majority of the neighbors give their votes on either the blue, red or green party. For 5000 new people the example output looks like the image below, based on the training set in the first image.
+A classic example is a set of people who have told us on what political party they voted on, and where they live. Then a new person shows up, we know where this guy lives and wants to know on what party he or she likely would vote on. 
+My test is based on a toy-example of this example. I have four regions, where the majority of the neighbors give their votes on either the blue, red or green party. For 5000 new people the example output looks like the image below, based on the training set in the first image. I asked three neighbors (3-NN).
 
 <p align="center">
 <img src="images/knn_training.png" height="350" alt="Screenshot"/>
