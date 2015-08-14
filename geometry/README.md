@@ -20,7 +20,7 @@ My test is based on a toy-example of this example. I have four regions, where th
 </p>
 
 <p align="center">
-<img src="images/knn_3.png" height="350" alt="Screenshot"/>
+<img src="images/knn3.png" height="350" alt="Screenshot"/>
 </p>
 
 
