@@ -16,7 +16,7 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = quickhull_test closest_pair_test intersection_test triangulation_test
+PROGS = quickhull_test closest_pair_test intersection_test triangulation_test knn_test
 
 all: $(PROGS)
 
@@ -25,6 +25,7 @@ quickhull_test: quickhull_test.o
 closest_pair_test: closest_pair_test.o
 intersection_test: intersection_test.o
 triangulation_test: triangulation_test.o
+knn_test: knn_test.o
 
 # Phony targets
 .PHONY: all clean
@@ -32,6 +33,11 @@ triangulation_test: triangulation_test.o
 # Standard clean
 clean:
 	rm -f *.o $(PROGS)
+
+# Custom clean
+custom_clean:
+	rm -f *.d
+	rm -f *.d.*
 
 # Generate dependencies in *.d files
 %.d: %.cc
