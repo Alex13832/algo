@@ -22,11 +22,13 @@ struct Item {
 	double dist;	//Distance to temporary Item
 };
 
-struct Item_comp {
+/* For comparing labels */
+struct Item_string_comp {
   bool operator() (const  Item p1, const Item p2) const
-  {return (p1.x + p1.y) < (p2.x + p2.y);}
+  {return p1.label < p2.label;}
 };
 
+/* For comparing distances */
 struct Item_dist_comp {
   bool operator() (const  Item p1, const Item p2) const
   {return p1.dist < p2.dist;}
@@ -55,12 +57,7 @@ void train(vector<Item>& train_data, string filename) {
                 item.label = line_content[2];
 
                 train_data.push_back(item);
-
-                //cout << item.x << " " << item.y << " " << item.label << endl;
-
         }
-
-        sort(train_data.begin(), train_data.end(), Item_comp());
 }
 
 
@@ -68,9 +65,11 @@ void train(vector<Item>& train_data, string filename) {
  Input: data-vector with no labels. 
  Returns: data-vector with labels set. */
 void knn(vector<Item>& data, vector<Item> train_data, int k) {
-	set<string> labels;
 
-	if (k > data.size()) {
+	set<string> labels; 	/* Collect the labels in this vector*/
+	size_t add_item = 0;
+
+	if ((size_t) k > data.size()) {
 		cout << "Too few data elements" << endl;
 		return;
 	} 
@@ -81,33 +80,40 @@ void knn(vector<Item>& data, vector<Item> train_data, int k) {
 
 		for (auto& train_item: train_data) {
 			int x2 = train_item.x, y2 = train_item.y;
-			train_item.dist = (pow(x2-x1,2) + pow(y2-y1,2)); 
+			train_item.dist = (x2-x1)*(x2-x1) + (y2-y1)*(y2-y1); 
 			labels.insert(train_item.label);
 		}
 
-		/* The following parts might need a better 
-		implemenatation if speed is super important, this is ok for
-		about 5 or 10 k data elements. */
+		/* If the data-vector is very large, and speed is super important,
+		try something else... */
 		sort(train_data.begin(), train_data.end(), Item_dist_comp());
 		vector<Item> cp_dat(k);
 		copy(train_data.begin(), train_data.begin()+k, cp_dat.begin());
+		sort(cp_dat.begin(),cp_dat.end(),Item_string_comp());
 
+		vector<string> lbs;
+		for (auto lb: cp_dat) lbs.push_back(lb.label);
 
+		/* Find the label that is the most popular */
 		int max = 0;
 		string lbl;
 		for (auto label: labels) {
-			int count = 0;			
-			for (size_t i = 0; i < cp_dat.size(); ++i) {
-				if (cp_dat[i].label == label) count++;
-			}
+			int ct = count(lbs.begin(),lbs.end(),label);
 
-			if (count > max) {
-				max = count;
+			if (ct > max) {
+				max = ct;
 				lbl = label;
 			}
-		}		
+
+		}
 
 		item.label = lbl;
-		train_data.push_back(item);
+		
+		/* Add some new elements to the training set */
+		if (++add_item == 7) {
+			train_data.push_back(item);
+			add_item = 0;	
+		}
+	
 	}
 }

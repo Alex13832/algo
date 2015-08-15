@@ -36,13 +36,13 @@ int main() {
 	plt::plot(sx,sy,"ro");
 	plt::plot(mx,my,"bo");
 	plt::plot(mpx,mpy,"go");
-	plt::show();
+	//plt::show();
 
 
   	/* initialize random seed: */
  	srand (time(NULL));
   	int x, y;
-  	for (int i = 0; i < 5000; ++i) {
+  	for (int i = 0; i < 15000; ++i) {
   		x = rand() % 200 + 1;
   		y = rand() % 200 + 1;
 
