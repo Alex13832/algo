@@ -65,7 +65,6 @@ void train(vector<Item>& train_data, string filename) {
  Input: data-vector with no labels. 
  Returns: data-vector with labels set. */
 void knn(vector<Item>& data, vector<Item> train_data, int k) {
-
 	set<string> labels; 	/* Collect the labels in this vector*/
 	size_t add_item = 0;
 

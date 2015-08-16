@@ -16,15 +16,13 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = quickhull_test closest_pair_test intersection_test triangulation_test
+PROGS = k_means_test knn_test
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-quickhull_test: quickhull_test.o
-closest_pair_test: closest_pair_test.o
-intersection_test: intersection_test.o
-triangulation_test: triangulation_test.o
+k_means_test: k_means_test.o
+knn_test: knn_test.o
 
 # Phony targets
 .PHONY: all clean

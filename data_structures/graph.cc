@@ -56,3 +56,16 @@ void Graph::removeEdge(int u, int v) {
 	ews.erase(pair<int,int>(v,u));
 
 }
+
+/* Flips all edges in G, returns that graph */
+Graph transpose(Graph G) {
+	Graph G2(G.size());
+	size_t N = G.size();
+
+	for (size_t i = 0; i < N; i++) {
+		for (auto u: G.adj[i]) {
+			G2.addDirEdge(u,i);
+		}
+	}
+	return G2;
+}

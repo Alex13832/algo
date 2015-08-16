@@ -10,7 +10,8 @@ namespace plt = matplotlibcpp;
 
 
 int main() {
-	string file = "testfiles/knn/test_c.txt";
+
+	string file = "knn/test_c.txt";
 	vector<Item> train_data, items;
 	
 	train(train_data, file);
@@ -42,7 +43,7 @@ int main() {
   	/* initialize random seed: */
  	srand (time(NULL));
   	int x, y;
-  	for (int i = 0; i < 15000; ++i) {
+  	for (int i = 0; i < 1000; ++i) {
   		x = rand() % 200 + 1;
   		y = rand() % 200 + 1;
 
@@ -53,12 +54,8 @@ int main() {
   		items.push_back(it);
   	}
 
+	knn(items,train_data,8);
 
-	knn(items,train_data,3);
-
-
-
- 
 	vector<int> sxi, syi, mxi, myi, mpxi, mpyi;
 
 	for (auto t: items) {
@@ -76,9 +73,9 @@ int main() {
 		}
 	}
 
-	plt::plot(mxi, myi, "bo");
-	plt::plot(sxi, syi,"ro");
-	plt::plot(mpxi,mpyi,"go");
+	plt::plot(mxi, myi, "bD");
+	plt::plot(sxi, syi,"rD");
+	plt::plot(mpxi,mpyi,"gD");
 	plt::xlim(0, 200);
 	plt::ylim(0, 200);
 	plt::show();
