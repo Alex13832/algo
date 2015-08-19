@@ -2,8 +2,8 @@ Machine Learning Algorithms
 ===================================
 
 ### Bootstrap Aggregating, Bagging
-Designed to improve the stability and accuracy. Simple as; sample from a training set k times, this sample may or may not have happend but we use it as anyway. If one sample many times one get very nice data, the mean of the samples is almost unbiased.
-In the example below, the green curve is the "real data", which is barely visible behind the bootstrapped data. The bagging data was sampled 1000 times.
+Designed to improve the stability and accuracy. Simple as; sample from a training set k times, this sample may or may not have happend but we use it anyway. If one sample many times one get very nice data, the mean of the samples is almost unbiased.
+In the example below, the green curve is the "real data", which is barely visible behind the bootstrapped data. The bagging data was sampled 1000 times, the blue data is one set of the training data, wich consisted of several sets.
 
 <p align="center">
 <img src="images/bagging1.png" height="500" alt="Screenshot"/>
