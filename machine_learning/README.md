@@ -6,7 +6,7 @@ Designed to improve the stability and accuracy. Simple as; sample from a trainin
 In the example below, the green curve is the "real data", which is barely visible behind the bootstrapped data. The bagging data was sampled 1000 times.
 
 <p align="center">
-<img src="images/bagging1.png" height="350" alt="Screenshot"/>
+<img src="images/bagging1.png" height="500" alt="Screenshot"/>
 </p>
 
 
