@@ -54,7 +54,7 @@ int main() {
   		items.push_back(it);
   	}
 
-	knn(items,train_data,8);
+	knn(items,train_data,3);
 
 	vector<int> sxi, syi, mxi, myi, mpxi, mpyi;
 

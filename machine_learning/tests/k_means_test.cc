@@ -8,7 +8,7 @@
 #include <stdlib.h>
 namespace plt = matplotlibcpp;
 
-int main() {
+int main(int argc, char *argv[]) {
 	vector<Item> items;
 
   	/* initialize random seed: */
@@ -20,9 +20,9 @@ int main() {
   		items.push_back(it);
   	}
 
-  	int k = 8;
+  	int k = stoi(argv[1]);
 	vector<vector<Item>> klusters = k_means(items,k);
-	vector<int> x[15], y[15];
+	vector<int> x[40], y[40];
 
 	for (int i = 0; i < k; ++i) {
 		for (auto it: klusters[i]) {

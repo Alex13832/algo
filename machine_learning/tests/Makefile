@@ -16,13 +16,14 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = k_means_test knn_test
+PROGS = k_means_test knn_test bagging_test
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 k_means_test: k_means_test.o
 knn_test: knn_test.o
+bagging_test: bagging_test.o
 
 # Phony targets
 .PHONY: all clean

@@ -84,7 +84,7 @@ vector<vector<Item>> k_means(vector<Item> data, const int k) {
 	  		}
 	  	}
 	  	cout << conv << endl;
-	  	/* Decide if the clusters converge */
+	  	/* Decide if the cluster converges */
 	  	if (centroids[0].x == old) conv++;
 	  	else conv = 0;
 

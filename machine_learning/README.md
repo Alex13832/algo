@@ -1,6 +1,16 @@
 Machine Learning Algorithms
 ===================================
 
+### Bootstrap Aggregating, Bagging
+Designed to improve the stability and accuracy. Simple as; sample from a training set k times, this sample may or may not have happend but we use it as anyway. If one sample many times one get very nice data, the mean of the samples is almost unbiased.
+In the example below, the green curve is the "real data", which is barely visible behind the bootstrapped data. The bagging data was sampled 1000 times.
+
+<p align="center">
+<img src="images/bagging1.png" height="350" alt="Screenshot"/>
+</p>
+
+
+
 ### K-Nearest Neighbors, knn or KNN
 This implementation is a knn classification algorithm (i hope), the output is a class membership. (Wikipedia) An object is classified by a majority vote of its neighbors.
 A classic example is a set of people who have told us on what political party they voted on, and where they live. Then a new person shows up, we know where this guy lives and wants to know on what party he or she likely would vote on. 
