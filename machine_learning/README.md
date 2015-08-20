@@ -14,6 +14,8 @@ Maps observations about an item to conclusions abot the item's target value. Whe
 
 It was hard to find data to use, or too complicated to use. So I invented my own tree structure which uses hashmaps with strings as keys.
 
+The example below got squares, circles, stars and triangles as labels.
+
 <p align="center">
 <img src="images/decision.png" height="500" alt="Screenshot"/>
 </p>
