@@ -9,6 +9,14 @@ In the example below, the green curve is the "real data", which is barely visibl
 <img src="images/bagging1.png" height="500" alt="Screenshot"/>
 </p>
 
+### Decision Tree Learning
+Maps observations about an item to conclusions abot the item's target value. When a new item is added a majority vote is done to give the new item a label.
+
+It was hard to find data to use, or too complicated to use. So I invented my own tree structure which uses hashmaps with strings as keys.
+
+<p align="center">
+<img src="images/decision.png" height="350" alt="Screenshot"/>
+</p>
 
 
 ### K-Nearest Neighbors, knn or KNN

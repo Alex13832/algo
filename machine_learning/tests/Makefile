@@ -16,7 +16,7 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = k_means_test knn_test bagging_test
+PROGS = k_means_test knn_test bagging_test decision_test
 
 all: $(PROGS)
 
@@ -24,6 +24,7 @@ all: $(PROGS)
 k_means_test: k_means_test.o
 knn_test: knn_test.o
 bagging_test: bagging_test.o
+decision_test: decision_test.o
 
 # Phony targets
 .PHONY: all clean
