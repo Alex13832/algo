@@ -23,3 +23,27 @@ A slightly faster multiplication algorithm than old-school O(n²)
 ### Matrix Multiplication 
 The ordinary O(n^3) matrix multiplication algorithm. If the dimensions aren't humongous, this implementation should suffice.
 
+### Random Numbers
+The code generates (pseudo) random numbers according to some distribution.
+So far, the distributions supported are the following:
+* Uniform (c)
+* Exponential (c) 
+* Normal (c) (1st test below)
+* Weibull (c) (2nd test below)
+* Binomial (d) (3rd test below)
+* Gamma (c)
+* Poisson (d)
+* Erlang  (c)
+* Geometric (d)
+
+<p align="center">
+<img src="images/norm.png" height="350" alt="Screenshot"/>
+</p>
+
+<p align="center">
+<img src="images/weibull.png" height="350" alt="Screenshot"/>
+</p>
+
+<p align="center">
+<img src="images/bin.png" height="350" alt="Screenshot"/>
+</p>
