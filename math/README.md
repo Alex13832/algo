@@ -37,13 +37,13 @@ So far, the distributions supported are the following:
 * Geometric (d)
 
 <p align="center">
-<img src="images/norm.png" height="350" alt="Screenshot"/>
+<img src="images/norm.png" height="400" alt="Screenshot"/>
 </p>
 
 <p align="center">
-<img src="images/weibull.png" height="350" alt="Screenshot"/>
+<img src="images/weibull.png" height="400" alt="Screenshot"/>
 </p>
 
 <p align="center">
-<img src="images/bin.png" height="350" alt="Screenshot"/>
+<img src="images/bin.png" height="400" alt="Screenshot"/>
 </p>
