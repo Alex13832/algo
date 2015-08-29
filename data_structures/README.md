@@ -14,5 +14,4 @@ Data structures
  * Forward Method
  * Count Method
  * Transpose Method
-
-
+* HashTable

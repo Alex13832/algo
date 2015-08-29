@@ -16,7 +16,7 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_ll test_dl test_stack test_queue test_sol test_dyn_array test_bin_heap
+PROGS = test_ll test_dl test_stack test_queue test_sol test_dyn_array test_bin_heap hashtable_test
 
 all: $(PROGS)
 
@@ -28,6 +28,7 @@ test_queue: test_queue.o
 test_sol: test_sol.o
 test_dyn_array: test_dyn_array.o
 test_bin_heap: test_bin_heap.o
+hashtable_test: hashtable_test.o
 
 # Phony targets
 .PHONY: all clean
