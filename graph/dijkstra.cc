@@ -1,6 +1,7 @@
 //Dijkstra's algorithm for finding the shortest path. 
 //Alexander Karlsson, 2015
 #include "../data_structures/graph.h"
+#include <vector>
 #include <climits>
 using namespace std;
 

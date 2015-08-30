@@ -1,6 +1,7 @@
 #include "../data_structures/graph.h"
 #include <algorithm>
 #include <climits>
+#include <vector>
 using namespace std;
 
 pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {

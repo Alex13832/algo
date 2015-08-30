@@ -1,6 +1,7 @@
 //An implementation of Dijktra's shortest path algorithm 
 //using a priority queue.
 #include "../data_structures/graph.h"
+#include <vector>
 #include <queue>
 using namespace std;
 

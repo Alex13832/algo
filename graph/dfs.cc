@@ -1,5 +1,6 @@
 //DFS implementation using a stack
 #include "../data_structures/graph.h"
+#include <vector>
 #include <stack>
 using namespace std;
 
@@ -48,24 +49,11 @@ vector<int> DFS(Graph G, int n, vector<bool>& explored) {
 		if (!explored[v]) {
 			explored[v] = true;
 			for (auto w: G.adj[v]) S.push(w);
-		} 
-
-		/*
-		explored[v] = true;
-
-		
-		for (auto w: G.adj[v]) {
-			if(!explored[w]) S.push(w);
-		}
-		*/
-			
+		} 		
 	}	
 
 	return res;
 }
-
-
-
 
 void DFS(Graph G, int n, vector<bool>& explored, vector<int>& res) {
 

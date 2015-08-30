@@ -3,10 +3,9 @@
 * strongly connected components (SCC) of a digraph.
 * Alexander Karlsson, 2015-08-01
 * -------------------------------------------------------------- */
-#include <vector>
 #include <iostream>
+#include <vector>
 #include <algorithm>
-#include <list>
 #include "../data_structures/graph.cc"
 using namespace std;
 

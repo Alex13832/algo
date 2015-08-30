@@ -1,6 +1,6 @@
 //BFS implemented using a queue
 #include "../data_structures/graph.h"
-#include <list>
+#include <vector>
 using namespace std;
 
 vector<int> BFS(Graph G, int s){

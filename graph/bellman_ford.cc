@@ -3,6 +3,7 @@
 //to all of the other vertices in a weighted digraph
 #include "../data_structures/graph.h"
 #include <climits>
+#include <vector>
 #include <numeric>
 using namespace std;
 
