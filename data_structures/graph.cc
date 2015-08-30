@@ -4,7 +4,7 @@ using namespace std;
 
 Graph::Graph(int V){ 
 	this->V = V;
-	adj = new vector<int>[V];
+	adj = new list<int>[V];
 }
 
 void Graph::addEdge(int u, int v){

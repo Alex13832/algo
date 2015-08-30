@@ -22,17 +22,15 @@ void MyTree::addItem(Item item, bool train) {
 		vector<string> vec = tree[var];
 		
 		int cond = stoi(vec[1]);
-		bool left = true;
+		bool left = false;
 
 		if (var[0] == 'X') {
 			
 			if (item.x > cond) left = true;
-			else left = false;
 
 		} else if (var[0] == 'Y') {
 
 			if (item.y > cond) left = true;
-			else left = false;
 		}
 		
 		left == true ? var = vec[2] : var = vec[3];

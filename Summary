@@ -1,0 +1,78 @@
+Backtracking
+----------------------------
+Heaps
+Sudoku
+
+Data structures
+----------------------------
+Binary heap
+Doubly linked list
+Dynamic array
+Graph
+Hash table
+Linked list
+Queue
+Self organizing list
+Singly linked list
+Stack
+
+Geometry
+----------------------------
+Closest pair
+Quickhull
+Triangulation
+
+Graph
+----------------------------
+Bellman-Ford
+BFS
+DFS
+DFS-path
+Dijkstra
+Dijkstra, prio-Q
+Floyd-Warshall
+Kosaraju
+Prims
+
+Greedy
+----------------------------
+Load balancing problem
+Stable marriage
+
+Machine Learning
+----------------------------
+Bagging
+Decision tree
+K-means clustering
+KNN
+
+Math/Numeric
+----------------------------
+Euclidean (gcd)
+FFT
+Karatsuba
+Matrix multiplication
+Eratosthenes prime numbers
+Random numbers
+
+Network
+----------------------------
+Ford-Fulkerson
+PageRank
+
+Sequence
+----------------------------
+Binary-search
+k-max-min-search
+Linear-search
+Bubble-sort
+Heapsort
+Insertion-sort
+Mergesort
+Quicksort
+Spellchecker
+Longes increasing subsequence
+Boyer-Moore
+Crossword-dictionary
+Longest common substring
+Rabin-Karp

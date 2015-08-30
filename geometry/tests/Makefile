@@ -16,7 +16,7 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = quickhull_test closest_pair_test intersection_test triangulation_test
+PROGS = quickhull_test closest_pair_test intersection_test triangulation_test test_random
 
 all: $(PROGS)
 
@@ -25,6 +25,7 @@ quickhull_test: quickhull_test.o
 closest_pair_test: closest_pair_test.o
 intersection_test: intersection_test.o
 triangulation_test: triangulation_test.o
+test_random: test_random.o
 
 # Phony targets
 .PHONY: all clean

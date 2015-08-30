@@ -13,7 +13,7 @@ int main() {
 
 	string tree_file = "decision/tree1";
 	string train_data = "decision/train_data";
-	MyTree tree = train(tree_file,train_data);
+	MyTree mytree = train(tree_file,train_data);
 	vector<int> x[4],y[4];
 	
 
@@ -21,37 +21,37 @@ int main() {
 
 	/* initialize random seed: */
  	srand (time(NULL));
-  	for (int i = 0; i < 10000; ++i) {
+  	for (int i = 0; i < 100; ++i) {
   		Item it;
   		it.x = rand() % 400;
   		it.y = rand() % 400;
-  		tree.addItem(it,false);
+  		cout <<"x " << it.x << " y " << it.y << endl;
+  		mytree.addItem(it,false);
   	}
 
 
-	map<string,vector<Item>> items = tree.getItems();
+	map<string,vector<Item>> items = mytree.getItems();
 
 	for (auto it = items.begin(); it != items.end(); ++it) {
-
 		for (auto itm: it->second) {
 
-			if (itm.label == "T") {
+			if (itm.label == "Tr") {
 				x[0].push_back(itm.x);
 				y[0].push_back(itm.y);
 			}
 
-			if (itm.label == "C") {
+			else if (itm.label == "Ci") {
 				x[1].push_back(itm.x);
 				y[1].push_back(itm.y);
 			}
 
 
-			if (itm.label == "St") {
+			else if (itm.label == "St") {
 				x[2].push_back(itm.x);
 				y[2].push_back(itm.y);
 			}
 
-			if (itm.label == "Sq") {
+			else if (itm.label == "Sq") {
 				x[3].push_back(itm.x);
 				y[3].push_back(itm.y);
 			}
