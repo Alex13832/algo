@@ -3,7 +3,7 @@
 * Alexander Karlsson, begun 2016-01-29
 *
 * TODO print index
-* Add custom dictionary 
+* Add custom dictionary
 * ------------------------------------------------------------- */
 #include <iostream>
 #include <vector>
@@ -145,6 +145,4 @@ int main()
       find_words(dict,cols);
       find_words(dict,diag);
       find_words(dict,diagR);
-
-
 }
