@@ -18,8 +18,8 @@ using namespace std;
 struct Word {
 	string str;
 	int row, col; // x is column y is row
-	int tag; // 0 row 1 col 2 diag 3 diagR
-
+	int tag; // row = 0, rowR = 1, col = 2, colR = 3, diag = 4, diagR = 5, diagT = 6, diagTR = 7
+	int found_tag;
 	void print() {
 		cout << row << " " << col << " " << str << " TAG: " << tag <<endl;
 	}
@@ -58,7 +58,6 @@ vector<Word> diagonals(vector<vector<char>> mat)
 	vector<Word> words;
 
 	while (col_count != w) {
-
 		Word wrd; wrd.col= col_count; wrd.row = row_count; wrd.tag = 2;
 
 		for (size_t j = 0; j < sz+1; j++)
@@ -71,9 +70,7 @@ vector<Word> diagonals(vector<vector<char>> mat)
 			row_count++, sz++;
 		else
 			col_count++;
-
 	}
-
 	return words;
 }
 
@@ -95,39 +92,111 @@ vector<string> read_dictionary(string file)
 }
 
 // Compares with dictionary
-void find_words(vector<Word> diag, vector<Word> diagR)
+vector<Word> find_words(vector<string> dict, vector<Word> candidates)
 {
+	vector<Word> wordsFound;
 
-	for (auto w: diag)
-		cout << w.row << " " << w.col << " " << w.str << endl;
+	// finds the substring (the words in dictionary) in candidates
+	for (auto word: candidates) {
+		for (auto dictWord: dict) {
+			size_t pos = word.str.find(dictWord, 0);
+			while (pos != string::npos)  {	// Found!
+				if (dictWord.length() > 2) {
+					Word tempW; // Save word
+					cout << dictWord << endl;
+					tempW.str = dictWord; tempW.row = word.row;
+					tempW.col = word.col; tempW.tag = word.tag;
+					tempW.found_tag = pos;
+					wordsFound.push_back(tempW);
+				}
+				pos = word.str.find(dictWord,pos+1);
+			}
+		}
+	}
 
-	cout << endl;
-
-	for (auto w: diagR)
-		cout << w.row << " " << w.col << " " << w.str << endl;
-
+	return wordsFound;
 }
 
-int main()
+void process_game(string gameFile, string dictFile)
 {
-      string file = "testfile.txt";
       vector<vector<char>> mat, matT;
-      read_file(file,mat);
+      read_file(gameFile,mat);
 
+	// Rows
+	int count = 0;
+	vector<Word> rows, rowsR;
+	for (auto vec: mat) {
+		string str(vec.begin(),vec.end());
+		Word word; word.str = str; word.row = count; word.col = 0; word.tag = 0;
+		rows.push_back(word);
+
+		string strR(vec.rbegin(),vec.rend());
+		Word wordR; wordR.str = strR; wordR.row = count++; wordR.col = 0; wordR.tag = 1;
+		rowsR.push_back(wordR);
+	}
+
+	// Columns
+	vector<Word> columns, columnsR;
+	for (size_t i = 0; i < mat[0].size(); i++) {
+		string str;
+		for (size_t j = 0; j < mat.size(); j++) str += mat[j][i];
+
+		Word word; word.str = str; word.row = 0; word.col = i; word.tag = 2;
+		columns.push_back(word);
+
+		string strR = str;
+		reverse(strR.begin(), str.end());
+		Word wordR; wordR.str = strR; wordR.row = 0; wordR.col = i; wordR.tag = 3;
+		columnsR.push_back(wordR);
+	}
+
+	// Diagonals
 	matT = mat;
 	reverse(matT.begin(),matT.end());
-
 	vector<Word> diag = diagonals(mat);
-	vector<Word> diagR = diagonals(matT);
+	vector<Word> diagT = diagonals(matT);
+	vector<Word> diagR, diagTR;
 
 	size_t height = mat.size() - 1;
-	for (auto& w: diagR)
+	for (auto& w: diagT)
 		w.row = height - w.row;
 
 
+	// Reverse Diagonals
+	for (auto& wrd: diag) {
+		wrd.tag = 4;
+		Word w = wrd;
+		w.tag = 5;
+		reverse(w.str.begin(),w.str.end());
+		diagR.push_back(w);
+	}
+	for (auto& wrd: diagT) {
+		wrd.tag = 6;
+		Word w = wrd;
+		w.tag = 7;
+		reverse(w.str.begin(),w.str.end());
+		diagTR.push_back(w);
+	}
 
 
-	vector<string> dict = read_dictionary("words_eng");
 
-      find_words(diag, diagR);
+	vector<string> dict = read_dictionary(dictFile);
+
+      //vector<Word> wordsFoundRows = find_words(dict, rows);
+	vector<Word> wordsFoundRows = find_words(dict, rows);
+	vector<Word> wordsFoundRowsR = find_words(dict, rowsR);
+	vector<Word> wordsFoundCols = find_words(dict, columns);
+	vector<Word> wordsFoundColsR = find_words(dict, columnsR);
+	vector<Word> wordsFoundDiag = find_words(dict, diag);
+	vector<Word> wordsFoundDiagR = find_words(dict, diagR);
+	vector<Word> wordsFoundDiagT = find_words(dict, diagT);
+	vector<Word> wordsFoundDiagTR = find_words(dict, diagTR);
+}
+
+int main() {
+	// Will be modified with args, so custom list can be used
+	string gameFile = "testfile.txt";
+	string dictFile = "words_eng";
+
+	process_game(gameFile, dictFile);
 }
