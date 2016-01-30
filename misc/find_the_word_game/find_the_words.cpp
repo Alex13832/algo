@@ -1,10 +1,10 @@
-/** -----------------------------------------------------------
+/** ---------------------------------------------------------------------------
 * Finds the words in a "find the words" game
 * Alexander Karlsson, begun 2016-01-29
 *
 * TODO print index
 * Add custom dictionary
-* ------------------------------------------------------------- */
+* --------------------------------------------------------------------------- */
 #include <iostream>
 #include <vector>
 #include <algorithm>
@@ -15,83 +15,68 @@
 
 using namespace std;
 
+struct Word {
+	string str;
+	int row, col; // x is column y is row
+	int tag; // 0 row 1 col 2 diag 3 diagR
+
+	void print() {
+		cout << row << " " << col << " " << str << " TAG: " << tag <<endl;
+	}
+};
+
 // Reads a txt file, puts the rows and cols in vectors
-void read_file(string file, vector<string>& rows, vector<string>& cols)
+void read_file(string file, vector<vector<char>>& mat)
 {
 	ifstream infile(file);
 	string line;
+	vector<string> rows;
 
       // Read lines, remove white spaces
-	while (getline(infile, line)){
+	while (getline(infile, line)) {
 		string str = line;
-            str.erase( remove_if( str.begin(), str.end(), ::isspace ), str.end() );
-            rows.push_back(str);
+    		str.erase( remove_if( str.begin(), str.end(), ::isspace ), str.end() );
+		rows.push_back(str);
 	}
 
-      size_t lineLength = rows[0].length(), lines = rows.size();
+	// Create matrix
+	vector<vector<char>> matrix(rows.size(),vector<char>(rows[0].length()));
 
-      // Read columns
-      for (size_t i = 0; i < lineLength; i++) {
-            string colStr;
-            for (size_t j = 0; j < rows.size(); j++)
-                  colStr += rows[j][i];
+	for (size_t i = 0; i < rows.size(); i++) {
+		for (size_t j = 0; j < rows[0].length(); j++)
+			matrix[i][j] = rows[i][j];
+	}
 
-            cols.push_back(colStr);
-      }
+	mat = matrix;
 }
 
-// Generates all diagonal strings
-vector<string> diagonals(vector<string> rows)
+// Finds the diagonals of mat
+vector<Word> diagonals(vector<vector<char>> mat)
 {
-      size_t lineLength = rows[0].length(), lines = rows.size();
-      string matrix;
+	size_t h = mat.size(), w = mat[0].size();
+	size_t col_count = 0, row_count = 0, sz = 0;
+	vector<Word> words;
 
-      // Add all rows as a string "matrix"
-      for (auto str: rows) matrix += str;
+	while (col_count != w) {
 
-      size_t max_diag_length = min(lineLength,lines), current_length = 1;
-      int jump_length = lineLength - 2;
+		Word wrd; wrd.col= col_count; wrd.row = row_count; wrd.tag = 2;
 
-      vector<string> diag;
-      vector<int> pivots;
-      vector<bool> visited(100,false);
+		for (size_t j = 0; j < sz+1; j++)
+			if (j + col_count < w)
+				wrd.str += mat[row_count-j][j+col_count];
 
-      stringstream ss;
-      string s;
-      ss << matrix[0];
-      ss >> s;
-      diag.push_back(s);
+		words.push_back(wrd);
 
-      // Calculate where every new diag-string starts
-      for (size_t i = 0; i < matrix.length(); i += lineLength)
-            pivots.push_back(i);
+		if (row_count < h-1)
+			row_count++, sz++;
+		else
+			col_count++;
 
-      // Add the final diag-strings located at the back
-      if (pivots.back()+1 < matrix.length()) {
-            for (size_t j = pivots.back()+1; j < matrix.length(); j++)
-                  pivots.push_back(j);
-      }
+	}
 
-      // generate the diagonals usging the pivots
-      for (auto pivot: pivots) {
-            int jumps = 0;
-            string str;
-            stringstream ss2;
-
-            for (int k = pivot; k > 0; k-=jump_length+1) {
-                  if (visited[k] == false) ss2 << matrix[k];
-
-                  visited[k] = true;
-            }
-
-            ss2 >> str;
-            diag.push_back(str);
-      }
-
-      diag.erase(diag.begin()+1,diag.begin()+2);
-
-      return diag;
+	return words;
 }
+
 
 // Reads a dictionary
 vector<string> read_dictionary(string file)
@@ -110,39 +95,32 @@ vector<string> read_dictionary(string file)
 }
 
 // Compares with dictionary
-void find_words(vector<string> dict, vector<string> candidates)
+void find_words(vector<Word> diag, vector<Word> diagR)
 {
-      for (auto word: candidates) {
-            // Check if word contains dictionary words (slow?)
-            for (auto dict_word: dict) {
 
-                  // Word length of 2 gives a lot of crap
-                  if (word.find(dict_word) != std::string::npos && dict_word.length() > 2) {
-                        cout << dict_word << endl;
-                  }
-            }
-      }
+	for (auto w: diag)
+		cout << w.str << endl;
+
+	cout << endl;
+
+	for (auto w: diagR)
+		cout << w.str << endl;
+
 }
 
 int main()
 {
-
       string file = "testfile.txt";
-      vector<string> rows,cols;
-      read_file(file,rows,cols);
+      vector<vector<char>> mat, matT;
+      read_file(file,mat);
 
-      vector<string> diag = diagonals(rows);
+	matT = mat;
+	reverse(matT.begin(),matT.end());
 
-      vector<string> colsR = cols;
+	vector<Word> diag = diagonals(mat);
+	vector<Word> diagR = diagonals(matT);
 
-      reverse(colsR.begin(),colsR.end());
-      vector<string> diagR = diagonals(colsR);
-      reverse(colsR.begin(),colsR.end());
+	vector<string> dict = read_dictionary("words_eng");
 
-      vector<string> dict = read_dictionary("words_eng");
-
-      find_words(dict,rows);
-      find_words(dict,cols);
-      find_words(dict,diag);
-      find_words(dict,diagR);
+      find_words(diag, diagR);
 }
