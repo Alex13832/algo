@@ -99,12 +99,12 @@ void find_words(vector<Word> diag, vector<Word> diagR)
 {
 
 	for (auto w: diag)
-		cout << w.str << endl;
+		cout << w.row << " " << w.col << " " << w.str << endl;
 
 	cout << endl;
 
 	for (auto w: diagR)
-		cout << w.str << endl;
+		cout << w.row << " " << w.col << " " << w.str << endl;
 
 }
 
@@ -119,6 +119,13 @@ int main()
 
 	vector<Word> diag = diagonals(mat);
 	vector<Word> diagR = diagonals(matT);
+
+	size_t height = mat.size() - 1;
+	for (auto& w: diagR)
+		w.row = height - w.row;
+
+
+
 
 	vector<string> dict = read_dictionary("words_eng");
 
