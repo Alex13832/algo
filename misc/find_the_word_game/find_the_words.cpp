@@ -228,7 +228,6 @@ vector<Word> process_game(vector<vector<char>> mat, vector<string> dict)
 }
 
 int main(int argc, const char *argv[]) {
-	// Will be modified with args, so custom list can be used
 	string gameFile; // = "testfile.txt";
 	string dictFile; // = "words_eng";
 	string resFile;
