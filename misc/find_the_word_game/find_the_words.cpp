@@ -2,7 +2,6 @@
 * Finds the words in a "find the words" game
 * Alexander Karlsson, begun 2016-01-29
 *
-* TODO print index
 * Add custom dictionary
 * --------------------------------------------------------------------------- */
 #include <iostream>
@@ -11,22 +10,20 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-#include <string>
 
 using namespace std;
 
+int height, width;
+
+enum Mode {isRow, isCol, isDiag, isDiagT};
+
 struct Word {
 	string str;
-	int row, col; // x is column y is row
-	int tag; // row = 0, rowR = 1, col = 2, colR = 3, diag = 4, diagR = 5, diagT = 6, diagTR = 7
-	int found_tag;
-	void print() {
-		cout << row << " " << col << " " << str << " TAG: " << tag <<endl;
-	}
+	int rowStart, colStart, rowEnd, colEnd;
 };
 
 // Reads a txt file, puts the rows and cols in vectors
-void read_file(string file, vector<vector<char>>& mat)
+vector<vector<char>> read_file(string file)
 {
 	ifstream infile(file);
 	string line;
@@ -47,24 +44,38 @@ void read_file(string file, vector<vector<char>>& mat)
 			matrix[i][j] = rows[i][j];
 	}
 
-	mat = matrix;
+	return matrix;
+}
+
+// Reads a dictionary
+vector<string> read_dictionary(string file)
+{
+      ifstream infile(file);
+      string line;
+      vector<string> rows;
+
+      // Read lines
+      while (getline(infile, line))
+            rows.push_back(line);
+
+      return rows;
 }
 
 // Finds the diagonals of mat
-vector<Word> diagonals(vector<vector<char>> mat)
+vector<string> diagonals(vector<vector<char>> mat)
 {
 	size_t h = mat.size(), w = mat[0].size();
 	size_t col_count = 0, row_count = 0, sz = 0;
-	vector<Word> words;
+	vector<string> words;
 
 	while (col_count != w) {
-		Word wrd; wrd.col= col_count; wrd.row = row_count; wrd.tag = 2;
+		string str;
 
 		for (size_t j = 0; j < sz+1; j++)
 			if (j + col_count < w)
-				wrd.str += mat[row_count-j][j+col_count];
+				str += mat[row_count-j][j+col_count];
 
-		words.push_back(wrd);
+		words.push_back(str);
 
 		if (row_count < h-1)
 			row_count++, sz++;
@@ -74,129 +85,177 @@ vector<Word> diagonals(vector<vector<char>> mat)
 	return words;
 }
 
-
-// Reads a dictionary
-vector<string> read_dictionary(string file)
-{
-      ifstream infile(file);
-      string line;
-      vector<string> rows;
-
-      // Read lines, remove white spaces
-      while (getline(infile, line)){
-            string str = line;
-            rows.push_back(str);
-      }
-
-      return rows;
-}
-
 // Compares with dictionary
-vector<Word> find_words(vector<string> dict, vector<Word> candidates)
+vector<Word> find_words(vector<string> dict, vector<string> candidates, Mode mode)
 {
 	vector<Word> wordsFound;
+	int count = 0;
 
 	// finds the substring (the words in dictionary) in candidates
 	for (auto word: candidates) {
+		string wordRev = word;
+		reverse(wordRev.begin(), wordRev.end());
+
 		for (auto dictWord: dict) {
-			size_t pos = word.str.find(dictWord, 0);
+			size_t pos = word.find(dictWord, 0); // forward use
+			size_t posR = wordRev.find(dictWord, 0); // reverse
+
 			while (pos != string::npos)  {	// Found!
 				if (dictWord.length() > 2) {
-					Word tempW; // Save word
-					cout << dictWord << endl;
-					tempW.str = dictWord; tempW.row = word.row;
-					tempW.col = word.col; tempW.tag = word.tag;
-					tempW.found_tag = pos;
-					wordsFound.push_back(tempW);
+					Word w; w.str = dictWord;
+					if (mode == isRow) {
+						w.rowStart = count; w.colStart = pos;
+						w.rowEnd = count; w.colEnd = pos + dictWord.length()-1;
+
+					} else if (mode == isCol) {
+						w.rowStart = pos; w.colStart = count;
+						w.rowEnd = pos + dictWord.length()-1; w.colEnd = count;
+
+					} else if (mode == isDiag) {
+						if (count >= height) {
+							w.rowStart = height - pos - 1;
+							w.colStart = count - height + pos + 1;
+						} else {
+							w.rowStart = count - pos;
+							w.colStart = pos;
+						}
+						w.rowEnd = w.rowStart - dictWord.length() + 1;
+						w.colEnd = w.colStart + dictWord.length() - 1;
+
+					} else if (mode == isDiagT) {
+						if (count >= height) {
+							w.rowStart = pos;
+							w.colStart = count - height + pos + 1;
+						} else {
+							w.rowStart = height - count + pos - 1;
+							w.colStart = pos;
+						}
+						w.rowEnd = w.rowStart + dictWord.length() - 1;
+						w.colEnd = w.colStart + dictWord.length() - 1;
+					}
+
+					wordsFound.push_back(w);
 				}
-				pos = word.str.find(dictWord,pos+1);
+				// update
+				pos = word.find(dictWord,pos+1);
+			}
+
+			while (posR != string::npos)  {	// Found!
+				if (dictWord.length() > 2) {
+					Word w; w.str = dictWord;
+
+					if (mode == isRow) {
+						w.rowStart = count; w.colStart = width - posR-1;
+						w.rowEnd = count; w.colEnd = width-posR-dictWord.length();
+
+					} else if (mode == isCol) {
+						w.rowStart = height-posR-1; w.colStart = count;
+						w.rowEnd = height-posR-dictWord.length(); w.colEnd = count;
+
+					} else if (mode == isDiag) {
+						if (count >= height) {
+							w.rowStart = count - height + posR - 1;
+							w.colStart = count - height + word.length() - posR;
+						} else {
+							w.rowStart = posR;
+							w.colStart = word.length() - posR - 1;
+						}
+						w.rowEnd = w.rowStart + dictWord.length()-1;
+						w.colEnd = w.colStart - dictWord.length()+1;
+
+					} else if (mode == isDiagT) {
+						if (count >= height) {
+							w.rowStart = word.length() - posR - 1;
+							w.colStart = count - height + w.rowStart + 1;
+						} else {
+							w.rowStart = height - posR - 1;
+							w.colStart = count - posR;
+						}
+						w.rowEnd = w.rowStart - dictWord.length() + 1;
+						w.colEnd = w.colStart - dictWord.length() + 1;
+					}
+
+					wordsFound.push_back(w);
+				}
+				posR = wordRev.find(dictWord,posR+1);
 			}
 		}
+		count++;
 	}
 
 	return wordsFound;
 }
 
-void process_game(string gameFile, string dictFile)
+vector<Word> process_game(vector<vector<char>> mat, vector<string> dict)
 {
-      vector<vector<char>> mat, matT;
-      read_file(gameFile,mat);
+      vector<vector<char>> matT;
 
 	// Rows
-	int count = 0;
-	vector<Word> rows, rowsR;
+	vector<string> rows;
 	for (auto vec: mat) {
 		string str(vec.begin(),vec.end());
-		Word word; word.str = str; word.row = count; word.col = 0; word.tag = 0;
-		rows.push_back(word);
-
-		string strR(vec.rbegin(),vec.rend());
-		Word wordR; wordR.str = strR; wordR.row = count++; wordR.col = 0; wordR.tag = 1;
-		rowsR.push_back(wordR);
+		rows.push_back(str);
 	}
 
 	// Columns
-	vector<Word> columns, columnsR;
+	vector<string> columns;
 	for (size_t i = 0; i < mat[0].size(); i++) {
 		string str;
 		for (size_t j = 0; j < mat.size(); j++) str += mat[j][i];
-
-		Word word; word.str = str; word.row = 0; word.col = i; word.tag = 2;
-		columns.push_back(word);
-
-		string strR = str;
-		reverse(strR.begin(), str.end());
-		Word wordR; wordR.str = strR; wordR.row = 0; wordR.col = i; wordR.tag = 3;
-		columnsR.push_back(wordR);
+		columns.push_back(str);
 	}
 
 	// Diagonals
 	matT = mat;
-	reverse(matT.begin(),matT.end());
-	vector<Word> diag = diagonals(mat);
-	vector<Word> diagT = diagonals(matT);
-	vector<Word> diagR, diagTR;
+	reverse(matT.begin(), matT.end());
 
-	size_t height = mat.size() - 1;
-	for (auto& w: diagT)
-		w.row = height - w.row;
+	vector<string> diag = diagonals(mat);
+	vector<string> diagT = diagonals(matT);
 
+	vector<Word> wrows = find_words(dict, rows, Mode(isRow));
+	vector<Word> wcols = find_words(dict, columns, Mode(isCol));
+	vector<Word> wdiag = find_words(dict, diag, Mode(isDiag));
+	vector<Word> wdiagt = find_words(dict, diagT, Mode(isDiagT));
 
-	// Reverse Diagonals
-	for (auto& wrd: diag) {
-		wrd.tag = 4;
-		Word w = wrd;
-		w.tag = 5;
-		reverse(w.str.begin(),w.str.end());
-		diagR.push_back(w);
-	}
-	for (auto& wrd: diagT) {
-		wrd.tag = 6;
-		Word w = wrd;
-		w.tag = 7;
-		reverse(w.str.begin(),w.str.end());
-		diagTR.push_back(w);
-	}
+	vector<Word> result;
+	result.insert(result.end(), wrows.begin(), wrows.end());
+	result.insert(result.end(), wcols.begin(), wcols.end());
+	result.insert(result.end(), wdiag.begin(), wdiag.end());
+	result.insert(result.end(), wdiagt.begin(), wdiagt.end());
 
+	return result;
 
-
-	vector<string> dict = read_dictionary(dictFile);
-
-      //vector<Word> wordsFoundRows = find_words(dict, rows);
-	vector<Word> wordsFoundRows = find_words(dict, rows);
-	vector<Word> wordsFoundRowsR = find_words(dict, rowsR);
-	vector<Word> wordsFoundCols = find_words(dict, columns);
-	vector<Word> wordsFoundColsR = find_words(dict, columnsR);
-	vector<Word> wordsFoundDiag = find_words(dict, diag);
-	vector<Word> wordsFoundDiagR = find_words(dict, diagR);
-	vector<Word> wordsFoundDiagT = find_words(dict, diagT);
-	vector<Word> wordsFoundDiagTR = find_words(dict, diagTR);
 }
 
-int main() {
+int main(int argc, const char *argv[]) {
 	// Will be modified with args, so custom list can be used
-	string gameFile = "testfile.txt";
-	string dictFile = "words_eng";
+	string gameFile; // = "testfile.txt";
+	string dictFile; // = "words_eng";
+	string resFile;
+	if (argc > 3) {
+		gameFile = argv[1];
+		dictFile = argv[2];
+		resFile = argv[3];
+	} else {
+		cout << "wrong input format" << endl;
+		exit(0);
+	}
 
-	process_game(gameFile, dictFile);
+	vector<vector<char>> mat = read_file(gameFile);
+	width = mat[0].size(); height = mat.size();
+	cout << width << " " << height << endl;
+	vector<string> dictionary = read_dictionary(dictFile);
+
+	vector<Word> res = process_game(mat, dictionary);
+
+	ofstream outfile;
+	outfile.open(resFile);
+
+	for (auto w: res) {
+		outfile << "at " << w.rowStart << " " << w.colStart << " to " <<
+		w.rowEnd << " " << w.colEnd << " " << w.str << endl;
+	}
+	outfile.close();
+
+	return 0;
 }

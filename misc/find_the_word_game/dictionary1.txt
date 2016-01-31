@@ -1,0 +1,10 @@
+lawyer
+fireman
+clerk
+plumber
+astronaut
+cowboy
+carpenter
+banker
+sportsman
+nurse
