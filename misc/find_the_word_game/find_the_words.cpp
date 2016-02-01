@@ -10,7 +10,7 @@
 #include <fstream>
 #include <string>
 #include <sstream>
-
+#include "visualize.cpp"
 using namespace std;
 
 int height, width;
@@ -224,7 +224,35 @@ vector<Word> process_game(vector<vector<char>> mat, vector<string> dict)
 	result.insert(result.end(), wdiagt.begin(), wdiagt.end());
 
 	return result;
+}
 
+// Returns a matrix, which indicates if a word was found, will be used for
+// visualization
+vector<vector<int>> found_matrix(vector<Word> words)
+{
+	vector<vector<int>> found(height, vector<int>(width, false));
+
+	for (auto word: words) {
+		int ys = word.rowStart, ye = word.rowEnd;
+		int xs = word.colStart, xe = word.colEnd;
+		int yss = min(ys, ye), yee = max(ys, ye);
+		int xss = min(xs, xe), xee = max(xs, xe);
+
+		if (yss == yee) { // row word
+			for (int i = xss; i < xee+1; i++)
+				found[yss][i] = 1;
+
+		} else if (xss == xee) { // Column word
+			for (int i = yss; i < yee+1; i++)
+				found[i][xss] = 2;
+
+		} else { // Diagonal word
+			for (int i = 0; i < word.str.length(); i++)
+				found[yss+i][xss+i] = 3;
+		}
+	}
+
+	return found;
 }
 
 int main(int argc, const char *argv[]) {
@@ -243,9 +271,22 @@ int main(int argc, const char *argv[]) {
 	vector<vector<char>> mat = read_file(gameFile);
 	width = mat[0].size(); height = mat.size();
 	cout << width << " " << height << endl;
+
+
 	vector<string> dictionary = read_dictionary(dictFile);
 
+	if (dictionary.size() == 0) exit(0);
+
 	vector<Word> res = process_game(mat, dictionary);
+
+	if (res.size() == 0) exit(0);
+
+	vector<vector<int>> found = found_matrix(res);
+
+	// N.B openCV 
+	visualize(mat, found);
+
+	// Print to file
 
 	ofstream outfile;
 	outfile.open(resFile);

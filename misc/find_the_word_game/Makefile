@@ -7,10 +7,13 @@ CPP = clang++
 
 # Define preprocessor, compiler, and linker flags. Uncomment the # lines
 # if you use clang++ and wish to use libc++ instead of GNU's libstdc++.
-CXXFLAGS =  -g -O2 -Wall -W -pedantic-errors
-CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast 
+CXXFLAGS += -c -Wall $(shell pkg-config --cflags opencv)
+LDFLAGS += $(shell pkg-config --libs --static opencv)
 CXXFLAGS += -std=c++11 
-LDFLAGS =   -g 
+#CXXFLAGS =  -g -O2 -Wall -W -pedantic-errors
+#CXXFLAGS += -Wmissing-braces -Wparentheses -Wold-style-cast 
+#CXXFLAGS += -std=c++11 
+#LDFLAGS =   -g 
 #CPPFLAGS =  -stdlib=libc++
 #CXXFLAGS += -stdlib=libc++
 #LDFLAGS +=  -stdlib=libc++
@@ -21,7 +24,8 @@ PROGS = find_the_words
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
-edf: find_the_words.o
+find_the_words: find_the_words.o
+
 
 # Phony targets
 .PHONY: all clean
