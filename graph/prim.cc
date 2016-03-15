@@ -11,8 +11,9 @@ struct comp {
   {return lhs.second>rhs.second;}
 };
 
-vector<uint> prim(Graph G, int s){
-	vector<uint> weight(G.size(),UINT_MAX);	
+vector<uint> prims(vector<vector<pair<int,int>>> G, int s)
+{
+	vector<uint> weight(G.size(),UINT_MAX);
 	vector<uint> parent(G.size());
 	vector<uint> visited(G.size(),false);
 	priority_queue<pair<uint,uint>, vector<pair<uint,uint>>,comp> pq;
@@ -24,16 +25,16 @@ vector<uint> prim(Graph G, int s){
 		pq.pop();
 		uint u = U.first;
 
-		for (auto v: G.adj[u]) {
-			if(!visited[v] && (uint) G.getEdgeWeight(u,v) < weight[v]) {
-				parent[v] = u;
-				weight[v] = G.getEdgeWeight(u,v);
-				pq.push(pair<uint,uint>(v,weight[v]));
+		for (auto v: G[u]) {
+			if(!visited[v.first] && (uint) v.second < weight[v.first]) {
+				parent[v.first] = u;
+				weight[v.first] = v.second;
+				pq.push(v);
 			}
 		}
 
 		visited[u] = true;
-		
+
 	}
 
 	return weight;
