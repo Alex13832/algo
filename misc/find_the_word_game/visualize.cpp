@@ -1,3 +1,6 @@
+// File for visualizing the found words
+// Thie file uses the OpenCV library.
+// Alexander Karlsson
 #include <cmath>
 #include "opencv2/core/core.hpp"
 #include "opencv2/features2d/features2d.hpp"
@@ -8,7 +11,7 @@
 using namespace cv;
 using namespace std;
 
-void visualize(vector<vector<char>> chars, vector<vector<int>> found)
+void visualize(vector< vector<char> > chars, vector< vector<int> > found)
 {
       // Figure out the size
       size_t height = chars.size();
