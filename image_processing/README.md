@@ -54,6 +54,8 @@ Available filters (kernels):
 <img src="images/lena_sharepen_aggressive.png" height="270" alt="Screenshot"/>
 </p>
 
+![alt-text-1](images/lena_sharepen_aggressive.png "Sharpen 1") ![alt-text-2](images/lena_sharepen_aggressive.png "Sharpen 2")
+
 ##### GAUSSIAN_BLUR
 <p align="center">
 <img src="images/lena_gaussian_blur.png" height="270" alt="Screenshot"/>
