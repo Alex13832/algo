@@ -11,6 +11,7 @@
 #include <string>
 #include <sstream>
 #include "visualize.cpp"
+
 using namespace std;
 
 int height, width;
@@ -283,7 +284,7 @@ int main(int argc, const char *argv[]) {
 
 	vector<vector<int>> found = found_matrix(res);
 
-	// N.B openCV 
+	// N.B openCV
 	visualize(mat, found);
 
 	// Print to file
