@@ -51,7 +51,7 @@ Available filters (kernels):
 
 ##### SHARPEN_AGGRESSIVE
 <p align="center">
-<img src="images/lena_sharpen_aggressive.png" height="270" alt="Screenshot"/>
+<img src="images/lena_sharepen_aggressive.png" height="270" alt="Screenshot"/>
 </p>
 
 ##### GAUSSIAN_BLUR
