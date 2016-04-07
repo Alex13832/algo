@@ -82,7 +82,7 @@ void test_adaptive_threshold()
 
       adaptive_threshold(&Im[0], &data[0], img.rows, img.cols, 15, 0);
       Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
-      imwrite("images/lena_thresh15.png", im_tr);
+      imwrite("images/lena_adaptive15.png", im_tr);
 
 
 }
