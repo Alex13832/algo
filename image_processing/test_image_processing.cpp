@@ -74,7 +74,7 @@ void test_convolve()
 
 void test_adaptive_threshold()
 {
-      Mat img = imread("sudoku.png", 0);
+      Mat img = imread("lena.png", 0);
       img.convertTo(img, CV_8UC1);
 
       vector<uint8_t> Im = Mat_to_vector(img);
@@ -82,7 +82,7 @@ void test_adaptive_threshold()
 
       adaptive_threshold(&Im[0], &data[0], img.rows, img.cols, 15, 0);
       Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
-      imwrite("images/sudoku_adaptive15.png", im_tr);
+      imwrite("images/lena_thresh15.png", im_tr);
 
 
 }
