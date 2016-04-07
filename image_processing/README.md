@@ -8,7 +8,7 @@ The aim for implementing this library is to implement functions for image proces
 The following functions are implemented so far:
 
 * Convolution
-
+* Adaptive threholding
 
 ### Convolution
 Available filters (kernels):
@@ -53,4 +53,12 @@ Available filters (kernels):
 <img src="images/lena_high_pass.png" height="270" alt="Screenshot"/>
 <img src="images/lena_emboss.png" height="270" alt="Screenshot"/>
 <img src="images/lena_weighted_average.png" height="270" alt="Screenshot"/>
+</p>
+
+### Adaptive threshold
+Outputs a thresholded image using an adaptive approach. Instead of using a fixed value to threshold on,
+the pixels are thresholded on a mean value around the pixel.
+
+<p align="center">
+<img src="images/sudoku_adaptive40.png" height="270" alt="Screenshot"/>
 </p>

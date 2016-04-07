@@ -89,3 +89,45 @@ void convolve(uint8_t* Im, uint8_t* data, int rows, int cols, filter_t filter_ty
 		}
 	}
 }
+
+
+void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int cols,
+                        const uint16_t regionSize, const int cutWhite)
+{
+    // Check some base cases
+    if (regionSize > rows) return;
+    if (cutWhite < 0 || cutWhite > 1) return;
+
+    // Input pixels
+    int i, j, k, m;
+    int sz = regionSize>>1;
+
+    for(i=sz; i < rows-sz; i++) {
+		for(j=sz; j < cols-sz; j++) {
+			float threshold = 0;
+            // Sum over the window
+			for(k = 0; k < regionSize; k++) {
+				for(m = 0; m < regionSize; m++) {
+
+                    float im_num = (float)(Im[(i+k-sz)*cols+(j+m-sz)]);
+					threshold += im_num;
+				}
+			}
+            // Calculate the mean value of the window
+            int mean_thresh = threshold / (float) (regionSize*regionSize);
+
+            // Threshold pixels with respect to mean value
+            uint8_t thresh = 0;
+            if (cutWhite == 1) {
+                if (Im[i*cols + j] > mean_thresh) thresh = 255;
+                else thresh = 0;
+
+            } else if (cutWhite == 0) {
+                if (Im[i*cols + j] < mean_thresh) thresh = 255;
+                else thresh = 0;
+            }
+
+            data[i*cols + j] = thresh;
+		}
+	}
+}

@@ -32,7 +32,7 @@ vector<uint8_t> Mat_to_vector(Mat img)
 // Converts a STL vector to an OpenCV Mat
 Mat vector_to_Mat(vector<uint8_t> vec, int rows, int cols)
 {
-      Mat img = Mat::zeros(cols, cols, CV_8UC1);
+      Mat img = Mat::zeros(rows, cols, CV_8UC1);
 
       for (int i = 0; i < rows; ++i) {
             for (int j = 0; j < cols; ++j) {
@@ -72,12 +72,27 @@ void test_convolve()
 
 }
 
+void test_adaptive_threshold()
+{
+      Mat img = imread("sudoku.png", 0);
+      img.convertTo(img, CV_8UC1);
+
+      vector<uint8_t> Im = Mat_to_vector(img);
+      vector<uint8_t> data(img.rows*img.cols);
+
+      adaptive_threshold(&Im[0], &data[0], img.rows, img.cols, 40, 0);
+      Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
+      imwrite("images/sudoku_adaptive40.png", im_tr);
+
+
+}
+
 
 int main(int argc, char const *argv[])
 {
 
-      test_convolve();
-
+      //test_convolve();
+      test_adaptive_threshold();
 
       return 0;
 }
