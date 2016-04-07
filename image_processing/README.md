@@ -60,5 +60,5 @@ Outputs a thresholded image using an adaptive approach. Instead of using a fixed
 the pixels are thresholded on a mean value around the pixel.
 
 <p align="center">
-<img src="images/lena_adaptive15.png.png" height="270" alt="Screenshot"/>
+<img src="images/lena_adaptive15.png" height="270" alt="Screenshot"/>
 </p>
