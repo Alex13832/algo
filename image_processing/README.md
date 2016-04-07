@@ -60,5 +60,5 @@ Outputs a thresholded image using an adaptive approach. Instead of using a fixed
 the pixels are thresholded on a mean value around the pixel.
 
 <p align="center">
-<img src="images/sudoku_adaptive40.png" height="270" alt="Screenshot"/>
+<img src="images/sudoku_adaptive15.png" height="270" alt="Screenshot"/>
 </p>
