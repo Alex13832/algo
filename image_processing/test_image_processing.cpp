@@ -80,7 +80,7 @@ void test_adaptive_threshold()
       vector<uint8_t> Im = Mat_to_vector(img);
       vector<uint8_t> data(img.rows*img.cols);
 
-      adaptive_threshold(&Im[0], &data[0], img.rows, img.cols, 40, 0);
+      adaptive_threshold(&Im[0], &data[0], img.rows, img.cols, 20, 0);
       Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
       imwrite("images/sudoku_adaptive40.png", im_tr);
 
