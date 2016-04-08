@@ -70,7 +70,7 @@ This algorithm is using a median filter to remove noise in an image.
 Compare in the example below before and after the median filter.
 
 <p align="center">
-<img src="lena_very_noisy.bmp" height="270" alt="Screenshot"/>
+<img src="input_images/lena_very_noisy.bmp" height="270" alt="Screenshot"/>
 <img src="images/lena_median.png" height="270" alt="Screenshot"/>
 </p>
 
