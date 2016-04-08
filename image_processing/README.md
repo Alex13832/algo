@@ -10,6 +10,7 @@ The following functions are implemented so far:
 * Convolution
 * Adaptive threholding
 * Median filter
+* Difference detector
 
 ### Convolution
 Available filters (kernels):
@@ -71,4 +72,17 @@ Compare in the example below before and after the median filter.
 <p align="center">
 <img src="lena_very_noisy.bmp" height="270" alt="Screenshot"/>
 <img src="images/lena_median.png" height="270" alt="Screenshot"/>
+</p>
+
+### Difference detector
+Detects the difference of an input reference image and a second image.
+The image should have the same background. In the example below, I have used Lena
+and Grumpy Lena as reference and comparison image respectively. In the third image
+the result is shown.
+
+#### LENA, GRUMPY_LENA and RESULT
+<p align="center">
+<img src="input_images/lena.png" height="270" alt="Screenshot"/>
+<img src="input_images/grumpy_lena.png" height="270" alt="Screenshot"/>
+<img src="images/lenas_diff.png" height="270" alt="Screenshot"/>
 </p>

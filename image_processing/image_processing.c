@@ -163,3 +163,42 @@ void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols)
         }
     }
 }
+
+void detect_diff(uint8_t* ImRef, uint8_t* ImComp, uint8_t* diff, const int rows, const int cols)
+{
+    int i, j;
+    // Step 1: Calculate difference and threshold
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++) {
+            // Difference
+            uint8_t ref  = ImRef[i*cols + j];
+            uint8_t comp = ImComp[i*cols + j];
+
+            if (ref > comp)
+                diff[i*cols + j] = ref - comp;
+            else
+                diff[i*cols + j] = comp - ref;
+        }
+    }
+
+    uint8_t* temp = calloc(rows*cols,sizeof(uint8_t));
+
+    // Step 2: Threshold
+    adaptive_threshold(diff, temp, rows, cols, 25, 1);
+
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++)
+            diff[i*cols + j] = temp[i*cols + j];
+    }
+
+    // Step 3: Noise removal
+    median_filter(diff, temp, rows, cols);
+
+    for(i = 0; i < rows; i++) {
+        for(j = 0; j < cols; j++)
+            diff[i*cols + j] = temp[i*cols + j];
+    }
+
+    free(temp);
+
+}

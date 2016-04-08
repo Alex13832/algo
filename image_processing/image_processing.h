@@ -53,7 +53,24 @@ void convolve(uint8_t* Im, uint8_t* data, int rows, int cols, filter_t filter_ty
 void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int cols,
                         const uint16_t regionSize, const int cutWhite);
 
+/**
+* Median filter for noise removal in Im, returns the result in data;
+* @param[in] Im, input image with noise,
+* @param[out] data, result
+* @param[in] rows, #rows in Im
+* @param[in] cols, #columns in Im
+*/
 void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols);
 
+/**
+* Detects difference between ImRef and ImComp and returns the result in diff.
+* @param[in] ImRef, reference image,
+* @param[in] ImRef, image with difference, note that it should have same
+*                   background as ImRef
+* @param[out] diff, detected difference
+* @param[in] rows, #rows in ImRef/ImComp
+* @param[in] cols, #columns in ImRef/ImComp
+*/
+void detect_diff(uint8_t* ImRef, uint8_t* ImComp, uint8_t* diff, const int rows, const int cols);
 
 #endif /* IMAGE_PROCESSING_H */

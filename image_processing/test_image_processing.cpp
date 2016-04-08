@@ -46,7 +46,7 @@ Mat vector_to_Mat(vector<uint8_t> vec, int rows, int cols)
 // Tests the convolution function
 void test_convolve()
 {
-      Mat img = imread("lena.png",0);
+      Mat img = imread("input_images/lena.png",0);
       img.convertTo(img, CV_8UC1);
 
       vector<string> out_file_names = {   "sobel_x", "sobel_y", "edge_detect", "smoothing",
@@ -74,7 +74,7 @@ void test_convolve()
 
 void test_adaptive_threshold()
 {
-      Mat img = imread("lena.png", 0);
+      Mat img = imread("input_images/lena.png", 0);
       img.convertTo(img, CV_8UC1);
 
       vector<uint8_t> Im = Mat_to_vector(img);
@@ -89,7 +89,7 @@ void test_adaptive_threshold()
 
 void test_median_filter()
 {
-    Mat img = imread("lena_very_noisy.bmp", 0);
+    Mat img = imread("input_images/lena_very_noisy.bmp", 0);
     img.convertTo(img, CV_8UC1);
 
     vector<uint8_t> Im = Mat_to_vector(img);
@@ -100,11 +100,33 @@ void test_median_filter()
     imwrite("images/lena_median.png", im_tr);
 }
 
+void test_detect_diff()
+{
+    Mat imRefMat = imread("input_images/lena.png");
+    cvtColor(imRefMat, imRefMat, CV_BGR2GRAY);
+    imRefMat.convertTo(imRefMat, CV_8UC1);
+
+    Mat imCompMat = imread("input_images/grumpy_lena.png");
+    cvtColor(imCompMat, imCompMat, CV_BGR2GRAY);
+    imCompMat.convertTo(imCompMat, CV_8UC1);
+
+    vector<uint8_t> ImRef = Mat_to_vector(imRefMat);
+    vector<uint8_t> ImComp = Mat_to_vector(imCompMat);
+
+    vector<uint8_t> diff(imRefMat.rows*imRefMat.cols);
+
+    detect_diff(&ImRef[0], &ImComp[0], &diff[0], imRefMat.rows, imRefMat.cols);
+
+    Mat im_tr = vector_to_Mat(diff, imRefMat.rows, imRefMat.cols);
+    imwrite("images/lenas_diff.png", im_tr);
+}
+
 
 int main(int argc, char const *argv[])
 {
       //test_convolve();
       //test_adaptive_threshold();
-      test_median_filter();
+      //test_median_filter();
+      test_detect_diff();
       return 0;
 }
