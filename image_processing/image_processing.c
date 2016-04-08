@@ -131,3 +131,35 @@ void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int co
 		}
 	}
 }
+
+int cmpfunc (const void * a, const void * b)
+{
+   return ( *(int*)a - *(int*)b );
+}
+
+void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols)
+{
+    unsigned i, j;
+
+    int median_vec[9];
+
+    // Filtering window
+    for(i = 1; i < rows-1; i++) {
+        for(j = 1; j < cols-1; j++) {
+
+            median_vec[0] = Im[(i-1)*cols + (j-1)];
+            median_vec[1] = Im[(i-1)*cols + (j)];
+            median_vec[2] = Im[(i-1)*cols + (j+1)];
+            median_vec[3] = Im[(i)*cols + (j-1)];
+            median_vec[4] = Im[(i)*cols + (j)];
+            median_vec[5] = Im[(i)*cols + (j+1)];
+            median_vec[6] = Im[(i+1)*cols + (j-1)];
+            median_vec[7] = Im[(i+1)*cols + (j)];
+            median_vec[8] = Im[(i+1)*cols + (j+1)];
+
+            qsort(median_vec, 9, sizeof(int), cmpfunc);
+
+            data[i*cols + j] = median_vec[4];
+        }
+    }
+}

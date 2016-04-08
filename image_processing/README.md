@@ -9,6 +9,7 @@ The following functions are implemented so far:
 
 * Convolution
 * Adaptive threholding
+* Median filter
 
 ### Convolution
 Available filters (kernels):
@@ -61,4 +62,13 @@ the pixels are thresholded on a mean value around the pixel.
 
 <p align="center">
 <img src="images/lena_adaptive15.png" height="270" alt="Screenshot"/>
+</p>
+
+### Median filter
+This algorithm is using a median filter to remove noise in an image.
+Compare in the example below before and after the median filter.
+
+<p align="center">
+<img src="lena_very_noisy.bmp" height="270" alt="Screenshot"/>
+<img src="images/lena_median.png" height="270" alt="Screenshot"/>
 </p>

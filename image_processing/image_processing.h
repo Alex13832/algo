@@ -53,5 +53,7 @@ void convolve(uint8_t* Im, uint8_t* data, int rows, int cols, filter_t filter_ty
 void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int cols,
                         const uint16_t regionSize, const int cutWhite);
 
+void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols);
+
 
 #endif /* IMAGE_PROCESSING_H */

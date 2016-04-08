@@ -61,7 +61,7 @@ void test_convolve()
       vector<uint8_t> pix = Mat_to_vector(img);
       vector<uint8_t> result(img.rows*img.cols,0);
 
-      for (int i = 0; i < filters.size(); ++i) {
+      for (unsigned i = 0; i < filters.size(); ++i) {
             // Call c-library
             convolve(&pix[0], &result[0], (int)img.rows, (int)img.cols, filters[i], 3);
             // Convert back to Mat
@@ -87,12 +87,24 @@ void test_adaptive_threshold()
 
 }
 
+void test_median_filter()
+{
+    Mat img = imread("lena_very_noisy.bmp", 0);
+    img.convertTo(img, CV_8UC1);
+
+    vector<uint8_t> Im = Mat_to_vector(img);
+    vector<uint8_t> data(img.rows*img.cols);
+
+    median_filter(&Im[0], &data[0], img.rows, img.cols);
+    Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
+    imwrite("images/lena_median.png", im_tr);
+}
+
 
 int main(int argc, char const *argv[])
 {
-
       //test_convolve();
-      test_adaptive_threshold();
-
+      //test_adaptive_threshold();
+      test_median_filter();
       return 0;
 }
