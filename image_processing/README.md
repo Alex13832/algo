@@ -90,6 +90,8 @@ the result is shown.
 
 ### Template matching
 Finds a point where the intesity values meet in the reference image and the template image.
-<img src="input_images/template.png" height="200" alt="Screenshot"/>
+<p align="center">
+<img src="input_images/template.png" height="50" alt="Screenshot"/>
 <img src="input_images/lena.png" height="270" alt="Screenshot"/>
 <img src="images/lena_template_match.png" height="270" alt="Screenshot"/>
+</p>
