@@ -121,12 +121,39 @@ void test_detect_diff()
     imwrite("images/lenas_diff.png", im_tr);
 }
 
+void test_template_matching()
+{
+    Mat im = imread("input_images/lena.png");
+    cvtColor(im, im, CV_BGR2GRAY);
+    im.convertTo(im, CV_8UC1);
+    vector<uint8_t> im_vec = Mat_to_vector(im);
+
+    Mat templ = imread("input_images/template.png");
+    cvtColor(templ, templ, CV_BGR2GRAY);
+    templ.convertTo(templ, CV_8UC1);
+    vector<uint8_t> templ_vec = Mat_to_vector(templ);
+
+    int besti, bestj;
+    template_match(&im_vec[0], im.rows, im.cols, &templ_vec[0],
+                    templ.rows, templ.cols, &besti, &bestj);
+
+    cvtColor(im, im, CV_GRAY2RGB);
+
+    Point2f pt;
+    pt.x = besti+20 , pt.y = bestj+20;
+    Scalar sc(0,255,255);
+    circle(im, pt, 10, sc);
+
+    imwrite("images/lena_template_match.png", im);
+}
+
 
 int main(int argc, char const *argv[])
 {
       //test_convolve();
       //test_adaptive_threshold();
       //test_median_filter();
-      test_detect_diff();
+      //test_detect_diff();
+      test_template_matching();
       return 0;
 }

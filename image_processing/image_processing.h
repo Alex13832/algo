@@ -73,4 +73,19 @@ void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols);
 */
 void detect_diff(uint8_t* ImRef, uint8_t* ImComp, uint8_t* diff, const int rows, const int cols);
 
+/**
+* Template matching algorithm, finds a point where the intesity values meet 
+* in the image Im and the template image templ. Note that the speed of computation
+* highly depends on the template size.
+* @param[in] Im, reference image,
+* @param[in] im_rows, #rows in the reference image,
+* @param[in] im_cols, #cols -           "          -
+* @param[in] templ, template image,
+* @param[in] r_rows and t_cols, #cols and #rows in the template
+* @param[out] besti and bestj, best point where template and reference match.
+*/
+void template_match( uint8_t* Im, int im_rows, int im_cols,
+                uint8_t* templ, int t_rows, int t_cols,
+                int* bestj, int* besti);
+
 #endif /* IMAGE_PROCESSING_H */

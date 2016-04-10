@@ -11,6 +11,7 @@ The following functions are implemented so far:
 * Adaptive threholding
 * Median filter
 * Difference detector
+* Template matching
 
 ### Convolution
 Available filters (kernels):
@@ -86,3 +87,9 @@ the result is shown.
 <img src="input_images/grumpy_lena.png" height="270" alt="Screenshot"/>
 <img src="images/lenas_diff.png" height="270" alt="Screenshot"/>
 </p>
+
+### Template matching
+Finds a point where the intesity values meet in the reference image and the template image.
+<img src="input_images/template.png" height="75" alt="Screenshot"/>
+<img src="input_images/lena.png" height="270" alt="Screenshot"/>
+<img src="images/lenas_template_match.png" height="270" alt="Screenshot"/>

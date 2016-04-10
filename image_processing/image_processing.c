@@ -91,6 +91,40 @@ void convolve(uint8_t* Im, uint8_t* data, int rows, int cols, filter_t filter_ty
 }
 
 
+void template_match( uint8_t* Im, int im_rows, int im_cols,
+                uint8_t* templ, int t_rows, int t_cols,
+                int* bestj, int* besti)
+{
+    int i, j, k, m;
+
+    long minSAD = LONG_MAX;
+    int best_i = 0, best_j = 0;
+
+    for(i = 0; i < im_rows - t_rows; i++) {
+		for(j = 0; j < im_cols - t_cols; j++) {
+			long SAD = 0;
+
+			for(k = 0; k < t_rows; k++) {
+				for(m = 0; m < t_rows; m++) {
+                    // Multiply components
+                    long pix_im = (long) Im[(i+k)*im_cols + j+m];
+                    long pix_te = (long) templ[k*t_cols + m];
+
+                    SAD += abs(pix_im - pix_te);
+				}
+			}
+
+            if (minSAD > SAD) {
+                minSAD = SAD;
+                best_i = i;
+                best_j = j;
+            }
+		}
+	}
+    *besti = best_i;
+    *bestj = best_j;
+}
+
 void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int cols,
                         const uint16_t regionSize, const int cutWhite)
 {
