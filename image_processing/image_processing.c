@@ -198,6 +198,38 @@ void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols)
     }
 }
 
+void rank_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols, int rank)
+{
+      if (rank > 8 || rank < 0) {
+            printf("%s\n", "Rank has to be = [0,8]");
+            exit(1);
+      }
+
+      unsigned i, j;
+
+      int rank_vec[9];
+
+      // Filtering window
+      for(i = 1; i < rows-1; i++) {
+          for(j = 1; j < cols-1; j++) {
+
+             rank_vec[0] = Im[(i-1)*cols + (j-1)];
+             rank_vec[1] = Im[(i-1)*cols + (j)];
+             rank_vec[2] = Im[(i-1)*cols + (j+1)];
+             rank_vec[3] = Im[(i)*cols + (j-1)];
+             rank_vec[4] = Im[(i)*cols + (j)];
+             rank_vec[5] = Im[(i)*cols + (j+1)];
+             rank_vec[6] = Im[(i+1)*cols + (j-1)];
+             rank_vec[7] = Im[(i+1)*cols + (j)];
+             rank_vec[8] = Im[(i+1)*cols + (j+1)];
+
+             qsort(rank_vec, 9, sizeof(int), cmpfunc);
+
+             data[i*cols + j] = rank_vec[rank];
+          }
+      }
+}
+
 void detect_diff(uint8_t* ImRef, uint8_t* ImComp, uint8_t* diff, const int rows, const int cols)
 {
     int i, j;
