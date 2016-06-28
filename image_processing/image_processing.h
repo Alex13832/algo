@@ -63,6 +63,16 @@ void adaptive_threshold(uint8_t* Im, uint8_t* data, const int rows, const int co
 void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols);
 
 /**
+* Instead of choosing the median value, here the value can be changed. If a median
+* filter is to be used then rank == 4.
+* @param[in] Im, input image with noise,
+* @param[out] data, result
+* @param[in] rows, #rows in Im
+* @param[in] cols, #columns in Im
+*/
+void rank_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols, int rank);
+
+/**
 * Detects difference between ImRef and ImComp and returns the result in diff.
 * @param[in] ImRef, reference image,
 * @param[in] ImRef, image with difference, note that it should have same
@@ -74,7 +84,7 @@ void median_filter(uint8_t* Im, uint8_t* data, const int rows, const int cols);
 void detect_diff(uint8_t* ImRef, uint8_t* ImComp, uint8_t* diff, const int rows, const int cols);
 
 /**
-* Template matching algorithm, finds a point where the intesity values meet 
+* Template matching algorithm, finds a point where the intesity values meet
 * in the image Im and the template image templ. Note that the speed of computation
 * highly depends on the template size.
 * @param[in] Im, reference image,

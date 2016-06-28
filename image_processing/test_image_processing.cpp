@@ -100,6 +100,24 @@ void test_median_filter()
     imwrite("images/lena_median.png", im_tr);
 }
 
+void test_rank_filter()
+{
+    Mat img = imread("input_images/lena.png", 0);
+    img.convertTo(img, CV_8UC1);
+
+    vector<uint8_t> Im = Mat_to_vector(img);
+    vector<uint8_t> data(img.rows*img.cols);
+
+    rank_filter(&Im[0], &data[0], img.rows, img.cols, 0);
+    Mat im_tr = vector_to_Mat(data, img.rows, img.cols);
+    imwrite("images/lena_rank0.png", im_tr);
+
+    rank_filter(&Im[0], &data[0], img.rows, img.cols, 8);
+    im_tr = vector_to_Mat(data, img.rows, img.cols);
+    imwrite("images/lena_rank8.png", im_tr);
+
+}
+
 void test_detect_diff()
 {
     Mat imRefMat = imread("input_images/lena.png");
@@ -150,10 +168,11 @@ void test_template_matching()
 
 int main(int argc, char const *argv[])
 {
-      //test_convolve();
-      //test_adaptive_threshold();
-      //test_median_filter();
-      //test_detect_diff();
+      test_convolve();
+      test_adaptive_threshold();
+      test_median_filter();
+      test_rank_filter();
+      test_detect_diff();
       test_template_matching();
       return 0;
 }
