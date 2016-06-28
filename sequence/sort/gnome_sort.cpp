@@ -1,8 +1,12 @@
+/** ----------------------------------------------------------
+* Gnome sort algorithm.
+* 2016-06-28
+* ------------------------------------------------------------ */
+
 #include <iostream>
 #include <vector>
 #include <algorithm>
 
-/** Implementation of the Gnome sort algorithm */
 template <typename T> void gnome_sort(vector<T>& vec)
 {
     int i = 0;
