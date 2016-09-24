@@ -12,7 +12,7 @@ using namespace std;
 /* DFS-algorithms, slightly modifed */
 void DFS(Graph G, int n, vector<bool>& explored, vector<int>& res) {
 	explored[n] = true;
-	
+
 	for (auto w: G.adj[n]) {
 		if (!explored[w]) DFS(G, w, explored, res);
 	}
@@ -20,7 +20,7 @@ void DFS(Graph G, int n, vector<bool>& explored, vector<int>& res) {
 }
 
 
-/* Kosaraju algorithm takes G, a directed graph, outputs 
+/* Kosaraju algorithm takes G, a directed graph, outputs
  the strongly connected components of G */
 vector<vector<int>> kosaraju(Graph G) {
 	vector<vector<int>> result;
@@ -46,13 +46,13 @@ vector<vector<int>> kosaraju(Graph G) {
 		result.push_back(visited);
 
 		for (auto v: visited) {
-			
+
 			if (find(S.begin(), S.end(), v) != S.end()) {
 				S.erase(remove(S.begin(), S.end(), v ), S.end() );
 			}
 			explored[v] = true;
 		}
-	}	
+	}
 
 	return result;
 }

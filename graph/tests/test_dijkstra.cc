@@ -5,7 +5,14 @@
 
 /* Test for dijkstra and dijkstra_pq*/
 bool test_dijkstra() {
+	vector<vector<pair<int,int>>> adj;
+
+	adj[0].push_back(make_pair(5, 1));
+
+
+
 	Graph g(7);
+	
 	g.addEdge(0,5,1);
 	g.addEdge(0,10,2);
 	g.addEdge(2,2,4);
@@ -29,7 +36,7 @@ bool test_dijkstra() {
 	g2.addEdge(4,3,5);
 	g2.addEdge(3,2,4);
 	g2.addEdge(3,6,5);
-	
+
 	vector<uint> dist2 = dijkstra_pq(g2,0);
 	int res2 = dist2[5];
 	bool b = res2 == 13;

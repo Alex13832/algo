@@ -26,7 +26,7 @@ struct comp_dijkstra {
 vector<uint> dijkstra_pq(vector<vector<pair<int, int> >> G, const int s)
 {
     priority_queue<pair<uint,uint>, vector<pair<uint,uint>>,comp_dijkstra> pq;
-
+    
     vector<uint> dist(G.size(),UINT_MAX);
     vector<int> prev(G.size(),0);
 

@@ -17,7 +17,7 @@ bool test_prim1() {
 	g.addEdge(5,8,4);
 	g.addEdge(5,11,6);
 	g.addEdge(3,9,1);
-	vector<uint> net1 = prim(g, 0);
+	vector<uint> net1 = prims(g, 0);
 	uint sum1 = accumulate(net1.begin(),net1.end(),0);
 	bool a = sum1 == 39;
 
@@ -36,10 +36,10 @@ bool test_prim1() {
 	g2.addEdge(6,9,7);
 	g2.addEdge(6,2,8);
 	g2.addEdge(7,11,8);
-	vector<uint> net2 = prim(g2,0);
+	vector<uint> net2 = prims(g2,0);
 	uint sum2 = accumulate(net2.begin(),net2.end(),0);
 	bool b = sum2 == 43;
-	
+
 	Graph g3(7);
 	g3.addEdge(0,16,1);
 	g3.addEdge(0,21,3);
@@ -53,10 +53,10 @@ bool test_prim1() {
 	g3.addEdge(2,31,5);
 	g3.addEdge(4,11,6);
 	g3.addEdge(5,27,6);
-	vector<uint> net3 = prim(g3,0);
+	vector<uint> net3 = prims(g3,0);
 	int sum3 = accumulate(net3.begin(),net3.end(),0);
 	bool c = sum3 == 93;
-	
+
 	return a && b && c;
 
 }
@@ -70,7 +70,7 @@ bool test_prim2(){
 	string line;
 	int row = 0;
 	int col = 0;
-	while (getline(infile, line)){	
+	while (getline(infile, line)){
 		string s = line;
 		string delimiter = ",";
 
@@ -81,7 +81,7 @@ bool test_prim2(){
 			try {
 				int weight = stoi(token);
 				total.push_back(weight);
-				g.addEdge(col,weight,row); 
+				g.addEdge(col,weight,row);
 
 			} catch (std::invalid_argument&) { }
 
@@ -94,9 +94,9 @@ bool test_prim2(){
 			int weight = stoi(s);
 			total.push_back(weight);
 			g.addEdge(col,weight,row);
-			
+
 		} catch (std::invalid_argument&) { }
- 		
+
 		row++;
 		col = 0;
 	}
