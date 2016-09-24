@@ -33,6 +33,7 @@ Dijkstra, prio-Q
 Floyd-Warshall
 Kosaraju
 Prims
+Travelling salesman approximation algorithm (nearest neighbor)
 
 Greedy
 ----------------------------
