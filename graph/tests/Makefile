@@ -16,7 +16,8 @@ CPPFLAGS = -std=c++11
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_bellman_ford test_kosaraju test_floyd_warshall test_travelling_salesman
+PROGS = test_bellman_ford test_kosaraju test_floyd_warshall test_travelling_salesman \
+test_minimax
 
 all: $(PROGS)
 
@@ -25,6 +26,7 @@ test_bellman_ford: test_bellman_ford.o
 test_kosaraju: test_kosaraju.o
 test_floyd_warshall: test_floyd_warshall.o
 test_travelling_salesman: test_travelling_salesman.o
+test_minimax: test_minimax.o
 
 # Phony targets
 .PHONY: all clean
