@@ -21,8 +21,7 @@ vector<int> nearest_neighbor(vector< vector< pair<int,int> > > G, size_t N, int 
     while (find(visited.begin(), visited.end(), false) != visited.end()) {
         int next;
         int min_w = INT32_MAX;
-        cout << curr << " " ;
-        cout << G[curr].size() << endl;
+
         for (size_t i = 0; i < G[curr].size(); i++) {
             /* Find closest neightbor */
             if (G[curr][i].second < min_w && visited[G[curr][i].first] == false) {
