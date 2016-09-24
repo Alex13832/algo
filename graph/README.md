@@ -68,3 +68,6 @@ Finds a minimum spanning tree (MST) for a weighted undirected graph.
 <p align="center">
 <img src="images/prim.png" height="250" alt="Screenshot"/>
 </p>
+
+#### Algorithm for approximation of the travelling salesman problem
+Greedy. Takes the shortest path from the current node (nearest neighbor). 
