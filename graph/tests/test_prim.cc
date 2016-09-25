@@ -78,8 +78,8 @@ bool test_prim1()
 
 //Test-case file is downloaded from "Project Euler"
 //Problem 107
-bool test_prim2(){
-	//Graph g(40);
+bool test_prim2()
+{
 	vector<vector<pair<int,int>>> G(40);
 	vector<int> total;
 	ifstream infile("testfiles/p107_network.txt");
@@ -107,12 +107,9 @@ bool test_prim2(){
 		}
 
 		try {
-
 			int weight = stoi(s);
 			total.push_back(weight);
 			make_node(G, col, row, weight);
-			//g.addEdge(col,weight,row);
-
 		} catch (std::invalid_argument&) { }
 
 		row++;
