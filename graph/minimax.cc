@@ -31,6 +31,7 @@ int minimax(Node N, int depth, bool maximizingPlayer)
             int v = minimax(Nx, depth-1, false);
             bestValue = max(bestValue, v);
         }
+        N.weight = bestValue;
         return bestValue;
 
     } else {
@@ -40,8 +41,9 @@ int minimax(Node N, int depth, bool maximizingPlayer)
             int v = minimax(Nx, depth-1, true);
             bestValue = min(bestValue, v);
         }
+        N.weight = bestValue;
         return bestValue;
     }
-    
+
     return 0;
 }

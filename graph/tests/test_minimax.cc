@@ -25,9 +25,9 @@ int main() {
     Node n6 = makeNode(0);
     Node n7 = makeNode(0);
     Node n8 = makeNode(0);
-    Node n9 = makeNode(1);
+    Node n9 = makeNode(0);
     Node n10 = makeNode(-1);
-    Node n11 = makeNode(1);
+    Node n11 = makeNode(0);
     Node n12 = makeNode(1);
     Node n13 = makeNode(-1);
     Node n14 = makeNode(-1);
@@ -67,7 +67,9 @@ int main() {
 
     int val = minimax(n0, 3, true);
 
+
     cout << val << endl; // 0
+    cout << n0.weight << endl;
 
     return 0;
 }
