@@ -5,10 +5,11 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+#include "graph.cpp"
 
 using namespace std;
 
-vector<int> nearest_neighbor(vector< vector< pair<int,int> > > G, size_t N, int start)
+vector<int> nearest_neighbor(GraphLib::Graph_t G, size_t N, int start)
 {
     int curr = start;
     vector<bool> visited(N,false);

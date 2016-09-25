@@ -1,5 +1,8 @@
-//Implementation of Prim's Algorithm
-//The output is a minimum spanning tree (MST)
+/** ----------------------------------------------------------------------------
+ Implementation of Prim's Algorithm
+ The output is a minimum spanning tree (MST)
+ Alexander Karlsson.
+----------------------------------------------------------------------------- */
 #include <climits>
 #include <queue>
 #include <numeric>

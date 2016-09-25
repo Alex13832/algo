@@ -14,8 +14,8 @@ Node makeNode(int weight)
     return n;
 }
 
-int main() {
-
+int main()
+{
     Node n0 = makeNode(0);
     Node n1 = makeNode(0);
     Node n2 = makeNode(0);

@@ -1,13 +1,13 @@
 /** ------------------------------------------------------------
-* Tests for Kosaraju implementation. 
-* Alexander Karlsson, 2015-08-01
+ Tests for Kosaraju implementation.
+ Alexander Karlsson, 2015-08-01
 * -------------------------------------------------------------- */
 #include "../kosaraju.cc"
 #include <iostream>
 using namespace std;
 
-int main() {
-
+int main()
+{
 	cout << "Test 1" << endl;
 	// From GeeksForGeeks
 	Graph G1(5);
@@ -53,7 +53,7 @@ int main() {
 			cout << v << " ";
 		}
 		cout << endl;
-	} 
+	}
 
 	cout << "Test 3" << endl;
 	//My own

@@ -1,10 +1,15 @@
+/** ---------------------------------------------------------------------------
+ Depth first search algorithm for path finding.
+ Alexander Karlsson
+----------------------------------------------------------------------------- */
 #include "../data_structures/graph.h"
 #include <algorithm>
 #include <climits>
 #include <vector>
 using namespace std;
 
-pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
+pair<vector<int>,bool> pathDFS(Graph G, int s, int t)
+{
 	vector<bool> explored(G.size(),false);
 	vector<int> stack;
 	stack.push_back(s);
@@ -21,8 +26,8 @@ pair<vector<int>,bool> pathDFS(Graph G, int s, int t) {
 				stack.push_back(i);
 				if (prev[i] == -1) prev[i] = v;
 			}
-		}	
-	}	
+		}
+	}
 
 	vector<int> path{t};
 	int next = t;

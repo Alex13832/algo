@@ -1,9 +1,13 @@
+/** ---------------------------------------------------------------------------
+ Tests for the Bellman Ford algorithm.
+----------------------------------------------------------------------------- */
 #include "../../data_structures/graph.cc"
 #include "../bellman_ford.cc"
 #include <vector>
 using namespace std;
 
-bool test_bellman_ford() {
+bool test_bellman_ford()
+{
 	Graph g(5);
 	g.addDirEdge(0,4,2);
 	g.addDirEdge(0,-1,1);
@@ -27,16 +31,17 @@ bool test_bellman_ford() {
 	try {
 		bellman_ford(g2,0);
 	} catch(std::invalid_argument) {
-		negCycle = true;	
+		negCycle = true;
 	}
 
 	return a && negCycle;
 }
 
-int main() {
+int main()
+{
 	if(test_bellman_ford()) {
 		cout << "Bellman-Ford pass" << endl;
 	} else {
 		cout << "Bellman-Ford fail" << endl;
-	} 
+	}
 }

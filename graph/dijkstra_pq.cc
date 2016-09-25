@@ -1,13 +1,8 @@
-// Updated implementation of Dijkstra's algorithm
-// Is still using a priority queue.
-// Graph structure: vector<vector<pair<int,int>>> adj
-//
-// Undirected graph:
-//            adj[x].push_back(make_pair(y, weight));
-//            adj[y].push_back(make_pair(x, weight));
-//
-// Alexander Karlsson 2016-03-14
-
+/** ---------------------------------------------------------------------------
+ Dijkstra's algorithm for finding the shortest paths between nodes in a graph.
+ This implementation exploits a priority queue. 
+ Alexander Karlsson 2016-03-14
+----------------------------------------------------------------------------- */
 #include <vector>
 #include <queue>
 #include <iostream>
@@ -23,10 +18,13 @@ struct comp_dijkstra {
   {return lhs.second>rhs.second;}
 };
 
+/**
+ Dijkstra's algorithm with a priority queue.
+*/
 vector<uint> dijkstra_pq(vector<vector<pair<int, int> >> G, const int s)
 {
     priority_queue<pair<uint,uint>, vector<pair<uint,uint>>,comp_dijkstra> pq;
-    
+
     vector<uint> dist(G.size(),UINT_MAX);
     vector<int> prev(G.size(),0);
 

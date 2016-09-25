@@ -1,10 +1,11 @@
 /** ------------------------------------------------------------
-* Tests for floyd_warshall.cc 
-* Alexander Karlsson, 2015-08-02
+ Tests for floyd_warshall.cc
+ Alexander Karlsson, 2015-08-02
 * -------------------------------------------------------------- */
 #include "../floyd_warshall.cc"
 
-int main() {
+int main()
+{
 	cout << "Test 1 " << endl;
 
 	Graph G1(4);
@@ -16,7 +17,7 @@ int main() {
 	G1.addDirEdge(2,2,0);
 	G1.addDirEdge(2,3,3);
 	G1.addDirEdge(3,4,0);
-	
+
 	vector<vector<int>> fw1 = floyd_warshall(G1);
 
 	for (auto vec: fw1) {
@@ -31,7 +32,6 @@ int main() {
 
 	for (auto p: path1) cout << p << "    ";
 	cout << endl;
-	
 
 	cout << "Test 2" << endl;
 
@@ -60,6 +60,4 @@ int main() {
 
 	for (auto p: path) cout << p << "    ";
 	cout << endl;
-
-
 }
