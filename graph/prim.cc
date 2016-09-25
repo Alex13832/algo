@@ -34,7 +34,6 @@ vector<uint> prims(vector<vector<pair<int,int>>> G, int s)
 		}
 
 		visited[u] = true;
-
 	}
 
 	return weight;
