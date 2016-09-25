@@ -1,3 +1,7 @@
+/** ---------------------------------------------------------------------------
+ Updated tests for Prim's algorithm.
+ Alexander Karlsson 2016-09-25
+----------------------------------------------------------------------------- */
 #include "../../data_structures/graph.cc"
 #include "../prim.cc"
 #include <fstream>
