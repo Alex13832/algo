@@ -4,6 +4,7 @@
 #include "../../data_structures/graph.cc"
 #include "../bellman_ford.cc"
 #include <vector>
+#include "../graph.cpp"
 using namespace std;
 
 bool test_bellman_ford()

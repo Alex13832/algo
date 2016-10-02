@@ -32,13 +32,30 @@ void make_edge(Graph_t& G, int s, int t, int w)
 }
 
 /**
- Make an edge from s to t with edge weight t. Set t = 0 for no weight.
+ Same description as above, this one is for directed edges.
+*/
+void make_edge(Graph_t& G, int s, int t)
+{
+    G[s].push_back(make_pair(t,w));
+    G[t].push_back(make_pair(s,w));
+}
+
+/**
+ Make an edge from s to t with edge weight t.
  @param[in/out] G, the actual graph.
  @param[in] s, starting node.
  @param[in] t, ending node.
  @param[in] w, edge weight.
 */
 void make_dir_edge(Graph_t& G, int s, int t, int w)
+{
+    G[s].push_back(make_pair(t,w));
+}
+
+/**
+ Same description as above. This one is for directed edges.
+*/
+void make_dir_edge(Graph_t& G, int s, int t)
 {
     G[s].push_back(make_pair(t,w));
 }
