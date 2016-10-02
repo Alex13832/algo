@@ -14,10 +14,8 @@ void bucket_sort(vector<int>& array)
     vector<vector<int>> buckets(nbrOfBuckets+1);
 
     /* Put in buckets */
-    for (int& x: array) {
+    for (int x: array)
         buckets[(int)sqrt(x)].push_back(x);
-        x = 0;
-    }
 
     /* Put back elements */
     int count = 0;
