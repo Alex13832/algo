@@ -19,13 +19,6 @@ void pascals_triangle(int n)
       }
 }
 
-// Returns the number of people that need to be in the same room so that
-// two people have the same birthday with the probability p
-int number_of_people_gdp(double p)
-{
-      return ceil(sqrt(2*365*log(1/(1-p))));
-}
-
 // Computes the angle between the hour and minut hands
 int clock_angle(int h, int m)
 {

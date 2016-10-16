@@ -1,6 +1,7 @@
 #include <assert.h>
 #include "quicksort.c"
-#include "math_fun.c"
+//#include "math_fun.c"
+#include "bit_algorithms.c"
 #include "search.c"
 #include "arrays.c"
 #include "combinatorial.c"
@@ -89,9 +90,6 @@ void test_some_math()
       assert(neg_nibbles(173,0) == 160 && neg_nibbles(429,1) == 256);;
       // Test powX
       assert(powX(7,11) == 1977326743 && pow(2,8) == 256 && pow(123123,0) == 1);
-      // test counting number of twos
-      assert(count_number2_inrange(122) == 26);
-
 }
 
 void test_strings()
@@ -150,28 +148,7 @@ void test_arrays() {
       zero_entries_fix(N1, M1, mat);
 }
 
-void test_fun()
-{
-      // Test Pascal's triangle
-      //pascals_triangle(10);
 
-      // Test the birthday paradox
-      //int n = number_of_people_gdp(0.999);
-      //printf("%d\n", n);
-
-      // Test clock angle
-
-      /* int a1 = clock_angle(9,59);
-      printf("%d\n", a1);
-      int a2 = clock_angle(12,15);
-      printf("%d\n", a2);
-      int a3 = clock_angle(18,00); // 180
-      printf("%d\n", a3);
-      int a4 = clock_angle(21,00); // 90
-      printf("%d\n", a4);
-      */
-
-}
 
 void test_binary_search()
 {
@@ -186,7 +163,6 @@ int main(int argc, char const *argv[])
 {
       test_bit_algo();
       test_quicksort();
-      test_fun();
       test_binary_search();
       test_kadane();
       test_knapsack();

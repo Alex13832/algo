@@ -15,13 +15,14 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = sudoku heaps
+PROGS = sudoku heaps check_sudoku
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 sudoku: sudoku.o
 heaps: heaps.o
+check_sudoku: check_sudoku
 
 # Phony targets
 .PHONY: all clean

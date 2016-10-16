@@ -2,8 +2,6 @@
 // Some code Credit to Sean Eron Anderson at Stanford University
 // Modified to usable code by me, Alexander Karlsson
 // begun 2016-02-02
-
-#include <stdio.h>
 #include <stdlib.h>
 #include <limits.h>
 
@@ -30,7 +28,7 @@ int opposite_sign(int x, int y)
       return ((x ^ y) < 0);
 }
 
-// Returns a non-negative number of even numbers 
+// Returns a non-negative number of even numbers
 int is_even(int x)
 {
       return (x & 1) == 0;
