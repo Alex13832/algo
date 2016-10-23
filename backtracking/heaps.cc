@@ -4,36 +4,29 @@
 */
 #include <iostream>
 #include <string>
+#include <algorithm>
 using namespace std;
-int count = 0;
 
-/* Swaps str[i] <-> str[j]*/
-void swap(string& str, int i, int j) {
-	char a = str[i];
-	char b = str[j];
-	str[j] = a;
-	str[i] = b;
-}
 /* Heaps algorithm */
-void heaps(size_t n, string& str) {
+void heaps(size_t n, string& str, int& count) {
 	if (n == 1) {
-		//cout << str << endl;
-		count ++;
-	} else {
+		cout << str << endl;
+		count++;
+	} else
 		for (size_t i = 0; i < n; i++) {
-			heaps(n-1, str);
-			if (n % 2 == 0) swap(str,i,n-1);
-			else swap(str,0,n-1);
+			heaps(n-1, str, count);
+			if (n % 2 == 0) swap(str[i],str[n-1]);
+			else swap(str[0],str[n-1]);
 		}
-	}
 }
 
 int main() {
+	int count = 0;
 	string obj;
 	cin >> obj;
 	int n = obj.length();
 	cout << "-------------------" << endl;
-	heaps(n,obj);
+	heaps(n,obj, count);
 	cout << "-------------------" << endl;
 	cout << "count " << count << endl;
 }
