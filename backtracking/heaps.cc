@@ -1,6 +1,6 @@
 /**
-* Heap's algorithm for generating all 
-* permutations of a string. 
+* Heap's algorithm for generating all
+* permutations of a string.
 */
 #include <iostream>
 #include <string>
@@ -15,18 +15,15 @@ void swap(string& str, int i, int j) {
 	str[i] = b;
 }
 /* Heaps algorithm */
-void heaps(size_t n, string& str) {	
+void heaps(size_t n, string& str) {
 	if (n == 1) {
-		cout << str << endl;
+		//cout << str << endl;
 		count ++;
 	} else {
 		for (size_t i = 0; i < n; i++) {
 			heaps(n-1, str);
-			if (n % 2 == 0) {
-				swap(str,i,n-1);
-			} else {
-				swap(str,0,n-1);
-			}	
+			if (n % 2 == 0) swap(str,i,n-1);
+			else swap(str,0,n-1);
 		}
 	}
 }
