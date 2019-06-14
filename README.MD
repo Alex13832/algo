@@ -20,8 +20,8 @@ This repository contains implementations of various known algorithms from select
 
 ### Backtracking
 
-* Heaps
-* Sudoku
+* [Heaps](https://github.com/alex011235/algorithm/blob/master/backtracking/heaps.cc)
+* [Sudoku](https://github.com/alex011235/algorithm/blob/master/backtracking/sudoku.cc)
 
 ### Data structures
 
