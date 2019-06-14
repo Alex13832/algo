@@ -71,21 +71,29 @@ Network
 Ford-Fulkerson
 PageRank
 
+Search
+----------------------------
+Binary serach
+K-max-min search
+Linear Search
+
 Sequence
 ----------------------------
-Binary-search
-k-max-min-search
-Linear-search
-Bubble-sort
-Heapsort
-Insertion-sort
-Mergesort
-Quicksort
-Gnome-sort
-Bucketsort
-Spellchecker
 Longes increasing subsequence
-Boyer-Moore
-Crossword-dictionary
-Longest common substring
-Rabin-Karp
+
+Sort
+----------------------------
+BubbleSort
+BucketSort
+GnomeSort
+HeapSort
+InsertionSort
+MergeSort
+QuickSort
+
+Strings
+----------------------------
+Boyer Moore
+Crossword dictionary
+Longest commond substring
+Rabin Karp
