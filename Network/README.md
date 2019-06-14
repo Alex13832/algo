@@ -9,7 +9,6 @@ This algorithm computes the maximum flow from the source vertex s to the sink ve
 <p align="center">
 <img src="images/fordfulkerson1.png" height="230" alt="Screenshot"/>
 </p>
-
 <p align="center">
 <img src="images/fordfulkerson2.png" height="230" alt="Screenshot"/>
 </p>
