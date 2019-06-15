@@ -19,12 +19,12 @@ This repository contains implementations of various known algorithms from select
 ## Implemented algorithms
 
 ### Backtracking
+* Heaps
+* Sudoku
 
-* [Heaps](https://github.com/alex011235/algorithm/blob/master/backtracking/heaps.cc)
-* [Sudoku](https://github.com/alex011235/algorithm/blob/master/backtracking/sudoku.cc)
+### Bit algorithms
 
 ### Data structures
-
 * Binary heap
 * Doubly linked list
 * Dynamic array
@@ -37,13 +37,11 @@ This repository contains implementations of various known algorithms from select
 * Stack
 
 ### Geometry
-
 * Closest pair
 * Quickhull
 * Triangulation
 
 ### Graph
-
 * Bellman-Ford
 * BFS
 * DFS
@@ -52,57 +50,49 @@ This repository contains implementations of various known algorithms from select
 * Dijkstra, prio-Q
 * Floyd-Warshall
 * Kosaraju
+* Minimax
 * Prims
 * Travelling salesman approximation algorithm (nearest neighbor)
-* Minimax
 
 ### Greedy
-
 * Load balancing problem
 * Stable marriage
 
 ### Image processing
-
-* Convolution
 * Adaptive threshold
+* Convolution
+* Difference detector 
 * Median filter
 * Rank filter
-* Difference detector
 * Template match
 
 ### Machine Learning
-
 * Bagging
 * Decision tree
 * K-means clustering
 * KNN
 
-### Math/Numeric
-
+### Math
 * Euclidean (gcd)
+* Eratosthenes prime numbers
 * FFT
 * Karatsuba
 * Matrix multiplication
-* Eratosthenes prime numbers
 * Random numbers
 
 ### Network
-
 * Ford-Fulkerson
 * PageRank
 
 ### Search
-
 * Binary serach
 * K-max-min search
 * Linear Search
 
 ### Sequence
-
 * Longes increasing subsequence
 
 ### Sort
-
 * BubbleSort
 * BucketSort
 * GnomeSort
@@ -112,7 +102,6 @@ This repository contains implementations of various known algorithms from select
 * QuickSort
 
 ### Strings
-
 * Boyer Moore
 * Crossword dictionary
 * Longest commond substring
