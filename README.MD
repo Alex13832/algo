@@ -102,6 +102,7 @@ This repository contains implementations of various known algorithms from select
 * QuickSort
 
 ### Strings
+* Bitap
 * Boyer Moore
 * Crossword dictionary
 * Longest commond substring
