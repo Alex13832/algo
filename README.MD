@@ -90,7 +90,7 @@ This repository contains implementations of various known algorithms from select
 * Linear Search
 
 ### Sequence
-* Longes increasing subsequence
+* Longest increasing subsequence
 
 ### Sort
 * BubbleSort
