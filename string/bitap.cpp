@@ -16,7 +16,7 @@ using namespace std;
  * @return string with match.
  * @link <a href="https://en.wikipedia.org/wiki/Bitap_algorithm">Bitap Wikipedia</a>
  */
-string StringAlgorithm::bitap_search(string text, string pattern) {
+string StringAlgorithm::BitapSearch(string text, string pattern) {
   size_t m = pattern.length();
 
   if (m == 0) return text;

@@ -12,20 +12,20 @@ using namespace std;
 TEST(test_bitap, test_search) {
   string text = "this is a bitap test";
   string pattern = "bitap";
-  string res = StringAlgorithm::bitap_search(text, pattern);
+  string res = StringAlgorithm::BitapSearch(text, pattern);
   EXPECT_EQ(res, "bitap test");
 }
 
 TEST(test_bitap, search_not_found) {
   string text = "this is a bitap test";
   string pattern = "dijkstra";
-  string res = StringAlgorithm::bitap_search(text, pattern);
+  string res = StringAlgorithm::BitapSearch(text, pattern);
   EXPECT_EQ(res.size(), 0);
 }
 
 TEST(test_bitap, empty_pattern) {
   string text = "this is a bitap test";
-  string res = StringAlgorithm::bitap_search(text, "");
+  string res = StringAlgorithm::BitapSearch(text, "");
   EXPECT_EQ(res, text);
 }
 

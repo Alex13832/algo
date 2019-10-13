@@ -15,7 +15,7 @@ TEST(test_boyer_more, nbr_of_occurences_0) {
   string text = "Banana banana";
   string pattern = "Manana";
 
-  vector<int> matches = StringAlgorithm::boyer_moore(text, pattern);
+  vector<int> matches = StringAlgorithm::BoyerMore(text, pattern);
   EXPECT_EQ(matches.size(), 0);
 }
 
@@ -23,7 +23,7 @@ TEST(test_boyer_more, nbr_of_occurences_1) {
   string text = "Banana banana";
   string pattern = "Banana ba";
 
-  vector<int> matches = StringAlgorithm::boyer_moore(text, pattern);
+  vector<int> matches = StringAlgorithm::BoyerMore(text, pattern);
   EXPECT_EQ(matches.size(), 1);
 }
 
@@ -37,24 +37,25 @@ TEST(test_boyer_more, nbr_of_occurences_many) {
 
   string pattern = "cucumber";
 
-  vector<int> matches = StringAlgorithm::boyer_moore(text, pattern);
+  vector<int> matches = StringAlgorithm::BoyerMore(text, pattern);
   EXPECT_EQ(matches.size(), 8);
 }
 
 TEST(test_boyer_more, empty_input_pattern) {
   string text = "Banana banana";
-  vector<int> matches = StringAlgorithm::boyer_moore(text, "");
+  vector<int> matches = StringAlgorithm::BoyerMore(text, "");
   EXPECT_EQ(matches.size(), 0);
 }
 
 TEST(test_boyer_more, empty_input_text) {
   string pattern = "Banana";
-  vector<int> matches = StringAlgorithm::boyer_moore("", pattern);
+  vector<int> matches = StringAlgorithm::BoyerMore("", pattern);
   EXPECT_EQ(matches.size(), 0);
 }
 
 TEST(test_boyer_more, empty_input) {
-  vector<int> matches = StringAlgorithm::boyer_moore("", "");
+  vector<int> matches = StringAlgorithm::BoyerMore("", "");
   EXPECT_EQ(matches.size(), 0);
 }
+
 #pragma clang diagnostic pop

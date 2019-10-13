@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int StringAlgorithm::last_occurence(string str, char c) {
+int StringAlgorithm::LastOccurence(string str, char c) {
   int index = str.length();
   while (index != 0) {
     if (str[index] == c) {
@@ -28,7 +28,7 @@ int StringAlgorithm::last_occurence(string str, char c) {
  * @return A list of locations.
  * @link <a href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm">Boyer-More Wikipedia.</a>
  */
-vector<int> StringAlgorithm::boyer_moore(string text, string pattern) {
+vector<int> StringAlgorithm::BoyerMore(string text, string pattern) {
   int m = pattern.length(), n = text.length(), i = m - 1, j = i;
   int chunk = 0, w_length = m;
   vector<int> matches;
@@ -46,7 +46,7 @@ vector<int> StringAlgorithm::boyer_moore(string text, string pattern) {
       }
 
     } else {
-      i = i + m - min(j, 1 + StringAlgorithm::last_occurence(text, text[i]));
+      i = i + m - min(j, 1 + StringAlgorithm::LastOccurence(text, text[i]));
       j = m - 1;
     }
 
