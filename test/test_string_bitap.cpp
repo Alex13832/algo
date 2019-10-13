@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
 //
 // Created by Alexander Karlsson on 2019-10-13.
 //
@@ -28,5 +26,3 @@ TEST(test_bitap, empty_pattern) {
   string res = StringAlgorithm::BitapSearch(text, "");
   EXPECT_EQ(res, text);
 }
-
-#pragma clang diagnostic pop

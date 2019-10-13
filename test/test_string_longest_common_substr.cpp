@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
 //
 // Created by Alexander Karlsson on 2019-10-13.
 //
@@ -18,4 +16,3 @@ TEST(test_longest_common_substring, standard) {
 
   EXPECT_EQ(C, "kruskaldijkstrawithicecream");
 }
-#pragma clang diagnostic pop

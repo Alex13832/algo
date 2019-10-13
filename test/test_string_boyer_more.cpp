@@ -1,5 +1,3 @@
-#pragma clang diagnostic push
-#pragma ide diagnostic ignored "cert-err58-cpp"
 //
 // Created by Alexander Karlsson on 2019-10-13.
 //
@@ -57,5 +55,3 @@ TEST(test_boyer_more, empty_input) {
   vector<int> matches = StringAlgorithm::BoyerMore("", "");
   EXPECT_EQ(matches.size(), 0);
 }
-
-#pragma clang diagnostic pop
