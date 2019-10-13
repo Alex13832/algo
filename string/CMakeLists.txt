@@ -6,6 +6,7 @@ set(HEADER_FILES
 
 set(SOURCE_FILES
         bitap.cpp
+        boyer_moore.cpp
         )
 
 add_library(string STATIC ${SOURCE_FILES} ${HEADER_FILES})

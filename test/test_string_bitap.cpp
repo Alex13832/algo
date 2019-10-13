@@ -1,3 +1,5 @@
+#pragma clang diagnostic push
+#pragma ide diagnostic ignored "cert-err58-cpp"
 //
 // Created by Alexander Karlsson on 2019-10-13.
 //
@@ -7,36 +9,25 @@
 
 using namespace std;
 
-/**
- * Test if the bitap algorithm finds the pattern.
- */
-TEST(string_algorithms_bitap, test_search) {
+TEST(test_bitap, test_search) {
 
   string text = "this is a bitap test";
   string pattern = "bitap";
-
   string res = StringAlgorithm::bitap_search(text, pattern);
   EXPECT_EQ(res, "bitap test");
 }
 
-/**
- * Test what happens if pattern is not found.
- */
-TEST(string_algorithms_bitap, test_search_not_found) {
+TEST(test_bitap, search_not_found) {
   string text = "this is a bitap test";
   string pattern = "dijkstra";
-
   string res = StringAlgorithm::bitap_search(text, pattern);
   EXPECT_EQ(res.size(), 0);
 }
 
-/**
- * Test what happens if pattern is empty.
- */
-TEST(string_algorithms_bitap, test_empty_pattern) {
+TEST(test_bitap, empty_pattern) {
   string text = "this is a bitap test";
-  string pattern = "";
-
-  string res = StringAlgorithm::bitap_search(text, pattern);
+  string res = StringAlgorithm::bitap_search(text, "");
   EXPECT_EQ(res, text);
 }
+
+#pragma clang diagnostic pop
