@@ -10,7 +10,6 @@
 using namespace std;
 
 TEST(test_bitap, test_search) {
-
   string text = "this is a bitap test";
   string pattern = "bitap";
   string res = StringAlgorithm::bitap_search(text, pattern);

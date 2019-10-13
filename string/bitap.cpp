@@ -8,6 +8,14 @@
 
 using namespace std;
 
+/**
+ * @brief The algorithm tells whether a given text contains a substring which
+ * is "approximately equal" to a given pattern.
+ * @param text The text to search within.
+ * @param pattern The pattern to match.
+ * @return string with match.
+ * @link <a href="https://en.wikipedia.org/wiki/Bitap_algorithm">Bitap Wikipedia</a>
+ */
 string StringAlgorithm::bitap_search(string text, string pattern) {
   size_t m = pattern.length();
 

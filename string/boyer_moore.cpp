@@ -21,7 +21,13 @@ int StringAlgorithm::last_occurence(string str, char c) {
   return 0;
 }
 
-/* Modified Boyer-Moore, finds all occurrences */
+/**
+ * @brief Returns the found locations of the pattern in text.
+ * @param text The text to look for the pattern.
+ * @param pattern The substring to match.
+ * @return A list of locations.
+ * @link <a href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm">Boyer-More Wikipedia.</a>
+ */
 vector<int> StringAlgorithm::boyer_moore(string text, string pattern) {
   int m = pattern.length(), n = text.length(), i = m - 1, j = i;
   int chunk = 0, w_length = m;
