@@ -2,7 +2,7 @@
 * Boyer-Moore algorithm test.
 * Alexander Karlson, 2015-07-21 
 * -------------------------------------------------------- */
-#include "../boyer_moore.cc"
+#include "boyer_moore.cc"
 #include <iostream>
 #include <vector>
 using namespace std;

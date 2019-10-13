@@ -15,14 +15,13 @@ LDFLAGS =   -g
 #LDFLAGS +=  -stdlib=libc++
 
 # Targets
-PROGS = test_lcs test_boyer_moore test_cross_dict
+PROGS = test_lcs test_cross_dict
 
 all: $(PROGS)
 
 # Targets rely on implicit rules for compiling and linking
 test_lcs: test_lcs.o
 longest_common_substr: longest_common_substr.o
-test_boyer_moore: test_boyer_moore.o	
 test_cross_dict:test_cross_dict.o
 
 # Phony targets
