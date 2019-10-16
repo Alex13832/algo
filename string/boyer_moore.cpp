@@ -10,7 +10,7 @@
 
 using namespace std;
 
-int StringAlgorithm::LastOccurence(string str, char c) {
+int StringAlgorithm::LastOccurrence(string str, char c) {
   int index = str.length();
   while (index != 0) {
     if (str[index] == c) {
@@ -46,7 +46,7 @@ vector<int> StringAlgorithm::BoyerMore(string text, string pattern) {
       }
 
     } else {
-      i = i + m - min(j, 1 + StringAlgorithm::LastOccurence(text, text[i]));
+      i = i + m - min(j, 1 + StringAlgorithm::LastOccurrence(text, text[i]));
       j = m - 1;
     }
 

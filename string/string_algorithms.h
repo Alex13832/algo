@@ -24,7 +24,7 @@ class StringAlgorithm {
  private:
   StringAlgorithm() { delete this; };
 
-  static int LastOccurence(std::string str, char c);
+  static int LastOccurrence(std::string str, char c);
 
 };
 

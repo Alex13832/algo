@@ -45,6 +45,5 @@ void process_dictionary_file(string infile, string outfile) {
 		ofil << word << '\n';
 	});	 
 	ofil.close();
-	
 }
 
