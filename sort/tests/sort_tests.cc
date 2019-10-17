@@ -11,8 +11,8 @@
 #include "../heapsort.cc"
 #include "../quicksort.cc"
 #include "../insertion_sort.cc"
-#include "../merge_sort.cc"
-#include "../bubble_sort.cc"
+#include "merge_sort.cpp"
+#include "../../sorting/bubble_sort.cpp"
 #include "../gnome_sort.cpp"
 #include "../bucket_sort.cc"
 
