@@ -6,6 +6,7 @@
 #include "sort_algorithms.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <list>
 
 using namespace std;
@@ -40,6 +41,51 @@ template void BubbleSort<signed>(std::vector<signed> &vec);
 template void BubbleSort<float>(std::vector<float> &vec);
 template void BubbleSort<double>(std::vector<double> &vec);
 template void BubbleSort<string>(std::vector<string> &vec);
+
+/////////////////////////////////////////////
+/// Bucket-sort
+/////////////////////////////////////////////
+
+template<typename T>
+void BucketSort(std::vector<T> &vec)
+{
+  if (vec.empty()) {
+    return;
+  }
+
+  if (std::any_of(vec.begin(), vec.end(), [](T t) { return t < 0; })) {
+    return;
+  }
+
+  auto maxElemPtr{max_element(vec.begin(), vec.end())};
+  int nbrOfBuckets{static_cast<int>(sqrt(*maxElemPtr))};
+  vector<vector<T>> buckets(nbrOfBuckets + 1);
+
+  // Put in buckets
+  for (T x: vec) {
+    buckets[static_cast<T>(sqrt(x))].push_back(x);
+  }
+
+  // Put back elements
+  int count{0};
+  for (const vector<T> &bucket: buckets) {
+    for (T e: bucket) {
+      vec[count++] = e;
+    }
+  }
+
+  // Insertion sort (Bentley 1993)
+  for (size_t i = 1; i < vec.size(); i++) {
+    for (size_t j = i; j > 0 && vec[j - 1] > vec[j]; j--)
+      swap(vec[j], vec[j - 1]);
+  }
+}
+
+// Defines what types may be used for Bucket-sort.
+template void BucketSort<unsigned>(std::vector<unsigned> &vec);
+template void BucketSort<signed>(std::vector<signed> &vec);
+template void BucketSort<float>(std::vector<float> &vec);
+template void BucketSort<double>(std::vector<double> &vec);
 
 /////////////////////////////////////////////
 /// Merge-sort

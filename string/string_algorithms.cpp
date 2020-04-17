@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace StringAlgorithm {
+namespace String {
 
 string BitapSearch(const string &text, const string &pattern)
 {

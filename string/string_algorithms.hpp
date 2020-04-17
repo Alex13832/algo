@@ -10,13 +10,13 @@
 /// 2019-10-13 Bitap search
 ///
 
-#ifndef ALGORITHM_SRC_STRING_STRING_H_
-#define ALGORITHM_SRC_STRING_STRING_H_
+#ifndef ALGORITHM_SRC_STRING_STRING_HPP_
+#define ALGORITHM_SRC_STRING_STRING_HPP_
 
 #include <string>
 #include <set>
 
-namespace StringAlgorithm {
+namespace String {
 
 /// \brief The algorithm tells whether a given text contains a substring which is "approximately equal" to a given pattern.
 /// \param text The text to search within.
@@ -54,4 +54,4 @@ std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pat
 std::vector<int> RabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m);
 };
 
-#endif //ALGORITHM_SRC_STRING_STRING_H_
+#endif //ALGORITHM_SRC_STRING_STRING_HPP_
