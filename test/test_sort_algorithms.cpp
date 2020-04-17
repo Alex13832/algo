@@ -146,6 +146,52 @@ TEST(test_sort_gnome_sort, other_type_string)
 }
 
 /////////////////////////////////////////////
+/// Heap-sort
+/////////////////////////////////////////////
+
+TEST(test_sort_heap_sort, simple_test_ints)
+{
+  vector<int> numbers{1, 9, 10, 2, 1, 1, 3, 2, 1, 4, 40, 40, 1};
+  Sort::HeapSort(numbers);
+  EXPECT_TRUE(is_sorted(numbers.begin(), numbers.end()));
+}
+
+TEST(test_sort_heap_sort, test_empty)
+{
+  vector<int> numbers;
+  Sort::HeapSort(numbers);
+  EXPECT_EQ(numbers.size(), 0);
+}
+
+TEST(test_sort_heap_sort, already_sorted)
+{
+  vector<unsigned> numbers{1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 15};
+  Sort::HeapSort(numbers);
+  EXPECT_TRUE(is_sorted(numbers.begin(), numbers.end()));
+}
+
+TEST(test_sort_heap_sort, negative_numbers)
+{
+  vector<int> numbers{-1, -10, -5, 5, 6, 1};
+  Sort::HeapSort(numbers);
+  EXPECT_TRUE(is_sorted(numbers.begin(), numbers.end()));
+}
+
+TEST(test_sort_heap_sort, other_type_float)
+{
+  vector<double> numbers{-10.5, 2.5, 3.14, -3.14};
+  Sort::HeapSort(numbers);
+  EXPECT_TRUE(is_sorted(numbers.begin(), numbers.end()));
+}
+
+TEST(test_sort_heap_sort, other_type_string)
+{
+  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  Sort::HeapSort(strings);
+  EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
+}
+
+/////////////////////////////////////////////
 /// Merge-sort
 /////////////////////////////////////////////
 

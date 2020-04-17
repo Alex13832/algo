@@ -116,6 +116,93 @@ template void GnomeSort<double>(std::vector<double> &vec);
 template void GnomeSort<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
+/// Heap-sort
+/////////////////////////////////////////////
+
+/// \brief Sift-down operation for binary heaps. Puts new elements to the appropriate indicess.
+/// \tparam T Type in vector.
+/// \param vec the vector to arrange the elements.
+/// \param start The starting position.
+/// \param len The length.
+/// \link <a href=https://en.wikipedia.org/wiki/Binary_heap#Extract>SiftDown, Wikipedia.</>
+template<typename T>
+void Siftdown(std::vector<T> &vec, int start, int len)
+{
+  int root{start};
+
+  while (root * 2 + 1 <= len) {
+    int child{root * 2 + 1};
+    int swap{root};
+
+    if (vec[swap] < vec[child]) {
+      swap = child;
+    }
+
+    if (child + 1 <= len && vec[swap] < vec[child + 1]) {
+      swap = child + 1;
+    }
+
+    if (swap == root) {
+      return;
+    } else {
+      T t{vec[root]};
+      vec[root] = vec[swap];
+      vec[swap] = t;
+      root = swap;
+    }
+  }
+}
+
+/// \brief Builds the heap vector, largest value at the root.
+/// \tparam T Type in vector.
+/// \param vec The vector to heapify.
+/// \param len Number of elements.
+template<typename T>
+void Heapify(std::vector<T> &vec, size_t len)
+{
+  int start = floor((len - 2) / 2);
+
+  while (start >= 0) {
+    Siftdown(vec, start, len - 1);
+    start--;
+  }
+}
+
+/// \brief Internal function for the Heapsort algorithm.
+/// \tparam T Type in vector.
+/// \param vec The vector to be sorted.
+/// \param len Number of elements.
+template<typename T>
+void HeapSortPriv(std::vector<T> &vec, size_t len)
+{
+  Heapify(vec, len);
+
+  size_t end{len - 1};
+  while (end > 0) {
+    std::swap(vec[end], vec[0]);
+    end--;
+    Siftdown(vec, 0, end);
+  }
+}
+
+template<typename T>
+void HeapSort(std::vector<T> &vec)
+{
+  if (vec.empty()) {
+    return;
+  }
+
+  HeapSortPriv(vec, vec.size());
+}
+
+// Defines what types may be used for Heap-sort.
+template void HeapSort<unsigned>(std::vector<unsigned> &vec);
+template void HeapSort<signed>(std::vector<signed> &vec);
+template void HeapSort<float>(std::vector<float> &vec);
+template void HeapSort<double>(std::vector<double> &vec);
+template void HeapSort<std::string>(std::vector<std::string> &vec);
+
+/////////////////////////////////////////////
 /// Merge-sort
 /////////////////////////////////////////////
 
@@ -193,7 +280,7 @@ void MergeSort(std::vector<T> &lst)
   lst = MergeSortPriv(lst);
 }
 
-// Defines what types may be used for Bubble-sort.
+// Defines what types may be used for Merge-sort.
 template void MergeSort<unsigned>(std::vector<unsigned> &vec);
 template void MergeSort<signed>(std::vector<signed> &vec);
 template void MergeSort<float>(std::vector<float> &vec);

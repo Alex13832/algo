@@ -43,6 +43,13 @@ void BucketSort(std::vector<T> &vec);
 template<typename T>
 void GnomeSort(std::vector<T> &vec);
 
+/// \brief Heap sort algorithm.
+/// \tparam T Type in vector.
+/// \param vec The vector to be sorted.
+/// \link <a href=https://en.wikipedia.org/wiki/Heapsort>Heapsort, Wikipedia.</a>
+template<typename T>
+void HeapSort(std::vector<T> &vec);
+
 /// \brief Merge sort, divide and conquer algorithm.
 /// \tparam T Type in vector.
 /// \param lst The list to sort.
