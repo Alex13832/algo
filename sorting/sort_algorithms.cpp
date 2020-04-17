@@ -9,8 +9,6 @@
 #include <cmath>
 #include <list>
 
-using namespace std;
-
 namespace Sort {
 
 /////////////////////////////////////////////
@@ -40,7 +38,7 @@ template void BubbleSort<unsigned>(std::vector<unsigned> &vec);
 template void BubbleSort<signed>(std::vector<signed> &vec);
 template void BubbleSort<float>(std::vector<float> &vec);
 template void BubbleSort<double>(std::vector<double> &vec);
-template void BubbleSort<string>(std::vector<string> &vec);
+template void BubbleSort<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Bucket-sort
@@ -59,7 +57,7 @@ void BucketSort(std::vector<T> &vec)
 
   auto maxElemPtr{max_element(vec.begin(), vec.end())};
   int nbrOfBuckets{static_cast<int>(sqrt(*maxElemPtr))};
-  vector<vector<T>> buckets(nbrOfBuckets + 1);
+  std::vector<std::vector<T>> buckets(nbrOfBuckets + 1);
 
   // Put in buckets
   for (T x: vec) {
@@ -68,7 +66,7 @@ void BucketSort(std::vector<T> &vec)
 
   // Put back elements
   int count{0};
-  for (const vector<T> &bucket: buckets) {
+  for (const std::vector<T> &bucket: buckets) {
     for (T e: bucket) {
       vec[count++] = e;
     }
@@ -77,7 +75,7 @@ void BucketSort(std::vector<T> &vec)
   // Insertion sort (Bentley 1993)
   for (size_t i = 1; i < vec.size(); i++) {
     for (size_t j = i; j > 0 && vec[j - 1] > vec[j]; j--)
-      swap(vec[j], vec[j - 1]);
+      std::swap(vec[j], vec[j - 1]);
   }
 }
 
@@ -170,14 +168,14 @@ template void MergeSort<unsigned>(std::vector<unsigned> &vec);
 template void MergeSort<signed>(std::vector<signed> &vec);
 template void MergeSort<float>(std::vector<float> &vec);
 template void MergeSort<double>(std::vector<double> &vec);
-template void MergeSort<string>(std::vector<string> &vec);
+template void MergeSort<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Quick-sort
 /////////////////////////////////////////////
 
 template<typename T>
-int Partition(vector<T> &vec, int low, int high)
+int Partition(std::vector<T> &vec, int low, int high)
 {
   T x{vec[high]};
   int i{low - 1};
@@ -185,17 +183,17 @@ int Partition(vector<T> &vec, int low, int high)
   for (int j = low; j != high; j++) {
     if (vec[j] <= x) {
       i++;
-      swap(vec[j], vec[i]);
+      std::swap(vec[j], vec[i]);
     }
   }
 
-  swap(vec[i + 1], vec[high]);
+  std::swap(vec[i + 1], vec[high]);
   return i + 1;
 }
 
-/* Start of the Quicksort algorithm */
+// Start of the Quicksort algorithm
 template<typename T>
-void QuickSort(vector<T> &vec, int low, int high)
+void QuickSort(std::vector<T> &vec, int low, int high)
 {
   if (low < high) {
     int pivot{Partition(vec, low, high)};
@@ -218,5 +216,5 @@ template void QuickSort<unsigned>(std::vector<unsigned> &vec);
 template void QuickSort<signed>(std::vector<signed> &vec);
 template void QuickSort<float>(std::vector<float> &vec);
 template void QuickSort<double>(std::vector<double> &vec);
-template void QuickSort<string>(std::vector<string> &vec);
+template void QuickSort<std::string>(std::vector<std::string> &vec);
 } // namespace Sorting
