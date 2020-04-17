@@ -16,36 +16,44 @@ namespace Sort {
 /// Bubble-sort
 /////////////////////////////////////////////
 
-std::vector<int> BubbleSort(std::vector<int> lst)
+template<typename T>
+void BubbleSort(std::vector<T> &vec)
 {
-  if (lst.empty()) {
-    return vector<int>{};
+  if (vec.empty()) {
+    return;
   }
 
-  size_t n{lst.size()};
+  size_t n{vec.size()};
 
   for (size_t i = 0; i < n; i++) {
     for (size_t j = 0; j < n - 1; j++) {
-      if (lst[j] > lst[j + 1]) {
-        std::swap(lst[j], lst[j + 1]);
+      if (vec[j] > vec[j + 1]) {
+        std::swap(vec[j], vec[j + 1]);
       }
     }
   }
-
-  return lst;
 }
+
+// Defines what types may be used for Bubble-sort.
+template void BubbleSort<unsigned>(std::vector<unsigned> &vec);
+template void BubbleSort<signed>(std::vector<signed> &vec);
+template void BubbleSort<float>(std::vector<float> &vec);
+template void BubbleSort<double>(std::vector<double> &vec);
+template void BubbleSort<string>(std::vector<string> &vec);
 
 /////////////////////////////////////////////
 /// Merge-sort
 /////////////////////////////////////////////
 
 /// \brief Merge step.
+/// \tparam T Type in lists.
 /// \param A First list.
 /// \param B Second list.
 /// \return A sorted and merged vector.
-std::vector<int> merge(std::list<int> &A, std::list<int> &B)
+template<typename T>
+std::vector<T> merge(std::list<T> &A, std::list<T> &B)
 {
-  std::vector<int> C;
+  std::vector<T> C;
 
   while (!A.empty() && !B.empty()) {
     if (A.front() > B.front()) {
@@ -70,7 +78,8 @@ std::vector<int> merge(std::list<int> &A, std::list<int> &B)
   return C;
 }
 
-std::vector<int> MergeSort(const vector<int> &lst)
+template<typename T>
+std::vector<T> MergeSortPriv(const std::vector<T> &lst)
 {
 
   if (lst.empty()) {
@@ -85,7 +94,7 @@ std::vector<int> MergeSort(const vector<int> &lst)
   }
 
   size_t half{n / 2};
-  std::vector<int> A, B;
+  std::vector<T> A, B;
 
   for (auto it = lst.begin(); it != (lst.begin() + half); ++it) {
     A.push_back(*it);
@@ -94,15 +103,28 @@ std::vector<int> MergeSort(const vector<int> &lst)
     B.push_back(*it);
   }
 
-  A = MergeSort(A);
-  B = MergeSort(B);
+  A = MergeSortPriv(A);
+  B = MergeSortPriv(B);
 
-  std::list<int> Al(A.size()), Bl(B.size());
+  std::list<T> Al(A.size()), Bl(B.size());
   copy(A.begin(), A.end(), Al.begin());
   copy(B.begin(), B.end(), Bl.begin());
 
-  return Sort::merge(Al, Bl);
+  return merge(Al, Bl);
 }
+
+template<typename T>
+void MergeSort(std::vector<T> &lst)
+{
+  lst = MergeSortPriv(lst);
+}
+
+// Defines what types may be used for Bubble-sort.
+template void MergeSort<unsigned>(std::vector<unsigned> &vec);
+template void MergeSort<signed>(std::vector<signed> &vec);
+template void MergeSort<float>(std::vector<float> &vec);
+template void MergeSort<double>(std::vector<double> &vec);
+template void MergeSort<string>(std::vector<string> &vec);
 
 /////////////////////////////////////////////
 /// Quick-sort

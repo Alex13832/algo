@@ -19,14 +19,18 @@
 namespace Sort {
 
 /// \brief Bubble sort.
+/// \tparam T type in vector.
 /// \param lst The list to sort.
 /// \return A sorted list.
-std::vector<int> BubbleSort(std::vector<int> lst);
+template<typename T>
+void BubbleSort(std::vector<T> &vec);
 
 /// \brief Merge sort, divide and conquer algorithm.
+/// \tparam T type in vector.
 /// \param lst The list to sort.
 /// \return A sorted list.
-std::vector<int> MergeSort(const std::vector<int> &lst);
+template<typename T>
+void MergeSort(std::vector<T> &lst);
 
 /// \brief Quick-sort algorithm.
 /// \tparam T Type to be sorted.
