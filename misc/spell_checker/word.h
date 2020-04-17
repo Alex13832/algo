@@ -9,16 +9,16 @@
 #include <string>
 
 class Word {
-public:
-    Word(const std::string& w, const std::vector<std::string>& t);
-    std::string get_word() const;
-    unsigned int get_matches(const std::vector<std::string>& t);
-    std::vector<std::string> get_trigrams() { return trigrams; }
+ public:
+  Word(const std::string &w, const std::vector<std::string> &t);
+  std::string get_word() const;
+  unsigned int get_matches(const std::vector<std::string> &t);
+  std::vector<std::string> get_trigrams()
+  { return trigrams; }
 
-private:
-    std::string word;
-    std::vector<std::string> trigrams;
-
+ private:
+  std::string word;
+  std::vector<std::string> trigrams;
 };
 
 #endif // WORD_H

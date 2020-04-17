@@ -8,11 +8,11 @@ SET(QMAKE_CC=gcc QMAKE_CXX=g++)
 # to the absolute path to the directory containing OpenCVConfig.cmake file
 # via the command line or GUI
 find_package(OpenCV REQUIRED)
-list( APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs -lboost")
+list(APPEND CMAKE_CXX_FLAGS "-std=c++0x ${CMAKE_CXX_FLAGS} -g -ftest-coverage -fprofile-arcs -lboost")
 
 
-FIND_PACKAGE( Boost 1.40 COMPONENTS program_options REQUIRED )
-INCLUDE_DIRECTORIES( ${Boost_INCLUDE_DIR} )
+FIND_PACKAGE(Boost 1.40 COMPONENTS program_options REQUIRED)
+INCLUDE_DIRECTORIES(${Boost_INCLUDE_DIR})
 
 # If the package has been found, several variables will
 # be set, you can find the full list with descriptions
