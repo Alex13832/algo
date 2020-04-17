@@ -86,6 +86,36 @@ template void BucketSort<float>(std::vector<float> &vec);
 template void BucketSort<double>(std::vector<double> &vec);
 
 /////////////////////////////////////////////
+/// Gnome-sort
+/////////////////////////////////////////////
+
+template<typename T>
+void GnomeSort(std::vector<T> &vec)
+{
+  int i{0};
+  size_t n{vec.size()};
+
+  while (i < n) {
+
+    if (i == 0)
+      i++;
+    if (vec[i] >= vec[i - 1])
+      i++;
+    else {
+      std::swap(vec[i], vec[i - 1]);
+      i--;
+    }
+  }
+}
+
+// Defines what types may be used for Gnome-sort.
+template void GnomeSort<unsigned>(std::vector<unsigned> &vec);
+template void GnomeSort<signed>(std::vector<signed> &vec);
+template void GnomeSort<float>(std::vector<float> &vec);
+template void GnomeSort<double>(std::vector<double> &vec);
+template void GnomeSort<std::string>(std::vector<std::string> &vec);
+
+/////////////////////////////////////////////
 /// Merge-sort
 /////////////////////////////////////////////
 

@@ -5,8 +5,10 @@
 ///
 /// Change list:
 /// 2015-06-21 Quick-sort.
+/// 2015-06-21 Heap-sort.
 /// 2015-07-30 Bubble-sort.
 /// 2015-07-30 Merge-sort.
+/// 2016-06-28 Gnome-sort.
 /// 2016-10-02 Bucket-sort.
 ///
 
@@ -27,11 +29,19 @@ template<typename T>
 void BubbleSort(std::vector<T> &vec);
 
 /// \brief Bucket sort algorithm.
+/// \note This implementation only works for positive numbers.
 /// \tparam T Type in vector.
-/// \param vec the vector to be sorted.
+/// \param vec The vector to be sorted.
 /// \link <a href="https://en.wikipedia.org/wiki/Bucket_sort">Bucket sort, Wikipedia.</a>
 template<typename T>
 void BucketSort(std::vector<T> &vec);
+
+/// \brief Gnome sort algorithm
+/// \tparam T Type in vector.
+/// \param vec The vector to be sorted.
+/// \link <a href=https://en.wikipedia.org/wiki/Gnome_sort>Gnome sort, Wikipedia.</a>
+template<typename T>
+void GnomeSort(std::vector<T> &vec);
 
 /// \brief Merge sort, divide and conquer algorithm.
 /// \tparam T Type in vector.
