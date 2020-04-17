@@ -22,7 +22,7 @@ std::vector<int> BubbleSort(std::vector<int> lst)
     return vector<int>{};
   }
 
-  size_t n = lst.size();
+  size_t n{lst.size()};
 
   for (size_t i = 0; i < n; i++) {
     for (size_t j = 0; j < n - 1; j++) {
@@ -77,12 +77,14 @@ std::vector<int> MergeSort(const vector<int> &lst)
     return lst;
   }
 
-  size_t n = lst.size();
+  size_t n{lst.size()};
 
   // Base case
-  if (n == 1) return lst;
+  if (n == 1) {
+    return lst;
+  }
 
-  size_t half = n / 2;
+  size_t half{n / 2};
   std::vector<int> A, B;
 
   for (auto it = lst.begin(); it != (lst.begin() + half); ++it) {
@@ -109,8 +111,8 @@ std::vector<int> MergeSort(const vector<int> &lst)
 template<typename T>
 int Partition(vector<T> &vec, int low, int high)
 {
-  T x = vec[high];
-  int i = low - 1;
+  T x{vec[high]};
+  int i{low - 1};
 
   for (int j = low; j != high; j++) {
     if (vec[j] <= x) {
@@ -128,7 +130,7 @@ template<typename T>
 void QuickSort(vector<T> &vec, int low, int high)
 {
   if (low < high) {
-    int pivot = Partition(vec, low, high);
+    int pivot{Partition(vec, low, high)};
     QuickSort(vec, low, pivot - 1);
     QuickSort(vec, pivot + 1, high);
   }
