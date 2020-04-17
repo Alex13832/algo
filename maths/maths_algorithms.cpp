@@ -7,6 +7,7 @@
 #include "maths_algorithms.hpp"
 
 #include <chrono>
+#include <cmath>
 #include <random>
 
 namespace Algo {
@@ -23,6 +24,22 @@ double Uniform(const double &a, const double &b)
   std::mt19937 generator(seed); //Mersenne twister
   std::uniform_real_distribution<double> distribution(a, b);
   return distribution(generator);
+}
+
+/// \brief Returns a random number from the uniform distribution between 0 and 1.
+/// \return see brief.
+double Random()
+{
+  return Uniform(0.0, 1.0);
+}
+
+double Exp(const double &lambda)
+{
+  if (lambda == 0.0) {
+    return NAN;
+  }
+
+  return -std::log(1.0 - Random()) / lambda;
 }
 } // namespace Algo
 } // namespace Math
