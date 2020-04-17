@@ -1,5 +1,5 @@
 ///
-/// \brief Unit tests for sort algorithms.
+/// \brief Source file for sort algorithms.
 /// \author alex011235
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
@@ -55,8 +55,8 @@ void BucketSort(std::vector<T> &vec)
     return;
   }
 
-  auto maxElemPtr{max_element(vec.begin(), vec.end())};
-  int nbrOfBuckets{static_cast<int>(sqrt(*maxElemPtr))};
+  auto max_elem_ptr{max_element(vec.begin(), vec.end())};
+  int nbrOfBuckets{static_cast<int>(sqrt(*max_elem_ptr))};
   std::vector<std::vector<T>> buckets(nbrOfBuckets + 1);
 
   // Put in buckets

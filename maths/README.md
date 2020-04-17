@@ -35,15 +35,3 @@ So far, the distributions supported are the following:
 * Poisson (d)
 * Erlang  (c)
 * Geometric (d)
-
-<p align="center">
-<img src="images/norm.png" height="400" alt="Screenshot"/>
-</p>
-
-<p align="center">
-<img src="images/weibull.png" height="400" alt="Screenshot"/>
-</p>
-
-<p align="center">
-<img src="images/bin.png" height="400" alt="Screenshot"/>
-</p>
