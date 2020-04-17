@@ -203,6 +203,31 @@ template void HeapSort<double>(std::vector<double> &vec);
 template void HeapSort<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
+/// Insertion-sort
+/////////////////////////////////////////////
+
+template<typename T>
+void InsertionSort(std::vector<T> &vec)
+{
+  if (vec.empty()) {
+    return;
+  }
+
+  size_t N{vec.size()};
+  for (size_t i = 0; i < N; i++) {
+    for (size_t j = i; j > 0 && vec[j - 1] > vec[j]; j--)
+      std::swap(vec[j], vec[j - 1]);
+  }
+}
+
+// Defines what types may be used for Insertion-sort.
+template void InsertionSort<unsigned>(std::vector<unsigned> &vec);
+template void InsertionSort<signed>(std::vector<signed> &vec);
+template void InsertionSort<float>(std::vector<float> &vec);
+template void InsertionSort<double>(std::vector<double> &vec);
+template void InsertionSort<std::string>(std::vector<std::string> &vec);
+
+/////////////////////////////////////////////
 /// Merge-sort
 /////////////////////////////////////////////
 

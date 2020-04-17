@@ -10,6 +10,7 @@
 /// 2015-07-30 Merge-sort.
 /// 2016-06-28 Gnome-sort.
 /// 2016-10-02 Bucket-sort.
+/// 2016-10-02 Insertion-sort.
 ///
 
 #ifndef ALGORITHM_SORTING_SORTING_HPP_
@@ -49,6 +50,13 @@ void GnomeSort(std::vector<T> &vec);
 /// \link <a href=https://en.wikipedia.org/wiki/Heapsort>Heapsort, Wikipedia.</a>
 template<typename T>
 void HeapSort(std::vector<T> &vec);
+
+/// \brief Insertion sort algoritm.
+/// \tparam T Type in vector.
+/// \param vec The vector to be sorted.
+/// \link <a href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion sort, Wikipedia.</a>
+template<typename T>
+void InsertionSort(std::vector<T> &vec);
 
 /// \brief Merge sort, divide and conquer algorithm.
 /// \tparam T Type in vector.

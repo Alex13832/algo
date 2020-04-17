@@ -8,4 +8,4 @@ set(SOURCE_FILES
         sort_algorithms.cpp
         )
 
-add_library(sorting STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(sort STATIC ${SOURCE_FILES} ${HEADER_FILES})

@@ -9,5 +9,5 @@ add_executable(Algorithm_test_run
         )
 
 target_link_libraries(Algorithm_test_run string)
-target_link_libraries(Algorithm_test_run sorting)
+target_link_libraries(Algorithm_test_run sort)
 target_link_libraries(Algorithm_test_run gtest gtest_main)

@@ -11,9 +11,9 @@ add_executable(Algorithm_run ${SOURCE_FILES})
 include_directories(string)
 add_subdirectory(string)
 
-include_directories(sorting)
-add_subdirectory(sorting)
+include_directories(sort)
+add_subdirectory(sort)
 
-target_link_libraries(Algorithm_run string sorting)
+target_link_libraries(Algorithm_run string sort)
 
 add_subdirectory(test)
