@@ -16,6 +16,10 @@ namespace Math {
 constexpr double Pi{3.14159265358979323846};
 constexpr double eul{2.71828182845904523536};
 
+/////////////////////////////////////////////
+/// Random numbers
+/////////////////////////////////////////////
+
 namespace Random {
 
 double Uniform(const double &a, const double &b)
@@ -26,8 +30,6 @@ double Uniform(const double &a, const double &b)
   return distribution(generator);
 }
 
-/// \brief Returns a random number from the uniform distribution between 0 and 1.
-/// \return see brief.
 double Random()
 {
   return Uniform(0.0, 1.0);
@@ -38,8 +40,19 @@ double Exp(const double &lambda)
   if (lambda == 0.0) {
     return NAN;
   }
+  const double x{Random()};
+  return -std::log(1.0 - x) / lambda;
+}
 
-  return -std::log(1.0 - Random()) / lambda;
+// \TODO{alex011235}: Find out how to test the distribution.
+double Weibull(const double &lambda, const double &k)
+{
+  if (lambda == 0.0) {
+    return NAN;
+  }
+
+  const double u{1.0 - Random()};
+  return lambda * std::pow(-std::log(u), 1.0 / k);
 }
 } // namespace Algo
 } // namespace Math

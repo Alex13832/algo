@@ -10,12 +10,14 @@
 
 #include "maths_algorithms.hpp"
 
+using namespace Algo::Math::Random;
+
 /////////////////////////////////////////////
 /// Random numbers
 /////////////////////////////////////////////
 
 ///////////////////////////////////
-/// Uniform random numbers
+/// Uniform distribution
 ///////////////////////////////////
 
 TEST(math_random_numbers, test_randu_normal)
@@ -50,7 +52,7 @@ TEST(math_random_numbers, test_randu_upper_less_than_lower)
 }
 
 ///////////////////////////////////
-/// Exponentially random numbers
+/// Exponential distribution
 ///////////////////////////////////
 
 TEST(math_random_numbers, test_exp_lambda_is_zero)
@@ -76,3 +78,20 @@ TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
   EXPECT_LT(lambd, lambda + 0.01);
   EXPECT_GT(lambd, lambda - 0.01);
 }
+
+///////////////////////////////////
+/// Weibull random numbers
+///////////////////////////////////
+
+TEST(math_random_numbers, test_weibull_beta_is_zero)
+{
+  EXPECT_TRUE(std::isnan(Algo::Math::Random::Weibull(0.0, 1.0)));
+}
+
+//TEST(math_random_numbers, test_weibull_exp_similarity)
+//{
+//  const double lambda{0.5};
+//  const double wei{Weibull(lambda, 0.5)};
+//  const double exp{Exp(1.0 / std::sqrt(lambda))};
+//  EXPECT_DOUBLE_EQ(wei, exp);
+//}

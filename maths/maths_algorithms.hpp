@@ -20,13 +20,28 @@ namespace Random {
 /// \link <a href="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)">Uniform distribution, Wikipedia.</a>
 double Uniform(const double &a, const double &b);
 
+/// \brief Returns a random number from the uniform distribution between 0 and 1.
+/// \return see brief.
+double Random();
+
 /// \brief Returns an exponentially distributed random number.
 /// \param lambda Rate parameter, must be greater than zero.
 /// \param upper_limit The upper limit.
 /// \return See brief.
+/// \link <a href="https://en.wikipedia.org/wiki/Exponential_distribution">Exponential distribution, Wikipedia.</a>
 double Exp(const double &lambda);
-} // namespace Algo
-} // namespace Math
+
+/// \brief Returns a random number sampled from the Weibull distribution.
+/// \param lambda Scale parameter.
+/// \param k Shape parameter.
+/// \return See brief.
+/// \line <a href="https://en.wikipedia.org/wiki/Weibull_distribution">Weibull distribution, Wikipedia.</a>
+double Weibull(const double &lambda, const double &k);
 } // namespace Random
+
+namespace Discrete {
+} // namespace Discrete
+} // namespace Math
+} // namespace Algo
 
 #endif //ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
