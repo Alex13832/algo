@@ -5,12 +5,44 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
+#include "maths_algorithms.hpp"
+
 #include "gtest/gtest.h"
 #include "cmath"
 
-#include "maths_algorithms.hpp"
+#include <algorithm>
+#include <functional>
+#include <numeric>
 
+using namespace std;
+using namespace Algo::Math;
 using namespace Algo::Math::Random;
+
+/////////////////////////////////////////////
+/// Discrete
+/////////////////////////////////////////////
+
+TEST(math_discrete, test_pascals_triangle_zeroth_row)
+{
+  vector<vector<int>> rows{Discrete::PascalsTriangle(0)};
+  EXPECT_EQ(rows.size(), 1);
+  int sum{std::accumulate(rows[0].begin(), rows[0].end(), 0)};
+  EXPECT_EQ(sum, 1);
+}
+
+TEST(math_discrete, test_pascals_triangle_nth_row)
+{
+  unsigned n{5};
+  // The sum of the entries in the nth row of Pascal's triangle is the nth power of 2.
+  vector<vector<int>> rows{Discrete::PascalsTriangle(n)};
+  int sum{std::accumulate(rows[n].begin(), rows[n].end(), 0)};
+  EXPECT_EQ(sum, 1U << n);
+
+  n = 30;
+  rows = Discrete::PascalsTriangle(n);
+  sum = std::accumulate(rows[n].begin(), rows[n].end(), 0);
+  EXPECT_EQ(sum, 1U << n);
+}
 
 /////////////////////////////////////////////
 /// Random numbers

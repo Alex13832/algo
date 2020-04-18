@@ -17,6 +17,32 @@ constexpr double Pi{3.14159265358979323846};
 constexpr double eul{2.71828182845904523536};
 
 /////////////////////////////////////////////
+/// Discrete
+/////////////////////////////////////////////
+
+namespace Discrete {
+
+std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth)
+{
+  std::vector<std::vector<int>> rows{};
+
+  for (size_t line = 1; line <= depth + 1; line++) {
+    std::vector<int> row{};
+    unsigned int C{1};
+
+    for (size_t i = 1; i <= line; i++) {
+      row.emplace_back(C);
+      C = C * (line - i) / i;
+    }
+
+    rows.emplace_back(row);
+  }
+
+  return rows;
+}
+} // namespace Discrete
+
+/////////////////////////////////////////////
 /// Random numbers
 /////////////////////////////////////////////
 

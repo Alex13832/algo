@@ -7,9 +7,20 @@
 #ifndef ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 #define ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 
+#include <vector>
+
 namespace Algo {
 
 namespace Math {
+
+namespace Discrete {
+
+/// \brief Returns the rows of Pascal's Triangle.
+/// \param depth The number of rows.
+/// \return The rows of Pascal's Triangle, each item in the vector is one row.
+/// \link <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle, Wikipedia.</a>
+std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth);
+} // namespace Discrete
 
 namespace Random {
 
@@ -38,9 +49,6 @@ double Exp(const double &lambda);
 /// \line <a href="https://en.wikipedia.org/wiki/Weibull_distribution">Weibull distribution, Wikipedia.</a>
 double Weibull(const double &lambda, const double &k);
 } // namespace Random
-
-namespace Discrete {
-} // namespace Discrete
 } // namespace Math
 } // namespace Algo
 
