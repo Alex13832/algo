@@ -14,9 +14,9 @@
 #include <numeric>
 
 using namespace std;
-using namespace Algo::Math;
-using namespace Algo::Math::Discrete;
-using namespace Algo::Math::Random;
+using namespace algo::Math;
+using namespace algo::Math::Discrete;
+using namespace algo::Math::Random;
 
 /////////////////////////////////////////////
 /// Discrete

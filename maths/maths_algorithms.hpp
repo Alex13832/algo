@@ -9,7 +9,7 @@
 
 #include <vector>
 
-namespace Algo {
+namespace algo {
 
 namespace Math {
 

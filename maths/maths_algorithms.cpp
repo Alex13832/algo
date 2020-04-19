@@ -10,7 +10,7 @@
 #include <cmath>
 #include <random>
 
-namespace Algo {
+namespace algo {
 namespace Math {
 
 /////////////////////////////////////////////

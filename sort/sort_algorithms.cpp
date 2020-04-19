@@ -9,7 +9,8 @@
 #include <cmath>
 #include <list>
 
-namespace Sort {
+namespace algo {
+namespace sort {
 
 /////////////////////////////////////////////
 /// Bubble-sort
@@ -359,4 +360,5 @@ template void QuickSort<signed>(std::vector<signed> &vec);
 template void QuickSort<float>(std::vector<float> &vec);
 template void QuickSort<double>(std::vector<double> &vec);
 template void QuickSort<std::string>(std::vector<std::string> &vec);
-} // namespace Sorting
+} // namespace algo
+} // namespace sort

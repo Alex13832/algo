@@ -7,17 +7,17 @@
 
 #include <vector>
 
-using namespace std;
+namespace algo {
 
-namespace String {
+namespace strings {
 
-string BitapSearch(const string &text, const string &pattern)
+std::string BitapSearch(const std::string &text, const std::string &pattern)
 {
   size_t m = pattern.length();
 
   if (m == 0) return text;
 
-  vector<int> R(m, 0);
+  std::vector<int> R(m, 0);
   R[0] = 1;
 
   for (size_t i = 0; i < text.length(); i++) {
@@ -31,10 +31,10 @@ string BitapSearch(const string &text, const string &pattern)
     }
   }
 
-  return string{};
+  return std::string{};
 }
 
-int LastOccurrence(string str, char c)
+int LastOccurrence(std::string str, char c)
 {
   int index = str.length();
   while (index != 0) {
@@ -46,11 +46,11 @@ int LastOccurrence(string str, char c)
   return 0;
 }
 
-vector<int> BoyerMore(string &text, const string &pattern)
+std::vector<int> BoyerMore(std::string &text, const std::string &pattern)
 {
   int m = pattern.length(), n = text.length(), i = m - 1, j = i;
   int chunk = 0, w_length = m;
-  vector<int> matches;
+  std::vector<int> matches;
 
   do {
     if (pattern[j] == text[i]) {
@@ -64,7 +64,7 @@ vector<int> BoyerMore(string &text, const string &pattern)
         j--;
       }
     } else {
-      i = i + m - min(j, 1 + LastOccurrence(text, text[i]));
+      i = i + m - std::min(j, 1 + LastOccurrence(text, text[i]));
       j = m - 1;
     }
   } while (i < n - 1);
@@ -72,7 +72,7 @@ vector<int> BoyerMore(string &text, const string &pattern)
   return matches;
 }
 
-string LongestCommonSubstring(string A, string B)
+std::string LongestCommonSubstring(std::string A, std::string B)
 {
 
   if (A.empty() || B.empty()) {
@@ -83,7 +83,7 @@ string LongestCommonSubstring(string A, string B)
   A = " " + A + " ";
   B = " " + B + " ";
 
-  vector<vector<int>> L(A.length(), vector<int>(B.length(), 0));
+  std::vector<std::vector<int>> L(A.length(), std::vector<int>(B.length(), 0));
   int max_substr = 0, x_longest = 0;
 
   for (size_t i = 1; i < A.length(); ++i) {
@@ -102,10 +102,10 @@ string LongestCommonSubstring(string A, string B)
     }
   }
 
-  string res = A.substr(x_longest - max_substr, max_substr);
+  std::string res = A.substr(x_longest - max_substr, max_substr);
 
   if (res[0] == ' ') {
-    return string(res.begin() + 1, res.end());
+    return std::string(res.begin() + 1, res.end());
   }
 
   return res;
@@ -114,15 +114,15 @@ string LongestCommonSubstring(string A, string B)
 /// \brief Returns the hash for str.
 /// \param str The string to hash.
 /// \return hash.
-unsigned long fingerprint(const string &str)
+unsigned long fingerprint(const std::string &str)
 {
-  hash<string> shash;
+  std::hash<std::string> shash;
   return shash(str);
 }
 
-vector<int> RabinKarpSingle(const string &text, const string &pattern)
+std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pattern)
 {
-  vector<int> pos;
+  std::vector<int> pos;
   size_t n = text.length();
   size_t m = pattern.length();
   unsigned long hash_p = fingerprint(pattern);
@@ -132,17 +132,17 @@ vector<int> RabinKarpSingle(const string &text, const string &pattern)
     if (hash_t == hash_p) {
       if (text.substr(i, m) == pattern) pos.push_back(i);
     }
-    string temp = text.substr(i + 1, m);
+    std::string temp = text.substr(i + 1, m);
     hash_t = fingerprint(temp);
   }
 
   return pos;
 }
 
-vector<int> RabinKarpMulti(const string &text, set<string> patterns, int m)
+std::vector<int> RabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m)
 {
-  set<unsigned long> hash_pm;
-  vector<int> pos;
+  std::set<unsigned long> hash_pm;
+  std::vector<int> pos;
   size_t n = text.length();
 
   for (const auto &pattern: patterns) {
@@ -156,10 +156,38 @@ vector<int> RabinKarpMulti(const string &text, set<string> patterns, int m)
     bool p_find = patterns.find(text.substr(j, m)) != patterns.end();
     if (h_find && p_find) pos.push_back(j);
 
-    string temp = text.substr(j + 1, m);
+    std::string temp = text.substr(j + 1, m);
     hash_t = fingerprint(temp);
   }
 
   return pos;
 }
-} // StringAlgorithm
+
+/// \brief Hidden function for generating all the permutations of the input str.
+/// \param n Size of str;
+/// \param str The input string.
+/// \param vec The permutations.
+void Heaps(size_t n, std::string &str, std::vector<std::string> &vec)
+{
+  if (n == 1) {
+    vec.emplace_back(str);
+  } else
+    for (size_t i = 0; i < n; i++) {
+      Heaps(n - 1, str, vec);
+      if (n % 2 == 0) {
+        std::swap(str[i], str[n - 1]);
+      } else {
+        std::swap(str[0], str[n - 1]);
+      }
+    }
+}
+
+std::vector<std::string> GenerateAllPermutations(std::string &str)
+{
+  size_t n{str.size()};
+  std::vector<std::string> vec;
+  Heaps(n, str, vec);
+  return vec;
+}
+} // namespace strings
+} // namespace algo
