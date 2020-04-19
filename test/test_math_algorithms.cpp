@@ -16,6 +16,7 @@
 
 using namespace std;
 using namespace Algo::Math;
+using namespace Algo::Math::Discrete;
 using namespace Algo::Math::Random;
 
 /////////////////////////////////////////////
@@ -42,6 +43,55 @@ TEST(math_discrete, test_pascals_triangle_nth_row)
   rows = Discrete::PascalsTriangle(n);
   sum = std::accumulate(rows[n].begin(), rows[n].end(), 0);
   EXPECT_EQ(sum, 1U << n);
+}
+
+TEST(math_discrete, test_clock_angle)
+{
+  // Test non-valid input
+  EXPECT_EQ(ClockAngle(24, 10), -1);
+  EXPECT_EQ(ClockAngle(23, 60), -1);
+  EXPECT_EQ(ClockAngle(-1, 10), -1);
+  EXPECT_EQ(ClockAngle(1, -1), -1);
+  // Test valid input
+  EXPECT_EQ(ClockAngle(12, 0), 0);
+  EXPECT_EQ(ClockAngle(12, 30), 165);
+  EXPECT_EQ(ClockAngle(15, 45), 158);
+  EXPECT_EQ(ClockAngle(9, 0), 270);
+  EXPECT_EQ(ClockAngle(3, 10), 35);
+}
+
+TEST(math_discrete, test_gcd)
+{
+  long a{12};
+  long b{20};
+  EXPECT_EQ(Gcd(a, 0L), a);
+  EXPECT_EQ(Gcd(a, a), a);
+  EXPECT_EQ(Gcd(a, b), Gcd(a - b, b));
+  EXPECT_EQ(Gcd(b, a), Gcd(b, a - b));
+  EXPECT_EQ(Gcd(42, 56), 14);
+}
+
+TEST(math_discrete, test_lcm)
+{
+  long a{10};
+  long b{20};
+  long c{30};
+  EXPECT_EQ(Lcm(a, b), Lcm(b, a));
+  EXPECT_EQ(Lcm(a, a), a);
+  EXPECT_EQ(Lcm(a, Lcm(b, c)), Lcm(Lcm(a, b), c));
+  EXPECT_EQ(Lcm(a, Gcd(a, b)), a);
+  EXPECT_EQ(Lcm(21L, 6L), 42L);
+}
+
+TEST(math_discrete, test_bin)
+{
+  long n{45};
+  long k{68};
+  long h{76};
+  EXPECT_EQ(Bin(n, k), n / k * Bin(n - 1, k - 1));
+  EXPECT_EQ(Bin(n - 1, k) - Bin(n - 1, k - 1), (n - 2 * k) / n * Bin(n, k));
+  EXPECT_EQ(Bin(n, h) * Bin(n - h, k), Bin(n, k) * Bin(n - k, h));
+  EXPECT_EQ(Bin(n, k), (n + 1 - k) / k * Bin(n, k - 1));
 }
 
 /////////////////////////////////////////////

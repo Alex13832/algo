@@ -40,6 +40,65 @@ std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth)
 
   return rows;
 }
+
+int ClockAngle(const int &h, const int &m)
+{
+  if (h < 0 || m < 0 || h > 23 || m > 59) {
+    return -1;
+  }
+
+  int hour_angle{((h % 12) * 60 + m) / 2};
+  int minute_angle{6 * m};
+  int angle{abs(hour_angle - minute_angle)};
+  //angle = std::min(360 - angle, angle);
+  return angle;
+}
+
+template<typename T>
+T Gcd(T a, T b)
+{
+  // Euclidean algorithm:
+  T c{0};
+  while (b != 0) {
+    c = a % b;
+    a = b;
+    b = c;
+  }
+  return a;
+}
+
+template unsigned Gcd<unsigned>(unsigned a, unsigned b);
+template int Gcd<int>(int a, int b);
+template long Gcd<long>(long a, long b);
+
+template<typename T>
+T Lcm(T a, T b)
+{
+  return a * b / Gcd(a, b);
+}
+
+template unsigned Lcm<unsigned>(unsigned a, unsigned b);
+template long Lcm<long>(long a, long b);
+
+template<typename T>
+T Bin(T n, T k)
+{
+  if (k > n)
+    return 0;
+  if ((k == 0) || (k == n))
+    return 1;
+
+  k = std::min(k, n - k);
+
+  T c = 1;
+  for (T i = 0; i < k; i++)
+    c = c * (n - i) / (i + 1);
+
+  return c;
+}
+
+template unsigned Bin<unsigned>(unsigned a, unsigned b);
+template long Bin<long>(long a, long b);
 } // namespace Discrete
 
 /////////////////////////////////////////////

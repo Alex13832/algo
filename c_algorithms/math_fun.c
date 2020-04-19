@@ -3,22 +3,6 @@
 #include <math.h>
 #include "bit_algorithms.c"
 
-// Prints the n first lines of Pascal's triangle
-void pascals_triangle(int n)
-{
-      size_t line;
-      for (line = 1; line <= n; line++) {
-            int C = 1, i;
-
-            for (i = 1; i <= line; i++) {
-                  printf("%d ", C);
-                  C = C * (line - i) / i;
-            }
-
-            putchar('\n');
-      }
-}
-
 // Computes the angle between the hour and minut hands
 int clock_angle(int h, int m)
 {
