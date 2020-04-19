@@ -27,6 +27,18 @@ std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth);
 /// \return The angle between the hour and minute hands. Return -1 for faulty input.
 int ClockAngle(const int &h, const int &m);
 
+/// \brief Finds out the maximum value subset of v such that sum of the weights of this subset is smaller
+/// than or equal to the capacity.
+/// \param v Value for each item.
+/// \param w Weight for each item.
+/// \param capacity The total capacity for the knapsack.
+/// \return The maximum load capacity.
+/// \link <a href="https://en.wikipedia.org/wiki/Knapsack_problem">Knapsack, Wikipedia.</a>
+/// \link <a href="https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/"> Knapsack, GeeksforGeeks.</a>
+/// \note Tested but do not output the expected result for some examples. However the GeeksForGeeks
+/// implementation outputs the same result.
+unsigned int Knapsack(const std::vector<int> &v, const std::vector<int> &w, unsigned capacity);
+
 /// \brief Computes the greatest common divisor, using the Euclidean algorithm.
 /// \tparam T Type used.
 /// \param a First number.

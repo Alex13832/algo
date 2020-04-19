@@ -10,7 +10,6 @@
 #include "gtest/gtest.h"
 #include "cmath"
 
-#include <algorithm>
 #include <functional>
 #include <numeric>
 
@@ -58,6 +57,21 @@ TEST(math_discrete, test_clock_angle)
   EXPECT_EQ(ClockAngle(15, 45), 158);
   EXPECT_EQ(ClockAngle(9, 0), 270);
   EXPECT_EQ(ClockAngle(3, 10), 35);
+}
+
+TEST(math_discrete, test_knapsack)
+{
+  vector<int> values{60, 100, 120};
+  vector<int> weights{10, 20, 30};
+  unsigned capacity{50};
+  uint max_load{Knapsack(values, weights, capacity)};
+  EXPECT_EQ(max_load, 220);
+
+  values = {10, 40, 30, 50};
+  weights = {5, 4, 6, 3};
+  capacity = 10;
+  max_load = Knapsack(values, weights, capacity);
+  EXPECT_EQ(max_load, 90);
 }
 
 TEST(math_discrete, test_gcd)
@@ -108,7 +122,7 @@ TEST(math_random_numbers, test_randu_normal)
   const double upper{0.5};
 
   for (size_t i = 0; i < 1000; ++i) {
-    double randu{Algo::Math::Random::Uniform(lower, upper)};
+    double randu{Uniform(lower, upper)};
     EXPECT_LT(randu, upper);
     EXPECT_GT(randu, lower);
   }
@@ -118,7 +132,7 @@ TEST(math_random_numbers, test_randu_limits_equal)
 {
   const double lower{0.5};
   const double upper{0.5};
-  double randu{Algo::Math::Random::Uniform(lower, upper)};
+  double randu{Uniform(lower, upper)};
   EXPECT_EQ(randu, lower);
 }
 
@@ -127,7 +141,7 @@ TEST(math_random_numbers, test_randu_upper_less_than_lower)
   const double lower{0.8};
   const double upper{0.5};
   for (size_t i = 0; i < 1000; ++i) {
-    double randu{Algo::Math::Random::Uniform(lower, upper)};
+    double randu{Uniform(lower, upper)};
     EXPECT_LT(randu, lower);
     EXPECT_GT(randu, upper);
   }
@@ -139,7 +153,7 @@ TEST(math_random_numbers, test_randu_upper_less_than_lower)
 
 TEST(math_random_numbers, test_exp_lambda_is_zero)
 {
-  EXPECT_TRUE(std::isnan(Algo::Math::Random::Exp(0.0)));
+  EXPECT_TRUE(std::isnan(Exp(0.0)));
 }
 
 TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
@@ -149,7 +163,7 @@ TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
   int runs{100000};
 
   for (int i = 0; i < runs; i++) {
-    double exp{Algo::Math::Random::Exp(lambda)};
+    double exp{Exp(lambda)};
     exp_sum += exp;
   }
 
@@ -167,7 +181,7 @@ TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
 
 TEST(math_random_numbers, test_weibull_beta_is_zero)
 {
-  EXPECT_TRUE(std::isnan(Algo::Math::Random::Weibull(0.0, 1.0)));
+  EXPECT_TRUE(std::isnan(Weibull(0.0, 1.0)));
 }
 
 //TEST(math_random_numbers, test_weibull_exp_similarity)

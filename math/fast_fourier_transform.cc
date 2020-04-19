@@ -16,13 +16,9 @@ typedef valarray<comp_array> comp_mat;
 
 # define M_PI 3.14159265358979323846
 
-bool poweroftwo(size_t N)
+bool poweroftwo(size_t x)
 {
-  if (N % 2 != 0) return false;
-
-  while (N % 2 == 0 && N != 2) N = N / 2;
-
-  return N == 2;
+  return (x != 0) && ((x & (x - 1)) == 0);
 }
 
 /* Fast fourier transform, FFT*/

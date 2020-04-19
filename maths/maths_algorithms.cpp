@@ -13,9 +13,6 @@
 namespace Algo {
 namespace Math {
 
-constexpr double Pi{3.14159265358979323846};
-constexpr double eul{2.71828182845904523536};
-
 /////////////////////////////////////////////
 /// Discrete
 /////////////////////////////////////////////
@@ -52,6 +49,24 @@ int ClockAngle(const int &h, const int &m)
   int angle{abs(hour_angle - minute_angle)};
   //angle = std::min(360 - angle, angle);
   return angle;
+}
+
+unsigned int Knapsack(const std::vector<int> &v, const std::vector<int> &w, unsigned capacity)
+{
+  size_t n{v.size()};
+  std::vector<std::vector<int>> m(n + 1, std::vector<int>(capacity + 1, 0));
+
+  for (size_t i = 1; i <= n; i++) {
+    for (size_t j = 0; j <= capacity; j++) {
+      if (w[i - 1] <= j) {
+        m[i][j] = std::max(m[i - 1][j], m[i - 1][j - w[i - 1]] + v[i - 1]);
+      } else {
+        m[i][j] = m[i - 1][j];
+      }
+    }
+  }
+
+  return m[n][capacity];
 }
 
 template<typename T>
@@ -129,7 +144,6 @@ double Exp(const double &lambda)
   return -std::log(1.0 - x) / lambda;
 }
 
-// \TODO{alex011235}: Find out how to test the distribution.
 double Weibull(const double &lambda, const double &k)
 {
   if (lambda == 0.0) {
