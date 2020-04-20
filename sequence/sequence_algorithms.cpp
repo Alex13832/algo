@@ -50,7 +50,7 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
       }
     }
 
-    T Lhat = min;
+    T Lhat{min};
     P[i] = M[Lhat - 1];
     M[Lhat] = i;
 
@@ -61,7 +61,7 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
 
   // Reconstruction of the longest subsequence
   std::vector<T> subseq(L + 1);
-  T k = M[L];
+  T k{M[L]};
 
   for (int i = L; i >= 0; i--) {
     subseq[i] = seq[k];
