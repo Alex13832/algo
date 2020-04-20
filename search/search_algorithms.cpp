@@ -26,8 +26,8 @@ int Binary(const std::vector<T> &vec, const T &value)
     return -1;
   }
 
-  int l{0};
-  int r = vec.size();
+  size_t l{0};
+  size_t r{vec.size()};
 
   while (l < r) {
 
@@ -55,19 +55,19 @@ template int Binary<std::string>(const std::vector<std::string> &vec, const std:
 template<typename T>
 void SelectionMinPriv(std::vector<T> &vec, const T &k)
 {
-  for (int i = 0; i <= k; ++i) {
-    int minIndex = i;
-    T minVal = vec[i];
+  for (size_t i = 0; i <= k; ++i) {
+    size_t min_index{i};
+    T minVal{vec[i]};
 
     for (size_t j = i + 1; j < vec.size(); ++j) {
       if (vec[j] < minVal) {
-        minIndex = j;
+        min_index = j;
         minVal = vec[j];
       }
     }
 
-    T t = vec[minIndex];
-    vec[minIndex] = vec[i];
+    T t{vec[min_index]};
+    vec[min_index] = vec[i];
     vec[i] = t;
   }
 }
@@ -95,9 +95,9 @@ template std::vector<double> SelectionMin<double>(std::vector<double> vec, const
 template<typename T>
 void SelectionMaxPriv(std::vector<T> &vec, const T &k)
 {
-  for (int i = 0; i <= k; ++i) {
-    int max_index = i;
-    T minVal = vec[i];
+  for (size_t i = 0; i <= k; ++i) {
+    size_t max_index{i};
+    T minVal{vec[i]};
 
     for (size_t j = i + 1; j < vec.size(); ++j) {
       if (vec[j] > minVal) {
@@ -106,7 +106,7 @@ void SelectionMaxPriv(std::vector<T> &vec, const T &k)
       }
     }
 
-    T t = vec[max_index];
+    T t{vec[max_index]};
     vec[max_index] = vec[i];
     vec[i] = t;
   }
