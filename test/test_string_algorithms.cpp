@@ -193,3 +193,16 @@ TEST(test_heaps, test_generate)
   EXPECT_TRUE(find(perms.begin(), perms.end(), "LATEM") != perms.end());
   EXPECT_TRUE(find(perms.begin(), perms.end(), "MEALT") != perms.end());
 }
+
+/////////////////////////////////////////////
+/// Levenshtein distance
+/////////////////////////////////////////////
+
+TEST(test_leven_dist, test_standard)
+{
+  EXPECT_EQ(strings::SimilarityDistance("abracadabra", "cadabraabra"), 6);
+  EXPECT_EQ(strings::SimilarityDistance("book", "back"), 2);
+  EXPECT_EQ(strings::SimilarityDistance("book", "book"), 0);
+  EXPECT_EQ(strings::SimilarityDistance("book", "read"), 4);
+  EXPECT_EQ(strings::SimilarityDistance("book", ""), 4);
+}

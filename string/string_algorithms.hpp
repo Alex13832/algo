@@ -4,10 +4,11 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-07-21 Boyer-More
+/// 2015-07-21 Boyer-More.
 /// 2015-06-19 Longest common substring.
-/// 2015-06-16 Rabin-Karp
-/// 2019-10-13 Bitap search
+/// 2015-06-16 Rabin-Karp.
+/// 2015-08-07 Levenshtein distance.
+/// 2019-10-13 Bitap search.
 ///
 
 #ifndef ALGORITHM_SRC_STRING_STRING_HPP_
@@ -61,6 +62,14 @@ std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::str
 /// \return ALl permutations in a vector.
 /// \link <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm">Heap's algorithm, Wikipedia.</a>
 std::vector<std::string> GenerateAllPermutations(std::string &str);
+
+/// \brief Calculates the Levenshtein distance between two strings. This is a string metric for measuring the
+/// difference between two strings.
+/// \param word_a Source word.
+/// \param word_b Target word.
+/// \return Calculated distance.
+/// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
+int SimilarityDistance(const std::string &word_a, const std::string &word_b);
 } // namespace algo
 } // namespace strings
 

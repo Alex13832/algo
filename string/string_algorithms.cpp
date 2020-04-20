@@ -189,5 +189,30 @@ std::vector<std::string> GenerateAllPermutations(std::string &str)
   Heaps(n, str, vec);
   return vec;
 }
+
+int SimilarityDistance(const std::string &word_a, const std::string &word_b)
+{
+  size_t a_size{word_a.length()};
+  size_t b_size{word_b.length()};
+
+  int d[a_size + 1][b_size + 1];
+  d[0][0] = 0;
+
+  for (size_t i = 1; i < a_size + 1; i++) d[i][0] = i;
+  for (size_t j = 1; j < b_size + 1; j++) d[0][j] = j;
+
+  for (size_t j = 1; j < b_size + 1; j++) {
+    for (size_t i = 1; i < a_size + 1; i++) {
+      int cost{1};
+      if (word_a[i - 1] == word_b[j - 1]) {
+        cost = 0;
+      }
+
+      d[i][j] = std::min(d[i - 1][j] + 1, std::min(d[i][j - 1] + 1, d[i - 1][j - 1] + cost));
+    }
+  }
+
+  return d[a_size][b_size];
+}
 } // namespace strings
 } // namespace algo
