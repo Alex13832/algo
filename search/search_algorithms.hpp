@@ -1,6 +1,7 @@
 ///
 /// \brief Header for search algorithms.
 /// \author alex011235
+/// \date 2020-04-20
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
@@ -15,6 +16,10 @@
 namespace algo {
 namespace search {
 
+/////////////////////////////////////////////
+/// Binary search
+/////////////////////////////////////////////
+
 /// \brief Searches for value in vec with binary search. The input list has to be sorted. This implementation is left-most oriented.
 /// \tparam T Type used.
 /// \param vec The vector to search in.
@@ -23,6 +28,28 @@ namespace search {
 /// \link <a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">Binary search, Wikipedia.</a>
 template<typename T>
 int Binary(const std::vector<T> &vec, const T &value);
+
+/////////////////////////////////////////////
+/// Selection search
+/////////////////////////////////////////////
+
+/// \brief Finds the k smallest items in vec.
+/// \tparam T Type used.
+/// \param vec The vector to search in.
+/// \param k The value to find.
+/// \return The k smallest values.
+/// \link <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection search, Wikipedia.</a>
+template<typename T>
+std::vector<T> SelectionMin(std::vector<T> vec, const T &k);
+
+/// \brief Finds the k largest items in vec.
+/// \tparam T Type used.
+/// \param vec The vector to search in.
+/// \param k The value to find.
+/// \return The k largest values.
+/// \link <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection search, Wikipedia.</a>
+template<typename T>
+std::vector<T> SelectionMax(std::vector<T> vec, const T &k);
 } // namespace search
 } // namespace algo
 
