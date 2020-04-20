@@ -17,6 +17,9 @@ add_subdirectory(sort)
 include_directories(maths)
 add_subdirectory(maths)
 
-target_link_libraries(Algorithm_run string sort maths)
+include_directories(search)
+add_subdirectory(search)
+
+target_link_libraries(Algorithm_run string sort maths search)
 
 add_subdirectory(test)

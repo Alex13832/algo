@@ -28,11 +28,12 @@ namespace strings {
 std::string BitapSearch(const std::string &text, const std::string &pattern);
 
 /// \brief Returns the found locations of the pattern in text.
+/// The implementation is based on the Boyer-Moore string-search algorithm.
 /// \param text The text to look for the pattern.
 /// \param pattern The substring to match.
 /// \return A list of locations.
 /// \link <a href="https://en.wikipedia.org/wiki/Boyer%E2%80%93Moore_string-search_algorithm">Boyer-More, Wikipedia.</a>
-std::vector<int> BoyerMore(std::string &text, const std::string &pattern);
+std::vector<int> SearchBoyerMoore(std::string &text, const std::string &pattern);
 
 /// \brief Returns the longest common substring that exists in A and B.
 /// \param A input string.
@@ -45,7 +46,7 @@ std::string LongestCommonSubstring(std::string A, std::string B);
 /// \param pattern The substring to match.
 /// \return Starting positions.
 /// \link <a href="https://en.wikipedia.org/wiki/Rabin–Karp_algorithm">Rabin-Karp, Wikipedia.</a>
-std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pattern);
+std::vector<int> SearchRabinKarpSingle(const std::string &text, const std::string &pattern);
 
 /// \brief Returns the starting positions of the substring patterns in patterns.
 /// \param text The text to search within.
@@ -53,7 +54,7 @@ std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pat
 /// \param m Fixed length.
 /// \return The starting positions
 /// \link <a href="https://en.wikipedia.org/wiki/Rabin–Karp_algorithm">Rabin-Karp, Wikipedia.</a>
-std::vector<int> RabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m);
+std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m);
 
 /// \brief Generates all permutations of the input string str using Heap's algorithm.
 /// \param str The input string.

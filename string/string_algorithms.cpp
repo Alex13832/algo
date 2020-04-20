@@ -46,7 +46,7 @@ int LastOccurrence(std::string str, char c)
   return 0;
 }
 
-std::vector<int> BoyerMore(std::string &text, const std::string &pattern)
+std::vector<int> SearchBoyerMoore(std::string &text, const std::string &pattern)
 {
   int m = pattern.length(), n = text.length(), i = m - 1, j = i;
   int chunk = 0, w_length = m;
@@ -120,7 +120,7 @@ unsigned long fingerprint(const std::string &str)
   return shash(str);
 }
 
-std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pattern)
+std::vector<int> SearchRabinKarpSingle(const std::string &text, const std::string &pattern)
 {
   std::vector<int> pos;
   size_t n = text.length();
@@ -139,7 +139,7 @@ std::vector<int> RabinKarpSingle(const std::string &text, const std::string &pat
   return pos;
 }
 
-std::vector<int> RabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m)
+std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m)
 {
   std::set<unsigned long> hash_pm;
   std::vector<int> pos;

@@ -17,7 +17,7 @@ namespace sort {
 /////////////////////////////////////////////
 
 template<typename T>
-void BubbleSort(std::vector<T> &vec)
+void Bubble(std::vector<T> &vec)
 {
   if (vec.empty()) {
     return;
@@ -35,18 +35,18 @@ void BubbleSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Bubble-sort.
-template void BubbleSort<unsigned>(std::vector<unsigned> &vec);
-template void BubbleSort<signed>(std::vector<signed> &vec);
-template void BubbleSort<float>(std::vector<float> &vec);
-template void BubbleSort<double>(std::vector<double> &vec);
-template void BubbleSort<std::string>(std::vector<std::string> &vec);
+template void Bubble<unsigned>(std::vector<unsigned> &vec);
+template void Bubble<signed>(std::vector<signed> &vec);
+template void Bubble<float>(std::vector<float> &vec);
+template void Bubble<double>(std::vector<double> &vec);
+template void Bubble<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Bucket-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void BucketSort(std::vector<T> &vec)
+void Bucket(std::vector<T> &vec)
 {
   if (vec.empty()) {
     return;
@@ -81,17 +81,17 @@ void BucketSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Bucket-sort.
-template void BucketSort<unsigned>(std::vector<unsigned> &vec);
-template void BucketSort<signed>(std::vector<signed> &vec);
-template void BucketSort<float>(std::vector<float> &vec);
-template void BucketSort<double>(std::vector<double> &vec);
+template void Bucket<unsigned>(std::vector<unsigned> &vec);
+template void Bucket<signed>(std::vector<signed> &vec);
+template void Bucket<float>(std::vector<float> &vec);
+template void Bucket<double>(std::vector<double> &vec);
 
 /////////////////////////////////////////////
 /// Gnome-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void GnomeSort(std::vector<T> &vec)
+void Gnome(std::vector<T> &vec)
 {
   int i{0};
   size_t n{vec.size()};
@@ -110,11 +110,11 @@ void GnomeSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Gnome-sort.
-template void GnomeSort<unsigned>(std::vector<unsigned> &vec);
-template void GnomeSort<signed>(std::vector<signed> &vec);
-template void GnomeSort<float>(std::vector<float> &vec);
-template void GnomeSort<double>(std::vector<double> &vec);
-template void GnomeSort<std::string>(std::vector<std::string> &vec);
+template void Gnome<unsigned>(std::vector<unsigned> &vec);
+template void Gnome<signed>(std::vector<signed> &vec);
+template void Gnome<float>(std::vector<float> &vec);
+template void Gnome<double>(std::vector<double> &vec);
+template void Gnome<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Heap-sort
@@ -187,7 +187,7 @@ void HeapSortPriv(std::vector<T> &vec, size_t len)
 }
 
 template<typename T>
-void HeapSort(std::vector<T> &vec)
+void Heap(std::vector<T> &vec)
 {
   if (vec.empty()) {
     return;
@@ -197,18 +197,18 @@ void HeapSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Heap-sort.
-template void HeapSort<unsigned>(std::vector<unsigned> &vec);
-template void HeapSort<signed>(std::vector<signed> &vec);
-template void HeapSort<float>(std::vector<float> &vec);
-template void HeapSort<double>(std::vector<double> &vec);
-template void HeapSort<std::string>(std::vector<std::string> &vec);
+template void Heap<unsigned>(std::vector<unsigned> &vec);
+template void Heap<signed>(std::vector<signed> &vec);
+template void Heap<float>(std::vector<float> &vec);
+template void Heap<double>(std::vector<double> &vec);
+template void Heap<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Insertion-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void InsertionSort(std::vector<T> &vec)
+void Insertion(std::vector<T> &vec)
 {
   if (vec.empty()) {
     return;
@@ -222,11 +222,11 @@ void InsertionSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Insertion-sort.
-template void InsertionSort<unsigned>(std::vector<unsigned> &vec);
-template void InsertionSort<signed>(std::vector<signed> &vec);
-template void InsertionSort<float>(std::vector<float> &vec);
-template void InsertionSort<double>(std::vector<double> &vec);
-template void InsertionSort<std::string>(std::vector<std::string> &vec);
+template void Insertion<unsigned>(std::vector<unsigned> &vec);
+template void Insertion<signed>(std::vector<signed> &vec);
+template void Insertion<float>(std::vector<float> &vec);
+template void Insertion<double>(std::vector<double> &vec);
+template void Insertion<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Merge-sort
@@ -301,17 +301,17 @@ std::vector<T> MergeSortPriv(const std::vector<T> &lst)
 }
 
 template<typename T>
-void MergeSort(std::vector<T> &lst)
+void Merge(std::vector<T> &lst)
 {
   lst = MergeSortPriv(lst);
 }
 
 // Defines what types may be used for Merge-sort.
-template void MergeSort<unsigned>(std::vector<unsigned> &vec);
-template void MergeSort<signed>(std::vector<signed> &vec);
-template void MergeSort<float>(std::vector<float> &vec);
-template void MergeSort<double>(std::vector<double> &vec);
-template void MergeSort<std::string>(std::vector<std::string> &vec);
+template void Merge<unsigned>(std::vector<unsigned> &vec);
+template void Merge<signed>(std::vector<signed> &vec);
+template void Merge<float>(std::vector<float> &vec);
+template void Merge<double>(std::vector<double> &vec);
+template void Merge<std::string>(std::vector<std::string> &vec);
 
 /////////////////////////////////////////////
 /// Quick-sort
@@ -346,7 +346,7 @@ void QuickSort(std::vector<T> &vec, int low, int high)
 }
 
 template<typename T>
-void QuickSort(std::vector<T> &vec)
+void Quick(std::vector<T> &vec)
 {
   if (vec.empty()) {
     return;
@@ -355,10 +355,10 @@ void QuickSort(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Quick-sort.
-template void QuickSort<unsigned>(std::vector<unsigned> &vec);
-template void QuickSort<signed>(std::vector<signed> &vec);
-template void QuickSort<float>(std::vector<float> &vec);
-template void QuickSort<double>(std::vector<double> &vec);
-template void QuickSort<std::string>(std::vector<std::string> &vec);
+template void Quick<unsigned>(std::vector<unsigned> &vec);
+template void Quick<signed>(std::vector<signed> &vec);
+template void Quick<float>(std::vector<float> &vec);
+template void Quick<double>(std::vector<double> &vec);
+template void Quick<std::string>(std::vector<std::string> &vec);
 } // namespace algo
 } // namespace sort

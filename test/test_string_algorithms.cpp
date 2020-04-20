@@ -46,7 +46,7 @@ TEST(test_boyer_more, nbr_of_occurences_0)
 {
   string text{"Banana banana"};
   string pattern{"Manana"};
-  vector<int> matches{strings::BoyerMore(text, pattern)};
+  vector<int> matches{strings::SearchBoyerMoore(text, pattern)};
   EXPECT_EQ(matches.size(), 0);
 }
 
@@ -54,7 +54,7 @@ TEST(test_boyer_more, nbr_of_occurences_1)
 {
   string text{"Banana banana"};
   string pattern{"Banana ba"};
-  vector<int> matches{strings::BoyerMore(text, pattern)};
+  vector<int> matches{strings::SearchBoyerMoore(text, pattern)};
   EXPECT_EQ(matches.size(), 1);
 }
 
@@ -69,14 +69,14 @@ TEST(test_boyer_more, nbr_of_occurences_many)
 
   string pattern{"cucumber"};
 
-  vector<int> matches = strings::BoyerMore(text, pattern);
+  vector<int> matches = strings::SearchBoyerMoore(text, pattern);
   EXPECT_EQ(matches.size(), 8);
 }
 
 TEST(test_boyer_more, empty_input_pattern)
 {
   string text{"Banana banana"};
-  vector<int> matches{strings::BoyerMore(text, "")};
+  vector<int> matches{strings::SearchBoyerMoore(text, "")};
   EXPECT_EQ(matches.size(), 0);
 }
 
@@ -84,14 +84,14 @@ TEST(test_boyer_more, empty_input_text)
 {
   string text{""};
   string pattern{"Banana"};
-  vector<int> matches{strings::BoyerMore(text, pattern)};
+  vector<int> matches{strings::SearchBoyerMoore(text, pattern)};
   EXPECT_EQ(matches.size(), 0);
 }
 
 TEST(test_boyer_more, empty_input)
 {
   string empty;
-  vector<int> matches{strings::BoyerMore(empty, empty)};
+  vector<int> matches{strings::SearchBoyerMoore(empty, empty)};
   EXPECT_EQ(matches.size(), 0);
 }
 
@@ -154,7 +154,7 @@ TEST(test_longest_common_substring, one_char)
 TEST(test_rabin_karp, single_input)
 {
   string sentence{"one two one three one two hello one"};
-  vector<int> pos{strings::RabinKarpSingle(sentence, "one")};
+  vector<int> pos{strings::SearchRabinKarpSingle(sentence, "one")};
   EXPECT_EQ(pos.size(), 4);
 }
 
@@ -162,14 +162,14 @@ TEST(test_rabin_karp, multi_input)
 {
   string sentence{"one two one three one two hello one"};
   set<string> words{"one", "two"};
-  vector<int> pos = strings::RabinKarpMulti(sentence, words, 3);
+  vector<int> pos = strings::SearchRabinKarpMulti(sentence, words, 3);
   EXPECT_EQ(pos.size(), 6);
 }
 
 TEST(test_rabin_karp, not_found_single)
 {
   string sentence{"one two one three one two hello one"};
-  vector<int> pos{strings::RabinKarpSingle(sentence, "four")};
+  vector<int> pos{strings::SearchRabinKarpSingle(sentence, "four")};
   EXPECT_EQ(pos.size(), 0);
 }
 
@@ -177,7 +177,7 @@ TEST(test_rabin_karp, not_found_multi)
 {
   string sentence{"one two one three one two hello one"};
   set<string> words{"four", "five"};
-  vector<int> pos{strings::RabinKarpMulti(sentence, words, 3)};
+  vector<int> pos{strings::SearchRabinKarpMulti(sentence, words, 3)};
   EXPECT_EQ(pos.size(), 0);
 }
 
