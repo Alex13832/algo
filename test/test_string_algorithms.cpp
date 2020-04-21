@@ -200,9 +200,9 @@ TEST(test_heaps, test_generate)
 
 TEST(test_leven_dist, test_standard)
 {
-  EXPECT_EQ(strings::SimilarityDistance("abracadabra", "cadabraabra"), 6);
-  EXPECT_EQ(strings::SimilarityDistance("book", "back"), 2);
-  EXPECT_EQ(strings::SimilarityDistance("book", "book"), 0);
-  EXPECT_EQ(strings::SimilarityDistance("book", "read"), 4);
-  EXPECT_EQ(strings::SimilarityDistance("book", ""), 4);
+  EXPECT_EQ(strings::LevDistance("abracadabra", "cadabraabra"), 6);
+  EXPECT_EQ(strings::LevDistance("book", "back"), 2);
+  EXPECT_EQ(strings::LevDistance("book", "book"), 0);
+  EXPECT_EQ(strings::LevDistance("book", "read"), 4);
+  EXPECT_EQ(strings::LevDistance("book", ""), 4);
 }

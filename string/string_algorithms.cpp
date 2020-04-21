@@ -1,6 +1,7 @@
 ///
 /// \brief Source file for string algorithms.
 /// \author alex011235
+/// \date 2020-04-19
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 #include "string_algorithms.hpp"
@@ -145,7 +146,7 @@ std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::str
   std::vector<int> pos;
   size_t n = text.length();
 
-  for (const auto &pattern: patterns) {
+  for (const auto &pattern : patterns) {
     hash_pm.insert(fingerprint(pattern));
   }
 
@@ -190,7 +191,7 @@ std::vector<std::string> GenerateAllPermutations(std::string &str)
   return vec;
 }
 
-int SimilarityDistance(const std::string &word_a, const std::string &word_b)
+int LevDistance(const std::string &word_a, const std::string &word_b)
 {
   size_t a_size{word_a.length()};
   size_t b_size{word_b.length()};
@@ -214,5 +215,5 @@ int SimilarityDistance(const std::string &word_a, const std::string &word_b)
 
   return d[a_size][b_size];
 }
-} // namespace strings
-} // namespace algo
+}// namespace strings
+}// namespace algo

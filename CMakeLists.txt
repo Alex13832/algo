@@ -23,6 +23,10 @@ add_subdirectory(search)
 include_directories(sequence)
 add_subdirectory(sequence)
 
-target_link_libraries(Algorithm_run string sort maths search sequence)
+include_directories(greedy)
+add_subdirectory(greedy)
 
+target_link_libraries(Algorithm_run string sort maths search sequence greedy)
+
+include_directories(test/testfiles)
 add_subdirectory(test)

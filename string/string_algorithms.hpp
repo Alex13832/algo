@@ -1,6 +1,7 @@
 ///
 /// \brief Header for string algorithms.
 /// \author alex011235
+/// \date 2020-04-19
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
@@ -69,7 +70,7 @@ std::vector<std::string> GenerateAllPermutations(std::string &str);
 /// \param word_b Target word.
 /// \return Calculated distance.
 /// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
-int SimilarityDistance(const std::string &word_a, const std::string &word_b);
+int LevDistance(const std::string &word_a, const std::string &word_b);
 } // namespace algo
 } // namespace strings
 
