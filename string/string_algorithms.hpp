@@ -15,8 +15,8 @@
 #ifndef ALGORITHM_SRC_STRING_STRING_HPP_
 #define ALGORITHM_SRC_STRING_STRING_HPP_
 
-#include <string>
 #include <set>
+#include <string>
 
 namespace algo {
 
@@ -71,7 +71,18 @@ std::vector<std::string> GenerateAllPermutations(std::string &str);
 /// \return Calculated distance.
 /// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
 int LevDistance(const std::string &word_a, const std::string &word_b);
-} // namespace algo
-} // namespace strings
 
-#endif //ALGORITHM_SRC_STRING_STRING_HPP_
+/// \brief Checks if str2 is a rotation of str1, e.g: atc is a rotation of cat.
+/// \param str1 First string.
+/// \param str2 Second string,
+/// \return True if str2 is a rotation of str1.
+bool IsRotated(const std::string &str1, const std::string &str2);
+
+/// \brief Compresses the input string, e.g: `Compress("caaaattt") = "ca4t3"`.
+/// \param str The input string to compress.
+/// \return Compressed string if shorter than input.
+std::string Compress(const std::string &str);
+}// namespace strings
+}// namespace algo
+
+#endif//ALGORITHM_SRC_STRING_STRING_HPP_

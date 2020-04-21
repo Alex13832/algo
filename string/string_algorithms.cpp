@@ -215,5 +215,54 @@ int LevDistance(const std::string &word_a, const std::string &word_b)
 
   return d[a_size][b_size];
 }
+
+bool IsRotated(const std::string &str1, const std::string &str2)
+{
+  if (str1.empty() && str2.empty()) {
+    return true;
+  }
+  size_t len{str1.size()};
+  std::string str11(2 * len - 1, ' ');
+  std::copy(str1.begin(), str1.end(), str11.begin());
+  std::copy(str1.begin(), str1.end(), str11.begin() + len);
+  return str11.find(str2) != -1;
+}
+
+std::string Compress(const std::string &str)
+{
+  const size_t n{str.size()};
+  std::string res;
+
+  int old_char{str[0]};
+  int count{0};
+
+  for (size_t i = 0; i <= n; i++) {
+    int c = str[i];
+
+    // Count the number of times the current char occurs.
+    if (c == old_char) {
+      count++;
+    } else {
+      if (old_char != ' ') {
+        res.push_back(old_char);
+
+        if (count > 1) {
+          res += std::to_string(count);
+        }
+        count = 1;
+      }
+
+      old_char = c;
+    }
+  }
+
+  // If the input char is smaller, the compression failed.
+  if (str.size() <= res.size()) {
+    return str;
+  }
+
+  return res;
+}
+
 }// namespace strings
 }// namespace algo

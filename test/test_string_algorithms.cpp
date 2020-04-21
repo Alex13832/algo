@@ -5,7 +5,6 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 #include "gtest/gtest.h"
-
 #include "string_algorithms.hpp"
 
 using namespace std;
@@ -60,12 +59,13 @@ TEST(test_boyer_more, nbr_of_occurences_1)
 
 TEST(test_boyer_more, nbr_of_occurences_many)
 {
-  string text{"Lorem cucumber ipsum dolor sit amet, cucumber vel modus "
-              "alienum eu. Omnium oporteat definitiones cu mei. Has et solum cucumber vitae, viderer "
-              "delicata consectetuer est at. At nisl cucumber facete qui, eu oblique "
-              "Lorem cucumber ipsum dolor sit amet, cucumber vel modus "
-              "alienum eu. Omnium oporteat definitiones cu mei. Has et solum cucumber vitae, viderer "
-              "delicata consectetuer est at. At nisl cucumber facete qui, eu oblique "};
+  string text{
+      "Lorem cucumber ipsum dolor sit amet, cucumber vel modus "
+      "alienum eu. Omnium oporteat definitiones cu mei. Has et solum cucumber vitae, viderer "
+      "delicata consectetuer est at. At nisl cucumber facete qui, eu oblique "
+      "Lorem cucumber ipsum dolor sit amet, cucumber vel modus "
+      "alienum eu. Omnium oporteat definitiones cu mei. Has et solum cucumber vitae, viderer "
+      "delicata consectetuer est at. At nisl cucumber facete qui, eu oblique "};
 
   string pattern{"cucumber"};
 
@@ -205,4 +205,31 @@ TEST(test_leven_dist, test_standard)
   EXPECT_EQ(strings::LevDistance("book", "book"), 0);
   EXPECT_EQ(strings::LevDistance("book", "read"), 4);
   EXPECT_EQ(strings::LevDistance("book", ""), 4);
+}
+
+/////////////////////////////////////////////
+/// Rotated string
+/////////////////////////////////////////////
+
+TEST(test_rotated_string, test_standard)
+{
+  EXPECT_FALSE(strings::IsRotated("judaspriest", "priestsjudas"));
+  EXPECT_TRUE(strings::IsRotated("judaspriest", "priestjudas"));
+  EXPECT_TRUE(strings::IsRotated("a", "a"));
+  EXPECT_TRUE(strings::IsRotated("", ""));
+}
+/////////////////////////////////////////////
+/// Compressed string
+/////////////////////////////////////////////
+
+TEST(test_compressed_string, test_standard)
+{
+  string str{""};
+  EXPECT_EQ(strings::Compress(str), "");
+  str = "aa";
+  EXPECT_EQ(strings::Compress(str), "aa");
+  str = "aaabbbb";
+  EXPECT_EQ(strings::Compress(str), "a3b4");
+  str = "abbbcddefgggggggggggh";
+  EXPECT_EQ(strings::Compress(str), "ab3cd2efg11h");
 }
