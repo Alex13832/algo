@@ -6,6 +6,7 @@
 ///
 #include "string_algorithms.hpp"
 
+#include <numeric>
 #include <vector>
 
 namespace algo {
@@ -262,6 +263,21 @@ std::string Compress(const std::string &str)
   }
 
   return res;
+}
+
+bool HasUniqueChars(const std::string &str)
+{
+  std::vector<int> visited(255, 0);
+
+  for (const auto &x : str) {
+    int xi{x - '0'};
+    visited[xi]++;
+    if (visited[xi] > 1) {
+      return false;
+    }
+  }
+
+  return true;
 }
 
 }// namespace strings

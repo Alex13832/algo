@@ -20,7 +20,10 @@ namespace {
 const std::string path{"../../test/testfiles/stable_match/"};
 }
 
-vector<vector<int>> ReadPrefFile(const std::string &file)
+/// \brief Reads an input test files with preferred choices.
+/// \param file The file to read.
+/// \return A list of preferred choices.
+Prefs ReadPrefFile(const std::string &file)
 {
   ifstream infile;
   infile.open(file);

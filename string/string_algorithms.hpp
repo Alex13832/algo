@@ -82,6 +82,11 @@ bool IsRotated(const std::string &str1, const std::string &str2);
 /// \param str The input string to compress.
 /// \return Compressed string if shorter than input.
 std::string Compress(const std::string &str);
+
+/// \brief Tests if the input string has unique chars. Only works fo ASCII [0...255].
+/// \param str The string to test.
+/// \return True if unique chars otherwise false.
+bool HasUniqueChars(const std::string &str);
 }// namespace strings
 }// namespace algo
 

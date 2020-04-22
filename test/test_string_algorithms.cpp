@@ -218,6 +218,7 @@ TEST(test_rotated_string, test_standard)
   EXPECT_TRUE(strings::IsRotated("a", "a"));
   EXPECT_TRUE(strings::IsRotated("", ""));
 }
+
 /////////////////////////////////////////////
 /// Compressed string
 /////////////////////////////////////////////
@@ -232,4 +233,17 @@ TEST(test_compressed_string, test_standard)
   EXPECT_EQ(strings::Compress(str), "a3b4");
   str = "abbbcddefgggggggggggh";
   EXPECT_EQ(strings::Compress(str), "ab3cd2efg11h");
+}
+
+/////////////////////////////////////////////
+/// Unique chars
+/////////////////////////////////////////////
+
+TEST(test_has_unique_chars, test_standard)
+{
+  EXPECT_TRUE(strings::HasUniqueChars("abcdefg123"));
+  EXPECT_TRUE(strings::HasUniqueChars("a"));
+  EXPECT_TRUE(strings::HasUniqueChars(""));
+  EXPECT_FALSE(strings::HasUniqueChars("abcdefg113"));
+  EXPECT_FALSE(strings::HasUniqueChars("aa"));
 }
