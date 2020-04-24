@@ -114,7 +114,23 @@ T Bin(T n, T k)
 
 template unsigned Bin<unsigned>(unsigned a, unsigned b);
 template long Bin<long>(long a, long b);
-} // namespace Discrete
+
+unsigned int NextPow2(unsigned x)
+{
+  unsigned count{0};
+
+  if (x && !(x & (x - 1)))
+    return x;
+
+  while (x != 0) {
+    x >>= 1U;
+    count++;
+  }
+
+  return 1U << count;
+}
+
+}// namespace Discrete
 
 /////////////////////////////////////////////
 /// Random numbers

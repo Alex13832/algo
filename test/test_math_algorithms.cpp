@@ -108,6 +108,16 @@ TEST(math_discrete, test_bin)
   EXPECT_EQ(Bin(n, k), (n + 1 - k) / k * Bin(n, k - 1));
 }
 
+TEST(math_discrete, test_next_pow_of_2)
+{
+  EXPECT_EQ(NextPow2(2), 2);
+  EXPECT_EQ(NextPow2(15), 16);
+  EXPECT_EQ(NextPow2(16), 16);
+  EXPECT_EQ(NextPow2(1000), 1024);
+  EXPECT_EQ(NextPow2(511), 512);
+  EXPECT_EQ(NextPow2(1), 1);// 2^0 = 1
+}
+
 /////////////////////////////////////////////
 /// Random numbers
 /////////////////////////////////////////////

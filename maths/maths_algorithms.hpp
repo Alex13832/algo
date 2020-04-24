@@ -66,7 +66,12 @@ T Lcm(T a, T b);
 /// \link <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">Binomial coefficient, Wikipedia.</a>
 template<typename T>
 T Bin(T n, T k);
-} // namespace Discrete
+
+/// \brief Returns the next power of two. Example 3 -> 4, 20 -> 32.
+/// \param x The number.
+/// \return The next power of two.
+unsigned int NextPow2(unsigned int x);
+}// namespace Discrete
 
 namespace Random {
 
