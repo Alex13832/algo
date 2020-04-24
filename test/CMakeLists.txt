@@ -9,7 +9,8 @@ add_executable(Algorithm_test_run
         test_string_algorithms.cpp
         test_sequence_algorithms.cpp
         test_greedy_algorithms.cpp
+        test_transform_algorithms.cpp
         )
 
 
-target_link_libraries(Algorithm_test_run string sort search maths sequence greedy gtest gtest_main)
+target_link_libraries(Algorithm_test_run string sort search maths sequence greedy transform gtest gtest_main)
