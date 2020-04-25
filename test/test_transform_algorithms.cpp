@@ -13,6 +13,10 @@
 using namespace std;
 using namespace algo::transform;
 
+/////////////////////////////////////////////
+/// FFT tests
+/////////////////////////////////////////////
+
 TEST(test_transform_fft, test_fft_ifft_trivial_1)
 {
   FftTransf data{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0};

@@ -1,19 +1,22 @@
 ///
-/// \brief Unit tests for sort algorithms.
+/// \brief Unit tests for sequence algorithms.
 /// \author alex011235
 /// \date 2020-04-20
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "gtest/gtest.h"
-
-#include "sequence_algorithms.hpp"
-
 #include <algorithm>
 #include <cmath>
 
+#include "gtest/gtest.h"
+#include "sequence_algorithms.hpp"
+
 using namespace std;
 using namespace algo::sequence;
+
+/////////////////////////////////////////////
+/// Longest increasing sub sequence tests
+/////////////////////////////////////////////
 
 TEST(test_long_incr_sub, test_empty)
 {

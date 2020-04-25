@@ -1,5 +1,5 @@
 ///
-/// \brief Header for string algorithms.
+/// \brief Header for sort algorithms.
 /// \author alex011235
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///

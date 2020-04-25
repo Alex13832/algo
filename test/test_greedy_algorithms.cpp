@@ -20,6 +20,10 @@ namespace {
 const std::string path{"../../test/testfiles/stable_match/"};
 }
 
+/////////////////////////////////////////////
+/// Stable match tests
+/////////////////////////////////////////////
+
 /// \brief Reads an input test files with preferred choices.
 /// \param file The file to read.
 /// \return A list of preferred choices.

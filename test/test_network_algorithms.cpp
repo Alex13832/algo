@@ -19,6 +19,10 @@ namespace {
 const std::string path{"../../test/testfiles/pagerank/"};
 }
 
+/////////////////////////////////////////////
+/// PageRank tests
+/////////////////////////////////////////////
+
 TEST(test_network_pagerank, test_4x4)
 {
   // This is the transition matrix with probabilities.

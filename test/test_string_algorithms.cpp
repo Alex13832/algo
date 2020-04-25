@@ -1,5 +1,5 @@
 ///
-/// \brief Unit tests for sort algorithms.
+/// \brief Unit tests for string algorithms.
 /// \author alex011235
 /// \date 2019-10-13
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
