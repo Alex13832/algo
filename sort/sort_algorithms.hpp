@@ -20,9 +20,7 @@
 #include <list>
 #include <vector>
 
-namespace algo {
-
-namespace sort {
+namespace algo::sort {
 
 /// \brief Bubble sort.
 /// \tparam T Type in vector.
@@ -74,7 +72,6 @@ void Merge(std::vector<T> &lst);
 /// \link <a href="https://en.wikipedia.org/wiki/Quicksort">Quicksort, Wikipedia.</a>
 template<typename T>
 void Quick(std::vector<T> &vec);
-} // namespace algo
-} // namespace sort
+}// namespace algo::sort
 
-#endif //ALGORITHM_SORTING_SORTING_H_PP
+#endif//ALGORITHM_SORTING_SORTING_H_PP

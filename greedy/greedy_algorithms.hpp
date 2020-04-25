@@ -13,8 +13,7 @@
 
 #include <vector>
 
-namespace algo {
-namespace greedy {
+namespace algo::greedy {
 
 using Match = std::pair<int, int>;
 using Prefs = std::vector<std::vector<int>>;
@@ -30,7 +29,6 @@ using Prefs = std::vector<std::vector<int>>;
 /// \reference <a href="https://www.cs.cmu.edu/afs/cs.cmu.edu/academic/class/15251-f10/Site/Materials/Lectures/Lecture21/lecture21.pdf">
 /// The Stable Marriage Problem, Structure and Algorithms, D. Gusfield, R. W. Irving, The MIT Press</a>
 std::vector<Match> StableMatching(Prefs men_pref, Prefs women_pref);
-}// namespace greedy
-}// namespace algo
+}// namespace algo::greedy
 
 #endif//ALGORITHM_GREEDY_GREEDY_ALGORITHMS_HPP_

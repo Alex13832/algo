@@ -5,18 +5,17 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "maths_algorithms.hpp"
-
-#include "gtest/gtest.h"
-#include "cmath"
-
 #include <functional>
 #include <numeric>
 
+#include "cmath"
+#include "gtest/gtest.h"
+#include "maths_algorithms.hpp"
+
 using namespace std;
-using namespace algo::Math;
-using namespace algo::Math::Discrete;
-using namespace algo::Math::Random;
+using namespace algo::math;
+using namespace algo::math::discrete;
+using namespace algo::math::random_num;
 
 /////////////////////////////////////////////
 /// Discrete
@@ -24,7 +23,7 @@ using namespace algo::Math::Random;
 
 TEST(math_discrete, test_pascals_triangle_zeroth_row)
 {
-  vector<vector<int>> rows{Discrete::PascalsTriangle(0)};
+  vector<vector<int>> rows{discrete::PascalsTriangle(0)};
   EXPECT_EQ(rows.size(), 1);
   int sum{std::accumulate(rows[0].begin(), rows[0].end(), 0)};
   EXPECT_EQ(sum, 1);
@@ -34,12 +33,12 @@ TEST(math_discrete, test_pascals_triangle_nth_row)
 {
   unsigned n{5};
   // The sum of the entries in the nth row of Pascal's triangle is the nth power of 2.
-  vector<vector<int>> rows{Discrete::PascalsTriangle(n)};
+  vector<vector<int>> rows{discrete::PascalsTriangle(n)};
   int sum{std::accumulate(rows[n].begin(), rows[n].end(), 0)};
   EXPECT_EQ(sum, 1U << n);
 
   n = 30;
-  rows = Discrete::PascalsTriangle(n);
+  rows = discrete::PascalsTriangle(n);
   sum = std::accumulate(rows[n].begin(), rows[n].end(), 0);
   EXPECT_EQ(sum, 1U << n);
 }
@@ -106,16 +105,6 @@ TEST(math_discrete, test_bin)
   EXPECT_EQ(Bin(n - 1, k) - Bin(n - 1, k - 1), (n - 2 * k) / n * Bin(n, k));
   EXPECT_EQ(Bin(n, h) * Bin(n - h, k), Bin(n, k) * Bin(n - k, h));
   EXPECT_EQ(Bin(n, k), (n + 1 - k) / k * Bin(n, k - 1));
-}
-
-TEST(math_discrete, test_next_pow_of_2)
-{
-  EXPECT_EQ(NextPow2(2), 2);
-  EXPECT_EQ(NextPow2(15), 16);
-  EXPECT_EQ(NextPow2(16), 16);
-  EXPECT_EQ(NextPow2(1000), 1024);
-  EXPECT_EQ(NextPow2(511), 512);
-  EXPECT_EQ(NextPow2(1), 1);// 2^0 = 1
 }
 
 /////////////////////////////////////////////

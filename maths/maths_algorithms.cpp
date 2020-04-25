@@ -10,14 +10,11 @@
 #include <cmath>
 #include <random>
 
-namespace algo {
-namespace Math {
-
 /////////////////////////////////////////////
 /// Discrete
 /////////////////////////////////////////////
 
-namespace Discrete {
+namespace algo::math::discrete {
 
 std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth)
 {
@@ -115,33 +112,18 @@ T Bin(T n, T k)
 template unsigned Bin<unsigned>(unsigned a, unsigned b);
 template long Bin<long>(long a, long b);
 
-unsigned int NextPow2(unsigned x)
-{
-  unsigned count{0};
-
-  if (x && !(x & (x - 1)))
-    return x;
-
-  while (x != 0) {
-    x >>= 1U;
-    count++;
-  }
-
-  return 1U << count;
-}
-
-}// namespace Discrete
+}// namespace algo::math::discrete
 
 /////////////////////////////////////////////
 /// Random numbers
 /////////////////////////////////////////////
 
-namespace Random {
+namespace algo::math::random_num {
 
 double Uniform(const double &a, const double &b)
 {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  std::mt19937 generator(seed); //Mersenne twister
+  std::mt19937 generator(seed);//Mersenne twister
   std::uniform_real_distribution<double> distribution(a, b);
   return distribution(generator);
 }
@@ -169,6 +151,4 @@ double Weibull(const double &lambda, const double &k)
   const double u{1.0 - Random()};
   return lambda * std::pow(-std::log(u), 1.0 / k);
 }
-} // namespace Algo
-} // namespace Math
-} // namespace Random
+}// namespace algo::math::random_num

@@ -11,9 +11,7 @@
 #include <cmath>
 #include <string>
 
-namespace algo {
-
-namespace search {
+namespace algo::search {
 
 /////////////////////////////////////////////
 /// Binary search
@@ -75,12 +73,15 @@ void SelectionMinPriv(std::vector<T> &vec, const T &k)
 template<typename T>
 std::vector<T> SelectionMin(std::vector<T> vec, const T &k)
 {
-  std::vector<T> temp{};
-
   if (vec.empty()) {
-    return temp;
+    return vec;
   }
 
+  if (k > vec.size()) {
+    return vec;
+  }
+
+  std::vector<T> temp{};
   SelectionMinPriv(vec, k);
   temp.resize(k);
   copy_n(vec.begin(), k, temp.begin());
@@ -115,12 +116,16 @@ void SelectionMaxPriv(std::vector<T> &vec, const T &k)
 template<typename T>
 std::vector<T> SelectionMax(std::vector<T> vec, const T &k)
 {
-  std::vector<T> temp{};
 
   if (vec.empty()) {
-    return temp;
+    return vec;
   }
 
+  if (k > vec.size()) {
+    return vec;
+  }
+
+  std::vector<T> temp{};
   SelectionMaxPriv(vec, k);
   temp.resize(k);
   copy_n(vec.begin(), k, temp.begin());
@@ -131,5 +136,4 @@ template std::vector<int> SelectionMax<int>(std::vector<int> vec, const int &val
 template std::vector<long> SelectionMax<long>(std::vector<long> vec, const long &value);
 template std::vector<float> SelectionMax<float>(std::vector<float> vec, const float &value);
 template std::vector<double> SelectionMax<double>(std::vector<double> vec, const double &value);
-} // namespace search
-} // namespace algo
+}// namespace algo::search

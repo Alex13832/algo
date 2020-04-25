@@ -10,9 +10,7 @@
 #include <algorithm>
 #include <cmath>
 
-namespace algo {
-
-namespace sequence {
+namespace algo::sequence {
 
 /////////////////////////////////////////////
 /// Longest increasing subsequence
@@ -77,5 +75,4 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
 template std::vector<int> LongestIncreasingSub<int>(const std::vector<int> &seq);
 template std::vector<long> LongestIncreasingSub<long>(const std::vector<long> &seq);
 template std::vector<float> LongestIncreasingSub<float>(const std::vector<float> &seq);
-} // namespace sequence
-} // namespace algo
+}// namespace algo::sequence

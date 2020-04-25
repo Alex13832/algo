@@ -15,9 +15,7 @@
 #include <complex>
 #include <valarray>
 
-namespace algo {
-
-namespace transform {
+namespace algo::transform {
 
 using FftTransf = std::valarray<std::complex<double>>;
 
@@ -36,7 +34,6 @@ FftTransf FFT(const FftTransf& A);
 /// \link <a href=https://en.wikipedia.org/wiki/Fast_Fourier_transform">FFT, Wikipedia.</a>
 FftTransf IFFT(const FftTransf& B);
 
-}// namespace transform
-}// namespace algo
+}// namespace algo::transform
 
 #endif//ALGORITHM_TRANSFORM_TRANSFORM_ALGORITHMS_HPP_

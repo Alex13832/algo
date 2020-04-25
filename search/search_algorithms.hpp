@@ -13,8 +13,7 @@
 
 #include <vector>
 
-namespace algo {
-namespace search {
+namespace algo::search {
 
 /////////////////////////////////////////////
 /// Binary search
@@ -50,7 +49,6 @@ std::vector<T> SelectionMin(std::vector<T> vec, const T &k);
 /// \link <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection search, Wikipedia.</a>
 template<typename T>
 std::vector<T> SelectionMax(std::vector<T> vec, const T &k);
-} // namespace search
-} // namespace algo
+}// namespace algo::search
 
-#endif //ALGORITHM_SEARCH_SEARCH_ALGORITHMS_HPP_
+#endif//ALGORITHM_SEARCH_SEARCH_ALGORITHMS_HPP_

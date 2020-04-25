@@ -9,8 +9,7 @@
 #include <cmath>
 #include <list>
 
-namespace algo {
-namespace sort {
+namespace algo::sort {
 
 /////////////////////////////////////////////
 /// Bubble-sort
@@ -61,14 +60,14 @@ void Bucket(std::vector<T> &vec)
   std::vector<std::vector<T>> buckets(nbrOfBuckets + 1);
 
   // Put in buckets
-  for (T x: vec) {
+  for (T x : vec) {
     buckets[static_cast<T>(sqrt(x))].push_back(x);
   }
 
   // Put back elements
   int count{0};
-  for (const std::vector<T> &bucket: buckets) {
-    for (T e: bucket) {
+  for (const std::vector<T> &bucket : buckets) {
+    for (T e : bucket) {
       vec[count++] = e;
     }
   }
@@ -360,5 +359,4 @@ template void Quick<signed>(std::vector<signed> &vec);
 template void Quick<float>(std::vector<float> &vec);
 template void Quick<double>(std::vector<double> &vec);
 template void Quick<std::string>(std::vector<std::string> &vec);
-} // namespace algo
-} // namespace sort
+}// namespace algo::sort

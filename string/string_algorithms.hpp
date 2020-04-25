@@ -18,9 +18,7 @@
 #include <set>
 #include <string>
 
-namespace algo {
-
-namespace strings {
+namespace algo::strings {
 
 /// \brief The algorithm tells whether a given text contains a substring which is "approximately equal" to a given pattern.
 /// \param text The text to search within.
@@ -87,7 +85,6 @@ std::string Compress(const std::string &str);
 /// \param str The string to test.
 /// \return True if unique chars otherwise false.
 bool HasUniqueChars(const std::string &str);
-}// namespace strings
-}// namespace algo
+}// namespace algo::strings
 
 #endif//ALGORITHM_SRC_STRING_STRING_HPP_

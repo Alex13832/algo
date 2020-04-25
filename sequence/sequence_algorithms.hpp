@@ -13,12 +13,10 @@
 
 #include <vector>
 
-namespace algo {
-namespace sequence {
+namespace algo::sequence {
 
 template<typename T>
 std::vector<T> LongestIncreasingSub(const std::vector<T> &seq);
-} // namespace sequence
-} // namespace algo
+}// namespace algo::sequence
 
-#endif //ALGORITHM_SEQUENCE_SEQUENCE_ALGORITHMS_HPP_
+#endif//ALGORITHM_SEQUENCE_SEQUENCE_ALGORITHMS_HPP_

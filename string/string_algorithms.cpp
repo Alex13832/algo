@@ -9,9 +9,7 @@
 #include <numeric>
 #include <vector>
 
-namespace algo {
-
-namespace strings {
+namespace algo::strings {
 
 std::string BitapSearch(const std::string &text, const std::string &pattern)
 {
@@ -280,5 +278,4 @@ bool HasUniqueChars(const std::string &str)
   return true;
 }
 
-}// namespace strings
-}// namespace algo
+}// namespace algo::strings

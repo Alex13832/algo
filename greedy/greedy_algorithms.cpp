@@ -13,9 +13,7 @@
 #include <algorithm>
 #include <vector>
 
-namespace algo {
-
-namespace greedy {
+namespace algo::greedy {
 
 std::vector<Match> StableMatching(Prefs men_pref, Prefs women_pref)
 {
@@ -64,5 +62,4 @@ std::vector<Match> StableMatching(Prefs men_pref, Prefs women_pref)
 
   return out;
 }
-}// namespace greedy
-}// namespace algo
+}// namespace algo::greedy

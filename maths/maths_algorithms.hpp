@@ -1,6 +1,7 @@
 ///
 /// \brief Source file for math algorithms.
 /// \author alex011235
+/// \date 2020-04-19
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
@@ -11,9 +12,9 @@
 
 namespace algo {
 
-namespace Math {
+namespace math {
 
-namespace Discrete {
+namespace discrete {
 
 /// \brief Returns the rows of Pascal's Triangle.
 /// \param depth The number of rows.
@@ -67,13 +68,9 @@ T Lcm(T a, T b);
 template<typename T>
 T Bin(T n, T k);
 
-/// \brief Returns the next power of two. Example 3 -> 4, 20 -> 32.
-/// \param x The number.
-/// \return The next power of two.
-unsigned int NextPow2(unsigned int x);
 }// namespace Discrete
 
-namespace Random {
+namespace random_num {
 
 /// \brief Returns a random number sampled from a uniform distribution with lower and upper limits a and b.
 /// \param a Lower limit.
@@ -99,8 +96,8 @@ double Exp(const double &lambda);
 /// \return See brief.
 /// \line <a href="https://en.wikipedia.org/wiki/Weibull_distribution">Weibull distribution, Wikipedia.</a>
 double Weibull(const double &lambda, const double &k);
-} // namespace Random
-} // namespace Math
-} // namespace Algo
+}// namespace random_num
+}// namespace math
+}// namespace algo
 
-#endif //ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
+#endif//ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_

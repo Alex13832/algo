@@ -9,9 +9,7 @@
 
 #include <algorithm>
 
-namespace algo {
-
-namespace transform {
+namespace algo::transform {
 
 bool IsPowOfTwo(size_t x)
 {
@@ -59,5 +57,4 @@ FftTransf IFFT(const FftTransf &B)
   return A;
 }
 
-}// namespace transform
-}// namespace algo
+}// namespace algo::transform
