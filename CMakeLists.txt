@@ -14,6 +14,9 @@ add_subdirectory(greedy)
 include_directories(maths)
 add_subdirectory(maths)
 
+include_directories(network)
+add_subdirectory(network)
+
 include_directories(search)
 add_subdirectory(search)
 
@@ -29,7 +32,7 @@ add_subdirectory(string)
 include_directories(transform)
 add_subdirectory(transform)
 
-target_link_libraries(Algorithm_run greedy maths search sequence sort string transform)
+target_link_libraries(Algorithm_run greedy maths network search sequence sort string transform)
 
 include_directories(test/testfiles)
 add_subdirectory(test)
