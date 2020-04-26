@@ -21,13 +21,13 @@ namespace algo::math::discrete {
 /// \param depth The number of rows.
 /// \return The rows of Pascal's Triangle, each item in the vector is one row.
 /// \link <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle, Wikipedia.</a>
-std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth);
+std::vector<std::vector<int>> PascalsTriangle(const unsigned int& depth);
 
 /// \brief Computes the angle between the hour and minute hands.
 /// \param h The position of the hour hand, e.g. 12.
 /// \param m The position of the minute hand, e.g. 59.
 /// \return The angle between the hour and minute hands. Return -1 for faulty input.
-int ClockAngle(const int &h, const int &m);
+int ClockAngle(const int& h, const int& m);
 
 /// \brief Finds out the maximum value subset of v such that sum of the weights of this subset is smaller
 /// than or equal to the capacity.
@@ -39,7 +39,7 @@ int ClockAngle(const int &h, const int &m);
 /// \link <a href="https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/"> Knapsack, GeeksforGeeks.</a>
 /// \note Tested but do not output the expected result for some examples. However the GeeksForGeeks
 /// implementation outputs the same result.
-unsigned int Knapsack(const std::vector<int> &v, const std::vector<int> &w, unsigned capacity);
+unsigned int Knapsack(const std::vector<int>& v, const std::vector<int>& w, unsigned capacity);
 
 /// \brief Computes the greatest common divisor, using the Euclidean algorithm.
 /// \tparam T Type used.
@@ -73,15 +73,17 @@ T Bin(T n, T k);
 
 namespace algo::math::random_num {
 
+namespace cont {
+
 /// \brief Returns a random number sampled from a uniform distribution with lower and upper limits a and b.
 /// \param a Lower limit.
 /// \param b Upper Limit
 /// \return A random uniform number x such that a < x < b.
 /// \link <a href="https://en.wikipedia.org/wiki/Uniform_distribution_(continuous)">Uniform distribution, Wikipedia.</a>
-double Uniform(const double &a, const double &b);
+double Uniform(const double& a, const double& b);
 
 /// \brief Returns a random number from the uniform distribution between 0 and 1.
-/// \return see brief.
+/// \return U(0, 1) random number.
 double Random();
 
 /// \brief Returns an exponentially distributed random number.
@@ -89,14 +91,52 @@ double Random();
 /// \param upper_limit The upper limit.
 /// \return See brief.
 /// \link <a href="https://en.wikipedia.org/wiki/Exponential_distribution">Exponential distribution, Wikipedia.</a>
-double Exp(const double &lambda);
+double Exp(const double& lambda);
+
+/// \brief Returns a normal distributed random number, N(mu, sigma). The random number is computed using the
+/// Box-Muller transform.
+/// \param mu Mean value.
+/// \param sigma Standard deviation.
+/// \return N(mu, sigma) random number.
+/// \link <a href="https://en.wikipedia.org/wiki/Normal_distribution">Normal distribution, Wikipedia.</a>
+double Normal(const double& mu, const double& sigma);
 
 /// \brief Returns a random number sampled from the Weibull distribution.
 /// \param lambda Scale parameter.
 /// \param k Shape parameter.
 /// \return See brief.
 /// \line <a href="https://en.wikipedia.org/wiki/Weibull_distribution">Weibull distribution, Wikipedia.</a>
-double Weibull(const double &lambda, const double &k);
+double Weibull(const double& lambda, const double& k);
+
+}// namespace cont
+
+namespace discr {
+
+/// \brief Returns a random number sampled from the Binomial distribution.
+/// \quote  The binomial distribution is frequently used to model the number of successes in a sample of size
+/// n drawn with replacement from a population of size N. - _Wikipedia_
+/// \param n Number of independent experiments.
+/// \param p The probability of the experiment.
+/// \return Binomial(n,p)
+/// \link <a href="https://en.wikipedia.org/wiki/Binomial_distribution">Binomial dstribution, Wikipedia.</a>
+int Binomial(const int& n, const double& p);
+
+/// \brief Returns a random number sampled from the Poisson distribution.
+/// \param lambda Expected number of occurrences.
+/// \return Poisson(lambda) random number.
+/// \link <a href="https://en.wikipedia.org/wiki/Poisson_distribution">Poisson distribution, Wikipedia.</a>
+int Poisson(const double& lambda);
+
+/// \brief Returns a random number sampled from the geometric distribution.
+/// \quote The geometric distribution gives the probability that the first occurrence of success requires
+/// k independent trials, each with success probability p. - _Wikipedia_
+/// \param p Success probability.
+/// \return Geometric(p)
+/// \link <a href="https://en.wikipedia.org/wiki/Geometric_distribution">Geometric distribution, Wikipedia.</a>
+int Geometric(const double& p);
+
+}// namespace discr
+
 }// namespace algo::math::random_num
 
 namespace algo::math::prime {

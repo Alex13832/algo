@@ -4,7 +4,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "maths_algorithms.hpp"
+#include "math_algorithms.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -119,6 +119,8 @@ template long Bin<long>(long a, long b);
 
 namespace algo::math::random_num {
 
+namespace cont {
+
 double Uniform(const double &a, const double &b)
 {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
@@ -141,6 +143,13 @@ double Exp(const double &lambda)
   return -std::log(1.0 - x) / lambda;
 }
 
+double Normal(const double &mu, const double &sigma)
+{
+  double r1{Random()};
+  double r2{Random()};
+  return mu + sigma * cos(2 * M_PI * r1) * sqrt(-2.0 * log(r2));
+}
+
 double Weibull(const double &lambda, const double &k)
 {
   if (lambda == 0.0) {
@@ -150,6 +159,59 @@ double Weibull(const double &lambda, const double &k)
   const double u{1.0 - Random()};
   return lambda * std::pow(-std::log(u), 1.0 / k);
 }
+}// namespace cont
+
+namespace discr {
+
+int Binomial(const int &n, const double &p)
+{
+  if (p < 0 || p > 1.0) {
+    return -1;
+  }
+
+  std::vector<double> U(n);
+  std::vector<int> V(n);
+  std::generate(U.begin(), U.end(), []() { return cont::Random(); });
+  std::transform(U.begin(), U.end(), V.begin(), [&p](double x) { return x < p ? 0 : 1; });
+  return std::accumulate(V.begin(), V.end(), 0);
+}
+
+int Poisson(const double &lambda)
+{
+  if (lambda < 0.0) {
+    return -1;
+  }
+  double L{pow(M_E, -lambda)};
+  double p{1.0}, u;
+  int k{0};
+
+  do {
+    k++;
+    u = cont::Random();
+    p *= u;
+  } while (p > L);
+
+  return k - 1;
+}
+
+int Geometric(const double &p)
+{
+  if (p <= 0 || p > 1.0) {
+    return -1;
+  }
+  int k{0};
+  double x{cont::Random()};
+
+  while (x > p) {
+    x = cont::Random();
+    k++;
+  }
+
+  return k;
+}
+
+}// namespace discr
+
 }// namespace algo::math::random_num
 
 /////////////////////////////////////////////
