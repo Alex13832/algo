@@ -1,21 +1,23 @@
-#include "../../data_structures/graph.cc"
-#include "../ford_fulkerson.cc"
-#include <iostream>
-#include <vector>
 #include <algorithm>
 #include <fstream>
+#include <iostream>
 #include <sstream>
+#include <vector>
+
+#include "../../data_structures/graph.cc"
+#include "../ford_fulkerson.cc"
 using namespace std;
 
-bool test_ford_fulkerson() {
-	Graph g(6);
-	g.addDirEdge(0,160,1); //230
-	g.addDirEdge(0,130,2);
-	g.addDirEdge(2,40,1);
-	g.addDirEdge(1,100,2);
-	g.addDirEdge(2,140,4);
-	g.addDirEdge(1,120,3);
-	g.addDirEdge(3,90,2);
+bool test_ford_fulkerson()
+{
+  Graph g(6);
+  g.addDirEdge(0, 160, 1);//230
+  g.addDirEdge(0, 130, 2);
+  g.addDirEdge(2, 40, 1);
+  g.addDirEdge(1, 100, 2);
+  g.addDirEdge(2, 140, 4);
+  g.addDirEdge(1, 120, 3);
+  g.addDirEdge(3,90,2);
 	g.addDirEdge(4,70,3);
 	g.addDirEdge(3,200,5);
 	g.addDirEdge(4,40,5);

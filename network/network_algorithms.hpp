@@ -18,8 +18,8 @@ using Arr = std::vector<double>;
 using Mat = std::vector<Arr>;
 
 /// \brief Computes the rank for the input web graph.
-/// \param M Web graph matrix.
-/// \param d Damping factor
+/// \param W Web graph matrix.
+/// \param damping Damping factor
 /// \param error Convergence threshold.
 /// \return The probabilities of a user visiting page i.
 /// \link <a href="https://en.wikipedia.org/wiki/PageRank">PageRank, Wikipedia.</a>

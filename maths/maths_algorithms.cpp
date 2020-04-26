@@ -109,7 +109,6 @@ T Bin(T n, T k)
   return c;
 }
 
-template unsigned Bin<unsigned>(unsigned a, unsigned b);
 template long Bin<long>(long a, long b);
 
 }// namespace algo::math::discrete
@@ -152,3 +151,57 @@ double Weibull(const double &lambda, const double &k)
   return lambda * std::pow(-std::log(u), 1.0 / k);
 }
 }// namespace algo::math::random_num
+
+/////////////////////////////////////////////
+/// Prime numbers
+/////////////////////////////////////////////
+
+namespace algo::math::prime {
+
+template<typename T>
+bool IsPrime(T n)
+{
+  return GetPrimes<T>(n).back() == n;
+}
+
+template bool IsPrime<int>(int n);
+template bool IsPrime<long>(long n);
+
+template<typename T>
+std::vector<T> GetPrimes(unsigned int n)
+{
+  std::vector<bool> is_prime(n * 2, true);
+  uint limit = static_cast<uint>(sqrt(n) + 1);
+
+  T j{0}, k{0}, x{0};
+
+  for (size_t i = 2; i < limit; i++) {
+    if (is_prime[i]) {
+      j = 0;
+      k = 0;
+      x = i * i;
+
+      while (j <= n) {
+        j = x + k * i;
+        is_prime[j] = false;
+        k++;
+      }
+    }
+  }
+
+  std::vector<T> primes;
+  T candidate = 0;
+
+  while (candidate <= n) {
+    if (is_prime[candidate]) {
+      primes.emplace_back(candidate);
+    }
+    candidate++;
+  }
+
+  return primes;
+}
+
+template std::vector<int> GetPrimes<int>(unsigned int n);
+template std::vector<long> GetPrimes<long>(unsigned int n);
+}// namespace algo::math::prime

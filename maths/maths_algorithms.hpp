@@ -4,17 +4,18 @@
 /// \date 2020-04-19
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
+/// Change list:
+/// 2015-08-27: Random numbers.
+/// 2016-04-05: Knapsack, GCD, LCM, Bin, Prime numbers.
+/// 2016-10-16: Pascal's triangle, ClockAngle.
+///
 
 #ifndef ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 #define ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 
 #include <vector>
 
-namespace algo {
-
-namespace math {
-
-namespace discrete {
+namespace algo::math::discrete {
 
 /// \brief Returns the rows of Pascal's Triangle.
 /// \param depth The number of rows.
@@ -68,9 +69,9 @@ T Lcm(T a, T b);
 template<typename T>
 T Bin(T n, T k);
 
-}// namespace Discrete
+}// namespace algo::math::discrete
 
-namespace random_num {
+namespace algo::math::random_num {
 
 /// \brief Returns a random number sampled from a uniform distribution with lower and upper limits a and b.
 /// \param a Lower limit.
@@ -96,8 +97,26 @@ double Exp(const double &lambda);
 /// \return See brief.
 /// \line <a href="https://en.wikipedia.org/wiki/Weibull_distribution">Weibull distribution, Wikipedia.</a>
 double Weibull(const double &lambda, const double &k);
-}// namespace random_num
-}// namespace math
-}// namespace algo
+}// namespace algo::math::random_num
+
+namespace algo::math::prime {
+
+/// \brief Checks if n is a prime number.
+/// \tparam T Type used.
+/// \param n Input number.
+/// \return True if n is a prime number, otherwise false.
+template<typename T>
+bool IsPrime(T n);
+
+/// \brief Returns prime numbers less than n in a vector. This implementation is based on the Sieve of Eratosthenes
+/// algorithm for computing prime numbers.
+/// \tparam T The type used.
+/// \param n The maximum prime number (limit).
+/// \return A vector<T> of prime numbers.
+/// \link <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes, Wikipedia.</a>
+template<typename T>
+std::vector<T> GetPrimes(unsigned int n);
+
+}// namespace algo::math::prime
 
 #endif//ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_

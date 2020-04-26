@@ -16,6 +16,7 @@ using namespace std;
 using namespace algo::math;
 using namespace algo::math::discrete;
 using namespace algo::math::random_num;
+using namespace algo::math::prime;
 
 /////////////////////////////////////////////
 /// Discrete
@@ -190,3 +191,28 @@ TEST(math_random_numbers, test_weibull_beta_is_zero)
 //  const double exp{Exp(1.0 / std::sqrt(lambda))};
 //  EXPECT_DOUBLE_EQ(wei, exp);
 //}
+
+/////////////////////////////////////////////
+/// Prime numbers
+/////////////////////////////////////////////
+
+TEST(math_prime_numbers, test_get_and_is_prime)
+{
+  EXPECT_TRUE(IsPrime(1));
+  EXPECT_TRUE(IsPrime(2));
+  EXPECT_TRUE(IsPrime(3));
+  EXPECT_TRUE(IsPrime(971));
+  EXPECT_TRUE(IsPrime(3221L));
+  EXPECT_TRUE(IsPrime(6737L));
+  EXPECT_TRUE(IsPrime(7577));
+  EXPECT_TRUE(IsPrime(7919));
+
+  EXPECT_FALSE(IsPrime(4));
+  EXPECT_FALSE(IsPrime(10));
+  EXPECT_FALSE(IsPrime(12));
+  EXPECT_FALSE(IsPrime(970));
+  EXPECT_FALSE(IsPrime(3220L));
+  EXPECT_FALSE(IsPrime(6739L));
+  EXPECT_FALSE(IsPrime(7576));
+  EXPECT_FALSE(IsPrime(7918));
+}

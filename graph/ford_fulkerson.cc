@@ -2,22 +2,24 @@
 * Ford-Fulkerson algorithm implementation
 * 2015-07-06
 * ----------------------------------------------------------------- */
-#include "../data_structures/graph.h"
-#include "../graph/dfs_path.cc"
 #include <algorithm>
 #include <climits>
+
+#include "../data_structures/graph.h"
+#include "dfs_path.cc"
 using namespace std;
 
 /** Finds the min of the residual path. */
-int find_min(map<pair<int,int>,int> vec, vector<int> path) {
-	int min = INT_MAX;
+int find_min(map<pair<int, int>, int> vec, vector<int> path)
+{
+  int min = INT_MAX;
 
-	for (size_t i = 0; i < path.size()-1; ++i) {
-		int cand = vec[pair<int,int>(path[i],path[i+1])];
-		if (cand < min) min = cand;
-	}
-	
-	return min;
+  for (size_t i = 0; i < path.size() - 1; ++i) {
+    int cand = vec[pair<int, int>(path[i], path[i + 1])];
+    if (cand < min) min = cand;
+  }
+
+  return min;
 }
 
 /* The FordFulkerson algorithim, computes the maximum flow from s to t in Gf.*/

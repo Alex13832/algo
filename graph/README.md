@@ -69,5 +69,16 @@ Finds a minimum spanning tree (MST) for a weighted undirected graph.
 <img src="images/prim.png" height="250" alt="Screenshot"/>
 </p>
 
+#### Ford-Fulkerson Algorithm
+This algorithm computes the maximum flow from the source vertex s to the sink vertex t. 
+
+[Ford-Fulkersson, Wikipedia](https://en.wikipedia.org/wiki/Ford%E2%80%93Fulkerson_algorithm)
+
+
+![PageRank](images/fordfulkerson1.png)
+
+![PageRank](images/fordfulkerson2.png)
+
+
 #### Algorithm for approximation of the travelling salesman problem
 Greedy. Takes the shortest path from the current node (nearest neighbor). 
