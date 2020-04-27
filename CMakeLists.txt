@@ -37,10 +37,9 @@ add_subdirectory(transform)
 
 target_link_libraries(Algorithm_run geometry greedy maths network search sequence sort string transform)
 
-include_directories(test/testfiles)
 add_subdirectory(test)
 
-# Examples
+# Examples -------------------------------------
 include_directories(examples)
 add_subdirectory(examples)
 target_link_libraries(qhull_run geometry)

@@ -2,19 +2,18 @@ Algorithm
 ===============================
 This repository contains implementations of various known algorithms from selected fields of algorithm design in computer science. The README files are written as a basic tool that can be used to quickly understand what kind of algorithms are implemented.  
 
-
-<p align="center">
-<img src="sunflower.png" height="350" alt="Screenshot"/>
-</p>
-
-## Software dependencies
-* Make
-* C++ 11
-* [Python Matplotlib Wrapper](https://github.com/lava/matplotlib-cpp)
+## Constraints
+Only the C++ standard library, std. No Boost or additional libraries.
 
 ## Resources
-* [List of algorithms, Wikipedia](https://en.wikipedia.org/wiki/List_of_algorithms)
-* [The Algorithm Design Manual](https://amzn.to/2wT0YFj)
+
+### Data
+For generating and plotting data, the [Orange](https://orange.biolab.si) data mining tool is used. It's super easy to 
+output a data set in csv format to play with. The result of the C++ algorithms may then be plotted with the 
+same tool. Not a single line of code.
+
+### Unit testing
+The C++ code is tested with the [Google Test](https://github.com/google/googletest) framework.
 
 ## Implemented algorithms
 
