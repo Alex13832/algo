@@ -32,7 +32,7 @@ add_subdirectory(string)
 include_directories(transform)
 add_subdirectory(transform)
 
-target_link_libraries(Algorithm_run greedy math network search sequence sort string transform)
+target_link_libraries(Algorithm_run greedy maths network search sequence sort string transform)
 
 include_directories(test/testfiles)
 add_subdirectory(test)

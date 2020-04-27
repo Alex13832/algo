@@ -75,4 +75,25 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
 template std::vector<int> LongestIncreasingSub<int>(const std::vector<int> &seq);
 template std::vector<long> LongestIncreasingSub<long>(const std::vector<long> &seq);
 template std::vector<float> LongestIncreasingSub<float>(const std::vector<float> &seq);
+
+/////////////////////////////////////////////
+/// Max sub array
+/////////////////////////////////////////////
+
+template<typename T>
+T MaxSubarray(const std::vector<T> &vec)
+{
+  int best_sum{0};
+  int current{0};
+
+  for (const auto &s : vec) {
+    current = std::max(0, current + s);
+    best_sum = std::max(best_sum, current);
+  }
+
+  return best_sum;
+}
+
+template int MaxSubarray(const std::vector<int> &vec);
+
 }// namespace algo::sequence

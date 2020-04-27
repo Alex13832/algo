@@ -76,8 +76,7 @@ TEST(math_discrete, test_knapsack)
 
 TEST(math_discrete, test_gcd)
 {
-  long a{12};
-  long b{20};
+  long a{12}, b{20};
   EXPECT_EQ(Gcd(a, 0L), a);
   EXPECT_EQ(Gcd(a, a), a);
   EXPECT_EQ(Gcd(a, b), Gcd(a - b, b));
@@ -87,9 +86,7 @@ TEST(math_discrete, test_gcd)
 
 TEST(math_discrete, test_lcm)
 {
-  long a{10};
-  long b{20};
-  long c{30};
+  long a{10}, b{20}, c{30};
   EXPECT_EQ(Lcm(a, b), Lcm(b, a));
   EXPECT_EQ(Lcm(a, a), a);
   EXPECT_EQ(Lcm(a, Lcm(b, c)), Lcm(Lcm(a, b), c));
@@ -99,9 +96,7 @@ TEST(math_discrete, test_lcm)
 
 TEST(math_discrete, test_bin)
 {
-  long n{45};
-  long k{68};
-  long h{76};
+  long n{45}, k{68}, h{76};
   EXPECT_EQ(Bin(n, k), n / k * Bin(n - 1, k - 1));
   EXPECT_EQ(Bin(n - 1, k) - Bin(n - 1, k - 1), (n - 2 * k) / n * Bin(n, k));
   EXPECT_EQ(Bin(n, h) * Bin(n - h, k), Bin(n, k) * Bin(n - k, h));
