@@ -1,12 +1,16 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
+
 cmake_minimum_required(VERSION 3.14)
 set(CMAKE_C_COMPILER "gcc")
-
-project(Algorithm)
-
+PROJECT(Algorithm CXX)
 set(CMAKE_CXX_STANDARD 17)
 
-set(SOURCE_FILES main.cpp)
-add_executable(Algorithm_run ${SOURCE_FILES})
+# ////////////////////////////////////////
+# Includes
+# ////////////////////////////////////////
 
 include_directories(geometry)
 add_subdirectory(geometry)
@@ -35,11 +39,15 @@ add_subdirectory(string)
 include_directories(transform)
 add_subdirectory(transform)
 
-target_link_libraries(Algorithm_run geometry greedy maths network search sequence sort string transform)
+add_library(algo INTERFACE)
+target_link_libraries(algo INTERFACE geometry greedy maths network search sequence sort string transform)
 
-add_subdirectory(test)
+# ////////////////////////////////////////
+# Examples
+# ////////////////////////////////////////
 
-# Examples -------------------------------------
 include_directories(examples)
 add_subdirectory(examples)
-target_link_libraries(qhull_run geometry)
+
+# Quickhull example:
+target_link_libraries(qhull_run algo)

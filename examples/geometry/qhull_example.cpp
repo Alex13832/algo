@@ -1,7 +1,9 @@
-//
-// Created by Alexander Karlsson on 2020-04-27.
-//
-
+///
+/// \brief Example source code for Quickhull.
+/// \author alex011235
+/// \date 2020-04-27
+/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+///
 #include <fstream>
 #include <geometry_algorithms.hpp>
 #include <iostream>
