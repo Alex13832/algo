@@ -35,7 +35,7 @@ struct y_comp {
 /// \return 1 if above/right, -1 below/left.
 int Location(Line ln, Point p)
 {
-  double temp = (ln.b.x - ln.a.x) * (p.y - ln.a.y) - (ln.b.y - ln.a.y) * (p.x - ln.a.x);
+  double temp{(ln.b.x - ln.a.x) * (p.y - ln.a.y) - (ln.b.y - ln.a.y) * (p.x - ln.a.x)};
   if (temp > 0) {
     return 1;
   }
@@ -48,10 +48,12 @@ int Location(Line ln, Point p)
 /// \return Distance.
 double Distance(Line ln, Point p)
 {
-  double abx = ln.b.x - ln.a.x;
-  double aby = ln.b.y - ln.a.y;
-  double dist = abx * (ln.a.y - p.y) - aby * (ln.a.x - p.x);
-  if (dist < 0) return -1.0 * dist;
+  double abx{ln.b.x - ln.a.x};
+  double aby{ln.b.y - ln.a.y};
+  double dist{abx * (ln.a.y - p.y) - aby * (ln.a.x - p.x)};
+  if (dist < 0) {
+    return -1.0 * dist;
+  }
   return dist;
 }
 
@@ -81,8 +83,9 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
     double max_dist{kDblMin};
 
     for (auto p : pts) {
-      if (Distance(Line{a, b}, p) > max_dist) {
-        max_dist = Distance(Line{a, b}, p);
+      double curr_dist{Distance(Line{a, b}, p)};
+      if (curr_dist > max_dist) {
+        max_dist = curr_dist;
         c = p;
         ci = k;
       }
@@ -93,10 +96,10 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
     pts.erase(pts.begin() + ci);
 
     Points A, B;
-    for (auto p : pts) {
-      if (Location(Line{a, c}, p) == 1) A.push_back(p);
-      if (Location(Line{c, b}, p) == 1) B.push_back(p);
-    }
+    std::for_each(pts.begin(), pts.end(), [&](Point p) {
+      if (Location(Line{a, c}, p) == 1) A.emplace_back(p);
+      if (Location(Line{c, b}, p) == 1) B.emplace_back(p);
+    });
 
     // Recursive calls
     QuickHull(a, c, A, pts_ch);
@@ -126,13 +129,9 @@ Points ConvexHull(Points points)
   Points left, right;
 
   // Determine which side of line (a,b)
-  for (auto p : points) {
-    if (Location(Line{a, b}, p) == -1) {
-      left.push_back(p);
-    } else {
-      right.push_back(p);
-    }
-  }
+  std::for_each(points.begin(), points.end(), [&](Point p) {
+    Location(Line{a, b}, p) == -1 ? left.emplace_back(p) : right.emplace_back(p);
+  });
 
   // Call qhull with two sets
   QuickHull(a, b, right, pts_ch);
