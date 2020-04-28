@@ -1,11 +1,10 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
 PROJECT(Algorithm)
 
-set(HEADER_FILES
-        greedy_algorithms.hpp
-        )
-
-set(SOURCE_FILES
-        greedy_algorithms.cpp
-        )
+set(HEADER_FILES greedy_algorithms.hpp)
+set(SOURCE_FILES greedy_algorithms.cpp)
 
 add_library(greedy STATIC ${SOURCE_FILES} ${HEADER_FILES})

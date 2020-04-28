@@ -1,5 +1,10 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
 project(AlgorithmTests)
 
+# Include Google Test
 add_subdirectory(lib)
 
 file(GLOB test_SRC "*.cpp")
