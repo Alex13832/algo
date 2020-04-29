@@ -60,3 +60,5 @@ add_subdirectory(examples)
 target_link_libraries(qhull_run algo)
 # Closest pair example:
 target_link_libraries(closest_pair_run algo)
+# Triangulate example:
+target_link_libraries(triangulate_run algo)

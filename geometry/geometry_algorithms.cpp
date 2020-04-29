@@ -248,4 +248,116 @@ Points ClosestPairOfPoints(const Points& points)
   return closest.second;
 }
 
+/////////////////////////////////////////////
+/// Triangulation of points
+/////////////////////////////////////////////
+
+/** ------------------------------------------------------------------
+* Functions for determining if two line segments intersect.
+* Implementerd according to
+* http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
+*/
+
+//0.01 small penalty
+bool ccw(Point p1, Point p2, Point p3)
+{
+  return ((p3.y - p1.y) * (p2.x - p1.x)) >= ((p2.y - p1.y) * (p3.x - p1.x));
+}
+
+//p0 pi pk pj
+bool SegmentIntersect(Point p1, Point p2, Point p3, Point p4)
+{
+  bool a = (ccw(p1, p3, p4) != ccw(p2, p3, p4))
+      && (ccw(p1, p2, p3) != ccw(p1, p2, p4));
+
+  /** Degeneracy, if two points are equal, they should not
+  //count as intersection */
+  bool b = p1 != p3;
+  bool c = p1 != p4;
+  bool d = p2 != p3;
+  bool e = p2 != p4;
+  bool f = p1 != p3;
+  bool g = p3 != p4;
+
+  return a && b && c && d && e && f && g;
+}
+
+/// \brief Sorts the input points lexicographically,
+/// \param pts The input points.
+void LexSortPoints(Points& pts)
+{
+  double x = pts[0].x;
+  Points pts2;
+  Points pts_res;
+
+  for (auto& pt : pts) {
+
+    if (pt.x != x) {
+      sort(pts2.begin(), pts2.end(), y_comp());
+      for (auto k : pts2) {
+        pts_res.push_back(k);
+      }
+
+      pts2.clear();
+      x = pt.x;
+    }
+
+    pts2.push_back(pt);
+  }
+
+  if (!pts2.empty()) {
+    for (auto p : pts2) {
+      pts_res.push_back(p);
+    }
+  }
+
+  pts = pts_res;
+}
+
+Lines Triangulate(Points& pts)
+{
+  std::sort(pts.begin(), pts.end(), x_comp());
+  LexSortPoints(pts);
+
+  Points visited{pts[0], pts[1], pts[2]};
+  bool intersection = false;
+
+  /* The three first points constructs a triangle*/
+  Line l0{pts[0], pts[1]};
+  Line l1{pts[0], pts[2]};
+  Line l2{pts[1], pts[2]};
+  Lines lines{l0, l1, l2};
+
+  /* From this point add points to the only triangl incrementally. */
+  for (size_t i = 3; i < pts.size(); ++i) {
+    Point& p0 = pts[i];
+
+    /* Target point pi */
+    for (auto pi = visited.rbegin(); pi != visited.rend(); ++pi) {
+
+      /* Verify that the segment p0-pi doesn't intersect e */
+      for (auto e = lines.rbegin(); e != lines.rend(); ++e) {
+        Point pk = e->a;
+        Point pj = e->b;
+
+        if (SegmentIntersect(p0, *pi, pj, pk)) {
+          intersection = true;
+          break;// as soon as something intersects
+        }
+      }
+
+      if (!intersection) {
+        Line line{p0, *pi};
+        lines.push_back(line);
+      }
+
+      intersection = false;
+    }
+
+    visited.push_back(p0);
+  }
+
+  return lines;
+}
+
 }// namespace algo::geometry

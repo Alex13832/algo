@@ -14,14 +14,14 @@ using namespace algo::geometry;
 
 ...
 
-  Points points{{0.162745, 0.676737},
-                {0.578652, 0.674331},
-                {0.201865, 0.252038},
-                {0.609536, 0.232788},
-                {0.351138, 0.478224},
-                {0.365551, 0.491458}};
+Points points{{0.162745, 0.676737},
+            {0.578652, 0.674331},
+            {0.201865, 0.252038},
+            {0.609536, 0.232788},
+            {0.351138, 0.478224},
+            {0.365551, 0.491458}};
 
-  Points closest{ClosestPairOfPoints(points)};
+Points closest{ClosestPairOfPoints(points)};
 ```
 
 ### Example
@@ -64,6 +64,29 @@ Note that the example does not plot it.
 
 ![PageRank](images/convexhull.png)
 
-## Triangulation
+## Triangulate
 This algorithm finds a triangulation of some input set of points.
 See the example below.
+
+### Usage
+The points don't have to be sorted to be triangulated properly. They will be sorted by the algorithm.
+
+```C++
+#include <geometry_algorithms.hpp>
+
+using namespace algo::geometry;
+
+...
+
+Points points{{0.112301, 0.440927},
+            {0.339814, .723659},
+            {0.614683, .516723},
+            {0.414966, .294147}};
+
+Lines lines{Triangulate(points)};
+```
+
+### Example
+In the image below, the output of a triangulation is shown.
+
+![Triangulate](images/triangulate.png)

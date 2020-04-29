@@ -55,6 +55,5 @@ vector<edge> triangulation(vector<point>& pts) {
 		visited.push_back(p0);
 	}
 
-	cout << "done" << endl;
 	return edges;
 }

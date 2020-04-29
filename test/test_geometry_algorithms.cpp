@@ -214,3 +214,18 @@ TEST(test_geometry_closest_pair, test_simple_2)
 
   EXPECT_TRUE(equal(closest.begin(), closest.end(), correct.begin()));
 }
+
+/////////////////////////////////////////////
+/// Triangulation of points
+/////////////////////////////////////////////
+
+TEST(test_geometry_triangulation, test_timple)
+{
+  Points points{{0.112301, 0.440927},
+                {0.339814, .723659},
+                {0.614683, .516723},
+                {0.414966, .294147}};
+
+  Lines lines{Triangulate(points)};
+  EXPECT_EQ(lines.size(), 5);
+}

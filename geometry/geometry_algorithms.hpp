@@ -33,9 +33,16 @@ struct Point {
 
 struct Line {
   Point a, b;
+
+  bool operator==(const Line& e)
+  {
+    Point p_1 = e.a, p_2 = e.b;
+    return (p_1 == a) && (p_2 == b);
+  }
 };
 
 using Points = std::vector<Point>;
+using Lines = std::vector<Line>;
 
 /////////////////////////////////////////////
 /// Quickhull
@@ -57,6 +64,15 @@ Points ConvexHull(Points points);
 /// \return The two points that are closest to each other.
 /// \link <a href="https://en.wikipedia.org/wiki/Closest_pair_of_points_problem">Closest pair of points, Wikipedia.</a>
 Points ClosestPairOfPoints(const Points& points);
+
+/////////////////////////////////////////////
+/// Triangulation of points
+/////////////////////////////////////////////
+
+/// \brief Computes the triangulation of a set of input 2D-points.
+/// \param pts The input points.
+/// \return The triangulation as a set of lines.
+Lines Triangulate(Points& pts);
 
 }// namespace algo::geometry
 

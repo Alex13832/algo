@@ -1,7 +1,7 @@
 ///
-/// \brief Example source code for Quickhull.
+/// \brief Example source code for triangulate.
 /// \author alex011235
-/// \date 2020-04-27
+/// \date 2020-04-29
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
@@ -43,34 +43,40 @@ Points ReadFile(const string& file)
 /// \param points The convex hull points.
 /// \param all All points.
 /// \param filename
-void WriteToFile(const Points& points, const Points& all, const string& filename)
+void WriteToFile(const Lines& lines, const string& filename)
 {
   ofstream file;
   file.open(filename);
 
-  file << "x"
+  file << "x1"
        << ", "
-       << "y"
+       << "y1"
        << ", "
-       << "Labels" << '\n';
+       << "x2"
+       << ","
+       << "y2"
+       << '\n';
 
-  for (auto p : all) {
-    file << p.x << ", " << p.y << ", Inside" << '\n';
-  }
-  for (auto p : points) {
-    file << p.x << ", " << p.y << ", Hull" << '\n';
+  for (auto line : lines) {
+    file << line.a.x << ", " << line.a.y << ", " << line.b.x << ", " << line.b.y << '\n';
   }
 
   file.close();
 }
 
+struct x_comp {
+  bool operator()(const Point p1, const Point p2) const
+  {
+    return p1.x < p2.x;
+  }
+};
+
 int main()
 {
-  Points points{ReadFile("testfiles/qhull_in.csv")};
+  Points points{ReadFile("testfiles/triangulate_in.csv")};
 
-  Points qh{ConvexHull(points)};
+  Lines lines{Triangulate(points)};
 
-  WriteToFile(qh, points, "testfiles/qhull_out.csv");
-
+  WriteToFile(lines, "testfiles/triangulate_out.csv");
   return 0;
 }
