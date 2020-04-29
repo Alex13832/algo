@@ -1,9 +1,10 @@
 ///
-/// \brief Example source code for Quickhull.
+/// \brief Example source code for closes pair of points.
 /// \author alex011235
-/// \date 2020-04-27
+/// \date 2020-04-29
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
+
 #include <fstream>
 #include <geometry_algorithms.hpp>
 #include <iostream>
@@ -39,8 +40,8 @@ Points ReadFile(const string& file)
 }
 
 /// \brief Writes points to a csv-file.
-/// \param points The convex hull points.
-/// \param all All points.
+/// \param points The closest pair of points.
+/// \param all The raw data.
 /// \param filename
 void WriteToFile(const Points& points, const Points& all, const string& filename)
 {
@@ -54,10 +55,10 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
        << "Labels" << '\n';
 
   for (auto p : all) {
-    file << p.x << ", " << p.y << ", Inside" << '\n';
+    file << p.x << ", " << p.y << ", Other" << '\n';
   }
   for (auto p : points) {
-    file << p.x << ", " << p.y << ", Hull" << '\n';
+    file << p.x << ", " << p.y << ", Closest pair" << '\n';
   }
 
   file.close();
@@ -65,13 +66,10 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
 
 int main()
 {
-  Points points{ReadFile("testfiles/qhull_in.csv")};
+  Points points{ReadFile("testfiles/closest_pair_in.csv")};
 
-  Points qh;
+  Points cp{ClosestPairOfPoints(points)};
 
-  for (int i = 0; i < 1000; i++)
-    qh = ConvexHull(points);
-
-  WriteToFile(qh, points, "testfiles/qhull_out.csv");
+  WriteToFile(cp, points, "testfiles/closest_pair_out.csv");
   return 0;
 }

@@ -17,6 +17,10 @@ namespace algo::network {
 using Arr = std::vector<double>;
 using Mat = std::vector<Arr>;
 
+/////////////////////////////////////////////
+/// PageRank
+/////////////////////////////////////////////
+
 /// \brief Computes the rank for the input web graph.
 /// \param W Web graph matrix.
 /// \param damping Damping factor

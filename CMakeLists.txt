@@ -7,6 +7,7 @@ cmake_minimum_required(VERSION 3.14)
 set(CMAKE_C_COMPILER "gcc")
 PROJECT(Algorithm LANGUAGES "CXX" VERSION "2.0.1")
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
 # ////////////////////////////////////////
 # Includes
@@ -57,3 +58,5 @@ add_subdirectory(examples)
 
 # Quickhull example:
 target_link_libraries(qhull_run algo)
+# Closest pair example:
+target_link_libraries(closest_pair_run algo)

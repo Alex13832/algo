@@ -7,11 +7,14 @@
 
 #include "geometry_algorithms.hpp"
 
+#include <cmath>
+
 namespace algo::geometry {
 
 namespace {
 constexpr double kDblMin{2.2250738585072014e-308};
-}
+constexpr double kDblMax{1.79769e+308};
+}// namespace
 
 // For sorting on x-priority.
 struct x_comp {
@@ -55,6 +58,15 @@ double Distance(Line ln, Point p)
     return -1.0 * dist;
   }
   return dist;
+}
+
+/// \brief Returns the distance between two points.
+/// \param p1 Point 1.
+/// \param p2 Point 2.
+/// \return The distance between p1 and p2.
+double Distance(Point p1, Point p2)
+{
+  return sqrt((double) pow(p1.x - p2.x, 2) + (double) pow(p1.y - p2.y, 2));
 }
 
 /////////////////////////////////////////////
@@ -139,6 +151,101 @@ Points ConvexHull(Points points)
 
   std::sort(pts_ch.begin(), pts_ch.end(), x_comp());
   return pts_ch;
+}
+
+/////////////////////////////////////////////
+/// Closest pair of points
+/////////////////////////////////////////////
+
+/// \brief Returns the closes pair of points, brute force. Only to be used on a very small set of points.
+/// \param xp Input points.
+/// \param yp Input points.
+/// \return Closest pair of points.
+std::pair<double, Points> ClosestPairBF(const Points& xp, const Points& yp)
+{
+  double min_dist{kDblMax};
+  Point xp_min{}, yp_min{};
+
+  for (auto px : xp) {
+    for (auto py : yp) {
+
+      if (!(px.x == py.x && px.y == py.y)) {
+        if (Distance(px, py) < min_dist) {
+          min_dist = Distance(px, py);
+          xp_min = px;
+          yp_min = py;
+        }
+      }
+    }
+  }
+
+  return std::make_pair(min_dist, Points{xp_min, yp_min});
+}
+
+/// \brief Divide and conquer algorithm to find the closest pair of points.
+/// \param xp Set of points.
+/// \param yp Set of points.
+/// \return The min distance and the two closest points.
+std::pair<double, Points> ClosestPair(const Points& xp, const Points& yp)
+{
+  int N = xp.size();
+
+  // Brute force if size <= 3
+  if (N <= 3) { return ClosestPairBF(xp, yp); }
+
+  Points xL, xR, yL, yR;
+  std::copy(xp.begin(), xp.begin() + (N / 2), std::back_inserter(xL));
+  std::copy(xp.begin() + (N / 2), xp.end(), std::back_inserter(xR));
+  // Mid point on x-axis
+  Point xmid{xp.at(N / 2)};
+
+  std::copy_if(yp.begin(), yp.end(), std::back_inserter(yL), [&xmid](Point p) {
+    return p.x <= xmid.x;
+  });
+
+  std::copy_if(yp.begin(), yp.end(), std::back_inserter(yR), [&xmid](Point p) {
+    return p.x > xmid.x;
+  });
+
+  // Recursive calls
+  std::pair<double, Points> cL{ClosestPair(xL, yL)};
+  std::pair<double, Points> cR{ClosestPair(xR, yR)};
+
+  Points p_min{cL.first < cR.first ? cL.second : cR.second};
+  double dist_min{cL.first < cR.first ? cL.first : cR.first};
+
+  Points ys;
+  std::copy_if(xp.begin(), xp.end(), std::back_inserter(ys), [&dist_min, &xmid](Point p) {
+    return abs(xmid.x - p.x) < dist_min;
+  });
+
+  double closest_dist{dist_min};
+  Points closest_pair{p_min};
+
+  for (size_t i = 0; i < ys.size(); ++i) {
+    size_t k = i + 1;
+
+    while (k < ys.size() && ((ys[k].y - ys[i].y) < dist_min)) {
+      if (Distance(ys[k], ys[i]) < closest_dist) {
+        closest_dist = Distance(ys[k], ys[i]);
+        closest_pair = {ys[k], ys[i]};
+      }
+      k++;
+    }
+  }
+
+  return std::make_pair(closest_dist, closest_pair);
+}
+
+Points ClosestPairOfPoints(const Points& points)
+{
+  Points ptsx{points};
+  Points ptsy{points};
+  std::sort(ptsx.begin(), ptsx.end(), x_comp());
+  std::sort(ptsy.begin(), ptsy.end(), y_comp());
+
+  std::pair<double, Points> closest{ClosestPair(ptsx, ptsy)};
+  return closest.second;
 }
 
 }// namespace algo::geometry
