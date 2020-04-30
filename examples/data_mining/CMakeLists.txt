@@ -4,8 +4,4 @@
 # //////////////////////////////////////////////////////////
 project(Algorithm)
 
-include_directories(data_mining)
-add_subdirectory(data_mining)
-
-include_directories(geometry)
-add_subdirectory(geometry)
+add_executable(kmeans_run kmeans_example.cpp)

@@ -13,6 +13,9 @@ set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 # Includes
 # ////////////////////////////////////////
 
+include_directories(data_mining)
+add_subdirectory(data_mining)
+
 include_directories(geometry)
 add_subdirectory(geometry)
 
@@ -40,8 +43,13 @@ add_subdirectory(string)
 include_directories(transform)
 add_subdirectory(transform)
 
+# ////////////////////////////////////////
+# Link
+# ////////////////////////////////////////
+
 add_library(algo INTERFACE)
-target_link_libraries(algo INTERFACE geometry greedy maths network search sequence sort string transform)
+target_link_libraries(algo INTERFACE data_mining geometry greedy maths network search sequence sort string transform)
+
 
 # ////////////////////////////////////////
 # Test
@@ -62,3 +70,6 @@ target_link_libraries(qhull_run algo)
 target_link_libraries(closest_pair_run algo)
 # Triangulate example:
 target_link_libraries(triangulate_run algo)
+
+# K-means example
+target_link_libraries(kmeans_run algo)

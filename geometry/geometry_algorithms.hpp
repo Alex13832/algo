@@ -34,7 +34,7 @@ struct Point {
 struct Line {
   Point a, b;
 
-  bool operator==(const Line& e)
+  bool operator==(const Line& e) const
   {
     Point p_1 = e.a, p_2 = e.b;
     return (p_1 == a) && (p_2 == b);

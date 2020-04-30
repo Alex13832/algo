@@ -25,13 +25,9 @@ Points closest{ClosestPairOfPoints(points)};
 ```
 
 ### Example
-In the images below, the result from running th example `examples/geometry/closest_pair.cpp` is shown. It's 
-hard to see that the closest pair of points is actually separated. After zooming in, it's possible to see that there are 
-two blue points.
+`examples/geometry/closest_pair.cpp`
 
-![Closest Pair example](images/closest_pair.png)
-![Closest Pair example](images/closest_pair_zoom.png)
-
+![Closest Pair example](images/closest_pair.png) ![Closest Pair example](images/closest_pair_zoom.png)
 
 
 ## Quickhull Algorithm
@@ -59,8 +55,7 @@ Points qh{ConvexHull(points)};
 ```
 
 ### Example
-The example in `examples/geometry/qhull_example.cpp` outputs the following data shown in the image below. 
-Note that the example does not plot it.
+`examples/geometry/qhull_example.cpp`
 
 ![PageRank](images/convexhull.png)
 
@@ -87,6 +82,7 @@ Lines lines{Triangulate(points)};
 ```
 
 ### Example
-In the image below, the output of a triangulation is shown.
+
+`examples/geometry/triangulate_example.cpp`
 
 ![Triangulate](images/triangulate.png)

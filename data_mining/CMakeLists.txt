@@ -2,10 +2,10 @@
 # author: alex011235
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
-project(Algorithm)
+PROJECT(Algorithm)
 
-include_directories(data_mining)
-add_subdirectory(data_mining)
+set(HEADER_FILES data_mining_algorithms.hpp)
 
-include_directories(geometry)
-add_subdirectory(geometry)
+set(SOURCE_FILES data_mining_algorithms.cpp)
+
+add_library(data_mining STATIC ${SOURCE_FILES} ${HEADER_FILES})
