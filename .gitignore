@@ -1,0 +1,12 @@
+# Folders to exclude
+/test/lib
+/build
+/cmake-build-debug
+/test/cmake-build-debug
+/.idea
+/.vsc
+
+# Files
+*.cmake
+*.out
+*.make
