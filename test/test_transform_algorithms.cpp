@@ -8,7 +8,7 @@
 #include <iostream>
 
 #include "gtest/gtest.h"
-#include "transform_algorithms.hpp"
+#include "include/algo_transform.hpp"
 
 using namespace std;
 using namespace algo::transform;

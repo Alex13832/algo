@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "data_mining_algorithms.hpp"
+#include "algo_data_mining.hpp"
 
 #include <chrono>
 #include <cmath>
@@ -33,7 +33,7 @@ double Uniform(const double& a, const double& b)
 /// \param p1 Point 1.
 /// \param p2 Point 2.
 /// \return The distance between p1 and p2.
-double Distance(Point p1, Point p2)
+double Distance(geometry::Point p1, geometry::Point p2)
 {
   return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 }
@@ -42,7 +42,7 @@ double Distance(Point p1, Point p2)
 /// K-means
 /////////////////////////////////////////////
 
-Clusters KMeans(Points points, const std::int8_t& k)
+Clusters KMeans(geometry::Points points, const std::int8_t& k)
 {
   if (k > points.size() || k == 0 || points.empty()) {
     return Clusters{};
@@ -83,7 +83,7 @@ Clusters KMeans(Points points, const std::int8_t& k)
       ct.mean_x /= ct.size;// New mean
       ct.mean_y /= ct.size;// New mean
 
-      if (Point{ct.mean_x, ct.mean_y} == ct.p) { converge++; }
+      if (geometry::Point{ct.mean_x, ct.mean_y} == ct.p) { converge++; }
 
       // Update centroid location and reset the rest
       ct = {ct.mean_x, ct.mean_y, 0, 0.0, 0};

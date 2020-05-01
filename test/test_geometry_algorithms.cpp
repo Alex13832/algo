@@ -6,11 +6,9 @@
 ///
 
 #include <algorithm>
-#include <cmath>
-#include <numeric>
 
-#include "geometry_algorithms.hpp"
 #include "gtest/gtest.h"
+#include "include/algo_geometry.hpp"
 
 using namespace std;
 using namespace algo::geometry;

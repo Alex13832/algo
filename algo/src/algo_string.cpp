@@ -4,7 +4,7 @@
 /// \date 2020-04-19
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
-#include "string_algorithms.hpp"
+#include "algo_string.hpp"
 
 #include <numeric>
 #include <vector>

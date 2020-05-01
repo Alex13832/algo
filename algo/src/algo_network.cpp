@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "network_algorithms.hpp"
+#include "algo_network.hpp"
 
 #include <algorithm>
 #include <chrono>

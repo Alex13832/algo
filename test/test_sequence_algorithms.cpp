@@ -10,7 +10,7 @@
 #include <numeric>
 
 #include "gtest/gtest.h"
-#include "sequence_algorithms.hpp"
+#include "include/algo_sequence.hpp"
 
 using namespace std;
 using namespace algo::sequence;

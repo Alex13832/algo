@@ -5,7 +5,7 @@
 
 cmake_minimum_required(VERSION 3.14)
 set(CMAKE_C_COMPILER "gcc")
-PROJECT(Algorithm LANGUAGES "CXX" VERSION "2.0.1")
+PROJECT(algo LANGUAGES "CXX" VERSION "2.0.1")
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
@@ -13,43 +13,8 @@ set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 # Includes
 # ////////////////////////////////////////
 
-include_directories(data_mining)
-add_subdirectory(data_mining)
-
-include_directories(geometry)
-add_subdirectory(geometry)
-
-include_directories(greedy)
-add_subdirectory(greedy)
-
-include_directories(math)
-add_subdirectory(math)
-
-include_directories(network)
-add_subdirectory(network)
-
-include_directories(search)
-add_subdirectory(search)
-
-include_directories(sequence)
-add_subdirectory(sequence)
-
-include_directories(sort)
-add_subdirectory(sort)
-
-include_directories(string)
-add_subdirectory(string)
-
-include_directories(transform)
-add_subdirectory(transform)
-
-# ////////////////////////////////////////
-# Link
-# ////////////////////////////////////////
-
-add_library(algo INTERFACE)
-target_link_libraries(algo INTERFACE data_mining geometry greedy maths network search sequence sort string transform)
-
+include_directories(algo)
+add_subdirectory(algo)
 
 # ////////////////////////////////////////
 # Test

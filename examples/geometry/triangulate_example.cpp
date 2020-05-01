@@ -6,9 +6,10 @@
 ///
 
 #include <fstream>
-#include <geometry_algorithms.hpp>
 #include <iostream>
 #include <string>
+
+#include "include/algo_geometry.hpp"
 
 using namespace std;
 using namespace algo::geometry;

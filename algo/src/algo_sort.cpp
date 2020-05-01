@@ -3,7 +3,7 @@
 /// \author alex011235
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
-#include "sort_algorithms.hpp"
+#include "algo_sort.hpp"
 
 #include <algorithm>
 #include <cmath>

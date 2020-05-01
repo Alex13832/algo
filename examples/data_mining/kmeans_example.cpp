@@ -5,13 +5,15 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include <data_mining_algorithms.hpp>
 #include <fstream>
 #include <iostream>
 #include <string>
 
+#include "include/algo_data_mining.hpp"
+
 using namespace std;
 using namespace algo::data_mining;
+using namespace algo::geometry;
 
 /// \brief Reads the input data points.
 /// \param file File to read.

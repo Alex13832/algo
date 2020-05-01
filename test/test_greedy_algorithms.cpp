@@ -10,8 +10,8 @@
 #include <iostream>
 #include <string>
 
-#include "greedy_algorithms.hpp"
 #include "gtest/gtest.h"
+#include "include/algo_greedy.hpp"
 
 using namespace std;
 using namespace algo::greedy;

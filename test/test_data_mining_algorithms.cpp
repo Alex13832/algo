@@ -7,11 +7,12 @@
 
 #include <algorithm>
 
-#include "data_mining_algorithms.hpp"
 #include "gtest/gtest.h"
+#include "include/algo_data_mining.hpp"
 
 using namespace std;
 using namespace algo::data_mining;
+using namespace algo::geometry;
 
 /////////////////////////////////////////////
 /// K-means

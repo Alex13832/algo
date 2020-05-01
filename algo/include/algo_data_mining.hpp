@@ -13,25 +13,18 @@
 
 #include <vector>
 
+#include "algo_geometry.hpp"
+
 namespace algo::data_mining {
 
-struct Point {
-  double x, y;
-  bool operator==(const Point& p) const
-  {
-    return x == p.x && y == p.y;
-  }
-};
-
 struct Centroid {
-  Point p;
+  geometry::Point p;
   double mean_x, mean_y;
   size_t size;
 };
 
 using Centroids = std::vector<Centroid>;
-using Points = std::vector<Point>;
-using Clusters = std::vector<Points>;
+using Clusters = std::vector<geometry::Points>;
 
 /////////////////////////////////////////////
 /// K-means
@@ -41,7 +34,7 @@ using Clusters = std::vector<Points>;
 /// \param k Number of clusters.
 /// \return Clusters. If k is greated the points.size() it will return an empty object.
 /// \link <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-means, Wikipedia.</a>
-Clusters KMeans(Points points, const std::int8_t& k);
+Clusters KMeans(geometry::Points points, const std::int8_t& k);
 
 }// namespace algo::data_mining
 

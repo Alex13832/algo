@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 #include "gtest/gtest.h"
-#include "string_algorithms.hpp"
+#include "include/algo_string.hpp"
 
 using namespace std;
 using namespace algo;

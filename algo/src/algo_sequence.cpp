@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "sequence_algorithms.hpp"
+#include "algo_sequence.hpp"
 
 #include <algorithm>
 #include <cmath>

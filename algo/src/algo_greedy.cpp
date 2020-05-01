@@ -8,7 +8,7 @@
 /// 2015-06-17 Gale-Shapley, Stable marriage.
 ///
 
-#include "greedy_algorithms.hpp"
+#include "algo_greedy.hpp"
 
 #include <algorithm>
 #include <vector>

@@ -5,11 +5,10 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
-#include "gtest/gtest.h"
-
-#include "search_algorithms.hpp"
-
 #include <algorithm>
+
+#include "gtest/gtest.h"
+#include "include/algo_search.hpp"
 
 using namespace std;
 using namespace algo::search;
