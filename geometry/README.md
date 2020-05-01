@@ -1,12 +1,16 @@
 Computational geometry
 ===================================
 
-## Closest pair of points
+### Closest pair of points
 Finds the closest pair of points of some input set of points.
 
 [Closest pair of points problem, Wikipedia](https://en.wikipedia.org/wiki/Closest_pair_of_points_problem)
 
-### Usage
+#### Usage
+
+The `ClosestPairOfPoints` takes a set of `algo::geometry::Points` and returns an other set of `Points` containing the closest pair of points.
+ 
+##### Example usage
 ```C++
 #include <geometry_algorithms.hpp>
 
@@ -24,20 +28,24 @@ Points points{{0.162745, 0.676737},
 Points closest{ClosestPairOfPoints(points)};
 ```
 
-### Example
 `examples/geometry/closest_pair.cpp`
 
 ![Closest Pair example](images/closest_pair.png) ![Closest Pair example](images/closest_pair_zoom.png)
 
 
-## Quickhull Algorithm
+### Quickhull Algorithm
 Finds the set of points that constructs the convex hull of some input data set of points.
 
 [Quickhull, Wikipedia](https://en.wikipedia.org/wiki/Quickhull)
 
 [Convex hull, Wikipedia](https://en.wikipedia.org/wiki/Convex_hull)
 
-### Usage
+#### Usage
+
+The function `algo::geometry::ConvexHull` takes a set of `algo::geometry::Points` and returns a subset containing the 
+convex hull of the input.
+
+##### Example usage
 ```C++
 #include <geometry_algorithms.hpp>
 
@@ -54,17 +62,21 @@ Points points{{0.15348, 0.355506},
 Points qh{ConvexHull(points)};
 ```
 
-### Example
 `examples/geometry/qhull_example.cpp`
 
 ![PageRank](images/convexhull.png)
 
-## Triangulate
+### Triangulation of points
 This algorithm finds a triangulation of some input set of points.
 See the example below.
 
-### Usage
-The points don't have to be sorted to be triangulated properly. They will be sorted by the algorithm.
+#### Usage
+
+The function `algo::geometry::Triangulate` takes a set of `algo::geometry::Points` and computes the triangulation of them. 
+`Triangulate` returns a set of `Lines{{Point, Point},...}`. Each item indicates the connection between two points in
+the triangulation.
+
+##### Example usage
 
 ```C++
 #include <geometry_algorithms.hpp>
@@ -81,8 +93,6 @@ Points points{{0.112301, 0.440927},
 Lines lines{Triangulate(points)};
 ```
 
-### Example
-
 `examples/geometry/triangulate_example.cpp`
 
-![Triangulate](images/triangulate.png)
+![Triangulate](images/triangulate1.png) ![Triangulate](images/triangulate2.png)

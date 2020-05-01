@@ -1,7 +1,7 @@
 Data mining algorithms
 ======================
 
-## K-means clustering
+### K-means clustering
 
 The K-means algorithm clusters the input points in to K clusters. K has to be chose with some wisdom. 
 Before choosing K, the data should be observed, preferably in a scatter plot. In that plot it's
@@ -10,7 +10,7 @@ often possible to understand how many clusters (K) it contains. In image one and
 
 [K-means clustering, Wikipedia.](https://en.wikipedia.org/wiki/K-means_clustering)
 
-### Usage
+#### Usage
 
 * The function returns K clusters, where each cluster contains a set of points.
 * K can not be greater than the number of input points.
@@ -18,7 +18,7 @@ often possible to understand how many clusters (K) it contains. In image one and
 * If K is zero, or if the input is empty, or if K > the size of the input, an empty Clusters will be returned.
 
 
-#### Example usage
+##### Example usage
 ```C++
 #include "data_mining_algorithms.hpp"
 
@@ -39,7 +39,7 @@ Points points{{0.212603, 0.553522},
 Clusters clusters{KMeans(points, 3)};
 ```
 
-### Example
+
 `examples/data_mining/kmeans_example.cpp`
 
 ![Kmeans, k=4](images/kmeans2.png) ![Kmeans, k=4](images/kmeans1.png)

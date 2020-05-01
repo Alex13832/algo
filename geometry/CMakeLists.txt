@@ -4,8 +4,8 @@
 # //////////////////////////////////////////////////////////
 PROJECT(Algorithm)
 
-set(HEADER_FILES geometry_algorithms.hpp)
+set(GEOMETRY_HEADER_FILES geometry_algorithms.hpp)
 
-set(SOURCE_FILES geometry_algorithms.cpp)
+set(GEOMETRY_SOURCE_FILES geometry_algorithms.cpp)
 
-add_library(geometry STATIC ${SOURCE_FILES} ${HEADER_FILES})
+add_library(geometry STATIC ${GEOMETRY_HEADER_FILES} ${GEOMETRY_SOURCE_FILES})
