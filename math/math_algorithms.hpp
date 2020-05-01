@@ -21,6 +21,7 @@ namespace algo::math::discrete {
 /// \param depth The number of rows.
 /// \return The rows of Pascal's Triangle, each item in the vector is one row.
 /// \link <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle, Wikipedia.</a>
+/// \todo Change the return type to something meaningful.
 std::vector<std::vector<int>> PascalsTriangle(const unsigned int& depth);
 
 /// \brief Computes the angle between the hour and minute hands.
@@ -29,7 +30,7 @@ std::vector<std::vector<int>> PascalsTriangle(const unsigned int& depth);
 /// \return The angle between the hour and minute hands. Return -1 for faulty input.
 int ClockAngle(const int& h, const int& m);
 
-/// \brief Finds out the maximum value subset of v such that sum of the weights of this subset is smaller
+/// \brief Finds the maximum value subset of v such that sum of the weights of this subset is smaller
 /// than or equal to the capacity.
 /// \param v Value for each item.
 /// \param w Weight for each item.
@@ -39,6 +40,7 @@ int ClockAngle(const int& h, const int& m);
 /// \link <a href="https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/"> Knapsack, GeeksforGeeks.</a>
 /// \note Tested but do not output the expected result for some examples. However the GeeksForGeeks
 /// implementation outputs the same result.
+/// \todo Change the output to somehting meaningful.
 unsigned int Knapsack(const std::vector<int>& v, const std::vector<int>& w, unsigned capacity);
 
 /// \brief Computes the greatest common divisor, using the Euclidean algorithm.
@@ -154,6 +156,7 @@ bool IsPrime(T n);
 /// \param n The maximum prime number (limit).
 /// \return A vector<T> of prime numbers.
 /// \link <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes, Wikipedia.</a>
+/// \todo Change ouput to something meaningful.
 template<typename T>
 std::vector<T> GetPrimes(unsigned int n);
 
