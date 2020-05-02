@@ -47,5 +47,19 @@ The second image outputs two clusters (there are two labels) and `k=5`.
 
 ![Knn-four-clusters](images/knn1.png) ![Knn-four-clusters](images/knn2.png)
 
+## Computational geometry
 
+### Convex hull
 
+The convex hull is the minimal polygon than contains all the input points. It's like a rubber band around the points.
+This implementation is based on the quickhull algorithm.
+
+[Quickhull, Wikipedia.](https://en.wikipedia.org/wiki/Quickhull)
+
+```C++
+Points ConvexHull(Points points);
+```
+
+Returns the convex hull of `points`, the convex hull is in the returned `Points`.
+
+![Convex hull example 1](images/convexhull1.png) ![Convex hull example 2](images/convexhull2.png)
