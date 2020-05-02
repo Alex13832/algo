@@ -63,3 +63,37 @@ Points ConvexHull(Points points);
 Returns the convex hull of `points`, the convex hull is in the returned `Points`.
 
 ![Convex hull example 1](images/convexhull1.png) ![Convex hull example 2](images/convexhull2.png)
+
+
+## Puzzle
+
+### Sudoku solver
+
+```C++
+namespace algo::puzzle::sudoku {
+Grid Solve(const Grid& grid);
+}; 
+```
+
+This algorithm needs very little explanation. It solves a Sudoku puzzle! There's a `9x9` structure `Grid` that will contain 
+the puzzle. A `0` is an empty cell.
+ 
+Example:
+```C++
+using namespace algo::puzzle::sudoku;
+
+...  
+
+Grid grid{{{0, 0, 2, 1, 0, 0, 0, 0, 9},
+           {0, 1, 0, 0, 8, 0, 0, 6, 0},
+           {0, 0, 3, 0, 0, 0, 0, 0, 7},
+           {9, 0, 0, 0, 0, 0, 7, 0, 0},
+           {0, 6, 0, 0, 7, 0, 0, 4, 0},
+           {0, 0, 4, 0, 0, 0, 0, 0, 8},
+           {2, 0, 0, 0, 0, 0, 5, 0, 0},
+           {0, 4, 0, 0, 3, 0, 0, 1, 0},
+           {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
+
+  Grid solved{Solve(grid)};
+```
+

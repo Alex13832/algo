@@ -17,6 +17,7 @@ set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
         ${PROJECT_SOURCE_DIR}/algo_math.cpp
         ${PROJECT_SOURCE_DIR}/algo_network.cpp
+        ${PROJECT_SOURCE_DIR}/algo_puzzle.cpp
         ${PROJECT_SOURCE_DIR}/algo_search.cpp
         ${PROJECT_SOURCE_DIR}/algo_sequence.cpp
         ${PROJECT_SOURCE_DIR}/algo_sort.cpp
