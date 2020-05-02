@@ -45,6 +45,16 @@ using Points = std::vector<Point>;
 using Lines = std::vector<Line>;
 
 // //////////////////////////////////////////
+//  Closest pair of points
+// //////////////////////////////////////////
+
+/// \brief Returns the closest pair of points from a set of input 2D-points.
+/// \param points Input points.
+/// \return The two points that are closest to each other.
+/// \link <a href="https://en.wikipedia.org/wiki/Closest_pair_of_points_problem">Closest pair of points, Wikipedia.</a>
+Points ClosestPairOfPoints(const Points& points);
+
+// //////////////////////////////////////////
 //  Quickhull
 // //////////////////////////////////////////
 
@@ -55,15 +65,6 @@ using Lines = std::vector<Line>;
 /// \link <a href="https://en.wikipedia.org/wiki/Convex_hull">Convex hull, Wikipedia.</a>
 Points ConvexHull(Points points);
 
-// //////////////////////////////////////////
-//  Closest pair of points
-// //////////////////////////////////////////
-
-/// \brief Returns the closest pair of points from a set of input 2D-points.
-/// \param points Input points.
-/// \return The two points that are closest to each other.
-/// \link <a href="https://en.wikipedia.org/wiki/Closest_pair_of_points_problem">Closest pair of points, Wikipedia.</a>
-Points ClosestPairOfPoints(const Points& points);
 
 // //////////////////////////////////////////
 //  Triangulation of points

@@ -1,6 +1,7 @@
 # Folders to exclude
 /test/lib
 /build
+/html
 /cmake-build-debug
 /test/cmake-build-debug
 /.idea

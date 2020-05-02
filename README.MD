@@ -23,11 +23,10 @@ The C++ code is tested with the [Google Test](https://github.com/google/googlete
 # A brief overview
 
 ## Data mining
-Some people may categorize these algorithms as machine learning.
 
 ### K-Means Clustering
 
-```C++
+```cpp
 Clusters KMeans(geometry::Points points, const std::int8_t& k);
 ```
 Outputs `k` clusters. The input 2D-points in `points` will be clustered based on the nearest cluster centroid, using the Euclidean distance.
@@ -35,10 +34,9 @@ Outputs `k` clusters. The input 2D-points in `points` will be clustered based on
 
 ![Kmeans1](images/kmeans1.png) ![Kmeans2](images/kmeans2.png)
 
-
 ### K-nearest neighbors
 
-```C++
+```cpp
 LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k);
 ```
 
@@ -49,6 +47,15 @@ The second image outputs two clusters (there are two labels) and `k=5`.
 
 ## Computational geometry
 
+### Closest pair of points
+
+```cpp
+Points ClosestPairOfPoints(const Points& points);
+```
+Returns the closest pair of points of the input set of 2D-points.
+
+![Knn-four-clusters](images/closest_pair.png) ![Knn-four-clusters](images/closest_pair_zoom.png)
+
 ### Convex hull
 
 The convex hull is the minimal polygon than contains all the input points. It's like a rubber band around the points.
@@ -56,7 +63,7 @@ This implementation is based on the quickhull algorithm.
 
 [Quickhull, Wikipedia.](https://en.wikipedia.org/wiki/Quickhull)
 
-```C++
+```cpp
 Points ConvexHull(Points points);
 ```
 
@@ -69,17 +76,15 @@ Returns the convex hull of `points`, the convex hull is in the returned `Points`
 
 ### Sudoku solver
 
-```C++
-namespace algo::puzzle::sudoku {
-Grid Solve(const Grid& grid);
-}; 
+```cpp
+Grid Solve(const Grid& grid); 
 ```
 
 This algorithm needs very little explanation. It solves a Sudoku puzzle! There's a `9x9` structure `Grid` that will contain 
 the puzzle. A `0` is an empty cell.
  
 Example:
-```C++
+```cpp
 using namespace algo::puzzle::sudoku;
 
 ...  
