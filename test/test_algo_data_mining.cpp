@@ -18,14 +18,14 @@ using namespace algo::geometry;
 /// K-means
 /////////////////////////////////////////////
 
-TEST(test_data_mining_kmeans, test_empty_input)
+TEST(test_algo_data_mining_kmeans, test_empty_input)
 {
   Points points{};
   Clusters clusters{KMeans(points, 3)};
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_data_mining_kmeans, test_zero_k)
+TEST(test_algo_data_mining_kmeans, test_zero_k)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -41,7 +41,7 @@ TEST(test_data_mining_kmeans, test_zero_k)
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_data_mining_kmeans, test_one_center)
+TEST(test_algo_data_mining_kmeans, test_one_center)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -57,7 +57,7 @@ TEST(test_data_mining_kmeans, test_one_center)
   EXPECT_EQ(clusters.size(), 1);
 }
 
-TEST(test_data_mining_kmeans, test_too_many_clusters)
+TEST(test_algo_data_mining_kmeans, test_too_many_clusters)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -73,7 +73,7 @@ TEST(test_data_mining_kmeans, test_too_many_clusters)
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_data_mining_kmeans, test_standard)
+TEST(test_algo_data_mining_kmeans, test_standard)
 {
   Points points{{0.184982, 0.571833},
                 {0.186523, 0.623506},
@@ -163,4 +163,93 @@ TEST(test_data_mining_kmeans, test_standard)
 
   Clusters clusters{KMeans(points, 3)};
   EXPECT_EQ(clusters.size(), 3);
+}
+
+/////////////////////////////////////////////
+/// KNN
+/////////////////////////////////////////////
+
+TEST(test_algo_data_mining_knn, test_k_greater_than_unlabeled_data)
+{
+  Points unlabeled_data{
+      {0.0, 1.0}};
+
+  LabeledPoints labeled_points{
+      {0.0, 1.0, 0.0, "Jupiter"},
+      {0.0, 0.5, 0.0, "Mars"}};
+
+  EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, labeled_points.size() + 1).empty());
+}
+
+TEST(test_algo_data_mining_knn, test_k_is_zero)
+{
+  Points unlabeled_data{
+      {0.0, 1.0}};
+
+  LabeledPoints labeled_points{
+      {0.0, 1.0, 0.0, "Jupiter"},
+      {0.0, 0.5, 0.0, "Mars"}};
+
+  EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 0).empty());
+}
+
+TEST(test_algo_data_mining_knn, test_empty_unlabeled_data)
+{
+  Points unlabeled_data{};
+
+  LabeledPoints labeled_points{
+      {0.0, 1.0, 0.0, "Jupiter"},
+      {0.0, 0.5, 0.0, "Mars"}};
+
+  EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 5).empty());
+}
+
+TEST(test_algo_data_mining_knn, test_empty_labeled_data)
+{
+  Points unlabeled_data{
+      {0.0, 1.0}};
+
+  LabeledPoints labeled_points{};
+
+  EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 5).empty());
+}
+
+TEST(test_algo_data_mining_knn, test_standard)
+{
+  Points unlabeled_data{
+      {0.186546, 0.811486},// C1
+      {0.266705, 0.872845},// C1
+      {0.16989, 0.933001}, // C1
+      {0.069951, 0.822314},// C1
+      {0.148028, 0.692378},// C1
+      {0.262541, 0.733284},// C1
+      {0.483239, 0.29535}, // C2
+      {0.595671, 0.207523},// C2
+      {0.64564, 0.350694}, // C2
+      {0.501978, 0.427693},// C2
+      {0.660214, 0.214742},// C2
+      {0.63523, 0.433708}  // C2
+  };
+
+  LabeledPoints labeled_points{
+      {0.199039, 0.888485, 0.0, "C1"},
+      {0.125126, 0.860814, 0.0, "C1"},
+      {0.110551, 0.765768, 0.0, "C1"},
+      {0.212572, 0.723659, 0.0, "C1"},
+      {0.268788, 0.806674, 0.0, "C1"},
+      {0.57485, 0.446943, 0.0, "C2"},
+      {0.43327, 0.383178, 0.0, "C2"},
+      {0.528004, 0.238804, 0.0, "C2"},
+      {0.632107, 0.296553, 0.0, "C2"},
+      {0.539455, 0.348287, 0.0, "C2"}};
+
+  LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
+
+  for_each(classified.begin(), classified.begin() + 5, [](const LabeledPoint& lp) {
+    EXPECT_EQ(lp.label, "C1");
+  });
+
+  for_each(classified.begin() + 6, classified.end(), [](const LabeledPoint& lp) {
+    EXPECT_EQ(lp.label, "C2");
+  });
 }

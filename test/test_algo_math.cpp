@@ -22,7 +22,7 @@ using namespace algo::math::prime;
 /// Discrete
 /////////////////////////////////////////////
 
-TEST(math_discrete, test_pascals_triangle_zeroth_row)
+TEST(test_algo_math_discrete, test_pascals_triangle_zeroth_row)
 {
   vector<vector<int>> rows{discrete::PascalsTriangle(0)};
   EXPECT_EQ(rows.size(), 1);
@@ -30,7 +30,7 @@ TEST(math_discrete, test_pascals_triangle_zeroth_row)
   EXPECT_EQ(sum, 1);
 }
 
-TEST(math_discrete, test_pascals_triangle_nth_row)
+TEST(test_algo_math_discrete, test_pascals_triangle_nth_row)
 {
   unsigned n{5};
   // The sum of the entries in the nth row of Pascal's triangle is the nth power of 2.
@@ -44,7 +44,7 @@ TEST(math_discrete, test_pascals_triangle_nth_row)
   EXPECT_EQ(sum, 1U << n);
 }
 
-TEST(math_discrete, test_clock_angle)
+TEST(test_algo_math_discrete, test_clock_angle)
 {
   // Test non-valid input
   EXPECT_EQ(ClockAngle(24, 10), -1);
@@ -59,7 +59,7 @@ TEST(math_discrete, test_clock_angle)
   EXPECT_EQ(ClockAngle(3, 10), 35);
 }
 
-TEST(math_discrete, test_knapsack)
+TEST(test_algo_math_discrete, test_knapsack)
 {
   vector<int> values{60, 100, 120};
   vector<int> weights{10, 20, 30};
@@ -74,7 +74,7 @@ TEST(math_discrete, test_knapsack)
   EXPECT_EQ(max_load, 90);
 }
 
-TEST(math_discrete, test_gcd)
+TEST(test_algo_math_discrete, test_gcd)
 {
   long a{12}, b{20};
   EXPECT_EQ(Gcd(a, 0L), a);
@@ -84,7 +84,7 @@ TEST(math_discrete, test_gcd)
   EXPECT_EQ(Gcd(42, 56), 14);
 }
 
-TEST(math_discrete, test_lcm)
+TEST(test_algo_math_discrete, test_lcm)
 {
   long a{10}, b{20}, c{30};
   EXPECT_EQ(Lcm(a, b), Lcm(b, a));
@@ -94,7 +94,7 @@ TEST(math_discrete, test_lcm)
   EXPECT_EQ(Lcm(21L, 6L), 42L);
 }
 
-TEST(math_discrete, test_bin)
+TEST(test_algo_math_discrete, test_bin)
 {
   long n{45}, k{68}, h{76};
   EXPECT_EQ(Bin(n, k), n / k * Bin(n - 1, k - 1));
@@ -119,7 +119,7 @@ double ComputeStd(vector<T> a, double avg)
 /// Uniform distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_randu_normal)
+TEST(test_algo_math_random_numbers, test_randu_normal)
 {
   const double lower{0.2};
   const double upper{0.5};
@@ -131,7 +131,7 @@ TEST(math_random_numbers, test_randu_normal)
   }
 }
 
-TEST(math_random_numbers, test_randu_limits_equal)
+TEST(test_algo_math_random_numbers, test_randu_limits_equal)
 {
   const double lower{0.5};
   const double upper{0.5};
@@ -139,7 +139,7 @@ TEST(math_random_numbers, test_randu_limits_equal)
   EXPECT_EQ(randu, lower);
 }
 
-TEST(math_random_numbers, test_randu_upper_less_than_lower)
+TEST(test_algo_math_random_numbers, test_randu_upper_less_than_lower)
 {
   const double lower{0.8};
   const double upper{0.5};
@@ -154,12 +154,12 @@ TEST(math_random_numbers, test_randu_upper_less_than_lower)
 /// Exponential distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_exp_lambda_is_zero)
+TEST(test_algo_math_random_numbers, test_exp_lambda_is_zero)
 {
   EXPECT_TRUE(std::isnan(cont::Exp(0.0)));
 }
 
-TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
+TEST(test_algo_math_random_numbers, test_exp_lambda_reverse_engineering)
 {
   const double lambda{0.5};
   double exp_sum{0.0};
@@ -182,12 +182,12 @@ TEST(math_random_numbers, test_exp_lambda_reverse_engineering)
 /// Weibull random numbers
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_weibull_beta_is_zero)
+TEST(test_algo_math_random_numbers, test_weibull_beta_is_zero)
 {
   EXPECT_TRUE(std::isnan(cont::Weibull(0.0, 1.0)));
 }
 
-TEST(math_random_numbers, test_weibull_mean_var)
+TEST(test_algo_math_random_numbers, test_weibull_mean_var)
 {
   double lambda{2.0}, k{3.0};
   vector<double> a(10000);
@@ -215,7 +215,7 @@ TEST(math_random_numbers, test_weibull_mean_var)
 /// Normal distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_normal_distribution_0_1)
+TEST(test_algo_math_random_numbers, test_normal_distribution_0_1)
 {
   vector<double> a(10000);
   double mu{0.0}, sigma{1.0};
@@ -233,7 +233,7 @@ TEST(math_random_numbers, test_normal_distribution_0_1)
   EXPECT_LT(s, 1.1 * sigma);
 }
 
-TEST(math_random_numbers, test_normal_distribution_2_3)
+TEST(test_algo_math_random_numbers, test_normal_distribution_2_3)
 {
   vector<double> a(10000);
   double mu{2}, sigma{3};
@@ -255,13 +255,13 @@ TEST(math_random_numbers, test_normal_distribution_2_3)
 /// Binomial distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_binomial_out_of_range)
+TEST(test_algo_math_random_numbers, test_binomial_out_of_range)
 {
   EXPECT_EQ(discr::Binomial(4, -0.1), -1);
   EXPECT_EQ(discr::Binomial(4, 1.1), -1);
 }
 
-TEST(math_random_numbers, test_binomial)
+TEST(test_algo_math_random_numbers, test_binomial)
 {
   int n{20};
   double p{0.5};
@@ -284,12 +284,12 @@ TEST(math_random_numbers, test_binomial)
 /// Poisson distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_poisson_out_of_range)
+TEST(test_algo_math_random_numbers, test_poisson_out_of_range)
 {
   EXPECT_EQ(discr::Poisson(-1), -1);
 }
 
-TEST(math_random_numbers, test_poisson)
+TEST(test_algo_math_random_numbers, test_poisson)
 {
   int lambda{10};
   vector<int> a(10000);
@@ -308,13 +308,13 @@ TEST(math_random_numbers, test_poisson)
 /// Poisson distribution
 ///////////////////////////////////
 
-TEST(math_random_numbers, test_geometric_out_of_range)
+TEST(test_algo_math_random_numbers, test_geometric_out_of_range)
 {
   EXPECT_EQ(discr::Geometric(0.0), -1);
   EXPECT_EQ(discr::Geometric(1.01), -1);
 }
 
-TEST(math_random_numbers, test_geometric)
+TEST(test_algo_math_random_numbers, test_geometric)
 {
   double p{0.3};
   double mean{(1.0 - p) / p};
@@ -335,7 +335,7 @@ TEST(math_random_numbers, test_geometric)
 /// Prime numbers
 /////////////////////////////////////////////
 
-TEST(math_prime_numbers, test_get_and_is_prime)
+TEST(test_alog_math_prime_numbers, test_get_and_is_prime)
 {
   EXPECT_TRUE(IsPrime(1));
   EXPECT_TRUE(IsPrime(2));

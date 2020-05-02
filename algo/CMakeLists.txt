@@ -12,16 +12,16 @@ set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
 set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 
 set(ALGO_SRCS
-        ${PROJECT_SOURCE_DIR}/data_mining_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/geometry_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/greedy_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/math_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/network_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/search_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/sequence_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/sort_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/string_algorithms.cpp
-        ${PROJECT_SOURCE_DIR}/transform_algorithms.cpp
+        ${PROJECT_SOURCE_DIR}/algo_data_mining.cpp
+        ${PROJECT_SOURCE_DIR}/algo_geometry.cpp
+        ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
+        ${PROJECT_SOURCE_DIR}/algo_math.cpp
+        ${PROJECT_SOURCE_DIR}/algo_network.cpp
+        ${PROJECT_SOURCE_DIR}/algo_search.cpp
+        ${PROJECT_SOURCE_DIR}/algo_sequence.cpp
+        ${PROJECT_SOURCE_DIR}/algo_sort.cpp
+        ${PROJECT_SOURCE_DIR}/algo_string.cpp
+        ${PROJECT_SOURCE_DIR}/algo_transform.cpp
         )
 
 include_directories("${PROJECT_BINARY_DIR}")

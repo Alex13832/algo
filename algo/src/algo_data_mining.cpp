@@ -9,25 +9,16 @@
 
 #include <chrono>
 #include <cmath>
-#include <random>
+#include <iostream>
+#include <set>
+
+#include "algo_math.hpp"
 
 namespace algo::data_mining {
 
 namespace {
 constexpr double kDblMax{1.79769e+308};
 }// namespace
-
-/// \brief Returns a uniform random number between a and b.
-/// \param a Lower bound.
-/// \param b Upper Bound.
-/// \return Random number between a and b.
-double Uniform(const double& a, const double& b)
-{
-  unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  std::mt19937 generator(seed);//Mersenne twister
-  std::uniform_real_distribution<double> distribution(a, b);
-  return distribution(generator);
-}
 
 /// \brief Returns the distance between two points.
 /// \param p1 Point 1.
@@ -52,7 +43,7 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
   size_t N{points.size()};
   // Initialize random centroids
   std::generate(ctr.begin(), ctr.end(), [&points, &N]() {
-    return Centroid{points[static_cast<int>(Uniform(0, N))], 0.0, 0.0, 0};
+    return Centroid{points[static_cast<int>(math::random_num::cont::Uniform(0, N))], 0.0, 0.0, 0};
   });
 
   int converge_clusters{0}, converge{0};
@@ -113,6 +104,55 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
   }
 
   return clusters;
+}
+
+/////////////////////////////////////////////
+/// KNN
+/////////////////////////////////////////////
+
+// For comparing distances
+struct LPointDistComp {
+  bool operator()(const LabeledPoint& p1, const LabeledPoint& p2) const
+  {
+    return p1.dist < p2.dist;
+  }
+};
+
+LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k)
+{
+  if (k > unlabeled_data.size() || k == 0 || unlabeled_data.empty() || labeled_data.empty()) {
+    return LabeledPoints{};
+  }
+
+  std::set<std::string> labels;
+  LabeledPoints ret_labeled;
+
+  for (auto point : unlabeled_data) {
+
+    for (auto& ld : labeled_data) {
+      ld.dist = Distance(point, {ld.x, ld.y});
+      labels.insert(ld.label);
+    }
+
+    std::sort(labeled_data.begin(), labeled_data.end(), LPointDistComp());
+    std::string label_to_use;
+    int max_count{0};
+
+    for (const auto& label : labels) {
+      int count = std::count_if(labeled_data.begin(), labeled_data.begin() + k, [&label](const LabeledPoint& lp) {
+        return lp.label == label;
+      });
+
+      if (count > max_count) {
+        max_count = count;
+        label_to_use = label;
+      }
+    }
+
+    ret_labeled.emplace_back(LabeledPoint{point.x, point.y, 0.0, label_to_use});
+  }
+
+  return ret_labeled;
 }
 
 }// namespace algo::data_mining

@@ -6,10 +6,9 @@
 ///
 
 #include <fstream>
+#include <include/algo_data_mining.hpp>
 #include <iostream>
 #include <string>
-
-#include "include/algo_data_mining.hpp"
 
 using namespace std;
 using namespace algo::data_mining;

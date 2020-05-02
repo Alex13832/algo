@@ -44,9 +44,9 @@ struct Line {
 using Points = std::vector<Point>;
 using Lines = std::vector<Line>;
 
-/////////////////////////////////////////////
-/// Quickhull
-/////////////////////////////////////////////
+// //////////////////////////////////////////
+//  Quickhull
+// //////////////////////////////////////////
 
 /// \brief Returns the convex hull of the input 2D-points. This implementation uses the Quickhull algorithm.
 /// \param points Input points.
@@ -55,9 +55,9 @@ using Lines = std::vector<Line>;
 /// \link <a href="https://en.wikipedia.org/wiki/Convex_hull">Convex hull, Wikipedia.</a>
 Points ConvexHull(Points points);
 
-/////////////////////////////////////////////
-/// Closest pair of points
-/////////////////////////////////////////////
+// //////////////////////////////////////////
+//  Closest pair of points
+// //////////////////////////////////////////
 
 /// \brief Returns the closest pair of points from a set of input 2D-points.
 /// \param points Input points.
@@ -65,9 +65,9 @@ Points ConvexHull(Points points);
 /// \link <a href="https://en.wikipedia.org/wiki/Closest_pair_of_points_problem">Closest pair of points, Wikipedia.</a>
 Points ClosestPairOfPoints(const Points& points);
 
-/////////////////////////////////////////////
-/// Triangulation of points
-/////////////////////////////////////////////
+// //////////////////////////////////////////
+//  Triangulation of points
+// //////////////////////////////////////////
 
 /// \brief Computes the triangulation of a set of input 2D-points.
 /// \param pts The input points.

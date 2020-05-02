@@ -75,7 +75,7 @@ vector<Match> ReadCorrect(const std::string &file)
   return matches;
 }
 
-TEST(test_stable_matching, test_4)
+TEST(test_algo_greede_stable_match, test_four_people)
 {
   Prefs m_prefs{ReadPrefFile(path + "men4.txt")};
   Prefs w_prefs{ReadPrefFile(path + "women4.txt")};
@@ -86,7 +86,7 @@ TEST(test_stable_matching, test_4)
   EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
 }
 
-TEST(test_stable_matching, test_8)
+TEST(test_algo_greede_stable_match, test_eight_people)
 {
   Prefs m_prefs{ReadPrefFile(path + "men8.txt")};
   Prefs w_prefs{ReadPrefFile(path + "women8.txt")};
