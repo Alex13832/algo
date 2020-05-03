@@ -5,9 +5,9 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-06-04: Triangulation of 2D-points.
-/// 2015-06-25: Quickhull, convex hull of 2D-points.
-/// 2015-06-28: Closest pair of 2D-points.
+/// 2015-06-04 Triangulation of 2D-points
+/// 2015-06-25 Quickhull, convex hull of 2D-points
+/// 2015-06-28 Closest pair of 2D-points
 ///
 
 #ifndef ALGORITHM_GEOMETRY_GEOMETRY_ALGORITHMS_HPP_

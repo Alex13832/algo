@@ -4,7 +4,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2016-10-16 Sudoku backtracking algorithm.
+/// 2016-10-16 Sudoku backtracking algorithm
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_PUZZLE_HPP_

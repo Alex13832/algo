@@ -5,8 +5,8 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-07-20: Longest increasing subsequence.
-/// 2016-04-05: Max sub array.
+/// 2015-07-20 Longest increasing subsequence
+/// 2016-04-05 Max sub array
 ///
 
 #ifndef ALGORITHM_SEQUENCE_SEQUENCE_ALGORITHMS_HPP_

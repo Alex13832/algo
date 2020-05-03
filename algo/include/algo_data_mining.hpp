@@ -5,8 +5,8 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-08-14: KNN
-/// 2015-08-16: K-means
+/// 2015-08-14 KNN
+/// 2015-08-16 K-means
 ///
 
 #ifndef ALGORITHM_DATA_MINING_DATA_MINING_ALGORITHMS_HPP_

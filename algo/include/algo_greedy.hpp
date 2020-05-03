@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-06-17 Gale-Shapley, Stable marriage/matching.
+/// 2015-06-17 Gale-Shapley, Stable marriage/matching
 ///
 
 #ifndef ALGORITHM_GREEDY_GREEDY_ALGORITHMS_HPP_

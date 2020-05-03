@@ -5,11 +5,11 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-07-21 Boyer-More.
-/// 2015-06-19 Longest common substring.
-/// 2015-06-16 Rabin-Karp.
-/// 2015-08-07 Levenshtein distance.
-/// 2019-10-13 Bitap search.
+/// 2015-07-21 Boyer-More
+/// 2015-06-19 Longest common substring
+/// 2015-06-16 Rabin-Karp
+/// 2015-08-07 Levenshtein distance
+/// 2019-10-13 Bitap search
 ///
 
 #ifndef ALGORITHM_SRC_STRING_STRING_HPP_

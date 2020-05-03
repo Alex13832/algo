@@ -5,9 +5,9 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-08-27: Random numbers.
-/// 2016-04-05: Knapsack, GCD, LCM, Bin, Prime numbers.
-/// 2016-10-16: Pascal's triangle, ClockAngle.
+/// 2015-08-27 Random numbers
+/// 2016-04-05 Knapsack, GCD, LCM, Bin, Prime numbers
+/// 2016-10-16 Pascal's triangle, ClockAngle
 ///
 
 #ifndef ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_

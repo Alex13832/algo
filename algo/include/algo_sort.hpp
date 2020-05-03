@@ -4,13 +4,13 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-06-21 Quick-sort.
-/// 2015-06-21 Heap-sort.
-/// 2015-07-30 Bubble-sort.
-/// 2015-07-30 Merge-sort.
-/// 2016-06-28 Gnome-sort.
-/// 2016-10-02 Bucket-sort.
-/// 2016-10-02 Insertion-sort.
+/// 2015-06-21 Quick-sort
+/// 2015-06-21 Heap-sort
+/// 2015-07-30 Bubble-sort
+/// 2015-07-30 Merge-sort
+/// 2016-06-28 Gnome-sort
+/// 2016-10-02 Bucket-sort
+/// 2016-10-02 Insertion-sort
 ///
 
 #ifndef ALGORITHM_SORTING_SORTING_HPP_
