@@ -5,8 +5,11 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
+/// 2016-09-25 Prim's algorithm for minimum spanning trees.
 ///
 
+#include <map>
+#include <set>
 #include <vector>
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_GRAPH_HPP_
@@ -15,11 +18,12 @@
 namespace algo::graph {
 
 struct Connection {
-  int node, weight;
+  int node;
+  double weight;
 };
 
 using Nodes = std::vector<int>;
-using Weights = std::vector<int>;
+using Weights = std::vector<double>;
 using Graph = std::vector<std::vector<Connection>>;
 
 // //////////////////////////////////////////
@@ -38,7 +42,7 @@ Graph NewGraph(size_t size);
 /// \param t Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &s, const int &t, const int &w);
+bool MakeEdge(Graph &graph, const int &s, const int &t, const double &w);
 
 /// \brief Adds a new edge from s to t.
 /// \param graph The graph to change.
@@ -53,7 +57,7 @@ bool MakeEdge(Graph &graph, const int &s, const int &t);
 /// \param t Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &s, const int &t, const int &w);
+bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w);
 
 /// \brief Adds a new directed edge from s to t.
 /// \param graph The graph to change.
@@ -70,10 +74,9 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t);
 /// \details This implementation is based on Prim's algorithm.
 /// \param graph The graph.
 /// \param source The source.
-///
 /// \return The nodes that constructs the MST.
 /// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
-Graph MinimumSpanningTree(const Graph &graph, const int &source, int &total_weight);
+Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight);
 
 }// namespace algo::graph
 

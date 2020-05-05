@@ -4,11 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-include_directories(data_mining)
-add_subdirectory(data_mining)
-
-include_directories(geometry)
-add_subdirectory(geometry)
-
-include_directories(graph)
-add_subdirectory(graph)
+add_executable(mst_run mst_example.cpp)
+target_link_libraries(mst_run algo)

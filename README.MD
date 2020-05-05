@@ -93,8 +93,8 @@ using namespace algo::graph;
 
 ...
 
-Graph G{NewGraph(7)};
-MakeEdge(G, 0, 1, 16);
+Graph G{NewGraph(7)};  // 7 == number of nodes
+MakeEdge(G, 0, 1, 16); // Graph, node, node, weight
 MakeEdge(G, 0, 3, 21);
 MakeEdge(G, 0, 2, 12);
 MakeEdge(G, 1, 4, 20);

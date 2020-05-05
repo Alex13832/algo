@@ -12,6 +12,11 @@
 
 namespace algo::graph {
 
+namespace {
+constexpr double kDblMin{2.2250738585072014e-308};
+constexpr double kDblMax{1.79769e+308};
+}// namespace
+
 // //////////////////////////////////////////
 //  Graph functions
 // //////////////////////////////////////////
@@ -21,11 +26,12 @@ Graph NewGraph(size_t size)
   return Graph(size);
 }
 
-bool MakeEdge(Graph &graph, const int &s, const int &t, const int &w)
+bool MakeEdge(Graph &graph, const int &s, const int &t, const double &w)
 {
   if (s >= graph.size() || t >= graph.size() || s == t) {
     return false;
   }
+
   graph[s].emplace_back(Connection{t, w});
   graph[t].emplace_back(Connection{s, w});
   return true;
@@ -41,7 +47,7 @@ bool MakeEdge(Graph &graph, const int &s, const int &t)
   return true;
 }
 
-bool MakeDirEdge(Graph &graph, const int &s, const int &t, const int &w)
+bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w)
 {
   if (s >= graph.size() || t >= graph.size()) {
     return false;
@@ -69,13 +75,13 @@ struct comp {
   }
 };
 
-Graph MinimumSpanningTree(const Graph &graph, const int &source, int &total_weight)
+Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
 {
   if (source >= graph.size() || source < 0 || graph.empty()) {
     return Graph{NewGraph(0)};
   }
 
-  Weights weights(graph.size(), INT_MAX);
+  Weights weights(graph.size(), kDblMax);
   Nodes parent(graph.size());
   Nodes visited(graph.size(), 0);
   std::priority_queue<Connection, std::vector<Connection>, comp> pq;
@@ -88,7 +94,7 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, int &total_weig
     pq.pop();
     int node{U.node};
 
-    for (auto v : graph[node]) {
+    for (auto v : graph.at(node)) {
       if (visited[v.node] == 0 && v.weight < weights[v.node]) {
         parent[v.node] = node;
         weights[v.node] = v.weight;
@@ -107,7 +113,7 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, int &total_weig
     index--;
   });
 
-  total_weight = std::accumulate(weights.begin(), weights.end(), 0);
+  total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
 
   return mst;
 }

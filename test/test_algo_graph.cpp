@@ -53,7 +53,7 @@ TEST(test_algo_graph, test_make_edge_no_weight)
 
 TEST(test_algo_graph, test_make_dir_edge_weight)
 {
-  Graph graph(2);
+  Graph graph{NewGraph(2)};
   EXPECT_TRUE(MakeDirEdge(graph, 0, 1, 1));
   EXPECT_TRUE(MakeDirEdge(graph, 1, 0, 1));
   EXPECT_TRUE(MakeDirEdge(graph, 0, 0, 1));
@@ -80,10 +80,10 @@ TEST(test_algo_graph, test_make_dir_edge_no_weight)
 /// Prim's algorithm tests
 /////////////////////////////////////////////
 
-TEST(tst_algo_graph, test_prims_forbidden)
+TEST(test_algo_graph, test_prims_forbidden)
 {
   Graph G1{NewGraph(7)};
-  int total_weight{0};
+  double total_weight{0.0};
   EXPECT_TRUE(MinimumSpanningTree(G1, 7, total_weight).empty());
 
   EXPECT_TRUE(MinimumSpanningTree(G1, -1, total_weight).empty());
@@ -109,7 +109,7 @@ TEST(test_algo_graph, test_prims_simple)
   MakeEdge(G, 4, 6, 11);
   MakeEdge(G, 5, 6, 27);
 
-  int total_weight{0};
+  double total_weight{0.0};
   Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
 
   EXPECT_EQ(total_weight, 93);
@@ -161,10 +161,10 @@ Graph ReadPrimsFile()
 TEST(test_algo_graph, test_prims_project_euler_107)
 {
   Graph G{ReadPrimsFile()};
-  int total_weight{0};
+  double total_weight{0.0};
   Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
 
-  int ans = 261832 - total_weight;
+  double ans = 261832.0 - total_weight;
 
-  EXPECT_EQ(ans, 259679);
+  EXPECT_EQ(ans, 259679.0);
 }
