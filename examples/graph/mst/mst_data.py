@@ -1,15 +1,17 @@
-from math import *
+# https://plotly.com/python/network-graphs/
+
+import math as m
 
 import networkx as nx
 import plotly.graph_objects as go
 
 G = nx.random_geometric_graph(200, 0.125)
 
-f = open("../../cmake-build-debug/examples/graph/testfiles/mst_network_in.csv", "w")
-f.write("Node1, Node2, W, x0, y0, x1, y1, x, y\n")
+# Open file and print header
+f = open("../../../cmake-build-debug/examples/graph/testfiles/mst_network_in.csv", "w")
+f.write("Node1, Node2, W, x0, y0, x1, y1\n")
 
 # Create edges
-
 edge_x = []
 edge_y = []
 lines = []
@@ -24,13 +26,14 @@ for edge in G.edges():
     edge_y.append(y1)
     edge_y.append(None)
 
-    # CSV row
+    # To CSV file
     a, b = edge
-    print(a, b)
-    w = sqrt(pow(x1 - x0, 2) + pow(y1 - y0, 2))
-    lines.append(
-        str(a) + ',' + str(b) + ',' + str(w) + ',' + str(x0) + ',' + str(y0) + ',' + str(x1) + ',' + str(y1) + ',')
+    w = m.sqrt(m.pow(x1 - x0, 2) + m.pow(y1 - y0, 2))
+    f.write(str(a) + ',' + str(b) + ',' + str(w) + ',' + str(x0) + ',' + str(y0) + ',' + str(x1) + ',' + str(y1) + '\n')
 
+f.close()
+
+# The edges in the plot
 edge_trace = go.Scatter(
     x=edge_x, y=edge_y,
     line=dict(width=0.5, color='#888'),
@@ -39,33 +42,25 @@ edge_trace = go.Scatter(
 
 node_x = []
 node_y = []
-for node, line in zip(G.nodes(), lines):
+for node in G.nodes():
     x, y = G.nodes[node]['pos']
     node_x.append(x)
     node_y.append(y)
 
-    line += (str(x) + ',' + str(y) + '\n')
-    f.write(line)
-
-f.close()
-
+# THe nodes in the plot
 node_trace = go.Scatter(
     x=node_x, y=node_y,
     mode='markers',
     hoverinfo='text',
     marker=dict(
-        showscale=True,
-        # colorscale options
-        # 'Greys' | 'YlGnBu' | 'Greens' | 'YlOrRd' | 'Bluered' | 'RdBu' |
-        # 'Reds' | 'Blues' | 'Picnic' | 'Rainbow' | 'Portland' | 'Jet' |
-        # 'Hot' | 'Blackbody' | 'Earth' | 'Electric' | 'Viridis' |
+        showscale=False,
         colorscale='Picnic',
         reversescale=True,
         color=[],
         size=10,
         colorbar=dict(
             thickness=15,
-            title='Node Connections',
+            # title='Node Connections',
             xanchor='left',
             titleside='right'
         ),

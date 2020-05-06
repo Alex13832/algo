@@ -4,5 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-include_directories(mst)
-add_subdirectory(mst)
+add_executable(mst_run mst_example.cpp)
+target_link_libraries(mst_run algo)
