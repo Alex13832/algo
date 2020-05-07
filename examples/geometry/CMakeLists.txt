@@ -4,6 +4,11 @@
 # //////////////////////////////////////////////////////////
 project(Algorithm)
 
-add_executable(qhull_run convex_hull/qhull_example.cpp)
-add_executable(closest_pair_run closest_pair/closest_pair_example.cpp)
-add_executable(triangulate_run triangulate/triangulate_example.cpp)
+add_subdirectory(closest_pair)
+include_directories(closest_pair)
+
+add_subdirectory(convex_hull)
+include_directories(convex_hull)
+
+add_subdirectory(triangulate)
+include_directories(triangulate)

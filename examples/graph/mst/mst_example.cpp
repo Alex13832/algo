@@ -18,6 +18,10 @@ struct Line {
   double w, x0, y0, x1, y1;
 };
 
+/// \brief Raeds input file and makes a graph of the input points.
+/// \param file The csv-file to read.
+/// \param nbr_nodes How many nodes in the graph.
+/// \return A new graph.
 pair<Graph, vector<Line>> ReadGraph(const string& file, int nbr_nodes)
 {
   ifstream infile(file);
@@ -64,6 +68,10 @@ pair<Graph, vector<Line>> ReadGraph(const string& file, int nbr_nodes)
   return make_pair(graph, lines);
 }
 
+/// \brief Writes result to file.
+/// \param graph The graph to output to file.
+/// \param lines Excess information from csv, that will be needed later in python for plotting edges etc.
+/// \param filename The file name for the output.
 void WriteToFile(const Graph& graph, const vector<Line>& lines, const string& filename)
 {
   ofstream file;

@@ -1,0 +1,8 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
+project(algo)
+
+add_executable(qhull_run qhull_example.cpp)
+target_link_libraries(qhull_run algo)

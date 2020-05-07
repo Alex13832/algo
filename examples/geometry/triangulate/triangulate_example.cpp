@@ -44,15 +44,15 @@ Points ReadFile(const string& file)
 /// \param points The convex hull points.
 /// \param all All points.
 /// \param filename
-void WriteToFile(const Lines& lines, const string& filename)
+void WriteToFile(const Edges& lines, const string& filename)
 {
   ofstream file;
   file.open(filename);
 
   file << "x1"
-       << ", "
+       << ","
        << "y1"
-       << ", "
+       << ","
        << "x2"
        << ","
        << "y2"
@@ -65,18 +65,11 @@ void WriteToFile(const Lines& lines, const string& filename)
   file.close();
 }
 
-struct x_comp {
-  bool operator()(const Point p1, const Point p2) const
-  {
-    return p1.x < p2.x;
-  }
-};
-
-int main()
+int main(int argc, char* argv[])
 {
   Points points{ReadFile("testfiles/triangulate_in.csv")};
 
-  Lines lines{Triangulate(points)};
+  Edges lines{Triangulate(points)};
 
   WriteToFile(lines, "testfiles/triangulate_out.csv");
   return 0;
