@@ -18,11 +18,11 @@ struct Line {
   double w, x0, y0, x1, y1;
 };
 
-pair<Graph, vector<Line>> ReadGraph(const string& file)
+pair<Graph, vector<Line>> ReadGraph(const string& file, int nbr_nodes)
 {
   ifstream infile(file);
   string line;
-  Graph graph{NewGraph(200)};
+  Graph graph{NewGraph(nbr_nodes)};
   const string kDelim{","};
   vector<Line> lines;
 
@@ -99,10 +99,15 @@ void WriteToFile(const Graph& graph, const vector<Line>& lines, const string& fi
   file.close();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
+  if (argc != 2) {
+    return -1;
+  }
 
-  pair<Graph, vector<Line>> graph_lines{ReadGraph("testfiles/mst_network_in.csv")};
+  int nodes{stoi(argv[1])};
+
+  pair<Graph, vector<Line>> graph_lines{ReadGraph("testfiles/mst_network_in.csv", nodes)};
   Graph graph_in = graph_lines.first;
 
   double minimum_weight{0.0};

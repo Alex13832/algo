@@ -44,10 +44,10 @@ Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
 2. Compute MST `examples/graph/mst_example.cpp`
 3. Read MST data `examples/mst_read_result.py`
 
-200 Nodes
+200 Nodes, the weights are the Euclidean distance betwen two nodes.
 
 ![Mst in 1](images/mst_in1.png) ![Mst in 2](images/mst_out1.png)
 
-500 nodes
+500 nodes.
 
 ![Mst in 1](images/mst_in2.png) ![Mst in 2](images/mst_out2.png)

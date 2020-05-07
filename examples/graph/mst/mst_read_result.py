@@ -1,3 +1,7 @@
+#!/usr/bin/python
+# alex011235
+# https://github.com/alex011235/algorithm>Algorithm
+
 import plotly.graph_objects as go
 
 # Create edges
@@ -7,7 +11,7 @@ edge_y = []
 node_x = []
 node_y = []
 
-with open("../../../cmake-build-debug/examples/graph/testfiles/mst_network_out.csv") as file_in:
+with open("testfiles/mst_network_out.csv") as file_in:
     lines = []
     flag_read_header = False
 
