@@ -4,8 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-include_directories(minimum_spanning_tree)
-add_subdirectory(minimum_spanning_tree)
-
-include_directories(shortest_path)
-add_subdirectory(shortest_path)
+add_executable(shortest_path_run shortest_path_example.cpp)
+target_link_libraries(shortest_path_run algo)

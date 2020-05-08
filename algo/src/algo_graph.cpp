@@ -72,53 +72,6 @@ struct comp {
 };
 
 // //////////////////////////////////////////
-//  Prim's algorithm
-// //////////////////////////////////////////
-
-Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
-{
-  if (source >= graph.size() || source < 0 || graph.empty()) {
-    return Graph{NewGraph(0)};
-  }
-
-  Weights weights(graph.size(), kDblMax);
-  Nodes parent(graph.size());
-  Nodes visited(graph.size(), 0);
-  std::priority_queue<Connection, std::vector<Connection>, comp> pq;
-
-  pq.push(Connection{source, 0});
-  weights[source] = 0;
-
-  while (!pq.empty()) {
-    Connection U{pq.top()};
-    pq.pop();
-    int node{U.node};
-
-    for (auto v : graph.at(node)) {
-      if (visited[v.node] == 0 && v.weight < weights[v.node]) {
-        parent[v.node] = node;
-        weights[v.node] = v.weight;
-        pq.push(v);
-      }
-    }
-    visited[node] = 1;
-  }
-
-  // Construct the MST
-  size_t index{parent.size() - 1};
-  Graph mst{NewGraph(parent.size())};
-
-  std::for_each(parent.rbegin(), parent.rend(), [&mst, &index, weights](int n) {
-    MakeEdge(mst, n, index, weights[index]);
-    index--;
-  });
-
-  total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
-
-  return mst;
-}
-
-// //////////////////////////////////////////
 //  Dijkstra's algorithm
 // //////////////////////////////////////////
 
@@ -175,6 +128,53 @@ Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
   path.emplace_back(source);
   std::reverse(path.begin(), path.end());
   return path;
+}
+
+// //////////////////////////////////////////
+//  Prim's algorithm
+// //////////////////////////////////////////
+
+Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
+{
+  if (source >= graph.size() || source < 0 || graph.empty()) {
+    return Graph{NewGraph(0)};
+  }
+
+  Weights weights(graph.size(), kDblMax);
+  Nodes parent(graph.size());
+  Nodes visited(graph.size(), 0);
+  std::priority_queue<Connection, std::vector<Connection>, comp> pq;
+
+  pq.push(Connection{source, 0});
+  weights[source] = 0;
+
+  while (!pq.empty()) {
+    Connection U{pq.top()};
+    pq.pop();
+    int node{U.node};
+
+    for (auto v : graph.at(node)) {
+      if (visited[v.node] == 0 && v.weight < weights[v.node]) {
+        parent[v.node] = node;
+        weights[v.node] = v.weight;
+        pq.push(v);
+      }
+    }
+    visited[node] = 1;
+  }
+
+  // Construct the MST
+  size_t index{parent.size() - 1};
+  Graph mst{NewGraph(parent.size())};
+
+  std::for_each(parent.rbegin(), parent.rend(), [&mst, &index, weights](int n) {
+    MakeEdge(mst, n, index, weights[index]);
+    index--;
+  });
+
+  total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
+
+  return mst;
 }
 
 }// namespace algo::graph
