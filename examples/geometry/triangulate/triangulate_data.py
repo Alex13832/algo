@@ -3,7 +3,6 @@
 # https://github.com/alex011235/algorithm>Algorithm
 # https://plotly.com/python/network-graphs/
 
-
 import sys
 
 import networkx as nx

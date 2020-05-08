@@ -168,3 +168,72 @@ TEST(test_algo_graph, test_prims_project_euler_107)
 
   EXPECT_EQ(ans, 259679.0);
 }
+
+/////////////////////////////////////////////
+/// Dijkstra's algorithm tests
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, test_dijkstra_simple1)
+{
+  Graph graph{NewGraph(7)};
+  MakeEdge(graph, 0, 1, 5.0);
+  MakeEdge(graph, 0, 2, 10.0);
+  MakeEdge(graph, 2, 4, 2.0);
+  MakeEdge(graph, 1, 4, 3.0);
+  MakeEdge(graph, 1, 3, 6.0);
+  MakeEdge(graph, 4, 3, 2.0);
+  MakeEdge(graph, 3, 5, 6.0);
+  MakeEdge(graph, 4, 6, 2.0);
+  MakeEdge(graph, 6, 5, 2.0);
+
+  Nodes correct{0, 1, 4, 6};
+  Nodes nodes{ShortestPath(graph, 0, 6)};
+  EXPECT_TRUE(equal(nodes.begin(), nodes.end(), correct.begin()));
+
+  Nodes correct1{4, 6, 5};
+  Nodes nodes1{ShortestPath(graph, 4, 5)};
+  EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct1.begin()));
+}
+
+TEST(test_algo_graph, test_dijkstra_simple2)
+{
+  Graph graph{NewGraph(6)};
+  MakeEdge(graph, 0, 2, 2.0);
+  MakeEdge(graph, 0, 1, 4.0);
+  MakeEdge(graph, 1, 2, 1.0);
+  MakeEdge(graph, 1, 3, 5.0);
+  MakeEdge(graph, 2, 3, 8.0);
+  MakeEdge(graph, 2, 4, 10.0);
+  MakeEdge(graph, 4, 5, 3.0);
+  MakeEdge(graph, 3, 4, 2.0);
+  MakeEdge(graph, 3, 5, 6.0);
+
+  Nodes correct{0, 2, 1, 3, 4, 5};
+  Nodes nodes{ShortestPath(graph, 0, 5)};
+  EXPECT_TRUE(equal(nodes.begin(), nodes.end(), correct.begin()));
+
+  reverse(correct.begin(), correct.end());
+  Nodes nodes1{ShortestPath(graph, 5, 0)};
+  EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct.begin()));
+}
+
+TEST(test_algo_graph, test_dijkstra_forbidden)
+{
+  Graph graph{NewGraph(1)};
+  EXPECT_TRUE(ShortestPath(graph, 0, 1).empty());// Size < 2
+  Graph graph1{NewGraph(2)};
+  EXPECT_TRUE(ShortestPath(graph1, 0, 3).empty()); // Dest > size
+  EXPECT_TRUE(ShortestPath(graph1, 3, 2).empty()); // Source > size
+  EXPECT_TRUE(ShortestPath(graph1, -1, 1).empty());// Source < 0
+  EXPECT_TRUE(ShortestPath(graph1, 0, -1).empty());// Dest < 0
+  EXPECT_TRUE(ShortestPath(graph1, 1, 1).empty()); // Source == dest
+}
+
+TEST(test_algo_graph, test_dijkstra_all_forbidden)
+{
+  Graph graph{NewGraph(1)};
+  EXPECT_TRUE(ShortestPathAll(graph, 0).empty());//  Size < 2
+  Graph graph1{NewGraph(2)};
+  EXPECT_TRUE(ShortestPathAll(graph1, -1).empty());// Source < 0
+  EXPECT_TRUE(ShortestPathAll(graph1, 3).empty()); // Source > size
+}

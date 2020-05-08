@@ -13,7 +13,6 @@
 namespace algo::graph {
 
 namespace {
-constexpr double kDblMin{2.2250738585072014e-308};
 constexpr double kDblMax{1.79769e+308};
 }// namespace
 
@@ -65,15 +64,16 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t)
   return true;
 }
 
-// //////////////////////////////////////////
-//  Prim's
-// //////////////////////////////////////////
 struct comp {
   bool operator()(const Connection &lhs, Connection &rhs) const
   {
     return lhs.weight > rhs.weight;
   }
 };
+
+// //////////////////////////////////////////
+//  Prim's algorithm
+// //////////////////////////////////////////
 
 Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
 {
@@ -116,6 +116,65 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
   total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
 
   return mst;
+}
+
+// //////////////////////////////////////////
+//  Dijkstra's algorithm
+// //////////////////////////////////////////
+
+Nodes ShortestPathAll(const Graph &graph, const int &source)
+{
+  // Check forbidden cases.
+  if (source < 0 || graph.size() < 2 || source > graph.size()) {
+    return Nodes{};
+  }
+
+  std::priority_queue<Connection, std::vector<Connection>, comp> pq;
+
+  size_t N{graph.size()};
+  Weights dist(N, kDblMax);
+  Nodes prev(N, 0);
+
+  dist[source] = 0.0;
+  pq.push(Connection{source, 0.0});
+
+  while (!pq.empty()) {
+    Connection U{pq.top()};
+    pq.pop();
+    int u{U.node};
+
+    for (const auto &v : graph[u]) {
+      double alt = dist[u] + v.weight;
+      if (alt < dist[v.node]) {
+        dist[v.node] = alt;
+        prev[v.node] = u;
+        pq.push(Connection{v.node, alt});
+      }
+    }
+  }
+
+  return prev;
+}
+
+Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
+{
+  // Check forbidden cases.
+  if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
+    return Nodes{};
+  }
+
+  const Nodes kNodes{ShortestPathAll(graph, source)};
+  Nodes path;
+  int prev{dest};
+
+  while (prev != source) {
+    path.emplace_back(prev);
+    prev = kNodes[prev];
+  }
+
+  path.emplace_back(source);
+  std::reverse(path.begin(), path.end());
+  return path;
 }
 
 }// namespace algo::graph

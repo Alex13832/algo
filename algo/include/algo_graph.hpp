@@ -5,6 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
+/// 2016-03-14 Dijkstra shortest path.
 /// 2016-09-25 Prim's algorithm for minimum spanning trees.
 ///
 
@@ -77,6 +78,25 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t);
 /// \return The nodes that constructs the MST.
 /// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
 Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight);
+
+// //////////////////////////////////////////
+//  Dijkstra's
+// //////////////////////////////////////////
+
+/// \brief Computes the shortest path from all nodes back to source in the input graph.
+/// \details This implementation is based on Dijkstra's algorithm for shortest path.
+/// \param graph The input graph.
+/// \param source The source node.
+/// \return The nodes constructing all the shortest path from any node to source.
+/// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
+Nodes ShortestPathAll(const Graph &graph, const int &source);
+
+/// \brief Returns the shortest distance between soruces and destination in the input graph.
+/// \param graph The input graph.
+/// \param source The source node.
+/// \param dest The destination node.
+/// \return The nodes constructing the shortest path.
+Nodes ShortestPath(const Graph &graph, const int &source, const int &dest);
 
 }// namespace algo::graph
 

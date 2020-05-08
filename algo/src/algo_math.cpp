@@ -89,7 +89,6 @@ T Lcm(T a, T b)
   return a * b / Gcd(a, b);
 }
 
-template unsigned Lcm<unsigned>(unsigned a, unsigned b);
 template long Lcm<long>(long a, long b);
 
 template<typename T>

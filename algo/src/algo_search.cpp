@@ -84,14 +84,11 @@ std::vector<T> SelectionMin(std::vector<T> vec, const T &k)
   std::vector<T> temp{};
   SelectionMinPriv(vec, k);
   temp.resize(k);
-  copy_n(vec.begin(), k, temp.begin());
+  std::copy_n(vec.begin(), k, temp.begin());
   return temp;
 }
 
 template std::vector<int> SelectionMin<int>(std::vector<int> vec, const int &value);
-template std::vector<long> SelectionMin<long>(std::vector<long> vec, const long &value);
-template std::vector<float> SelectionMin<float>(std::vector<float> vec, const float &value);
-template std::vector<double> SelectionMin<double>(std::vector<double> vec, const double &value);
 
 template<typename T>
 void SelectionMaxPriv(std::vector<T> &vec, const T &k)
@@ -128,12 +125,10 @@ std::vector<T> SelectionMax(std::vector<T> vec, const T &k)
   std::vector<T> temp{};
   SelectionMaxPriv(vec, k);
   temp.resize(k);
-  copy_n(vec.begin(), k, temp.begin());
+  std::copy_n(vec.begin(), k, temp.begin());
   return temp;
 }
 
 template std::vector<int> SelectionMax<int>(std::vector<int> vec, const int &value);
-template std::vector<long> SelectionMax<long>(std::vector<long> vec, const long &value);
-template std::vector<float> SelectionMax<float>(std::vector<float> vec, const float &value);
-template std::vector<double> SelectionMax<double>(std::vector<double> vec, const double &value);
+
 }// namespace algo::search

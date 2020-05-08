@@ -11,7 +11,6 @@
 #include "algo_greedy.hpp"
 
 #include <algorithm>
-#include <vector>
 
 namespace algo::greedy {
 
