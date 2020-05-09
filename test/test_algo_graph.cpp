@@ -229,11 +229,24 @@ TEST(test_algo_graph, test_dijkstra_forbidden)
   EXPECT_TRUE(ShortestPath(graph1, 1, 1).empty()); // Source == dest
 }
 
-TEST(test_algo_graph, test_dijkstra_all_forbidden)
+/////////////////////////////////////////////
+/// Dijkstra's algorithm tests
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, test_nn_simple1)
 {
-  Graph graph{NewGraph(1)};
-  EXPECT_TRUE(ShortestPathAll(graph, 0).empty());//  Size < 2
-  Graph graph1{NewGraph(2)};
-  EXPECT_TRUE(ShortestPathAll(graph1, -1).empty());// Source < 0
-  EXPECT_TRUE(ShortestPathAll(graph1, 3).empty()); // Source > size
+  Graph graph{NewGraph(5)};
+  MakeEdge(graph, 0, 1, 70.0);
+  MakeEdge(graph, 0, 2, 35.0);
+  MakeEdge(graph, 0, 3, 40.0);
+  MakeEdge(graph, 0, 4, 60.0);
+  MakeEdge(graph, 1, 3, 40.0);
+  MakeEdge(graph, 1, 2, 25.0);
+  MakeEdge(graph, 1, 4, 50.0);
+  MakeEdge(graph, 2, 3, 10.0);
+  MakeEdge(graph, 2, 4, 12.0);
+  MakeEdge(graph, 3, 4, 15.0);
+
+  Nodes nodes{AllNodesPath(graph, 4)};
+  EXPECT_EQ(nodes.size(), graph.size());
 }

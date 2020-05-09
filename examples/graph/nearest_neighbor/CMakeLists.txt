@@ -1,0 +1,8 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
+project(algo)
+
+add_executable(nn_run nn_example.cpp)
+target_link_libraries(nn_run algo)

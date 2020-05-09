@@ -9,3 +9,6 @@ add_subdirectory(minimum_spanning_tree)
 
 include_directories(shortest_path)
 add_subdirectory(shortest_path)
+
+include_directories(nearest_neighbor)
+add_subdirectory(nearest_neighbor)

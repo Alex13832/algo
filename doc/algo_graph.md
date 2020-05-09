@@ -1,6 +1,47 @@
 Graph algorithms
 ========
 
+## Nearest neighbor for approximation of the travelling salesman problem
+
+>The travelling salesman problem asks the following 
+>question: "Given a list of cities and the distances between each pair of cities, what is the shortest possible 
+>route that visits each city and returns to the origin city? [Wikipedia](https://en.wikipedia.org/wiki/Travelling_salesman_problem)
+
+```cpp
+Nodes AllNodesPath(const Graph &graph, const int &source)
+```
+
+Returns the path of the input `graph`, that hopefully visits all nodes. There's no guarantee that it is the optimal 
+(shortest) path that visits all nodes. However it's an appoximation and could be close to. Furthermore, the 
+algorithm does not always find a path.
+In this implementation, if no path was found then the next node will be used as source until there are no more nodes to 
+try.
+
+Note that this algorithm can be very slow for large input.
+
+
+### Usage
+
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(5)};
+MakeEdge(graph, 0, 1, 70.0);
+MakeEdge(graph, 0, 2, 35.0);
+...
+MakeEdge(graph, 2, 4, 12.0);
+MakeEdge(graph, 3, 4, 15.0);
+
+Nodes nodes{AllNodesPath(graph, 4)};
+```
+
+### Examples
+
+![Nearest 1](images/nn1.png) ![Nearest 2](images/nn2.png)
+
+
 ## Dijkstra's algorithm for shortest path
 
 Dijkstra's algorithm finds the shortest path between nodes in a graph. 

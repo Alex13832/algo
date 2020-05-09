@@ -1,7 +1,7 @@
 ///
-/// \brief Example source code for Dijkstra shortest path.
+/// \brief Example source code for nearest neighbor (approximation of travelling salesman problem).
 /// \author alex011235
-/// \date 2020-05-08
+/// \date 2020-05-09
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
@@ -108,32 +108,12 @@ int main(int argc, char* argv[])
 
   int nbr_nodes{stoi(argv[1])};
 
-  pair<Graph, vector<DataLine>> graph_lines{ReadGraph("testfiles/shortest_path_data_in.csv", nbr_nodes)};
+  pair<Graph, vector<DataLine>> graph_lines{ReadGraph("testfiles/nn_data_in.csv", nbr_nodes)};
   Graph graph_in{graph_lines.first};
 
-  int min_source{0}, max_source{0};
-  double max_dist{0};
+  // Nearest neighbor
+  Nodes nodes{AllNodesPath(graph_in, 0)};
 
-  // Find points that are far away from each other.
-  for (const auto& l1 : graph_lines.second) {
-    for (const auto& l2 : graph_lines.second) {
-
-      if (l1.node1 != l2.node1 && l1.node2 != l2.node2) {
-        //double dist{(pow(l1.x0 - l2.x1, 2) + pow(l1.y0 - l2.y1, 2))};
-        double dist{abs(l1.x0 - l2.x1)};
-
-        if (dist > max_dist) {
-          min_source = l1.node1;
-          max_source = l2.node2;
-          max_dist = dist;
-        }
-      }
-    }
-  }
-
-  // Dijkstra
-  Nodes nodes{ShortestPath(graph_in, min_source, max_source)};
-
-  WriteToFile(nodes, graph_lines.second, "testfiles/shortest_path_data_out.csv");
+  WriteToFile(nodes, graph_lines.second, "testfiles/nn_data_out.csv");
   return 0;
 }

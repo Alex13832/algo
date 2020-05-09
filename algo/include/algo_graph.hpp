@@ -6,6 +6,7 @@
 ///
 /// Change list:
 /// 2016-03-14 Dijkstra shortest path.
+/// 2016-09-24 Nearest neighbor for travelling salesman approximation.
 /// 2016-09-25 Prim's algorithm for minimum spanning trees.
 ///
 
@@ -26,6 +27,7 @@ struct Connection {
 using Nodes = std::vector<int>;
 using Weights = std::vector<double>;
 using Graph = std::vector<std::vector<Connection>>;
+using Visited = std::vector<bool>;
 
 // //////////////////////////////////////////
 //  Graph functions
@@ -68,6 +70,19 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w);
 bool MakeDirEdge(Graph &graph, const int &s, const int &t);
 
 // //////////////////////////////////////////
+//  Nearest neighbor.
+// //////////////////////////////////////////
+
+/// \brief Returns a path through all nodes.
+/// \details This is an approximation of the travelling salesman problem.
+/// \note There's no guarantee that the returned path is the optimal. Also, small change to find a path at all.
+/// \param graph The input graph.
+/// \param source Starting node.
+/// \return A path through all nodes.
+/// \link <a href="https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm">Nearest neighbor, Wikipedia.</a>
+Nodes AllNodesPath(const Graph &graph, const int &source);
+
+// //////////////////////////////////////////
 //  Prim's
 // //////////////////////////////////////////
 
@@ -83,19 +98,13 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 //  Dijkstra's
 // //////////////////////////////////////////
 
-/// \brief Computes the shortest path from all nodes back to source in the input graph.
+/// \brief Returns the shortest distance between the source and destination in the input graph.
 /// \details This implementation is based on Dijkstra's algorithm for shortest path.
-/// \param graph The input graph.
-/// \param source The source node.
-/// \return The nodes constructing all the shortest path from any node to source.
-/// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
-Nodes ShortestPathAll(const Graph &graph, const int &source);
-
-/// \brief Returns the shortest distance between soruces and destination in the input graph.
 /// \param graph The input graph.
 /// \param source The source node.
 /// \param dest The destination node.
 /// \return The nodes constructing the shortest path.
+/// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
 Nodes ShortestPath(const Graph &graph, const int &source, const int &dest);
 
 }// namespace algo::graph
