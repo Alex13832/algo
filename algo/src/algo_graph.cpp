@@ -77,6 +77,10 @@ struct comp {
 
 Nodes AllNodesPath(const Graph &graph, const int &source)
 {
+  // Check forbidden cases
+  if (graph.size() < 3 || source < 0 || source >= graph.size()) {
+    return Nodes{};
+  }
   int current_node{source};
   Visited visited(graph.size(), false);
   visited[current_node] = true;

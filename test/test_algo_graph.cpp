@@ -250,3 +250,24 @@ TEST(test_algo_graph, test_nn_simple1)
   Nodes nodes{AllNodesPath(graph, 4)};
   EXPECT_EQ(nodes.size(), graph.size());
 }
+
+TEST(test_algo_graph, test_nn_empty_in)
+{
+  Graph graph{NewGraph(0)};
+  Nodes nodes{AllNodesPath(graph, 0)};
+  EXPECT_TRUE(nodes.empty());
+}
+
+TEST(test_algo_graph, test_nn_negative_source)
+{
+  Graph graph{NewGraph(2)};
+  Nodes nodes{AllNodesPath(graph, -1)};
+  EXPECT_TRUE(nodes.empty());
+}
+
+TEST(test_algo_graph, test_nn_source_larger_than_nbr_node)
+{
+  Graph graph{NewGraph(2)};
+  Nodes nodes{AllNodesPath(graph, 2)};
+  EXPECT_TRUE(nodes.empty());
+}
