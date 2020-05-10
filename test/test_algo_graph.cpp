@@ -170,7 +170,7 @@ TEST(test_algo_graph, test_prims_project_euler_107)
 }
 
 /////////////////////////////////////////////
-/// Dijkstra's algorithm tests
+/// Dijkstra's  tests
 /////////////////////////////////////////////
 
 TEST(test_algo_graph, test_dijkstra_simple1)
@@ -230,7 +230,7 @@ TEST(test_algo_graph, test_dijkstra_forbidden)
 }
 
 /////////////////////////////////////////////
-/// Dijkstra's algorithm tests
+/// Nearest neighbor tests
 /////////////////////////////////////////////
 
 TEST(test_algo_graph, test_nn_simple1)
@@ -270,4 +270,65 @@ TEST(test_algo_graph, test_nn_source_larger_than_nbr_node)
   Graph graph{NewGraph(2)};
   Nodes nodes{AllNodesPath(graph, 2)};
   EXPECT_TRUE(nodes.empty());
+}
+
+/////////////////////////////////////////////
+/// Bellman-Ford tests
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, test_bf_negative_cycle)
+{
+  Graph graph{NewGraph(5)};
+  MakeDirEdge(graph, 0, 1, 3.0);
+  MakeDirEdge(graph, 1, 2, 4.0);
+  MakeDirEdge(graph, 1, 3, 5.0);
+  MakeDirEdge(graph, 3, 4, 2.0);
+  MakeDirEdge(graph, 4, 1, -8.0);
+  // Empty if negative-weight cycle found
+  EXPECT_TRUE(ShortestPathBF(graph, 0).second.empty());
+}
+
+TEST(test_algo_graph, test_bf_simple1)
+{
+  Graph graph{NewGraph(5)};
+  MakeDirEdge(graph, 0, 1, 4.0);
+  MakeDirEdge(graph, 0, 2, 2.0);
+  MakeDirEdge(graph, 1, 2, 3.0);
+  MakeDirEdge(graph, 2, 1, 1.0);
+  MakeDirEdge(graph, 1, 3, 2.0);
+  MakeDirEdge(graph, 1, 4, 3.0);
+  MakeDirEdge(graph, 2, 3, 4.0);
+  MakeDirEdge(graph, 2, 4, 5.0);
+  MakeDirEdge(graph, 4, 3, -5.0);
+
+  Nodes corr{0, 3, 2, 1, 6};
+  pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
+}
+
+TEST(test_algo_graph, test_bf_simple2)
+{
+  Graph graph{NewGraph(6)};
+  MakeDirEdge(graph, 0, 1, 10.0);
+  MakeDirEdge(graph, 0, 5, 8.0);
+  MakeDirEdge(graph, 1, 3, 2.0);
+  MakeDirEdge(graph, 2, 1, 1.0);
+  MakeDirEdge(graph, 3, 2, -2.0);
+  MakeDirEdge(graph, 4, 3, -1.0);
+  MakeDirEdge(graph, 4, 1, -4.0);
+  MakeDirEdge(graph, 5, 4, 1.0);
+
+  Nodes corr{0, 5, 5, 7, 9, 8};
+  pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
+}
+
+TEST(test_algo_graph, test_bf_forbidden_cases)
+{
+  Graph graph{NewGraph(2)};
+  EXPECT_TRUE(ShortestPathBF(graph, 0).first.empty());
+
+  graph = NewGraph(3);
+  EXPECT_TRUE(ShortestPathBF(graph, -1).first.empty());
+  EXPECT_TRUE(ShortestPathBF(graph, 3).first.empty());
 }

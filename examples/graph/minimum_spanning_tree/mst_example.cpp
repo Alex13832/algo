@@ -79,7 +79,7 @@ void WriteToFile(const Graph& graph, const vector<DataLine>& lines, const string
 
   // Header
   file << "Node1"
-       << ", "
+       << ","
        << "Node2"
        << ","
        << "W"
@@ -90,8 +90,7 @@ void WriteToFile(const Graph& graph, const vector<DataLine>& lines, const string
        << ","
        << "x1"
        << ","
-       << "y1"
-       << '\n';
+       << "y1" << '\n';
 
   for (size_t i = 0; i < graph.size(); ++i) {
     for (auto cell : graph[i]) {

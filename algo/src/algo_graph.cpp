@@ -120,7 +120,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
 }
 
 // //////////////////////////////////////////
-//  Prim's algorithm
+//  Prim's
 // //////////////////////////////////////////
 
 Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
@@ -167,7 +167,7 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 }
 
 // //////////////////////////////////////////
-//  Dijkstra's algorithm
+//  Dijkstra's
 // //////////////////////////////////////////
 
 /// \brief Computes the shortest path from all nodes back to source in the input graph.
@@ -222,6 +222,54 @@ Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
   path.emplace_back(source);
   std::reverse(path.begin(), path.end());
   return path;
+}
+
+// //////////////////////////////////////////
+//  Bellman-Ford
+// //////////////////////////////////////////
+
+std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
+{
+  // Check forbidden cases.
+  if (source < 0 || graph.size() < 3 || source >= graph.size()) {
+    return std::make_pair(Weights{}, Nodes{});
+  }
+
+  Weights dist(graph.size(), kDblMax);
+  Nodes prev(graph.size(), -1);
+  Edges edges;
+
+  dist[source] = 0;// Distance to itself is zero
+
+  // Construct a list of edges
+  for (int i = 0; i < graph.size(); ++i) {
+    for (const auto &c : graph[i]) {
+      edges.emplace_back(Edge{i, c.node, c.weight});
+    }
+  }
+
+  for (size_t i = 1; i < dist.size(); i++) {
+    Weights pre{dist};
+    for (const auto &edge : edges) {
+      if (dist[edge.u] + edge.w < dist[edge.v]) {
+        dist[edge.v] = dist[edge.u] + edge.w;
+        prev[edge.u] = edge.v;
+      }
+    }
+    // Return earlier if no update
+    if (std::equal(pre.begin(), pre.end(), dist.begin())) {
+      break;
+    }
+  }
+
+  // Check for negative-weight cycles (not good).
+  for (auto edge : edges) {
+    if (dist[edge.u] + edge.w < dist[edge.v]) {
+      return std::make_pair(Weights{}, Nodes{});
+    }
+  }
+
+  return std::make_pair(dist, prev);
 }
 
 }// namespace algo::graph

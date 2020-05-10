@@ -14,7 +14,7 @@ import plotly.graph_objects as go
 def main(argv):
     # argv[0] is the number of nodes.
     # G = nx.random_geometric_graph(int(argv[0]), 0.125)
-    G = nx.random_geometric_graph(int(argv[0]), 0.5)
+    G = nx.random_geometric_graph(int(argv[0]), 0.45)
 
     Node1 = []
     Node2 = []

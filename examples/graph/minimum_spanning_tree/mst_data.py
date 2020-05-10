@@ -16,7 +16,7 @@ def main(argv):
 
     # Open file and print header
     f = open("testfiles/mst_network_in.csv", "w")
-    f.write("Node1, Node2, W, x0, y0, x1, y1\n")
+    f.write("Node1,Node2,W,x0,y0,x1,y1\n")
 
     # Create edges
     edge_x = []

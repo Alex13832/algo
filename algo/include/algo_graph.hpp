@@ -24,10 +24,16 @@ struct Connection {
   double weight;
 };
 
+struct Edge {
+  int u, v;
+  double w;
+};
+
 using Nodes = std::vector<int>;
 using Weights = std::vector<double>;
 using Graph = std::vector<std::vector<Connection>>;
 using Visited = std::vector<bool>;
+using Edges = std::vector<Edge>;
 
 // //////////////////////////////////////////
 //  Graph functions
@@ -98,7 +104,7 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 //  Dijkstra's
 // //////////////////////////////////////////
 
-/// \brief Returns the shortest distance between the source and destination in the input graph.
+/// \brief Returns the shortest path between the source and destination in the input graph.
 /// \details This implementation is based on Dijkstra's algorithm for shortest path.
 /// \param graph The input graph.
 /// \param source The source node.
@@ -106,6 +112,18 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 /// \return The nodes constructing the shortest path.
 /// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
 Nodes ShortestPath(const Graph &graph, const int &source, const int &dest);
+
+// //////////////////////////////////////////
+//  Bellman-Ford
+// //////////////////////////////////////////
+
+/// \brief Returns the shortest path between source and all other nodes in the input graph.
+/// \note Use ShortestPath if all edge weights are positive, since (Dijkstra's) algorithm is faster.
+/// \param graph The input graph.
+/// \param source Source node.
+/// \return A list of nodes prev = nodes[prev], for tracking each path to source. And weights.
+/// \link <a href="https://en.wikipedia.org/wiki/Bellman–Ford_algorithm">Bellman-Ford, Wikipedia.</a>
+std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 
 }// namespace algo::graph
 
