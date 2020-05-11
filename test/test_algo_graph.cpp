@@ -77,7 +77,7 @@ TEST(test_algo_graph, test_make_dir_edge_no_weight)
 }
 
 /////////////////////////////////////////////
-/// Prim's algorithm tests
+/// Prim's tests
 /////////////////////////////////////////////
 
 TEST(test_algo_graph, test_prims_forbidden)
@@ -170,7 +170,7 @@ TEST(test_algo_graph, test_prims_project_euler_107)
 }
 
 /////////////////////////////////////////////
-/// Dijkstra's  tests
+/// Dijkstra's tests
 /////////////////////////////////////////////
 
 TEST(test_algo_graph, test_dijkstra_simple1)
@@ -331,4 +331,34 @@ TEST(test_algo_graph, test_bf_forbidden_cases)
   graph = NewGraph(3);
   EXPECT_TRUE(ShortestPathBF(graph, -1).first.empty());
   EXPECT_TRUE(ShortestPathBF(graph, 3).first.empty());
+}
+
+TEST(test_algo_graph, test_bf_single_path)
+{
+  Graph graph{NewGraph(6)};
+  MakeDirEdge(graph, 0, 1, 10.0);
+  MakeDirEdge(graph, 0, 5, 8.0);
+  MakeDirEdge(graph, 1, 3, 2.0);
+  MakeDirEdge(graph, 2, 1, 1.0);
+  MakeDirEdge(graph, 3, 2, -2.0);
+  MakeDirEdge(graph, 4, 3, -1.0);
+  MakeDirEdge(graph, 4, 1, -4.0);
+  MakeDirEdge(graph, 5, 4, 1.0);
+
+  Nodes corr{0, 5, 4, 1, 3, 2};
+  pair<Nodes, double> pathAndWeight{ShortestPathBF(graph, 0, 2)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), pathAndWeight.first.begin()));
+  EXPECT_EQ(pathAndWeight.second, 5.0);
+}
+
+TEST(test_algo_graph, test_bf_single_path_forbidden_input)
+{
+  Graph punyGraph{NewGraph(2)};
+  EXPECT_TRUE(ShortestPathBF(punyGraph, 0, 1).first.empty());
+
+  Graph graph{NewGraph(3)};
+  EXPECT_TRUE(ShortestPathBF(graph, -1, 1).first.empty());// Source < 0
+  EXPECT_TRUE(ShortestPathBF(graph, 3, 1).first.empty()); // Source >= size
+  EXPECT_TRUE(ShortestPathBF(graph, 0, -1).first.empty());// Dest < 0
+  EXPECT_TRUE(ShortestPathBF(graph, 0, 3).first.empty()); // Dest >= size
 }

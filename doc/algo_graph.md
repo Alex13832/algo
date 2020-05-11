@@ -6,7 +6,7 @@ Graph algorithms
 | `AllNodesPath`  | Nearest neighbor  | Yes, all positive  | No  |
 | `ShortestPath`  | Dijkstra  | Yes, all positive  | Yes*  |
 |  `MinimumSpanningTree` | Prims  | Yes, all positive  | No  |
-| `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes*
+| `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes
  
 _* Works for directed and undirected._
 
@@ -48,6 +48,8 @@ Nodes nodes{AllNodesPath(graph, 4)};
 
 ### Examples
 
+_The Euclidean distance betweean a pair of nodes is used as weight._
+
 ![Nearest 1](images/nn1.png) ![Nearest 2](images/nn2.png)
 
 
@@ -81,9 +83,42 @@ Nodes nodes{ShortestPath(graph, 0, 5)};
 
 ### Examples
 
+_The Euclidean distance betweean a pair of nodes is used as weight._
+
 ![Dijkstra1](images/dijkstra1.png) ![Dijkstra2](images/dijkstra2.png)
 
 ![Dijkstra3](images/dijkstra3.png) ![Dijkstra4](images/dijkstra4.png)  
+
+## Bellman-Ford's algorithm for shortest path
+
+Computes the shortest distance between a source node and all other nodes. Dijkstra's algorithm does the same thing and faster but BF can handle graphs with negative weights between nodes.
+
+```cpp
+std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
+```
+
+Returns the shortest paths from `source` to all aother nodes in `graph` and the minimum weights for each path.
+
+### Usage
+
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(6)};
+MakeDirEdge(graph, 0, 1, 10.0);
+MakeDirEdge(graph, 0, 5, 8.0);
+...
+MakeDirEdge(graph, 4, 1, -4.0);
+MakeDirEdge(graph, 5, 4, 1.0);
+
+pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
+```
+
+### Examples
+
+TODO
 
 ## Prim's algorithm for minimum spanning trees
 
@@ -117,7 +152,7 @@ Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
 
 ### Examples
 
-The weights are the Euclidean distance betwen two nodes.
+_The Euclidean distance betweean a pair of nodes is used as weight._
 
 ![Mst in 1](images/mst1.png) ![Mst in 2](images/mst2.png)
 

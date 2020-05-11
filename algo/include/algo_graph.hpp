@@ -125,6 +125,15 @@ Nodes ShortestPath(const Graph &graph, const int &source, const int &dest);
 /// \link <a href="https://en.wikipedia.org/wiki/Bellman–Ford_algorithm">Bellman-Ford, Wikipedia.</a>
 std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 
+/// \brief Returns the shortest oath between the source and destination (dest) in the input graph.
+/// \details This algorithm uses the Bellman-Ford algorihtm whích allows negative edge weights. Use ShortestPath
+/// if all edege weights are positive (faster).
+/// \param graph The input graph.
+/// \param source Source node.
+/// \param dest Destination node.
+/// \return The nodes constructing the path from source to dest.
+std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
+
 }// namespace algo::graph
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_GRAPH_HPP_

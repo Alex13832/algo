@@ -77,7 +77,7 @@ struct comp {
 
 Nodes AllNodesPath(const Graph &graph, const int &source)
 {
-  // Check forbidden cases
+  // Forbidden input.
   if (graph.size() < 3 || source < 0 || source >= graph.size()) {
     return Nodes{};
   }
@@ -125,6 +125,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
 
 Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
 {
+  // Forbidden input.
   if (source >= graph.size() || source < 0 || graph.empty()) {
     return Graph{NewGraph(0)};
   }
@@ -205,7 +206,7 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
 
 Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
 {
-  // Check forbidden cases.
+  // Forbidden input.
   if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
     return Nodes{};
   }
@@ -230,7 +231,7 @@ Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
 
 std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
 {
-  // Check forbidden cases.
+  // Forbidden input.
   if (source < 0 || graph.size() < 3 || source >= graph.size()) {
     return std::make_pair(Weights{}, Nodes{});
   }
@@ -253,11 +254,11 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
     for (const auto &edge : edges) {
       if (dist[edge.u] + edge.w < dist[edge.v]) {
         dist[edge.v] = dist[edge.u] + edge.w;
-        prev[edge.u] = edge.v;
+        prev[edge.v] = edge.u;
       }
     }
     // Return earlier if no update
-    if (std::equal(pre.begin(), pre.end(), dist.begin())) {
+    if (std::equal(dist.begin(), dist.end(), pre.begin())) {
       break;
     }
   }
@@ -270,6 +271,28 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
   }
 
   return std::make_pair(dist, prev);
+}
+
+std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest)
+{
+  // Forbidden input.
+  if (source < 0 || source >= graph.size() || dest < 0 || dest >= graph.size() || graph.size() < 3) {
+    return std::make_pair(Nodes{}, 0.0);
+  }
+
+  const std::pair<Weights, Nodes> kWeightsPaths{ShortestPathBF(graph, source)};
+  const Nodes kNodes{kWeightsPaths.second};
+  Nodes path;
+  int prev{dest};
+
+  while (prev != source) {
+    path.emplace_back(prev);
+    prev = kNodes[prev];
+  }
+
+  path.emplace_back(prev);
+  std::reverse(path.begin(), path.end());
+  return std::make_pair(path, kWeightsPaths.first[dest]);
 }
 
 }// namespace algo::graph
