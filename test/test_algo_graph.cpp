@@ -362,3 +362,75 @@ TEST(test_algo_graph, test_bf_single_path_forbidden_input)
   EXPECT_TRUE(ShortestPathBF(graph, 0, -1).first.empty());// Dest < 0
   EXPECT_TRUE(ShortestPathBF(graph, 0, 3).first.empty()); // Dest >= size
 }
+
+/////////////////////////////////////////////
+/// Breadth-First-Search tests
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, test_bfs_forbidden_input)
+{
+  Graph empty_graph{NewGraph(0)};
+  Nodes nodes1{BFS(empty_graph, 0)};
+  EXPECT_TRUE(nodes1.empty());// Empty graph
+
+  Graph graph{NewGraph(1)};
+  EXPECT_TRUE(BFS(graph, -1).empty());// Source < 0
+  EXPECT_TRUE(BFS(graph, 1).empty()); // Source >= size
+}
+
+TEST(test_algo_graph, test_shortest_paht_bfs1)
+{
+  Graph graph{NewGraph(6)};
+  MakeEdge(graph, 0, 1);
+  MakeEdge(graph, 0, 2);
+  MakeEdge(graph, 1, 3);
+  MakeEdge(graph, 3, 4);
+  MakeEdge(graph, 2, 3);
+  MakeEdge(graph, 2, 4);
+  MakeEdge(graph, 4, 5);
+
+  Nodes corr{0, 2, 4, 5};
+  Nodes shortest_path{ShortestPathBFS(graph, 0, 5)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+}
+
+TEST(test_algo_graph, test_shortest_path_bfs2)
+{
+  Graph graph{NewGraph(7)};
+  MakeEdge(graph, 0, 1);
+  MakeEdge(graph, 0, 2);
+  MakeEdge(graph, 2, 3);
+  MakeEdge(graph, 2, 4);
+  MakeEdge(graph, 3, 5);
+  MakeEdge(graph, 3, 6);
+
+  Nodes corr{0, 2, 3, 6};
+  Nodes shortest_path{ShortestPathBFS(graph, 0, 6)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+}
+
+TEST(test_algo_graph, test_shortest_path_bfs_directed)
+{
+  Graph graph{NewGraph(5)};
+  MakeDirEdge(graph, 0, 1);
+  MakeDirEdge(graph, 0, 2);
+  MakeDirEdge(graph, 1, 3);
+  MakeDirEdge(graph, 2, 4);
+  MakeDirEdge(graph, 3, 4);
+
+  Nodes corr{0, 2, 4};
+  Nodes shortest_path{ShortestPathBFS(graph, 0, 4)};
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+}
+
+TEST(test_algo_graph, test_shortest_path_bfs_forbidden)
+{
+  Graph graph{NewGraph(1)};
+  EXPECT_TRUE(ShortestPathBFS(graph, 0, 1).empty());// Size < 2
+  Graph graph1{NewGraph(2)};
+  EXPECT_TRUE(ShortestPathBFS(graph1, 0, 3).empty()); // Dest > size
+  EXPECT_TRUE(ShortestPathBFS(graph1, 3, 2).empty()); // Source > size
+  EXPECT_TRUE(ShortestPathBFS(graph1, -1, 1).empty());// Source < 0
+  EXPECT_TRUE(ShortestPathBFS(graph1, 0, -1).empty());// Dest < 0
+  EXPECT_TRUE(ShortestPathBFS(graph1, 1, 1).empty()); // Source == dest
+}

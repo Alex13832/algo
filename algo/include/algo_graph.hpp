@@ -75,6 +75,34 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w);
 /// \return Returns true if added, otherwise false.
 bool MakeDirEdge(Graph &graph, const int &s, const int &t);
 
+/// \brief Returns the edges as a vector of the input graph.
+/// \param graph The input graph.
+/// \return A list of edges.
+Edges GetEdges(const Graph &graph);
+
+// //////////////////////////////////////////
+//  Breadth-First-Search (BFS)
+// //////////////////////////////////////////
+
+/// \brief Runs Breadth-First-Search on the input graph from the source node.
+/// \param graph Input graph.
+/// \param source Source node.
+/// \returnﬁ
+Nodes BFS(const Graph &graph, const int &source);
+
+/// \brief Returns the shortest path from source to dest in graph. The path length is measured by number of edges.
+/// \param graph The input graph.
+/// \param source The source node.
+/// \param dest The destination node.
+/// \return The path from source to dest.
+Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest);
+
+///
+/// \todo Applications that use BFS
+/// * Check if a graph is bipartite.
+/// * Check if a graph contains a cycle.
+///
+
 // //////////////////////////////////////////
 //  Nearest neighbor.
 // //////////////////////////////////////////

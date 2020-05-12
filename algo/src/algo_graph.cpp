@@ -41,8 +41,8 @@ bool MakeEdge(Graph &graph, const int &s, const int &t)
   if (s >= graph.size() || t >= graph.size()) {
     return false;
   }
-  graph[s].emplace_back(Connection{t, 0});
-  graph[t].emplace_back(Connection{s, 0});
+  graph[s].emplace_back(Connection{t, 0.0});
+  graph[t].emplace_back(Connection{s, 0.0});
   return true;
 }
 
@@ -60,8 +60,21 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t)
   if (s >= graph.size() || t >= graph.size()) {
     return false;
   }
-  graph[s].push_back(Connection{t, 0});
+  graph[s].push_back(Connection{t, 0.0});
   return true;
+}
+
+Edges GetEdges(const Graph &graph)
+{
+  Edges edges;
+
+  // Construct a list of edges
+  for (int i = 0; i < graph.size(); ++i) {
+    for (const auto &c : graph[i]) {
+      edges.emplace_back(Edge{i, c.node, c.weight});
+    }
+  }
+  return edges;
 }
 
 struct comp {
@@ -70,6 +83,61 @@ struct comp {
     return lhs.weight > rhs.weight;
   }
 };
+
+// //////////////////////////////////////////
+//  Breadth-First-Search (BFS)
+// //////////////////////////////////////////
+
+Nodes BFS(const Graph &graph, const int &source)
+{
+  // Forbidden input.
+  if (graph.empty() || source < 0 || source >= graph.size()) {
+    return Nodes{};
+  }
+
+  std::vector<int> distance(graph.size(), INT_MAX);
+  Nodes parent(graph.size(), -1);
+  std::queue<int> q;
+  distance[source] = 0;
+  q.push(source);
+
+  while (!q.empty()) {
+
+    int curr{q.front()};
+    q.pop();
+
+    for (const auto &n : graph[curr]) {
+      if (distance[n.node] == INT_MAX) {
+        distance[n.node] = distance[curr] + 1;
+        parent[n.node] = curr;
+        q.push(n.node);
+      }
+    }
+  }
+
+  return parent;
+}
+
+Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
+{
+  // Forbidden input.
+  if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
+    return Nodes{};
+  }
+
+  const Nodes kNodes{BFS(graph, source)};
+  Nodes path;
+  int prev{dest};
+
+  while (prev != source) {
+    path.emplace_back(prev);
+    prev = kNodes[prev];
+  }
+
+  path.emplace_back(prev);
+  std::reverse(path.begin(), path.end());
+  return path;
+}
 
 // //////////////////////////////////////////
 //  Nearest neighbor algorithm
@@ -238,16 +306,9 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
 
   Weights dist(graph.size(), kDblMax);
   Nodes prev(graph.size(), -1);
-  Edges edges;
+  Edges edges{GetEdges(graph)};
 
   dist[source] = 0;// Distance to itself is zero
-
-  // Construct a list of edges
-  for (int i = 0; i < graph.size(); ++i) {
-    for (const auto &c : graph[i]) {
-      edges.emplace_back(Edge{i, c.node, c.weight});
-    }
-  }
 
   for (size_t i = 1; i < dist.size(); i++) {
     Weights pre{dist};

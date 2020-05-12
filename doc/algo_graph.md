@@ -3,12 +3,52 @@ Graph algorithms
 
 | Function  | Algorithm  |  Weighted | Directed  |
 |---|---|---|---|
+|`BFS`| Breadth-First-Search | No| Any |
+|`ShortestPathBFS`| Breadth-First-Search | No| Any |
 | `AllNodesPath`  | Nearest neighbor  | Yes, all positive  | No  |
 | `ShortestPath`  | Dijkstra  | Yes, all positive  | Yes*  |
 |  `MinimumSpanningTree` | Prims  | Yes, all positive  | No  |
-| `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes
+| `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes |
  
 _* Works for directed and undirected._
+
+## Breadth-First-Search (BFS)
+>Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
+>It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), 
+>and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.
+>[Wikipedia](https://en.wikipedia.org/wiki/Breadth-first_search)
+
+```cpp
+Nodes BFS(const Graph &graph, const int &source);
+```
+Returns the nodes constructing the shortest paths from each destination node to the `source` node. To backtrack 
+assign `prev = destination` then `prev = path[prev]`
+
+## Shortest path BFS
+
+```cpp
+Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest);
+```
+Return the shortest path from `source` to `dest` in then input `graph` using breadth-first-search. The distance 
+between nodes is measured in number of edges, which is different from e.g. Dijkstra's and Bellman-Ford's algorithms 
+that use weights.
+
+### Usage
+
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(5)};
+MakeDirEdge(graph, 0, 1);
+MakeDirEdge(graph, 0, 2);
+MakeDirEdge(graph, 1, 3);
+MakeDirEdge(graph, 2, 4);
+MakeDirEdge(graph, 3, 4);
+
+Nodes shortest_path{ShortestPathBFS(graph, 0, 4)}; // (0)->(2)->(4)
+```
 
 ## Nearest neighbor for approximation of the travelling salesman problem
 
@@ -99,6 +139,12 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 
 Returns the shortest paths from `source` to all aother nodes in `graph` and the minimum weights for each path.
 
+```cpp
+std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
+```
+
+Returns the shortest path from `source` to `dest` in `graph`.
+
 ### Usage
 
 ```cpp
@@ -115,10 +161,6 @@ MakeDirEdge(graph, 5, 4, 1.0);
 
 pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
 ```
-
-### Examples
-
-TODO
 
 ## Prim's algorithm for minimum spanning trees
 
