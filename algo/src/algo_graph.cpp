@@ -98,8 +98,8 @@ Nodes BFS(const Graph &graph, const int &source)
   std::vector<int> distance(graph.size(), INT_MAX);
   Nodes parent(graph.size(), -1);
   std::queue<int> q;
-  distance[source] = 0;
   q.push(source);
+  distance[source] = 0;
 
   while (!q.empty()) {
 
@@ -137,6 +137,38 @@ Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
   path.emplace_back(prev);
   std::reverse(path.begin(), path.end());
   return path;
+}
+
+bool IsBipartite(const Graph &graph)
+{
+  // Forbidden input.
+  if (graph.size() < 2) {
+    return false;
+  }
+
+  std::vector<int> colors(graph.size(), -1);
+  std::queue<int> q;
+  q.push(0);
+  colors[0] = 1;
+
+  // BFS, modified for checking bipartiteness.
+  while (!q.empty()) {
+    int curr{q.front()};
+    q.pop();
+
+    for (auto edge : graph[curr]) {
+
+      if (colors[edge.node] == -1) {
+        colors[edge.node] = 1 - colors[curr];
+        q.push(edge.node);
+
+        // Two adjacent nodes have the same color.
+      } else if (colors[edge.node] == colors[curr]) {
+        return false;
+      }
+    }
+  }
+  return true;
 }
 
 // //////////////////////////////////////////

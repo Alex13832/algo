@@ -8,10 +8,9 @@
 /// 2016-03-14 Dijkstra shortest path.
 /// 2016-09-24 Nearest neighbor for travelling salesman approximation.
 /// 2016-09-25 Prim's algorithm for minimum spanning trees.
+/// 2020-05-13 IsBipartite
 ///
 
-#include <map>
-#include <set>
 #include <vector>
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_GRAPH_HPP_
@@ -29,9 +28,10 @@ struct Edge {
   double w;
 };
 
+// https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p3-express-intent
+using Graph = std::vector<std::vector<Connection>>;
 using Nodes = std::vector<int>;
 using Weights = std::vector<double>;
-using Graph = std::vector<std::vector<Connection>>;
 using Visited = std::vector<bool>;
 using Edges = std::vector<Edge>;
 
@@ -97,11 +97,12 @@ Nodes BFS(const Graph &graph, const int &source);
 /// \return The path from source to dest.
 Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest);
 
-///
-/// \todo Applications that use BFS
-/// * Check if a graph is bipartite.
-/// * Check if a graph contains a cycle.
-///
+/// \brief Checs if the input graph is bipartite.
+/// \param graph The input grpah.
+/// \param src Source node.
+/// \return True if bipartite, otherwise false.
+/// \link <a href="https://en.wikipedia.org/wiki/Bipartite_graph#Testing_bipartiteness">Bipartite graph, Wikipedia.</a>
+bool IsBipartite(const Graph &graph);
 
 // //////////////////////////////////////////
 //  Nearest neighbor.

@@ -434,3 +434,48 @@ TEST(test_algo_graph, test_shortest_path_bfs_forbidden)
   EXPECT_TRUE(ShortestPathBFS(graph1, 0, -1).empty());// Dest < 0
   EXPECT_TRUE(ShortestPathBFS(graph1, 1, 1).empty()); // Source == dest
 }
+
+TEST(test_algo_graph, test_bfs_is_bipartite1)
+{
+  Graph graph{NewGraph(6)};
+  MakeEdge(graph, 0, 1);
+  MakeEdge(graph, 0, 2);
+  MakeEdge(graph, 1, 3);
+  MakeEdge(graph, 2, 4);
+  MakeEdge(graph, 3, 5);
+  MakeEdge(graph, 4, 5);
+
+  EXPECT_TRUE(IsBipartite(graph));
+}
+
+TEST(test_algo_graph, test_bfs_is_bipartite2)
+{
+  Graph graph{NewGraph(8)};
+  Nodes as{0, 2, 4, 6, 7};
+  Nodes bs{1, 3, 5};
+
+  for (const auto& a : as) {
+    for (const auto& b : bs) {
+      MakeEdge(graph, a, b);
+    }
+  }
+
+  EXPECT_TRUE(IsBipartite(graph));
+}
+
+TEST(test_algo_graph, test_bfs_is_not_bipartite)
+{
+  Graph graph{NewGraph(5)};
+  MakeEdge(graph, 0, 1);
+  MakeEdge(graph, 0, 2);
+  MakeEdge(graph, 1, 3);
+  MakeEdge(graph, 2, 4);
+  MakeEdge(graph, 3, 4);
+
+  EXPECT_FALSE(IsBipartite(graph));
+}
+
+TEST(test_algo_graph, test_bfs_is_bipartite_forbidden_input)
+{
+  EXPECT_FALSE(IsBipartite(NewGraph(1)));
+}
