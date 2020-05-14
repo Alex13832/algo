@@ -7,9 +7,10 @@ Graph algorithms
 |`ShortestPathBFS`| Breadth-First-Search | No| Any |
 |`IsBipartite`| Breadth-First-Search| No | No |
 | `AllNodesPath`  | Nearest neighbor  | Yes, all positive  | No  |
-| `ShortestPath`  | Dijkstra  | Yes, all positive  | Yes*  |
+| `ShortestPathDijkstra`  | Dijkstra  | Yes, all positive  | Yes*  |
 |  `MinimumSpanningTree` | Prims  | Yes, all positive  | No  |
 | `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes |
+| `MaxFlow` | Edmonds-Karp | Yes | Yes |
  
 _* Works for directed and undirected._
 
@@ -128,7 +129,7 @@ _The Euclidean distance betweean a pair of nodes is used as weight._
 Dijkstra's algorithm finds the shortest path between nodes in a graph. 
 
 ```cpp
-Nodes ShortestPath(const Graph &graph, const int &source, const int &dest);
+Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest);
 ```
 
 Returns a list with the nodes that constructs the shortest path from `source` to `dest` in the input `graph`.
@@ -148,7 +149,7 @@ MakeEdge(graph, 3, 4, 2.0);
 MakeEdge(graph, 3, 5, 6.0);
 
 Nodes correct{0, 2, 1, 3, 4, 5};
-Nodes nodes{ShortestPath(graph, 0, 5)};
+Nodes nodes{ShortestPathDijkstra(graph, 0, 5)};
 ```
 
 ### Examples
@@ -228,4 +229,34 @@ _The Euclidean distance betweean a pair of nodes is used as weight._
 
 ![Mst in 1](images/mst1.png) ![Mst in 2](images/mst2.png)
 
+## Max-flow
 
+>In optimization theory, maximum flow problems involve finding a feasible flow through a flow network that obtains the 
+>maximum possible flow rate. [Wikipedia](https://en.wikipedia.org/wiki/Maximum_flow_problem).
+
+This implementation uses the Edmonds-Karp version of Ford-Fulkerson (BFS instead of DFS).
+
+```cpp
+double MaxFlow(Graph graph, const int &source, const int &dest);
+```
+
+Returns the maximum flow from `source` to `dest` in `graph`. 
+
+There are examples of non-terminating examples [Wikipedia](https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm).
+This implementation does not check for this. 
+
+### Usage
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(6)};
+MakeDirEdge(graph, 0, 1, 160.0);
+MakeDirEdge(graph, 0, 2, 130.0);
+...
+MakeDirEdge(graph, 3, 5, 200.0);
+MakeDirEdge(graph, 4, 5, 40.0);
+
+double max_flow(MaxFlow(graph, 0, 5));
+```

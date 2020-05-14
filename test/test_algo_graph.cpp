@@ -18,7 +18,7 @@ using namespace std;
 using namespace algo::graph;
 
 namespace {
-const std::string path{"../../test/testfiles/prims/"};
+const std::string kFilePath{"../../test/testfiles/prims/"};
 }
 
 /////////////////////////////////////////////
@@ -120,7 +120,7 @@ Graph ReadPrimsFile()
 {
   Graph G{NewGraph(40)};
   vector<int> total;
-  ifstream infile(path + "p107_network.txt");
+  ifstream infile(kFilePath + "p107_network.txt");
   string line;
   int row = 0;
   int col = 0;
@@ -187,11 +187,11 @@ TEST(test_algo_graph, test_dijkstra_simple1)
   MakeEdge(graph, 6, 5, 2.0);
 
   Nodes correct{0, 1, 4, 6};
-  Nodes nodes{ShortestPath(graph, 0, 6)};
+  Nodes nodes{ShortestPathDijkstra(graph, 0, 6)};
   EXPECT_TRUE(equal(nodes.begin(), nodes.end(), correct.begin()));
 
   Nodes correct1{4, 6, 5};
-  Nodes nodes1{ShortestPath(graph, 4, 5)};
+  Nodes nodes1{ShortestPathDijkstra(graph, 4, 5)};
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct1.begin()));
 }
 
@@ -209,24 +209,24 @@ TEST(test_algo_graph, test_dijkstra_simple2)
   MakeEdge(graph, 3, 5, 6.0);
 
   Nodes correct{0, 2, 1, 3, 4, 5};
-  Nodes nodes{ShortestPath(graph, 0, 5)};
+  Nodes nodes{ShortestPathDijkstra(graph, 0, 5)};
   EXPECT_TRUE(equal(nodes.begin(), nodes.end(), correct.begin()));
 
   reverse(correct.begin(), correct.end());
-  Nodes nodes1{ShortestPath(graph, 5, 0)};
+  Nodes nodes1{ShortestPathDijkstra(graph, 5, 0)};
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct.begin()));
 }
 
 TEST(test_algo_graph, test_dijkstra_forbidden)
 {
   Graph graph{NewGraph(1)};
-  EXPECT_TRUE(ShortestPath(graph, 0, 1).empty());// Size < 2
+  EXPECT_TRUE(ShortestPathDijkstra(graph, 0, 1).empty());// Size < 2
   Graph graph1{NewGraph(2)};
-  EXPECT_TRUE(ShortestPath(graph1, 0, 3).empty()); // Dest > size
-  EXPECT_TRUE(ShortestPath(graph1, 3, 2).empty()); // Source > size
-  EXPECT_TRUE(ShortestPath(graph1, -1, 1).empty());// Source < 0
-  EXPECT_TRUE(ShortestPath(graph1, 0, -1).empty());// Dest < 0
-  EXPECT_TRUE(ShortestPath(graph1, 1, 1).empty()); // Source == dest
+  EXPECT_TRUE(ShortestPathDijkstra(graph1, 0, 3).empty()); // Dest > size
+  EXPECT_TRUE(ShortestPathDijkstra(graph1, 3, 2).empty()); // Source > size
+  EXPECT_TRUE(ShortestPathDijkstra(graph1, -1, 1).empty());// Source < 0
+  EXPECT_TRUE(ShortestPathDijkstra(graph1, 0, -1).empty());// Dest < 0
+  EXPECT_TRUE(ShortestPathDijkstra(graph1, 1, 1).empty()); // Source == dest
 }
 
 /////////////////////////////////////////////
@@ -390,8 +390,9 @@ TEST(test_algo_graph, test_shortest_paht_bfs1)
   MakeEdge(graph, 4, 5);
 
   Nodes corr{0, 2, 4, 5};
-  Nodes shortest_path{ShortestPathBFS(graph, 0, 5)};
-  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+  Path path{ShortestPathBFS(graph, 0, 5)};
+  EXPECT_TRUE(path.is_path);
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
 TEST(test_algo_graph, test_shortest_path_bfs2)
@@ -405,8 +406,9 @@ TEST(test_algo_graph, test_shortest_path_bfs2)
   MakeEdge(graph, 3, 6);
 
   Nodes corr{0, 2, 3, 6};
-  Nodes shortest_path{ShortestPathBFS(graph, 0, 6)};
-  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+  Path path{ShortestPathBFS(graph, 0, 6)};
+  EXPECT_TRUE(path.is_path);
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
 TEST(test_algo_graph, test_shortest_path_bfs_directed)
@@ -419,20 +421,21 @@ TEST(test_algo_graph, test_shortest_path_bfs_directed)
   MakeDirEdge(graph, 3, 4);
 
   Nodes corr{0, 2, 4};
-  Nodes shortest_path{ShortestPathBFS(graph, 0, 4)};
-  EXPECT_TRUE(equal(corr.begin(), corr.end(), shortest_path.begin()));
+  Path path{ShortestPathBFS(graph, 0, 4)};
+  EXPECT_TRUE(path.is_path);
+  EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
 TEST(test_algo_graph, test_shortest_path_bfs_forbidden)
 {
   Graph graph{NewGraph(1)};
-  EXPECT_TRUE(ShortestPathBFS(graph, 0, 1).empty());// Size < 2
+  EXPECT_TRUE(ShortestPathBFS(graph, 0, 1).nodes.empty());// Size < 2
   Graph graph1{NewGraph(2)};
-  EXPECT_TRUE(ShortestPathBFS(graph1, 0, 3).empty()); // Dest > size
-  EXPECT_TRUE(ShortestPathBFS(graph1, 3, 2).empty()); // Source > size
-  EXPECT_TRUE(ShortestPathBFS(graph1, -1, 1).empty());// Source < 0
-  EXPECT_TRUE(ShortestPathBFS(graph1, 0, -1).empty());// Dest < 0
-  EXPECT_TRUE(ShortestPathBFS(graph1, 1, 1).empty()); // Source == dest
+  EXPECT_TRUE(ShortestPathBFS(graph1, 0, 3).nodes.empty()); // Dest > size
+  EXPECT_TRUE(ShortestPathBFS(graph1, 3, 2).nodes.empty()); // Source > size
+  EXPECT_TRUE(ShortestPathBFS(graph1, -1, 1).nodes.empty());// Source < 0
+  EXPECT_TRUE(ShortestPathBFS(graph1, 0, -1).nodes.empty());// Dest < 0
+  EXPECT_TRUE(ShortestPathBFS(graph1, 1, 1).nodes.empty()); // Source == dest
 }
 
 TEST(test_algo_graph, test_bfs_is_bipartite1)
@@ -478,4 +481,59 @@ TEST(test_algo_graph, test_bfs_is_not_bipartite)
 TEST(test_algo_graph, test_bfs_is_bipartite_forbidden_input)
 {
   EXPECT_FALSE(IsBipartite(NewGraph(1)));
+}
+
+/////////////////////////////////////////////
+/// Edmonds-Karp, max flow tests
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, test_ff_max_flow1)
+{
+  Graph graph{NewGraph(6)};
+  MakeDirEdge(graph, 0, 1, 160.0);
+  MakeDirEdge(graph, 0, 2, 130.0);
+  MakeDirEdge(graph, 2, 1, 40.0);
+  MakeDirEdge(graph, 1, 2, 100.0);
+  MakeDirEdge(graph, 2, 4, 140.0);
+  MakeDirEdge(graph, 1, 3, 120.0);
+  MakeDirEdge(graph, 3, 2, 90.0);
+  MakeDirEdge(graph, 4, 3, 70.0);
+  MakeDirEdge(graph, 3, 5, 200.0);
+  MakeDirEdge(graph, 4, 5, 40.0);
+
+  double max_flow(MaxFlow(graph, 0, 5));
+  EXPECT_EQ(max_flow, 230.0);
+}
+
+TEST(test_algo_graph, test_ff_max_flow2)
+{
+  Graph graph{NewGraph(6)};
+  MakeDirEdge(graph, 0, 1, 10.0);
+  MakeDirEdge(graph, 0, 2, 10.0);
+  MakeDirEdge(graph, 1, 2, 2.0);
+  MakeDirEdge(graph, 1, 3, 4.0);
+  MakeDirEdge(graph, 1, 4, 8.0);
+  MakeDirEdge(graph, 2, 4, 9.0);
+  MakeDirEdge(graph, 4, 3, 6.0);
+  MakeDirEdge(graph, 3, 5, 10.0);
+  MakeDirEdge(graph, 4, 5, 10.0);
+
+  double max_flow(MaxFlow(graph, 0, 5));
+  EXPECT_EQ(max_flow, 19.0);
+}
+
+TEST(test_algo_graph, test_ff_max_forbidden)
+{
+  Graph no_path_graph{NewGraph(4)};
+  MakeDirEdge(no_path_graph, 0, 1, 10.0);
+  MakeDirEdge(no_path_graph, 2, 3, 10.0);
+
+  double max_flow(MaxFlow(no_path_graph, 0, 2));
+  EXPECT_EQ(max_flow, 0.0);// No path in graph
+
+  EXPECT_EQ(MaxFlow(NewGraph(2), -1, 1), 0.0);// source < size
+  EXPECT_EQ(MaxFlow(NewGraph(2), 0, -1), 0.0);// dest < size
+  EXPECT_EQ(MaxFlow(NewGraph(2), 1, 1), 0.0); // dest == source
+  EXPECT_EQ(MaxFlow(NewGraph(2), 2, 1), 0.0); // source >= size
+  EXPECT_EQ(MaxFlow(NewGraph(2), 1, 2), 0.0); // dest >= size
 }

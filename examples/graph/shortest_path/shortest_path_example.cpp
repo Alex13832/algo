@@ -132,7 +132,7 @@ int main(int argc, char* argv[])
   }
 
   // Dijkstra
-  Nodes nodes{ShortestPath(graph_in, min_source, max_source)};
+  Nodes nodes{ShortestPathDijkstra(graph_in, min_source, max_source)};
 
   WriteToFile(nodes, graph_lines.second, "testfiles/shortest_path_data_out.csv");
   return 0;

@@ -17,7 +17,7 @@ using namespace std;
 using namespace algo::greedy;
 
 namespace {
-const std::string path{"../../test/testfiles/stable_match/"};
+const std::string kFilePath{"../../test/testfiles/stable_match/"};
 }
 
 /////////////////////////////////////////////
@@ -77,9 +77,9 @@ vector<Match> ReadCorrect(const std::string &file)
 
 TEST(test_algo_greede_stable_match, test_four_people)
 {
-  Prefs m_prefs{ReadPrefFile(path + "men4.txt")};
-  Prefs w_prefs{ReadPrefFile(path + "women4.txt")};
-  vector<Match> correct{ReadCorrect(path + "correct4.txt")};
+  Prefs m_prefs{ReadPrefFile(kFilePath + "men4.txt")};
+  Prefs w_prefs{ReadPrefFile(kFilePath + "women4.txt")};
+  vector<Match> correct{ReadCorrect(kFilePath + "correct4.txt")};
 
   std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
   EXPECT_FALSE(matches.empty());
@@ -88,9 +88,9 @@ TEST(test_algo_greede_stable_match, test_four_people)
 
 TEST(test_algo_greede_stable_match, test_eight_people)
 {
-  Prefs m_prefs{ReadPrefFile(path + "men8.txt")};
-  Prefs w_prefs{ReadPrefFile(path + "women8.txt")};
-  vector<Match> correct{ReadCorrect(path + "correct8.txt")};
+  Prefs m_prefs{ReadPrefFile(kFilePath + "men8.txt")};
+  Prefs w_prefs{ReadPrefFile(kFilePath + "women8.txt")};
+  vector<Match> correct{ReadCorrect(kFilePath + "correct8.txt")};
 
   std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
   EXPECT_FALSE(matches.empty());

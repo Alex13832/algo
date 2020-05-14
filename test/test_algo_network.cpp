@@ -16,7 +16,7 @@ using namespace std;
 using namespace algo::network;
 
 namespace {
-const std::string path{"../../test/testfiles/pagerank/"};
+const std::string kFilePath{"../../test/testfiles/pagerank/"};
 }
 
 /////////////////////////////////////////////
@@ -87,7 +87,7 @@ TEST(test_algo_network_pagerank, test_50)
 {
   // Testfile downloaded from http://introcs.cs.princeton.edu/java/16pagerank/
   // This test use link counts.
-  ifstream infile(path + "medium.txt");
+  ifstream infile(kFilePath + "medium.txt");
   string line;
   int num = 0;
   getline(infile, line);

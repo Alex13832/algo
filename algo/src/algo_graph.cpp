@@ -64,6 +64,40 @@ bool MakeDirEdge(Graph &graph, const int &s, const int &t)
   return true;
 }
 
+void SetWeight(Graph &graph, const int &s, const int &t, double weight)
+{
+  for (auto &conn : graph[s]) {
+    if (conn.node == t) {
+      conn.weight = weight;
+      return;
+    }
+  }
+}
+
+double GetWeight(Graph &graph, const int &s, const int &t)
+{
+  for (const auto &conn : graph[s]) {
+    if (conn.node == t) {
+      return conn.weight;
+    }
+  }
+  return 0.0;
+}
+
+void RemoveEdge(Graph &graph, const int &s, const int &t)
+{
+  size_t pos{0};
+
+  for (const auto &conn : graph[s]) {
+    if (conn.node == t) {
+      break;
+    }
+    pos++;
+  }
+
+  graph[s].erase(graph[s].begin() + pos);
+}
+
 Edges GetEdges(const Graph &graph)
 {
   Edges edges;
@@ -118,11 +152,12 @@ Nodes BFS(const Graph &graph, const int &source)
   return parent;
 }
 
-Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
+Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
 {
-  // Forbidden input.
-  if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
-    return Nodes{};
+  // Forbidden input:
+  size_t N{graph.size()};
+  if (N < 2 || dest > N || source > N || source < 0 || dest < 0 || source == dest) {
+    return Path{Nodes{}, false};
   }
 
   const Nodes kNodes{BFS(graph, source)};
@@ -130,13 +165,16 @@ Nodes ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
   int prev{dest};
 
   while (prev != source) {
+    if (kNodes[prev] == -1) {
+      return Path{Nodes{}, false};
+    }
     path.emplace_back(prev);
     prev = kNodes[prev];
   }
 
   path.emplace_back(prev);
   std::reverse(path.begin(), path.end());
-  return path;
+  return Path{path, true};
 }
 
 bool IsBipartite(const Graph &graph)
@@ -172,7 +210,7 @@ bool IsBipartite(const Graph &graph)
 }
 
 // //////////////////////////////////////////
-//  Nearest neighbor algorithm
+//  Nearest neighbor algorithm, TSP.
 // //////////////////////////////////////////
 
 Nodes AllNodesPath(const Graph &graph, const int &source)
@@ -220,7 +258,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
 }
 
 // //////////////////////////////////////////
-//  Prim's
+//  Prim's, minimum spanning tree.
 // //////////////////////////////////////////
 
 Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
@@ -268,7 +306,7 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 }
 
 // //////////////////////////////////////////
-//  Dijkstra's
+//  Dijkstra's, shortest path
 // //////////////////////////////////////////
 
 /// \brief Computes the shortest path from all nodes back to source in the input graph.
@@ -304,7 +342,7 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
   return prev;
 }
 
-Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
+Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest)
 {
   // Forbidden input.
   if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
@@ -326,7 +364,7 @@ Nodes ShortestPath(const Graph &graph, const int &source, const int &dest)
 }
 
 // //////////////////////////////////////////
-//  Bellman-Ford
+//  Bellman-Ford, shortest path
 // //////////////////////////////////////////
 
 std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
@@ -386,6 +424,75 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
   path.emplace_back(prev);
   std::reverse(path.begin(), path.end());
   return std::make_pair(path, kWeightsPaths.first[dest]);
+}
+
+// //////////////////////////////////////////
+//  Edmonds-Karp, max-flow
+// //////////////////////////////////////////
+
+double FindMinOfResiduals(const Graph &graph, const Nodes &path)
+{
+  double min{kDblMax};
+  Edges edges{GetEdges(graph)};
+
+  for (size_t i = 0; i < path.size() - 1; ++i) {
+    for (const auto &edge : edges) {
+      if (edge.u == path[i] && edge.v == path[i + 1] && edge.w < min) {
+        min = edge.w;
+      }
+    }
+  }
+  return min;
+}
+
+double MaxFlow(Graph graph, const int &source, const int &dest)
+{
+  // Forbidden input.
+  if (source < 0 || dest < 0 || source >= graph.size() || dest >= graph.size() || source == dest) {
+    return 0.0;
+  }
+
+  // Forbidden case.
+  if (!ShortestPathBFS(graph, source, dest).is_path) {
+    return 0.0;
+  }
+
+  double max_flow{0.0};
+  bool is_path{true};
+  Nodes prev;
+
+  while (is_path) {
+    Edges edges{GetEdges(graph)};
+
+    for (const auto &edge : edges) {
+      if (edge.w <= 0) {
+        RemoveEdge(graph, edge.u, edge.v);
+      }
+
+      if (!graph[source].empty()) {
+        Path pv{ShortestPathBFS(graph, source, dest)};
+        Nodes path{pv.nodes};
+        is_path = pv.is_path;
+
+        if (is_path) {
+
+          double min_capacity{FindMinOfResiduals(graph, path)};
+
+          for (size_t i = 0; i < path.size() - 1; ++i) {
+            // Get node in path
+            int u{path[i]};
+            int v{path[i + 1]};
+
+            // Update weights
+            SetWeight(graph, u, v, GetWeight(graph, u, v) - min_capacity);
+            SetWeight(graph, v, u, min_capacity);
+          }
+          max_flow += min_capacity;
+        }
+      }
+    }
+  }
+  return max_flow;
 }
 
 }// namespace algo::graph
