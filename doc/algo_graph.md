@@ -5,12 +5,15 @@ Graph algorithms
 |---|---|---|---|
 |`BFS`| Breadth-First-Search | No| Any |
 |`ShortestPathBFS`| Breadth-First-Search | No| Any |
+|`IsBipartite`| Breadth-First-Search| No | No |
 | `AllNodesPath`  | Nearest neighbor  | Yes, all positive  | No  |
 | `ShortestPath`  | Dijkstra  | Yes, all positive  | Yes*  |
 |  `MinimumSpanningTree` | Prims  | Yes, all positive  | No  |
 | `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes |
  
 _* Works for directed and undirected._
+
+
 
 ## Breadth-First-Search (BFS)
 >Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
@@ -48,6 +51,33 @@ MakeDirEdge(graph, 2, 4);
 MakeDirEdge(graph, 3, 4);
 
 Nodes shortest_path{ShortestPathBFS(graph, 0, 4)}; // (0)->(2)->(4)
+```
+>
+
+## Bipartiteness
+>A bipartite graph is a graph whose vertices can be divided into two disjoint and independent sets 
+>U and V such that every edge connects a vertex in U to one in V. [Wikipedia](https://en.wikipedia.org/wiki/Bipartite_graph#Testing_bipartiteness)
+
+```cpp
+bool IsBipartite(const Graph &graph);
+```
+Returns `true` if `graph` is bipartite.
+
+### Usage
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(6)};
+MakeEdge(graph, 0, 1);
+MakeEdge(graph, 0, 2);
+MakeEdge(graph, 1, 3);
+MakeEdge(graph, 2, 4);
+MakeEdge(graph, 3, 5);
+MakeEdge(graph, 4, 5);
+
+bool is_bipartite{IsBipartite(graph)}; // true
 ```
 
 ## Nearest neighbor for approximation of the travelling salesman problem
