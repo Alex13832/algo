@@ -156,9 +156,9 @@ Nodes nodes{ShortestPathDijkstra(graph, 0, 5)};
 
 _The Euclidean distance betweean a pair of nodes is used as weight._
 
-![Dijkstra1](images/dijkstra1.png) ![Dijkstra2](images/dijkstra2.png)
+![Dijkstra1](images/dijkstra200.png) ![Dijkstra2](images/dijkstra500.png)
 
-![Dijkstra3](images/dijkstra3.png) ![Dijkstra4](images/dijkstra4.png)  
+![Dijkstra3](images/dijkstra800.png) ![Dijkstra4](images/dijkstra1250.png)  
 
 ## Bellman-Ford's algorithm for shortest path
 

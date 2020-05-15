@@ -45,58 +45,25 @@ for x, y in zip(res_x, res_y):
     node_res_y.append(y)
 
 # The edges in the plot
-edge_trace = go.Scatter(
-    x=edge_x, y=edge_y,
-    line=dict(width=0.5, color='#888'),
-    hoverinfo='none',
-    mode='lines')
+edge_trace_in = go.Scatter(x=edge_x, y=edge_y, line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
 
 # THe nodes in the plot
-node_trace = go.Scatter(
-    x=node_x, y=node_y,
-    mode='markers',
-    hoverinfo='text',
-    marker=dict(
-        showscale=False,
-        colorscale='Picnic',
-        reversescale=True,
-        color=[],
-        size=10,
-        colorbar=dict(
-            thickness=15,
-            # title='Node Connections',
-            xanchor='left',
-            titleside='right'
-        ),
-        line_width=2))
+node_trace_in = go.Scatter(x=node_x, y=node_y, mode='markers', hoverinfo='text',
+                           marker=dict(showscale=False, colorscale='Picnic', reversescale=True, color=[], size=10,
+                                       colorbar=dict(thickness=15, xanchor='left', titleside='right'),
+                                       line_width=2))
 
-edge_res_trace = go.Scatter(
-    x=edge_res_x, y=edge_res_y,
-    line=dict(width=1.5, color='#91FF1C'),
-    hoverinfo='none',
-    mode='lines')
+edge_trace_res = go.Scatter(x=edge_res_x, y=edge_res_y, line=dict(width=3.5, color='#FF4969'), hoverinfo='none',
+                            mode='lines')
 
-node_res_trace = go.Scatter(
-    x=node_res_x, y=node_res_y,
-    mode='markers',
-    hoverinfo='text',
-    marker=dict(
-        showscale=False,
-        colorscale='Picnic',
-        reversescale=True,
-        color="#91FF1C",
-        size=12,
-        colorbar=dict(
-            thickness=15,
-            # title='Node Connections',
-            xanchor='left',
-            titleside='right'
-        ),
-        line_width=1))
+node_trace_res = go.Scatter(x=node_res_x, y=node_res_y, mode='markers', hoverinfo='text',
+                            marker=dict(showscale=False, colorscale='Picnic', reversescale=True, color="#FF4969",
+                                        size=12, colorbar=dict(thickness=15, xanchor='left', titleside='right'),
+                                        line_width=1))
 
 # Create network graph
 
-fig = go.Figure(data=[edge_trace, node_trace, edge_res_trace, node_res_trace],
+fig = go.Figure(data=[edge_trace_in, node_trace_in, edge_trace_res, node_trace_res],
                 layout=go.Layout(
                     title='',
                     titlefont_size=16,
