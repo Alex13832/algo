@@ -14,7 +14,7 @@ using namespace algo;
 /// Bitap search
 /////////////////////////////////////////////
 
-TEST(test_algo_string_bitap, test_search)
+TEST(test_algo_string, bitap_search)
 {
   string text{"this is a bitap test"};
   string pattern{"bitap"};
@@ -22,7 +22,7 @@ TEST(test_algo_string_bitap, test_search)
   EXPECT_EQ(res, "bitap test");
 }
 
-TEST(test_algo_string_bitap, search_not_found)
+TEST(test_algo_string, bitap_search_not_found)
 {
   string text{"this is a bitap test"};
   string pattern{"dijkstra"};
@@ -30,7 +30,7 @@ TEST(test_algo_string_bitap, search_not_found)
   EXPECT_EQ(res.size(), 0);
 }
 
-TEST(test_algo_string_bitap, empty_pattern)
+TEST(test_algo_string, bitap_empty_pattern)
 {
   string text{"this is a bitap test"};
   string res{strings::BitapSearch(text, "")};
@@ -41,7 +41,7 @@ TEST(test_algo_string_bitap, empty_pattern)
 /// Boyer-More
 /////////////////////////////////////////////
 
-TEST(test_algo_string_boyer_more, nbr_of_occurences_0)
+TEST(test_algo_string, boyer_more_nbr_of_occurences_0)
 {
   string text{"Banana banana"};
   string pattern{"Manana"};
@@ -49,7 +49,7 @@ TEST(test_algo_string_boyer_more, nbr_of_occurences_0)
   EXPECT_EQ(matches.size(), 0);
 }
 
-TEST(test_algo_string_boyer_more, nbr_of_occurences_1)
+TEST(test_algo_string, boyer_more_nbr_of_occurences_1)
 {
   string text{"Banana banana"};
   string pattern{"Banana ba"};
@@ -57,7 +57,7 @@ TEST(test_algo_string_boyer_more, nbr_of_occurences_1)
   EXPECT_EQ(matches.size(), 1);
 }
 
-TEST(test_algo_string_boyer_more, nbr_of_occurences_many)
+TEST(test_algo_string, boyer_more_nbr_of_occurences_many)
 {
   string text{
       "Lorem cucumber ipsum dolor sit amet, cucumber vel modus "
@@ -73,14 +73,14 @@ TEST(test_algo_string_boyer_more, nbr_of_occurences_many)
   EXPECT_EQ(matches.size(), 8);
 }
 
-TEST(test_algo_string_boyer_more, empty_input_pattern)
+TEST(test_algo_string, boyer_more_empty_input_pattern)
 {
   string text{"Banana banana"};
   vector<int> matches{strings::SearchBoyerMoore(text, "")};
   EXPECT_EQ(matches.size(), 0);
 }
 
-TEST(test_algo_string_boyer_more, empty_input_text)
+TEST(test_algo_string, boyer_more_empty_input_text)
 {
   string text{""};
   string pattern{"Banana"};
@@ -88,7 +88,7 @@ TEST(test_algo_string_boyer_more, empty_input_text)
   EXPECT_EQ(matches.size(), 0);
 }
 
-TEST(test_algo_string_boyer_more, empty_input)
+TEST(test_algo_string, boyer_more_empty_input)
 {
   string empty;
   vector<int> matches{strings::SearchBoyerMoore(empty, empty)};
@@ -99,7 +99,7 @@ TEST(test_algo_string_boyer_more, empty_input)
 /// Longest common substring
 /////////////////////////////////////////////
 
-TEST(test_algo_string_longest_common_substring, standard)
+TEST(test_algo_string, longest_common_substring_standard)
 {
   string A{"otirpporeijgpowkruskaldijkstrawithicecreamergjeågjeopnpoqerhgldijkstrassadar"};
   string B{"iuthewriuthkruskaldijksfuiqgfuqygfnvkjkruskaldijkstrawithicecreamdfbiehf5d"};
@@ -107,7 +107,7 @@ TEST(test_algo_string_longest_common_substring, standard)
   EXPECT_EQ(C, "kruskaldijkstrawithicecream");
 }
 
-TEST(test_algo_string_longest_common_substring, empty_first)
+TEST(test_algo_string, longest_common_substring_empty_first)
 {
   string A;
   string B{"iuthewriuthkruskaldijksfuiqgfuqygfnvkjkruskaldijkstrawithicecreamdfbiehf5d"};
@@ -115,7 +115,7 @@ TEST(test_algo_string_longest_common_substring, empty_first)
   EXPECT_EQ(C, "");
 }
 
-TEST(test_algo_string_longest_common_substring, empty_second)
+TEST(test_algo_string, longest_common_substring_empty_second)
 {
   string A{"otirpporeijgpowkruskaldijkstrawithicecreamergjeågjeopnpoqerhgldijkstrassadar"};
   string B;
@@ -123,14 +123,14 @@ TEST(test_algo_string_longest_common_substring, empty_second)
   EXPECT_EQ(C, "");
 }
 
-TEST(test_algo_string_longest_common_substring, empty_input)
+TEST(test_algo_string, longest_common_substring_empty_input)
 {
   string A, B;
   string C{strings::LongestCommonSubstring(A, B)};
   EXPECT_EQ(C, "");
 }
 
-TEST(test_algo_string_longest_common_substring, one_word)
+TEST(test_algo_string, longest_common_substring_one_word)
 {
   string A{"calculator"};
   string B{"culat"};
@@ -138,7 +138,7 @@ TEST(test_algo_string_longest_common_substring, one_word)
   EXPECT_EQ(C, "culat");
 }
 
-TEST(test_algo_string_longest_common_substring, one_char)
+TEST(test_algo_string, longest_common_substring_one_char)
 {
   string x{strings::LongestCommonSubstring("x", "x")};
   EXPECT_EQ(x, "x");
@@ -151,14 +151,14 @@ TEST(test_algo_string_longest_common_substring, one_char)
 /// Rabin-Karp
 /////////////////////////////////////////////
 
-TEST(test_algo_string_rabin_karp, single_input)
+TEST(test_algo_string, rabin_karp_single_input)
 {
   string sentence{"one two one three one two hello one"};
   vector<int> pos{strings::SearchRabinKarpSingle(sentence, "one")};
   EXPECT_EQ(pos.size(), 4);
 }
 
-TEST(test_algo_string_rabin_karp, multi_input)
+TEST(test_algo_string, rabin_karp_multi_input)
 {
   string sentence{"one two one three one two hello one"};
   set<string> words{"one", "two"};
@@ -166,14 +166,14 @@ TEST(test_algo_string_rabin_karp, multi_input)
   EXPECT_EQ(pos.size(), 6);
 }
 
-TEST(test_algo_string_rabin_karp, not_found_single)
+TEST(test_algo_string, rabin_karp_not_found_single)
 {
   string sentence{"one two one three one two hello one"};
   vector<int> pos{strings::SearchRabinKarpSingle(sentence, "four")};
   EXPECT_EQ(pos.size(), 0);
 }
 
-TEST(test_algo_string_rabin_karp, not_found_multi)
+TEST(test_algo_string, rabin_karp_not_found_multi)
 {
   string sentence{"one two one three one two hello one"};
   set<string> words{"four", "five"};
@@ -185,7 +185,7 @@ TEST(test_algo_string_rabin_karp, not_found_multi)
 /// Heap's algorithm
 /////////////////////////////////////////////
 
-TEST(test_algo_string_heaps, test_generate)
+TEST(test_algo_string, heaps_generate)
 {
   string sample{"METAL"};
   vector<string> perms{strings::GenerateAllPermutations(sample)};
@@ -198,7 +198,7 @@ TEST(test_algo_string_heaps, test_generate)
 /// Levenshtein distance
 /////////////////////////////////////////////
 
-TEST(test_algo_string_leven_dist, test_standard)
+TEST(test_algo_string, levest_dist_standard)
 {
   EXPECT_EQ(strings::LevDistance("abracadabra", "cadabraabra"), 6);
   EXPECT_EQ(strings::LevDistance("book", "back"), 2);
@@ -211,7 +211,7 @@ TEST(test_algo_string_leven_dist, test_standard)
 /// Rotated string
 /////////////////////////////////////////////
 
-TEST(test_algo_string_rotated_string, test_standard)
+TEST(test_algo_string, rotated_string_standard)
 {
   EXPECT_FALSE(strings::IsRotated("judaspriest", "priestsjudas"));
   EXPECT_TRUE(strings::IsRotated("judaspriest", "priestjudas"));
@@ -223,7 +223,7 @@ TEST(test_algo_string_rotated_string, test_standard)
 /// Compressed string
 /////////////////////////////////////////////
 
-TEST(test_algo_string_compressed_string, test_standard)
+TEST(test_algo_string, compressed_string_standard)
 {
   string str{""};
   EXPECT_EQ(strings::Compress(str), "");
@@ -239,7 +239,7 @@ TEST(test_algo_string_compressed_string, test_standard)
 /// Unique chars
 /////////////////////////////////////////////
 
-TEST(test_algo_string_has_unique_chars, test_standard)
+TEST(test_algo_string, has_unique_chars_standard)
 {
   EXPECT_TRUE(strings::HasUniqueChars("abcdefg123"));
   EXPECT_TRUE(strings::HasUniqueChars("a"));

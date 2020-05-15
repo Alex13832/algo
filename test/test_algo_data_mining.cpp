@@ -18,14 +18,14 @@ using namespace algo::geometry;
 /// K-means
 /////////////////////////////////////////////
 
-TEST(test_algo_data_mining_kmeans, test_empty_input)
+TEST(test_algo_data_mining, kmeans_empty_input)
 {
   Points points{};
   Clusters clusters{KMeans(points, 3)};
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_algo_data_mining_kmeans, test_zero_k)
+TEST(test_algo_data_mining, kmeans_zero_k)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -41,7 +41,7 @@ TEST(test_algo_data_mining_kmeans, test_zero_k)
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_algo_data_mining_kmeans, test_one_center)
+TEST(test_algo_data_mining, kmeans_one_center)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -57,7 +57,7 @@ TEST(test_algo_data_mining_kmeans, test_one_center)
   EXPECT_EQ(clusters.size(), 1);
 }
 
-TEST(test_algo_data_mining_kmeans, test_too_many_clusters)
+TEST(test_algo_data_mining, kmeans_too_many_clusters)
 {
   Points points{{0.212603, 0.553522},
                 {0.194965, 0.527275},
@@ -73,7 +73,7 @@ TEST(test_algo_data_mining_kmeans, test_too_many_clusters)
   EXPECT_TRUE(clusters.empty());
 }
 
-TEST(test_algo_data_mining_kmeans, test_standard)
+TEST(test_algo_data_mining, kmeans_standard)
 {
   Points points{{0.184982, 0.571833},
                 {0.186523, 0.623506},
@@ -169,7 +169,7 @@ TEST(test_algo_data_mining_kmeans, test_standard)
 /// KNN
 /////////////////////////////////////////////
 
-TEST(test_algo_data_mining_knn, test_k_greater_than_unlabeled_data)
+TEST(test_algo_data_mining, knn_k_greater_than_unlabeled_data)
 {
   Points unlabeled_data{
       {0.0, 1.0}};
@@ -181,7 +181,7 @@ TEST(test_algo_data_mining_knn, test_k_greater_than_unlabeled_data)
   EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, labeled_points.size() + 1).empty());
 }
 
-TEST(test_algo_data_mining_knn, test_k_is_zero)
+TEST(test_algo_data_mining, knn_k_is_zero)
 {
   Points unlabeled_data{
       {0.0, 1.0}};
@@ -193,7 +193,7 @@ TEST(test_algo_data_mining_knn, test_k_is_zero)
   EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 0).empty());
 }
 
-TEST(test_algo_data_mining_knn, test_empty_unlabeled_data)
+TEST(test_algo_data_mining, knn_empty_unlabeled_data)
 {
   Points unlabeled_data{};
 
@@ -204,7 +204,7 @@ TEST(test_algo_data_mining_knn, test_empty_unlabeled_data)
   EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 5).empty());
 }
 
-TEST(test_algo_data_mining_knn, test_empty_labeled_data)
+TEST(test_algo_data_mining, knn_empty_labeled_data)
 {
   Points unlabeled_data{
       {0.0, 1.0}};
@@ -214,7 +214,7 @@ TEST(test_algo_data_mining_knn, test_empty_labeled_data)
   EXPECT_TRUE(KNearestNeighbor(unlabeled_data, labeled_points, 5).empty());
 }
 
-TEST(test_algo_data_mining_knn, test_standard)
+TEST(test_algo_data_mining, knn_standard)
 {
   Points unlabeled_data{
       {0.186546, 0.811486},// C1

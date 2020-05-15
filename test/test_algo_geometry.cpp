@@ -25,14 +25,14 @@ struct x_comp_ {
 /// Quickhull
 /////////////////////////////////////////////
 
-TEST(test_algo_geometry_qhull, test_empty)
+TEST(test_algo_geometry, qhull_test_empty)
 {
   Points points{};
   Points qh{ConvexHull(points)};
   EXPECT_TRUE(qh.empty());
 }
 
-TEST(test_algo_geometry_qhull, test_too_few_points)
+TEST(test_algo_geometry, qhull_test_too_few_points)
 {
   Points points{
       {0.174069, 0.526348},
@@ -42,7 +42,7 @@ TEST(test_algo_geometry_qhull, test_too_few_points)
   EXPECT_TRUE(qh.empty());
 }
 
-TEST(test_algo_geometry_qhull, test_same_in_out)
+TEST(test_algo_geometry, qhull_test_same_in_out)
 {
   Points points{
       {0.174069, 0.526348},
@@ -55,7 +55,7 @@ TEST(test_algo_geometry_qhull, test_same_in_out)
   EXPECT_TRUE(equal(points.begin(), points.end(), qh.begin()));
 }
 
-TEST(test_algo_geometry_qhull, test_simple_1)
+TEST(test_algo_geometry, qhull_simple_1)
 {
   Points points{{0.15348, 0.355506},
                 {0.2904, 0.354303},
@@ -76,7 +76,7 @@ TEST(test_algo_geometry_qhull, test_simple_1)
   EXPECT_TRUE(equal(qh.begin(), qh.end(), correct.begin()));
 }
 
-TEST(test_algo_geometry_qhull, test_simple_2)
+TEST(test_algo_geometry, qhull_simple_2)
 {
   Points points{{0.453056, 0.0932272},
                 {0.110242, 0.454161},
@@ -134,7 +134,7 @@ TEST(test_algo_geometry_qhull, test_simple_2)
 /// Closest pair of points
 /////////////////////////////////////////////
 
-TEST(test_algo_geometry_closest_pair_of_points, test_simple_1)
+TEST(test_algo_geometry, closest_pair_pts_simple_1)
 {
   Points correct{{0.351138, 0.478224},
                  {0.365551, 0.491458}};
@@ -151,7 +151,7 @@ TEST(test_algo_geometry_closest_pair_of_points, test_simple_1)
   EXPECT_TRUE(equal(closest.begin(), closest.end(), correct.begin()));
 }
 
-TEST(test_algo_geometry_closest_pair_of_points, test_simple_2)
+TEST(test_algo_geometry, closest_pair_pts_simple_2)
 {
   Points correct{{0.67851, 0.466192},
                  {0.684687, 0.457771}};
@@ -217,7 +217,7 @@ TEST(test_algo_geometry_closest_pair_of_points, test_simple_2)
 /// Triangulation of points
 /////////////////////////////////////////////
 
-TEST(test_algo_geometry_triangulate, test_timple)
+TEST(test_algo_geometry, triangulate_timple)
 {
   Points points{{0.112301, 0.440927},
                 {0.339814, .723659},

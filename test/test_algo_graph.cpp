@@ -25,7 +25,7 @@ const std::string kFilePath{"../../test/testfiles/prims/"};
 /// Graph functions tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_make_edge_weight)
+TEST(test_algo_graph, graph_make_edge_weight)
 {
   Graph graph{NewGraph(2)};
 
@@ -38,7 +38,7 @@ TEST(test_algo_graph, test_make_edge_weight)
   EXPECT_FALSE(MakeEdge(graph, 1, 2, 1));
 }
 
-TEST(test_algo_graph, test_make_edge_no_weight)
+TEST(test_algo_graph, graph_make_edge_no_weight)
 {
   Graph graph{NewGraph(2)};
 
@@ -51,7 +51,7 @@ TEST(test_algo_graph, test_make_edge_no_weight)
   EXPECT_FALSE(MakeEdge(graph, 1, 2));
 }
 
-TEST(test_algo_graph, test_make_dir_edge_weight)
+TEST(test_algo_graph, graph_make_dir_edge_weight)
 {
   Graph graph{NewGraph(2)};
   EXPECT_TRUE(MakeDirEdge(graph, 0, 1, 1));
@@ -63,7 +63,7 @@ TEST(test_algo_graph, test_make_dir_edge_weight)
   EXPECT_FALSE(MakeDirEdge(graph, 1, 2, 1));
 }
 
-TEST(test_algo_graph, test_make_dir_edge_no_weight)
+TEST(test_algo_graph, graph_make_dir_edge_no_weight)
 {
   Graph graph{NewGraph(2)};
 
@@ -76,11 +76,22 @@ TEST(test_algo_graph, test_make_dir_edge_no_weight)
   EXPECT_FALSE(MakeDirEdge(graph, 1, 2));
 }
 
+TEST(test_algo_graph, graph_get_weight)
+{
+  Graph graph{NewGraph(2)};
+  EXPECT_EQ(GetWeight(graph, -1, 1), 0.0);// source < 0
+  EXPECT_EQ(GetWeight(graph, 2, 1), 0.0); // source >= size
+
+  graph = NewGraph(3);
+  MakeEdge(graph, 0, 1, 1);
+  EXPECT_EQ(GetWeight(graph, 0, 2), 0.0);// Missing edge
+}
+
 /////////////////////////////////////////////
 /// Prim's tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_prims_forbidden)
+TEST(test_algo_graph, prims_forbidden)
 {
   Graph G1{NewGraph(7)};
   double total_weight{0.0};
@@ -92,7 +103,7 @@ TEST(test_algo_graph, test_prims_forbidden)
   EXPECT_TRUE(MinimumSpanningTree(G2, 0, total_weight).empty());
 }
 
-TEST(test_algo_graph, test_prims_simple)
+TEST(test_algo_graph, prims_simple)
 {
   Graph G{NewGraph(7)};
 
@@ -158,7 +169,7 @@ Graph ReadPrimsFile()
   return G;
 }
 
-TEST(test_algo_graph, test_prims_project_euler_107)
+TEST(test_algo_graph, prims_project_euler_107)
 {
   Graph G{ReadPrimsFile()};
   double total_weight{0.0};
@@ -173,7 +184,7 @@ TEST(test_algo_graph, test_prims_project_euler_107)
 /// Dijkstra's tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_dijkstra_simple1)
+TEST(test_algo_graph, dijkstra_simple1)
 {
   Graph graph{NewGraph(7)};
   MakeEdge(graph, 0, 1, 5.0);
@@ -195,7 +206,7 @@ TEST(test_algo_graph, test_dijkstra_simple1)
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct1.begin()));
 }
 
-TEST(test_algo_graph, test_dijkstra_simple2)
+TEST(test_algo_graph, dijkstra_simple2)
 {
   Graph graph{NewGraph(6)};
   MakeEdge(graph, 0, 2, 2.0);
@@ -217,7 +228,7 @@ TEST(test_algo_graph, test_dijkstra_simple2)
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct.begin()));
 }
 
-TEST(test_algo_graph, test_dijkstra_forbidden)
+TEST(test_algo_graph, dijkstra_forbidden)
 {
   Graph graph{NewGraph(1)};
   EXPECT_TRUE(ShortestPathDijkstra(graph, 0, 1).empty());// Size < 2
@@ -233,7 +244,7 @@ TEST(test_algo_graph, test_dijkstra_forbidden)
 /// Nearest neighbor tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_nn_simple1)
+TEST(test_algo_graph, nn_simple1)
 {
   Graph graph{NewGraph(5)};
   MakeEdge(graph, 0, 1, 70.0);
@@ -251,21 +262,21 @@ TEST(test_algo_graph, test_nn_simple1)
   EXPECT_EQ(nodes.size(), graph.size());
 }
 
-TEST(test_algo_graph, test_nn_empty_in)
+TEST(test_algo_graph, nn_empty_in)
 {
   Graph graph{NewGraph(0)};
   Nodes nodes{AllNodesPath(graph, 0)};
   EXPECT_TRUE(nodes.empty());
 }
 
-TEST(test_algo_graph, test_nn_negative_source)
+TEST(test_algo_graph, nn_negative_source)
 {
   Graph graph{NewGraph(2)};
   Nodes nodes{AllNodesPath(graph, -1)};
   EXPECT_TRUE(nodes.empty());
 }
 
-TEST(test_algo_graph, test_nn_source_larger_than_nbr_node)
+TEST(test_algo_graph, nn_source_larger_than_nbr_node)
 {
   Graph graph{NewGraph(2)};
   Nodes nodes{AllNodesPath(graph, 2)};
@@ -276,7 +287,7 @@ TEST(test_algo_graph, test_nn_source_larger_than_nbr_node)
 /// Bellman-Ford tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_bf_negative_cycle)
+TEST(test_algo_graph, bf_negative_cycle)
 {
   Graph graph{NewGraph(5)};
   MakeDirEdge(graph, 0, 1, 3.0);
@@ -288,7 +299,7 @@ TEST(test_algo_graph, test_bf_negative_cycle)
   EXPECT_TRUE(ShortestPathBF(graph, 0).second.empty());
 }
 
-TEST(test_algo_graph, test_bf_simple1)
+TEST(test_algo_graph, bf_simple1)
 {
   Graph graph{NewGraph(5)};
   MakeDirEdge(graph, 0, 1, 4.0);
@@ -306,7 +317,7 @@ TEST(test_algo_graph, test_bf_simple1)
   EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
 }
 
-TEST(test_algo_graph, test_bf_simple2)
+TEST(test_algo_graph, bf_simple2)
 {
   Graph graph{NewGraph(6)};
   MakeDirEdge(graph, 0, 1, 10.0);
@@ -323,7 +334,7 @@ TEST(test_algo_graph, test_bf_simple2)
   EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
 }
 
-TEST(test_algo_graph, test_bf_forbidden_cases)
+TEST(test_algo_graph, bf_forbidden_cases)
 {
   Graph graph{NewGraph(2)};
   EXPECT_TRUE(ShortestPathBF(graph, 0).first.empty());
@@ -333,7 +344,7 @@ TEST(test_algo_graph, test_bf_forbidden_cases)
   EXPECT_TRUE(ShortestPathBF(graph, 3).first.empty());
 }
 
-TEST(test_algo_graph, test_bf_single_path)
+TEST(test_algo_graph, bf_single_path)
 {
   Graph graph{NewGraph(6)};
   MakeDirEdge(graph, 0, 1, 10.0);
@@ -351,7 +362,7 @@ TEST(test_algo_graph, test_bf_single_path)
   EXPECT_EQ(pathAndWeight.second, 5.0);
 }
 
-TEST(test_algo_graph, test_bf_single_path_forbidden_input)
+TEST(test_algo_graph, bf_single_path_forbidden_input)
 {
   Graph punyGraph{NewGraph(2)};
   EXPECT_TRUE(ShortestPathBF(punyGraph, 0, 1).first.empty());
@@ -367,7 +378,7 @@ TEST(test_algo_graph, test_bf_single_path_forbidden_input)
 /// Breadth-First-Search tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_bfs_forbidden_input)
+TEST(test_algo_graph, bfs_forbidden_input)
 {
   Graph empty_graph{NewGraph(0)};
   Nodes nodes1{BFS(empty_graph, 0)};
@@ -378,7 +389,7 @@ TEST(test_algo_graph, test_bfs_forbidden_input)
   EXPECT_TRUE(BFS(graph, 1).empty()); // Source >= size
 }
 
-TEST(test_algo_graph, test_shortest_paht_bfs1)
+TEST(test_algo_graph, shortest_paht_bfs1)
 {
   Graph graph{NewGraph(6)};
   MakeEdge(graph, 0, 1);
@@ -395,7 +406,7 @@ TEST(test_algo_graph, test_shortest_paht_bfs1)
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
-TEST(test_algo_graph, test_shortest_path_bfs2)
+TEST(test_algo_graph, shortest_path_bfs2)
 {
   Graph graph{NewGraph(7)};
   MakeEdge(graph, 0, 1);
@@ -411,7 +422,7 @@ TEST(test_algo_graph, test_shortest_path_bfs2)
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
-TEST(test_algo_graph, test_shortest_path_bfs_directed)
+TEST(test_algo_graph, shortest_path_bfs_directed)
 {
   Graph graph{NewGraph(5)};
   MakeDirEdge(graph, 0, 1);
@@ -426,7 +437,7 @@ TEST(test_algo_graph, test_shortest_path_bfs_directed)
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
-TEST(test_algo_graph, test_shortest_path_bfs_forbidden)
+TEST(test_algo_graph, shortest_path_bfs_forbidden)
 {
   Graph graph{NewGraph(1)};
   EXPECT_TRUE(ShortestPathBFS(graph, 0, 1).nodes.empty());// Size < 2
@@ -438,7 +449,7 @@ TEST(test_algo_graph, test_shortest_path_bfs_forbidden)
   EXPECT_TRUE(ShortestPathBFS(graph1, 1, 1).nodes.empty()); // Source == dest
 }
 
-TEST(test_algo_graph, test_bfs_is_bipartite1)
+TEST(test_algo_graph, bfs_is_bipartite1)
 {
   Graph graph{NewGraph(6)};
   MakeEdge(graph, 0, 1);
@@ -451,7 +462,7 @@ TEST(test_algo_graph, test_bfs_is_bipartite1)
   EXPECT_TRUE(IsBipartite(graph));
 }
 
-TEST(test_algo_graph, test_bfs_is_bipartite2)
+TEST(test_algo_graph, bfs_is_bipartite2)
 {
   Graph graph{NewGraph(8)};
   Nodes as{0, 2, 4, 6, 7};
@@ -466,7 +477,7 @@ TEST(test_algo_graph, test_bfs_is_bipartite2)
   EXPECT_TRUE(IsBipartite(graph));
 }
 
-TEST(test_algo_graph, test_bfs_is_not_bipartite)
+TEST(test_algo_graph, bfs_is_not_bipartite)
 {
   Graph graph{NewGraph(5)};
   MakeEdge(graph, 0, 1);
@@ -478,7 +489,7 @@ TEST(test_algo_graph, test_bfs_is_not_bipartite)
   EXPECT_FALSE(IsBipartite(graph));
 }
 
-TEST(test_algo_graph, test_bfs_is_bipartite_forbidden_input)
+TEST(test_algo_graph, bfs_is_bipartite_forbidden_input)
 {
   EXPECT_FALSE(IsBipartite(NewGraph(1)));
 }
@@ -487,7 +498,7 @@ TEST(test_algo_graph, test_bfs_is_bipartite_forbidden_input)
 /// Edmonds-Karp, max flow tests
 /////////////////////////////////////////////
 
-TEST(test_algo_graph, test_ff_max_flow1)
+TEST(test_algo_graph, max_flow1)
 {
   Graph graph{NewGraph(6)};
   MakeDirEdge(graph, 0, 1, 160.0);
@@ -505,7 +516,7 @@ TEST(test_algo_graph, test_ff_max_flow1)
   EXPECT_EQ(max_flow, 230.0);
 }
 
-TEST(test_algo_graph, test_ff_max_flow2)
+TEST(test_algo_graph, max_flow2)
 {
   Graph graph{NewGraph(6)};
   MakeDirEdge(graph, 0, 1, 10.0);
@@ -522,7 +533,7 @@ TEST(test_algo_graph, test_ff_max_flow2)
   EXPECT_EQ(max_flow, 19.0);
 }
 
-TEST(test_algo_graph, test_ff_max_forbidden)
+TEST(test_algo_graph, max_flow_forbidden)
 {
   Graph no_path_graph{NewGraph(4)};
   MakeDirEdge(no_path_graph, 0, 1, 10.0);

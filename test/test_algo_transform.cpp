@@ -17,7 +17,7 @@ using namespace algo::transform;
 /// FFT tests
 /////////////////////////////////////////////
 
-TEST(test_algo_transform_fft, test_fft_ifft_trivial_1)
+TEST(test_algo_transform, fft_ifft_trivial_1)
 {
   FftTransf data{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0};
   FftTransf transf{FFT(data)};
@@ -35,7 +35,7 @@ TEST(test_algo_transform_fft, test_fft_ifft_trivial_1)
   }
 }
 
-TEST(test_algo_transform_fft, test_fft_ifft_trivial_2)
+TEST(test_algo_transform, fft_ifft_trivial_2)
 {
   FftTransf data{1.0, 4.0, 3.0, 2.0};
   data = FFT(data);
@@ -60,28 +60,28 @@ TEST(test_algo_transform_fft, test_fft_ifft_trivial_2)
   EXPECT_DOUBLE_EQ(round(data[3].imag()), 0.0);
 }
 
-TEST(test_algo_transform_fft, test_fft_not_pow_of_two)
+TEST(test_algo_transform, fft_not_pow_of_two)
 {
   FftTransf data{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
   FftTransf transf{FFT(data)};
   EXPECT_EQ(transf.size(), 0);
 }
 
-TEST(test_algo_transform_fft, test_ifft_not_pow_of_two)
+TEST(test_algo_transform, ifft_not_pow_of_two)
 {
   FftTransf data{1.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
   FftTransf transf{IFFT(data)};
   EXPECT_EQ(transf.size(), 0);
 }
 
-TEST(test_algo_transform_fft, test_fft_empty)
+TEST(test_algo_transform, fft_empty)
 {
   FftTransf data{};
   FftTransf transf{FFT(data)};
   EXPECT_EQ(transf.size(), 0);
 }
 
-TEST(test_algo_transform_fft, test_ifft_empty)
+TEST(test_algo_transform, ifft_empty)
 {
   FftTransf data{};
   FftTransf transf{IFFT(data)};

@@ -23,7 +23,7 @@ const std::string kFilePath{"../../test/testfiles/pagerank/"};
 /// PageRank tests
 /////////////////////////////////////////////
 
-TEST(test_algo_network_pagerank, test_4x4)
+TEST(test_algo_network, pagerank_4x4)
 {
   // This is the transition matrix with probabilities.
   Mat M{{0.0, 0.3333, 0.3333, 0.3333},
@@ -36,7 +36,7 @@ TEST(test_algo_network_pagerank, test_4x4)
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
 
-TEST(test_algo_network_pagerank, test_5x5_1)
+TEST(test_algo_network, pagerank_5x5_1)
 {
   // This is the transition matrix with probabilities.
   Mat M{{0.0, 0.5, 0.5, 0.0, 0.0},
@@ -50,7 +50,7 @@ TEST(test_algo_network_pagerank, test_5x5_1)
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
 
-TEST(test_algo_network_pagerank, test_5x5_deg)
+TEST(test_algo_network, pagerank_5x5_deg)
 {
   // This is a matrix with link counts.
   Mat M{{0, 1, 0, 0, 0},
@@ -66,7 +66,7 @@ TEST(test_algo_network_pagerank, test_5x5_deg)
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
 
-TEST(test_algo_network_pagerank, test_8x8)
+TEST(test_algo_network, pagerank_8x8)
 {
   // This is the transition matrix with probabilities.
   Mat M{{0.0, 0.5, 0.5, 0.0, 0.0, 0.0, 0.0, 0.0},
@@ -83,7 +83,7 @@ TEST(test_algo_network_pagerank, test_8x8)
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
 
-TEST(test_algo_network_pagerank, test_50)
+TEST(test_algo_network, pagerank_50)
 {
   // Testfile downloaded from http://introcs.cs.princeton.edu/java/16pagerank/
   // This test use link counts.

@@ -76,6 +76,10 @@ void SetWeight(Graph &graph, const int &s, const int &t, double weight)
 
 double GetWeight(Graph &graph, const int &s, const int &t)
 {
+  if (s < 0 || s >= graph.size()) {
+    return 0.0;
+  }
+
   for (const auto &conn : graph[s]) {
     if (conn.node == t) {
       return conn.weight;
