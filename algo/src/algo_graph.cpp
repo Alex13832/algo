@@ -25,63 +25,63 @@ Graph NewGraph(size_t size)
   return Graph(size);
 }
 
-bool MakeEdge(Graph &graph, const int &s, const int &t, const double &w)
+bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
 {
-  if (s >= graph.size() || t >= graph.size() || s == t) {
+  if (u >= graph.size() || v >= graph.size() || u == v) {
     return false;
   }
 
-  graph[s].emplace_back(Connection{t, w});
-  graph[t].emplace_back(Connection{s, w});
+  graph[u].emplace_back(Connection{v, w});
+  graph[v].emplace_back(Connection{u, w});
   return true;
 }
 
-bool MakeEdge(Graph &graph, const int &s, const int &t)
+bool MakeEdge(Graph &graph, const int &u, const int &v)
 {
-  if (s >= graph.size() || t >= graph.size()) {
+  if (u >= graph.size() || v >= graph.size()) {
     return false;
   }
-  graph[s].emplace_back(Connection{t, 0.0});
-  graph[t].emplace_back(Connection{s, 0.0});
+  graph[u].emplace_back(Connection{v, 0.0});
+  graph[v].emplace_back(Connection{u, 0.0});
   return true;
 }
 
-bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w)
+bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w)
 {
-  if (s >= graph.size() || t >= graph.size()) {
+  if (u >= graph.size() || v >= graph.size()) {
     return false;
   }
-  graph[s].push_back(Connection{t, w});
+  graph[u].push_back(Connection{v, w});
   return true;
 }
 
-bool MakeDirEdge(Graph &graph, const int &s, const int &t)
+bool MakeDirEdge(Graph &graph, const int &u, const int &v)
 {
-  if (s >= graph.size() || t >= graph.size()) {
+  if (u >= graph.size() || v >= graph.size()) {
     return false;
   }
-  graph[s].push_back(Connection{t, 0.0});
+  graph[u].push_back(Connection{v, 0.0});
   return true;
 }
 
-void SetWeight(Graph &graph, const int &s, const int &t, double weight)
+void SetWeight(Graph &graph, const int &u, const int &v, double weight)
 {
-  for (auto &conn : graph[s]) {
-    if (conn.node == t) {
+  for (auto &conn : graph[u]) {
+    if (conn.node == v) {
       conn.weight = weight;
       return;
     }
   }
 }
 
-double GetWeight(Graph &graph, const int &s, const int &t)
+double GetWeight(Graph &graph, const int &u, const int &v)
 {
-  if (s < 0 || s >= graph.size()) {
+  if (u < 0 || u >= graph.size()) {
     return 0.0;
   }
 
-  for (const auto &conn : graph[s]) {
-    if (conn.node == t) {
+  for (const auto &conn : graph[u]) {
+    if (conn.node == v) {
       return conn.weight;
     }
   }

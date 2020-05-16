@@ -61,49 +61,49 @@ using WeightMat = std::vector<Weights>;
 /// \return A new graph.
 Graph NewGraph(size_t size);
 
-/// \brief Adds a new edge from s to t with weight w.
+/// \brief Adds a new edge from u to v with weight w.
 /// \param graph The graph to change.
-/// \param s Source.
-/// \param t Destination.
+/// \param u Source.
+/// \param v Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &s, const int &t, const double &w);
+bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w);
 
-/// \brief Adds a new edge from s to t.
+/// \brief Adds a new edge from u to v.
 /// \param graph The graph to change.
-/// \param s Source.
-/// \param t Destination.
+/// \param u Source.
+/// \param v Destination.
 /// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &s, const int &t);
+bool MakeEdge(Graph &graph, const int &u, const int &v);
 
-/// \brief Adds a new directed edge from s to t with weight w.
+/// \brief Adds a new directed edge from u to v with weight w.
 /// \param graph The graph to change.
-/// \param s Source.
-/// \param t Destination.
+/// \param u Source.
+/// \param v Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &s, const int &t, const double &w);
+bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w);
 
-/// \brief Adds a new directed edge from s to t.
+/// \brief Adds a new directed edge from u to v.
 /// \param graph The graph to change.
-/// \param s Source.
-/// \param t Destination.
+/// \param u Source.
+/// \param v Destination.
 /// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &s, const int &t);
+bool MakeDirEdge(Graph &graph, const int &u, const int &v);
 
-/// \brief Updates the weight for the edge(s, t) = weight.
+/// \brief Updates the weight for the edge(u, v) = weight.
 /// \param graph The input graph.
-/// \param s Source node.
-/// \param t Destination node.
+/// \param u Source node.
+/// \param v Destination node.
 /// \param weight New weight.
-void SetWeight(Graph &graph, const int &s, const int &t, double weight);
+void SetWeight(Graph &graph, const int &u, const int &v, double weight);
 
-/// \brief Gets the weight at edge(s, t).
+/// \brief Gets the weight at edge(u, v).
 /// \param graph The input graph.
-/// \param s Source node.
-/// \param t Destination node.
-/// \return The weight at edge(s, t).
-double GetWeight(Graph &graph, const int &s, const int &t);
+/// \param u Source node.
+/// \param v Destination node.
+/// \return The weight at edge(u, v).
+double GetWeight(Graph &graph, const int &u, const int &v);
 
 /// \brief Returns the edges as a vector of the input graph.
 /// \param graph The input graph.
@@ -192,11 +192,11 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 /// \link <a href="https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm">Floyd-Warshall, Wikipedia.</a>
 NodeMat ShortestDistAllPairs(const Graph &graph);
 
-/// \brief Returns the shortest path from u to v in graph.
+/// \brief Returns the shortest path from source to dest in graph.
 /// \param graph The input graph.
 /// \param source Source node.
 /// \param dest Destination node.
-/// \return Shortest path from u to v.
+/// \return Shortest path from source to dest.
 Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
 
 // //////////////////////////////////////////
