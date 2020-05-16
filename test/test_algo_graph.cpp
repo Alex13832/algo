@@ -95,12 +95,12 @@ TEST(test_algo_graph, prims_forbidden)
 {
   Graph G1{NewGraph(7)};
   double total_weight{0.0};
-  EXPECT_TRUE(MinimumSpanningTree(G1, 7, total_weight).empty());
+  EXPECT_TRUE(MinSpanningTree(G1, 7, total_weight).empty());
 
-  EXPECT_TRUE(MinimumSpanningTree(G1, -1, total_weight).empty());
+  EXPECT_TRUE(MinSpanningTree(G1, -1, total_weight).empty());
 
   Graph G2{NewGraph(0)};
-  EXPECT_TRUE(MinimumSpanningTree(G2, 0, total_weight).empty());
+  EXPECT_TRUE(MinSpanningTree(G2, 0, total_weight).empty());
 }
 
 TEST(test_algo_graph, prims_simple)
@@ -121,7 +121,7 @@ TEST(test_algo_graph, prims_simple)
   MakeEdge(G, 5, 6, 27);
 
   double total_weight{0.0};
-  Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
+  Graph gmst{MinSpanningTree(G, 0, total_weight)};
 
   EXPECT_EQ(total_weight, 93);
 }
@@ -173,7 +173,7 @@ TEST(test_algo_graph, prims_project_euler_107)
 {
   Graph G{ReadPrimsFile()};
   double total_weight{0.0};
-  Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
+  Graph gmst{MinSpanningTree(G, 0, total_weight)};
 
   double ans = 261832.0 - total_weight;
 
@@ -596,4 +596,78 @@ TEST(test_algo_graph, shortest_dist_all_pairs_forbidden_input)
   EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 4, 1).empty()); // source > size
   EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 0, 4).empty()); // dest > size
   EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 2, 2).empty()); // source == dest
+}
+
+/////////////////////////////////////////////
+/// Kosaraju, strongly connected components
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, scc_simple1)
+{
+  Graph graph{NewGraph(5)};
+  MakeDirEdge(graph, 1, 0);
+  MakeDirEdge(graph, 2, 1);
+  MakeDirEdge(graph, 0, 2);
+  MakeDirEdge(graph, 0, 3);
+  MakeDirEdge(graph, 3, 4);
+
+  NodeMat corr{
+      {0, 1, 2},
+      {3},
+      {4}};
+  NodeMat scc{StrConnComponents(graph)};
+
+  for (size_t i = 0; i < corr.size(); ++i) {
+    EXPECT_TRUE(equal(corr[i].begin(), corr[i].end(), scc[i].begin()));
+  }
+  EXPECT_EQ(scc.size(), 3);
+}
+
+TEST(test_algo_graph, scc_simple2)
+{
+  Graph graph{NewGraph(8)};
+  MakeDirEdge(graph, 0, 1);
+  MakeDirEdge(graph, 1, 4);
+  MakeDirEdge(graph, 4, 0);
+  MakeDirEdge(graph, 1, 5);
+  MakeDirEdge(graph, 4, 5);
+  MakeDirEdge(graph, 1, 2);
+  MakeDirEdge(graph, 5, 6);
+  MakeDirEdge(graph, 6, 5);
+  MakeDirEdge(graph, 2, 6);
+  MakeDirEdge(graph, 2, 3);
+  MakeDirEdge(graph, 3, 2);
+  MakeDirEdge(graph, 7, 6);
+  MakeDirEdge(graph, 3, 7);
+  MakeDirEdge(graph, 7, 3);
+
+  NodeMat corr{
+      {0, 4, 1},
+      {2, 3, 7},
+      {5, 6}};
+  NodeMat scc{StrConnComponents(graph)};
+
+  for (size_t i = 0; i < corr.size(); ++i) {
+    EXPECT_TRUE(equal(corr[i].begin(), corr[i].end(), scc[i].begin()));
+  }
+  EXPECT_EQ(scc.size(), 3);
+}
+
+TEST(test_algo_graph, scc_minimal)
+{
+  Graph graph{NewGraph(2)};
+  MakeEdge(graph, 0, 1);
+
+  NodeMat corr{{0, 1}};
+  NodeMat scc{StrConnComponents(graph)};
+
+  for (size_t i = 0; i < corr.size(); ++i) {
+    EXPECT_TRUE(equal(corr[i].begin(), corr[i].end(), scc[i].begin()));
+  }
+  EXPECT_EQ(scc.size(), 1);
+}
+
+TEST(test_algo_graph, scc_forbidden_input)
+{
+  EXPECT_TRUE(StrConnComponents(NewGraph(1)).empty());
 }

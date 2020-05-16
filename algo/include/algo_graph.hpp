@@ -6,6 +6,7 @@
 ///
 /// Change list:
 /// 2015-07-06 Edmonds-Karp max-flow.
+/// 2015-08-01 Kosaraju strongly connected components.
 /// 2016-03-14 Breadth-First-Sears (BFS).
 /// 2016-03-14 Dijkstra shortest path.
 /// 2016-09-24 Nearest neighbor travelling salesman approximation.
@@ -209,7 +210,7 @@ Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int 
 /// \param source The source.
 /// \return The nodes that constructs the MST.
 /// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
-Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight);
+Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight);
 
 // //////////////////////////////////////////
 //  Ford-Fulkerson, maximum flow
@@ -223,6 +224,18 @@ Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_w
 /// \return Maximum flow.
 /// \link <a href="https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm">Ford-Fulkerson, Wikipedia.</a>
 double MaxFlow(Graph graph, const int &source, const int &dest);
+
+// //////////////////////////////////////////
+//  Kosaraju, strongly connected components
+// //////////////////////////////////////////
+
+/// \brief Returns a list of the strongly connected components in graph.
+/// \details This function follows the Kosaraju algorithm.
+/// \param graph The input grahp.
+/// \return A list of connected components, each item is a list of nodes.
+/// \link <a href="https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm">Kosaraju's algorithm, Wikipedia.</a>
+/// \link <a href="https://en.wikipedia.org/wiki/Strongly_connected_component">Strongly connected component, Wikipedia.<a/>
+NodeMat StrConnComponents(const Graph &graph);
 
 }// namespace algo::graph
 

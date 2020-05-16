@@ -450,7 +450,7 @@ Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int 
 //  Prim's, minimum spanning tree.
 // //////////////////////////////////////////
 
-Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
+Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight)
 {
   // Forbidden input.
   if (source >= graph.size() || source < 0 || graph.empty()) {
@@ -561,6 +561,84 @@ double MaxFlow(Graph graph, const int &source, const int &dest)
     }
   }
   return max_flow;
+}
+
+// //////////////////////////////////////////
+//  Kosaraju, strongly connected components
+// //////////////////////////////////////////
+
+// DFS
+void Explore(const Graph &graph, int n, Visited &explored, Nodes &res)
+{
+  explored[n] = true;
+
+  for (auto connection : graph[n]) {
+    if (!explored[connection.node]) {
+      Explore(graph, connection.node, explored, res);
+    }
+  }
+  res.push_back(n);
+}
+
+Graph Reverse(const Graph &graph)
+{
+  Graph graph1(graph.size());
+  size_t N = graph.size();
+
+  for (size_t i = 0; i < N; i++) {
+    for (const auto &connection : graph[i]) {
+      MakeDirEdge(graph1, connection.node, i);
+    }
+  }
+  return graph1;
+}
+
+NodeMat StrConnComponents(const Graph &graph)
+{
+  // Forbidden input
+  if (graph.size() < 2) {
+    return NodeMat{};
+  }
+
+  NodeMat result;
+  Visited explored(graph.size(), false);
+  Nodes nodes;
+
+  // Add all nodes with DFS-order
+  for (size_t i = 0; i < graph.size(); i++) {
+    if (!explored[i]) {
+      Explore(graph, i, explored, nodes);
+    }
+  }
+
+  // Reverse all edges
+  Graph graph2{Reverse(graph)};
+  Visited explored2(graph.size(), false);
+
+  while (!nodes.empty()) {
+    int explore_node{nodes.back()};
+    nodes.pop_back();
+    Nodes visited;
+
+    // Is to put one SCC part of G in visited
+    Explore(graph2, explore_node, explored2, visited);
+    // Add SCC-part in result
+    result.push_back(visited);
+
+    for (const auto &node : visited) {
+      if (std::find(nodes.begin(), nodes.end(), node) != nodes.end()) {
+        nodes.erase(remove(nodes.begin(), nodes.end(), node), nodes.end());
+      }
+      explored[node] = true;
+    }
+  }
+
+  // Revers to right order
+  for (auto &res : result) {
+    std::reverse(res.begin(), res.end());
+  }
+
+  return result;
 }
 
 }// namespace algo::graph

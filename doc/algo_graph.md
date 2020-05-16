@@ -1,6 +1,8 @@
 Graph algorithms
 ========
 
+#### Cheat sheet
+
 | Function  | Algorithm  |  Weighted | Directed  |
 |---|---|---|---|
 | `BFS`| Breadth-First-Search | No| Any |
@@ -10,8 +12,9 @@ Graph algorithms
 | `ShortestPathDijkstra`  | Dijkstra  | Yes `+`  | Any  |
 | `ShortestPathBF` | Bellman-Ford | Yes `+ -` | Yes |
 | `ShortestPathAllPairs` | Floyd-Warshall | Yes `+ -` | Yes|
-| `MinimumSpanningTree` | Prims  | Yes `+`  | No  |
+| `MinSpanningTree` | Prims  | Yes `+`  | No  |
 | `MaxFlow` | Edmonds-Karp | Yes `+ -` | Yes |
+|`StrConnComponents`| Kosaraju | No | Yes |
  
 ## Breadth-First-Search (BFS)
 >Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
@@ -241,7 +244,7 @@ Nodes path{ShortestDistAllPairsPath(graph, 0, 3)};
 > [Wikipedia](https://en.wikipedia.org/wiki/Minimum_spanning_tree).
 
 ```cpp
-Graph MinimumSpanningTree(const Graph &graph, const int &source, int &total_weight);
+Graph MinSpanningTree(const Graph &graph, const int &source, int &total_weight);
 ```
 Computes the minimum spanning tree of `graph` from the starting node `source`. The minimum total weight is saved in `total_weight`.
 
@@ -260,7 +263,7 @@ MakeEdge(G, 4, 6, 11.0);
 MakeEdge(G, 5, 6, 27.0);
 
 int total_weight{0};
-Graph gmst{MinimumSpanningTree(G, 0, total_weight)};
+Graph gmst{MinSpanningTree(G, 0, total_weight)};
 ```
 
 ### Examples
@@ -299,4 +302,34 @@ MakeDirEdge(graph, 3, 5, 200.0);
 MakeDirEdge(graph, 4, 5, 40.0);
 
 double max_flow(MaxFlow(graph, 0, 5));
+```
+
+## Kosaraju's algorithm for strongly connected components
+
+>In the mathematical theory of directed graphs, a graph is said to be strongly connected if every vertex is reachable 
+>from every other vertex. The strongly connected components of an arbitrary directed graph form a partition into 
+>subgraphs that are themselves strongly connected. [Wikipedia](https://en.wikipedia.org/wiki/Strongly_connected_component)
+
+```cpp
+NodeMat StrConnComponents(const Graph &graph)
+```
+
+Computes the strongly connected components (SCC) of the input `graph`. `NodeMat` is a list of `Nodes`.
+Each item in the output forms a sub-graph of `graph`, where each sub-graph is one SCC.
+
+### Usage
+
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(5)};
+MakeDirEdge(graph, 1, 0);
+MakeDirEdge(graph, 2, 1);
+MakeDirEdge(graph, 0, 2);
+MakeDirEdge(graph, 0, 3);
+MakeDirEdge(graph, 3, 4);
+
+NodeMat scc{StrConnComponents(graph)};
 ```

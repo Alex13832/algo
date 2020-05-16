@@ -118,7 +118,7 @@ int main(int argc, char* argv[])
   Graph graph_in = graph_lines.first;
 
   double minimum_weight{0.0};
-  Graph mstg{MinimumSpanningTree(graph_in, 0, minimum_weight)};
+  Graph mstg{MinSpanningTree(graph_in, 0, minimum_weight)};
 
   WriteToFile(mstg, graph_lines.second, "testfiles/mst_network_out.csv");
   return 0;
