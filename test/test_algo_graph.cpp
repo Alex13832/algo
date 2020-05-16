@@ -548,3 +548,52 @@ TEST(test_algo_graph, max_flow_forbidden)
   EXPECT_EQ(MaxFlow(NewGraph(2), 2, 1), 0.0); // source >= size
   EXPECT_EQ(MaxFlow(NewGraph(2), 1, 2), 0.0); // dest >= size
 }
+
+/////////////////////////////////////////////
+/// Floyd-Warshall, all-pairs shortest path
+/////////////////////////////////////////////
+
+TEST(test_algo_graph, shortest_dist_all_pairs1)
+{
+  Graph graph{NewGraph(4)};
+  MakeDirEdge(graph, 0, 1, 2);
+  MakeDirEdge(graph, 0, 2, 1);
+  MakeDirEdge(graph, 1, 0, 3);
+  MakeDirEdge(graph, 1, 3, 1);
+  MakeDirEdge(graph, 1, 2, 5);
+  MakeDirEdge(graph, 2, 0, 2);
+  MakeDirEdge(graph, 2, 3, 3);
+  MakeDirEdge(graph, 3, 0, 4);
+
+  Nodes corr{0, 1, 3};
+  Nodes path{ShortestDistAllPairsPath(graph, 0, 3)};
+  EXPECT_TRUE(equal(path.begin(), path.end(), corr.begin()));
+}
+
+TEST(test_algo_graph, shortest_dist_all_pair2)
+{
+  Graph graph{NewGraph(5)};
+  MakeDirEdge(graph, 0, 1, 5);
+  MakeDirEdge(graph, 0, 3, 2);
+  MakeDirEdge(graph, 1, 2, 2);
+  MakeDirEdge(graph, 2, 0, 3);
+  MakeDirEdge(graph, 2, 4, 7);
+  MakeDirEdge(graph, 3, 2, 4);
+  MakeDirEdge(graph, 3, 4, 1);
+  MakeDirEdge(graph, 4, 0, 1);
+  MakeDirEdge(graph, 4, 1, 3);
+
+  Nodes corr{0, 3, 4};
+  Nodes path{ShortestDistAllPairsPath(graph, 0, 4)};
+  EXPECT_TRUE(equal(path.begin(), path.end(), corr.begin()));
+}
+
+TEST(test_algo_graph, shortest_dist_all_pairs_forbidden_input)
+{
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(2), 0, 1).empty()); // size < 3
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), -1, 1).empty());// source < 0
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 0, -1).empty());// dest < 0
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 4, 1).empty()); // source > size
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 0, 4).empty()); // dest > size
+  EXPECT_TRUE(ShortestDistAllPairsPath(NewGraph(3), 2, 2).empty()); // source == dest
+}

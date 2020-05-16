@@ -5,9 +5,14 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
+/// 2015-07-06 Edmonds-Karp max-flow.
+/// 2016-03-14 Breadth-First-Sears (BFS).
 /// 2016-03-14 Dijkstra shortest path.
-/// 2016-09-24 Nearest neighbor for travelling salesman approximation.
-/// 2016-09-25 Prim's algorithm for minimum spanning trees.
+/// 2016-09-24 Nearest neighbor travelling salesman approximation.
+/// 2016-09-25 Prim's minimum spanning trees.
+/// 2016-09-25 Floyd-Warshall Shortest path.
+/// 2016-10-02 Bellman-Ford shortest path.
+/// 2020-05-12 BFS shortest path.
 /// 2020-05-13 IsBipartite
 ///
 
@@ -19,26 +24,32 @@
 namespace algo::graph {
 
 // https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p3-express-intent
-struct Connection {
-  int node;
-  double weight;
-};
+
+using Nodes = std::vector<int>;
+using Weights = std::vector<double>;
+using Visited = std::vector<bool>;
 
 struct Edge {
   int u, v;
   double w;
 };
 
-using Graph = std::vector<std::vector<Connection>>;
-using Nodes = std::vector<int>;
-using Weights = std::vector<double>;
-using Visited = std::vector<bool>;
 using Edges = std::vector<Edge>;
+
+struct Connection {
+  int node;
+  double weight;
+};
 
 struct Path {
   Nodes nodes;
   bool is_path;
 };
+
+// Multi-dimensional
+using Graph = std::vector<std::vector<Connection>>;
+using NodeMat = std::vector<Nodes>;
+using WeightMat = std::vector<Weights>;
 
 // //////////////////////////////////////////
 //  Graph functions
@@ -137,18 +148,6 @@ bool IsBipartite(const Graph &graph);
 Nodes AllNodesPath(const Graph &graph, const int &source);
 
 // //////////////////////////////////////////
-//  Prim's, minimum spanning tree
-// //////////////////////////////////////////
-
-/// \brief Returns the minimum spanning tree (MST) in the input graph from the node source.
-/// \details This implementation is based on Prim's algorithm.
-/// \param graph The graph.
-/// \param source The source.
-/// \return The nodes that constructs the MST.
-/// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
-Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight);
-
-// //////////////////////////////////////////
 //  Dijkstra's, shortest path
 // //////////////////////////////////////////
 
@@ -181,6 +180,36 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 /// \param dest Destination node.
 /// \return The nodes constructing the path from source to dest.
 std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
+
+// //////////////////////////////////////////
+//  Foyd-Warshall, all-pair shortest dist
+// //////////////////////////////////////////
+
+/// \brief Finds the shortest path between all the nodes in the input graph.
+/// \details Implementation follows the Floyd-Warshall algorithm.
+/// \param graph The input graph.
+/// \return A matrix, where each entry (for each node) is the path to all other ndoes.
+/// \link <a href="https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm">Floyd-Warshall, Wikipedia.</a>
+NodeMat ShortestDistAllPairs(const Graph &graph);
+
+/// \brief Returns the shortest path from u to v in graph.
+/// \param graph The input graph.
+/// \param source Source node.
+/// \param dest Destination node.
+/// \return Shortest path from u to v.
+Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
+
+// //////////////////////////////////////////
+//  Prim's, minimum spanning tree
+// //////////////////////////////////////////
+
+/// \brief Returns the minimum spanning tree (MST) in the input graph from the node source.
+/// \details This implementation is based on Prim's algorithm.
+/// \param graph The graph.
+/// \param source The source.
+/// \return The nodes that constructs the MST.
+/// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
+Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight);
 
 // //////////////////////////////////////////
 //  Ford-Fulkerson, maximum flow

@@ -3,19 +3,16 @@ Graph algorithms
 
 | Function  | Algorithm  |  Weighted | Directed  |
 |---|---|---|---|
-|`BFS`| Breadth-First-Search | No| Any |
-|`ShortestPathBFS`| Breadth-First-Search | No| Any |
-|`IsBipartite`| Breadth-First-Search| No | No |
-| `AllNodesPath`  | Nearest neighbor  | Yes, all positive  | No  |
-| `ShortestPathDijkstra`  | Dijkstra  | Yes, all positive  | Yes*  |
-|  `MinimumSpanningTree` | Prims  | Yes, all positive  | No  |
-| `ShortestPathBF` | Bellman-Ford | Yes, positive and negative | Yes |
-| `MaxFlow` | Edmonds-Karp | Yes | Yes |
+| `BFS`| Breadth-First-Search | No| Any |
+| `ShortestPathBFS`| Breadth-First-Search | No| Any |
+| `IsBipartite`| Breadth-First-Search| No | No |
+| `AllNodesPath`  | Nearest neighbor  | Yes `+`  | No  |
+| `ShortestPathDijkstra`  | Dijkstra  | Yes `+`  | Any  |
+| `ShortestPathBF` | Bellman-Ford | Yes `+ -` | Yes |
+| `ShortestPathAllPairs` | Floyd-Warshall | Yes `+ -` | Yes|
+| `MinimumSpanningTree` | Prims  | Yes `+`  | No  |
+| `MaxFlow` | Edmonds-Karp | Yes `+ -` | Yes |
  
-_* Works for directed and undirected._
-
-
-
 ## Breadth-First-Search (BFS)
 >Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
 >It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), 
@@ -191,6 +188,49 @@ MakeDirEdge(graph, 4, 1, -4.0);
 MakeDirEdge(graph, 5, 4, 1.0);
 
 pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
+```
+
+## Floyd-Warshall all node-pairs shortest path
+>[Floyd-Warshall]...is an algorithm for finding shortest paths in a weighted graph with positive or negative edge weights (but with no 
+>negative cycles) ... A single execution of the algorithm will find the lengths (summed weights) of shortest paths between 
+>all pairs of vertices. [Wikipedia](https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm)
+
+
+### All pair-paths
+```cpp
+NodeMat ShortestDistAllPairs(const Graph &graph);
+```
+Returns all the shortest path from any node in the returned `NodeMat` to any other node in `graph.`
+
+#### Usage
+
+```cpp
+TODO
+```
+
+### Shortest single path
+
+
+```cpp
+Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
+```
+Returns a single paht from `source` to `dest` in the input `graph.`.
+
+#### Usage
+
+```cpp
+using namespace algo::graph;
+
+...
+
+Graph graph{NewGraph(4)};
+MakeDirEdge(graph, 0, 1, 2);
+MakeDirEdge(graph, 0, 2, 1);
+...
+MakeDirEdge(graph, 2, 3, 3);
+MakeDirEdge(graph, 3, 0, 4);
+
+Nodes path{ShortestDistAllPairsPath(graph, 0, 3)};
 ```
 
 ## Prim's algorithm for minimum spanning trees

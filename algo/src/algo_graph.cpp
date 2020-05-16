@@ -262,54 +262,6 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
 }
 
 // //////////////////////////////////////////
-//  Prim's, minimum spanning tree.
-// //////////////////////////////////////////
-
-Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
-{
-  // Forbidden input.
-  if (source >= graph.size() || source < 0 || graph.empty()) {
-    return Graph{NewGraph(0)};
-  }
-
-  Weights weights(graph.size(), kDblMax);
-  Nodes parent(graph.size());
-  Visited visited(graph.size(), false);
-  std::priority_queue<Connection, std::vector<Connection>, comp> pq;
-
-  pq.push(Connection{source, 0});
-  weights[source] = 0;
-
-  while (!pq.empty()) {
-    Connection U{pq.top()};
-    pq.pop();
-    int node{U.node};
-
-    for (auto v : graph.at(node)) {
-      if (!visited[v.node] && v.weight < weights[v.node]) {
-        parent[v.node] = node;
-        weights[v.node] = v.weight;
-        pq.push(v);
-      }
-    }
-    visited[node] = true;
-  }
-
-  // Construct the MST
-  size_t index{parent.size() - 1};
-  Graph mst{NewGraph(parent.size())};
-
-  std::for_each(parent.rbegin(), parent.rend(), [&mst, &index, weights](int n) {
-    MakeEdge(mst, n, index, weights[index]);
-    index--;
-  });
-
-  total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
-
-  return mst;
-}
-
-// //////////////////////////////////////////
 //  Dijkstra's, shortest path
 // //////////////////////////////////////////
 
@@ -428,6 +380,118 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
   path.emplace_back(prev);
   std::reverse(path.begin(), path.end());
   return std::make_pair(path, kWeightsPaths.first[dest]);
+}
+
+// //////////////////////////////////////////
+//  Foyd-Warshall, all-pair shortest dist
+// //////////////////////////////////////////
+
+void ShortestDistAllPairsPriv(const Graph &graph, WeightMat &dist, NodeMat &next)
+{
+  size_t V{graph.size()};
+  Edges edges{GetEdges(graph)};
+
+  // Set all weights
+  for (auto edge : edges) {
+    int u{edge.u};
+    int v{edge.v};
+    dist[v][v] = 0;
+    dist[u][v] = edge.w;
+    next[u][v] = v;
+  }
+
+  for (size_t k = 0; k < V; ++k) {
+    for (size_t i = 0; i < V; ++i) {
+      for (size_t j = 0; j < V; ++j) {
+        // Rearranged from pseudo, caused overflow
+        if (dist[k][j] < dist[i][j] - dist[i][k]) {
+          dist[i][j] = dist[i][k] + dist[k][j];
+          next[i][j] = next[i][k];
+        }
+      }
+    }
+  }
+}
+
+NodeMat ShortestDistAllPairs(const Graph &graph)
+{
+  size_t N{graph.size()};
+  WeightMat dist(N, Weights(N, kDblMax));
+  NodeMat next(N, Nodes(N, -1));
+
+  ShortestDistAllPairsPriv(graph, dist, next);
+  return next;
+}
+
+Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest)
+{
+  if (graph.size() < 3 || source < 0 || dest < 0 || source >= graph.size() || dest >= graph.size() || source == dest) {
+    return Nodes{};
+  }
+
+  NodeMat next{ShortestDistAllPairs(graph)};
+
+  if (next[source][dest] == -1) {
+    return Nodes{};
+  }
+
+  Nodes path{source};
+  int uu{source};
+  // Search path
+  while (uu != dest) {
+    uu = next[uu][dest];
+    path.push_back(uu);
+  }
+
+  return path;
+}
+
+// //////////////////////////////////////////
+//  Prim's, minimum spanning tree.
+// //////////////////////////////////////////
+
+Graph MinimumSpanningTree(const Graph &graph, const int &source, double &total_weight)
+{
+  // Forbidden input.
+  if (source >= graph.size() || source < 0 || graph.empty()) {
+    return Graph{NewGraph(0)};
+  }
+
+  Weights weights(graph.size(), kDblMax);
+  Nodes parent(graph.size());
+  Visited visited(graph.size(), false);
+  std::priority_queue<Connection, std::vector<Connection>, comp> pq;
+
+  pq.push(Connection{source, 0});
+  weights[source] = 0;
+
+  while (!pq.empty()) {
+    Connection U{pq.top()};
+    pq.pop();
+    int node{U.node};
+
+    for (auto v : graph.at(node)) {
+      if (!visited[v.node] && v.weight < weights[v.node]) {
+        parent[v.node] = node;
+        weights[v.node] = v.weight;
+        pq.push(v);
+      }
+    }
+    visited[node] = true;
+  }
+
+  // Construct the MST
+  size_t index{parent.size() - 1};
+  Graph mst{NewGraph(parent.size())};
+
+  std::for_each(parent.rbegin(), parent.rend(), [&mst, &index, weights](int n) {
+    MakeEdge(mst, n, index, weights[index]);
+    index--;
+  });
+
+  total_weight = std::accumulate(weights.begin(), weights.end(), 0.0);
+
+  return mst;
 }
 
 // //////////////////////////////////////////
