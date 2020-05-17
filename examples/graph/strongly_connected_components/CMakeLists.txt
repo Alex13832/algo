@@ -1,0 +1,8 @@
+# //////////////////////////////////////////////////////////
+# author: alex011235
+# https://github.com/alex011235/algorithm
+# //////////////////////////////////////////////////////////
+project(algo)
+
+add_executable(scc_run scc_example.cpp)
+target_link_libraries(scc_run algo)

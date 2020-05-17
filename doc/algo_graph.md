@@ -16,7 +16,7 @@ Graph algorithms
 | `MaxFlow` | Edmonds-Karp | Yes `+ -` | Yes |
 |`StrConnComponents`| Kosaraju | No | Yes |
  
-## Breadth-First-Search (BFS)
+## Breadth-First-Search
 >Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
 >It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), 
 >and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level.
@@ -119,7 +119,9 @@ Nodes nodes{AllNodesPath(graph, 4)};
 
 ### Examples
 
-_The Euclidean distance betweean a pair of nodes is used as weight._
+Source code in `examples/graph/nearest_neighbor`.
+
+The Euclidean distance betweean a pair of nodes is used as weight.
 
 ![Nearest 1](images/nn1.png) ![Nearest 2](images/nn2.png)
 
@@ -154,7 +156,9 @@ Nodes nodes{ShortestPathDijkstra(graph, 0, 5)};
 
 ### Examples
 
-_The Euclidean distance betweean a pair of nodes is used as weight._
+Source code in `examples/graph/shortest_path`.
+
+The Euclidean distance betweean a pair of nodes is used as weight.
 
 ![Dijkstra1](images/dijkstra200.png) ![Dijkstra2](images/dijkstra500.png)
 
@@ -199,25 +203,16 @@ pair<Weights, Nodes> res{ShortestPathBF(graph, 0)};
 >all pairs of vertices. [Wikipedia](https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm)
 
 
-### All pair-paths
 ```cpp
 NodeMat ShortestDistAllPairs(const Graph &graph);
 ```
 Returns all the shortest path from any node in the returned `NodeMat` to any other node in `graph.`
 
-#### Usage
-
-```cpp
-TODO
-```
-
-### Shortest single path
-
 
 ```cpp
 Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
 ```
-Returns a single paht from `source` to `dest` in the input `graph.`.
+Returns a single path from `source` to `dest` in the input `graph`.
 
 #### Usage
 
@@ -233,6 +228,9 @@ MakeDirEdge(graph, 0, 2, 1);
 MakeDirEdge(graph, 2, 3, 3);
 MakeDirEdge(graph, 3, 0, 4);
 
+// Get all shortest paths
+NodeMat all_paths{ShortestDistAllPairs(graph)};
+// Get a single shortest path
 Nodes path{ShortestDistAllPairsPath(graph, 0, 3)};
 ```
 
@@ -268,7 +266,9 @@ Graph gmst{MinSpanningTree(G, 0, total_weight)};
 
 ### Examples
 
-_The Euclidean distance betweean a pair of nodes is used as weight._
+Source code in `examples/graph/minimum_spanning_tree`.
+
+The Euclidean distance betweean a pair of nodes is used as weight.
 
 ![Mst in 1](images/mst1.png) ![Mst in 2](images/mst2.png)
 
@@ -333,3 +333,14 @@ MakeDirEdge(graph, 3, 4);
 
 NodeMat scc{StrConnComponents(graph)};
 ```
+
+### Examples
+
+Source code in `examples/graph/strongly_connected_components`.
+
+Each (strongly connected) component has its own color. Same color may appear in a different component if the number of components is big. 
+It should be fairly easy to visually see the the components.
+
+![SCC1](images/scc3.png) ![SCC2](images/scc4.png)
+
+![SCC1](images/scc5.png) ![SCC2](images/scc6.png)

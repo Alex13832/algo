@@ -12,3 +12,6 @@ add_subdirectory(shortest_path)
 
 include_directories(nearest_neighbor)
 add_subdirectory(nearest_neighbor)
+
+include_directories(strongly_connected_components)
+add_subdirectory(strongly_connected_components)
