@@ -16,6 +16,7 @@ set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_geometry.cpp
         ${PROJECT_SOURCE_DIR}/algo_graph.cpp
         ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
+        ${PROJECT_SOURCE_DIR}/algo_image.cpp
         ${PROJECT_SOURCE_DIR}/algo_math.cpp
         ${PROJECT_SOURCE_DIR}/algo_network.cpp
         ${PROJECT_SOURCE_DIR}/algo_puzzle.cpp

@@ -12,3 +12,6 @@ add_subdirectory(geometry)
 
 include_directories(graph)
 add_subdirectory(graph)
+
+include_directories(image)
+add_subdirectory(image)
