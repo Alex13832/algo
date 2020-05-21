@@ -11,23 +11,37 @@
 
 namespace algo::image {
 
-// //////////////////////////////////////////
-//  Fundamental functions
-// //////////////////////////////////////////
+/////////////////////////////////////////////
+/// Image functions
+/////////////////////////////////////////////
+
+uint8_t Img::At(const int& x, const int& y) const
+{
+  return data[y * size.cols + x];
+}
+
+uint32_t IntegralImage::At(const int& x, const int& y) const
+{
+  return data[y * size.cols + x];
+}
+
+/////////////////////////////////////////////
+/// Fundamental functions
+/////////////////////////////////////////////
 
 Img NewImgGray(const int& rows, const int& cols)
 {
   Img im;
   im.size.rows = rows;
   im.size.cols = cols;
-  im.data = Data(rows * cols, 0);
+  im.data = Data8(rows * cols, 0);
   return im;
 }
 
 Img ToGray(const Img3& img3)
 {
   int size{img3.size.rows * img3.size.cols};
-  Data data(size, 0);
+  Data8 data(size, 0);
 
   for (size_t i = 0; i < size; i++) {
     data[i] = 0.3 * img3.data[Red][i] + 0.59 * img3.data[Green][i] + 0.11 * img3.data[Blue][i];
@@ -37,73 +51,121 @@ Img ToGray(const Img3& img3)
   return img;
 }
 
-// //////////////////////////////////////////
-//  Filters
-// //////////////////////////////////////////
+/////////////////////////////////////////////
+/// Integral images
+/////////////////////////////////////////////
+
+/// \brief Computes recursively the sum from coordinate x,y to 0,0 in the input image.
+/// \param im The input image.
+/// \param x Column.
+/// \param y Row.
+/// \return The sum described above.
+uint32_t IntSum(const Img& im, const int& x, const int& y)
+{
+  if (x == 0 && y == 0) {
+    return im.At(x, y);
+  }
+
+  if (x == 0) {
+    return IntSum(im, x, y - 1) + im.At(x, y);// Sum of column
+  }
+
+  if (y == 0) {
+    return IntSum(im, x - 1, y) + im.At(x, y);// Sum of row
+  }
+
+  return -IntSum(im, x - 1, y - 1) + IntSum(im, x - 1, y) + IntSum(im, x, y - 1) + im.At(x, y);
+}
+
+IntegralImage ImgToIntegralImage(const Img& im)
+{
+  IntegralImage integral_image{Data32(im.size.rows * im.size.cols, 0), im.size};
+
+  for (size_t x = 0; x < im.size.cols; x++) {
+    for (size_t y = 0; y < im.size.rows; y++) {
+      integral_image.data[y * im.size.cols + x] = IntSum(im, x, y);
+    }
+  }
+
+  return integral_image;
+}
+
+uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box)
+{
+  return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1) - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
+}
+
+/////////////////////////////////////////////
+/// Filters
+/////////////////////////////////////////////
 
 namespace {
 
 using Filter = std::array<float, 9>;
 
-constexpr Filter filt_sobel_x{-1.0 / 2.0, 0, 1.0 / 2.0, -2.0 / 2.0, 0, 2.0 / 2.0, -1.0 / 2.0, 0, 1.0 / 2.0};
-constexpr Filter filt_sobel_y{-1.0 / 2.0, -2.0 / 2.0, -1.0 / 2.0, 0, 0, 0, 1.0 / 2.0, 2.0 / 2.0, 1.0 / 2.0};
-constexpr Filter filt_edge{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Filter filt_smooth{1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 4.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0};
-constexpr Filter filt_sharp_agg{0, -1.0, 0, -1.0, 5.0, -1.0, 0, -1.0, 0};
-constexpr Filter filt_sharp_mod{-1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, 17.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0};
-constexpr Filter filt_gauss_blur{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 5.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
-constexpr Filter filt_blur_hard{1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0};
-constexpr Filter filt_blur_soft{0.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 1.0 / 2.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 0.0};
-constexpr Filter filt_emboss{-2.0, -1.0, 0.0, -1.0, 1.0, 1.0, 0.0, 1.0, 2.0};
-constexpr Filter filt_weighted{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
-constexpr Filter filt_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
-constexpr Filter filt_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-constexpr Filter filt_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
-constexpr Filter filt_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Filter filt_nothing{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+constexpr Filter filter_sobel_x{-1.0 / 2.0, 0, 1.0 / 2.0, -2.0 / 2.0, 0, 2.0 / 2.0, -1.0 / 2.0, 0, 1.0 / 2.0};
+constexpr Filter filter_sobel_y{-1.0 / 2.0, -2.0 / 2.0, -1.0 / 2.0, 0, 0, 0, 1.0 / 2.0, 2.0 / 2.0, 1.0 / 2.0};
+constexpr Filter filter_edge{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
+constexpr Filter filter_smooth{1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 4.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0};
+constexpr Filter filter_sharp_agg{0, -1.0, 0, -1.0, 5.0, -1.0, 0, -1.0, 0};
+constexpr Filter filter_sharp_mod{-1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, 17.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0};
+constexpr Filter filter_gauss_blur{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 5.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
+constexpr Filter filter_blur_hard{1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0};
+constexpr Filter filter_blur_soft{0.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 1.0 / 2.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 0.0};
+constexpr Filter filter_emboss{-2.0, -1.0, 0.0, -1.0, 1.0, 1.0, 0.0, 1.0, 2.0};
+constexpr Filter filter_weighted{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
+constexpr Filter filter_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
+constexpr Filter filter_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+constexpr Filter filter_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
+constexpr Filter filter_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
+constexpr Filter filter_nothing{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
 
 Filter GetFilter(const FilterType& filter_type)
 {
   switch (filter_type) {
     case FilterType::SOBEL_X:
-      return filt_sobel_x;
+      return filter_sobel_x;
     case FilterType::SOBEL_Y:
-      return filt_sobel_y;
+      return filter_sobel_y;
     case FilterType::EDGE_DETECT:
-      return filt_edge;
+      return filter_edge;
     case FilterType::SMOOTHING:
-      return filt_smooth;
+      return filter_smooth;
     case FilterType::SHARPEN_MODEST:
-      return filt_sharp_mod;
+      return filter_sharp_mod;
     case FilterType::SHARPEN_AGGRESSIVE:
-      return filt_sharp_agg;
+      return filter_sharp_agg;
     case FilterType::GAUSSIAN_BLUR:
-      return filt_gauss_blur;
+      return filter_gauss_blur;
     case FilterType::BLUR_HARD:
-      return filt_blur_hard;
+      return filter_blur_hard;
     case FilterType::BLUR_SOFT:
-      return filt_blur_soft;
+      return filter_blur_soft;
     case FilterType::EMBOSS:
-      return filt_emboss;
+      return filter_emboss;
     case FilterType::WEIGHTED_AVERAGE:
-      return filt_weighted;
+      return filter_weighted;
     case FilterType::DILATION_VERTICAL:
-      return filt_dilation_v;
+      return filter_dilation_v;
     case FilterType::DILATION_HORIZONTAL:
-      return filt_dilation_h;
+      return filter_dilation_h;
     case FilterType::DILATION:
-      return filt_dilation;
+      return filter_dilation;
     case FilterType::HIGH_PASS:
-      return filt_high_pass;
+      return filter_high_pass;
   }
-  return filt_nothing;
+  return filter_nothing;
 }
 
 }// namespace
 
-Data ConvolvePriv(const Data& im, size_t rows, size_t cols, FilterType filter_type)
+/////////////////////////////////////////////
+/// Convolutions
+/////////////////////////////////////////////
+
+Data8 ConvolvePriv(const Data8& im, size_t rows, size_t cols, FilterType filter_type)
 {
-  Data res(im.size(), 0);
+  Data8 res(im.size(), 0);
   const Filter filter{GetFilter(filter_type)};
   uint8_t dim{3U};
   uint8_t sz{static_cast<uint8_t>(dim >> 1U)};
@@ -146,9 +208,13 @@ Img3 Convolve3(const Img3& im, FilterType filter_type)
   return res;
 }
 
-Data MedianFilterPriv(const Data& im, const int& rows, const int& cols, const int& w_width, const int& w_height)
+/////////////////////////////////////////////
+/// Median filters
+/////////////////////////////////////////////
+
+Data8 MedianFilterPriv(const Data8& im, const int& rows, const int& cols, const int& w_width, const int& w_height)
 {
-  Data res(rows * cols, 0);
+  Data8 res(rows * cols, 0);
   int edge_x{w_width / 2};
   int edge_y{w_height / 2};
 

@@ -17,6 +17,10 @@
 using namespace std;
 using namespace algo::image;
 
+/////////////////////////////////////////////
+/// Fundamental functions
+/////////////////////////////////////////////
+
 TEST(test_algo_image, test_to_gray)
 {
   // 3x3 color image
@@ -32,4 +36,39 @@ TEST(test_algo_image, test_to_gray)
 
   EXPECT_EQ(img.data[0], 90);
   EXPECT_EQ(img.data[1], 100);
+}
+
+/////////////////////////////////////////////
+/// Integral images
+/////////////////////////////////////////////
+
+TEST(test_algo_image, test_integral_image)
+{
+  Data8 data{31, 2, 4, 33, 5, 36,
+             12, 26, 9, 10, 29, 25,
+             13, 17, 21, 22, 20, 18,
+             24, 23, 15, 16, 14, 19,
+             30, 8, 28, 27, 11, 7,
+             1, 35, 34, 3, 32, 6};
+
+  Img im{data, Size{6, 6}};
+
+  IntegralImage iimg{ImgToIntegralImage(im)};
+  EXPECT_EQ(iimg.At(5, 5), 666);
+}
+
+TEST(test_algo_image, test_integral_sum)
+{
+  Data8 data{31, 2, 4, 33, 5, 36,
+             12, 26, 9, 10, 29, 25,
+             13, 17, 21, 22, 20, 18,
+             24, 23, 15, 16, 14, 19,
+             30, 8, 28, 27, 11, 7,
+             1, 35, 34, 3, 32, 6};
+
+  Img im{data, Size{6, 6}};
+  IntegralImage iimg{ImgToIntegralImage(im)};
+
+  uint32_t sm{IntegralBoxSum(iimg, Box{1, 2, 4, 3})};
+  EXPECT_EQ(sm, 111);
 }

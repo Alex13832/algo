@@ -23,21 +23,47 @@ constexpr uint8_t Red{0};
 constexpr uint8_t Green{1};
 constexpr uint8_t Blue{2};
 
+using Data8 = std::vector<uint8_t>;  // For grayscale images.
+using Data32 = std::vector<uint32_t>;// For integral images.
+using Data8_3 = std::array<Data8, 3>;// For color images.
+
 struct Size {
   int rows, cols;
 };
 
-using Data = std::vector<uint8_t>;// For grayscale images
-using Data3 = std::array<Data, 3>;// For color images
+struct Point {
+  int x, y;
+};
 
-struct Img {// Grayscale
-  Data data;
-  Size size{};
+struct Box {
+  int x, y, width, height;
 };
 
 struct Img3 {// Color
-  Data3 data;
+  Data8_3 data;
   Size size{};
+};
+
+struct Img {// Grayscale
+  Data8 data;
+  Size size{};
+
+  /// \brief Returns the value at x, y.
+  /// \param x Coordinate x-value.
+  /// \param y Coordinate y-value.
+  /// \return The value at x, y.
+  [[nodiscard]] uint8_t At(const int& x, const int& y) const;
+};
+
+struct IntegralImage {
+  Data32 data;
+  Size size{};
+
+  /// \brief Returns the value at x, y.
+  /// \param x Coordinate x-value.
+  /// \param y Coordinate y-value.
+  /// \return The value at x, y.
+  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
 };
 
 // //////////////////////////////////////////
@@ -77,6 +103,25 @@ enum class FilterType {
   DILATION_HORIZONTAL,
   DILATION
 };
+
+// //////////////////////////////////////////
+//  Integral image
+// //////////////////////////////////////////
+
+/// \brief Computes and returns the integral image of im.
+/// \param im The input image.
+/// \return A new integral image.
+/// \link <a href="https://en.wikipedia.org/wiki/Summed-area_table">Summed-area-table, Wikipedia.</a>
+IntegralImage ImgToIntegralImage(const Img& im);
+
+/// \brief Computes the sum of the rectangular patch.
+/// \param img The input integral image.
+/// \param pt_tl Point 1, top left.
+/// \param pt_tr Point 2, top right.
+/// \param pt_bl Point 3, bottom left.
+/// \param pt_br Point 4, bottom right.
+/// \return The sum.
+uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box);
 
 // //////////////////////////////////////////
 //  Convolutions
