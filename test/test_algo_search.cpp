@@ -14,7 +14,7 @@ using namespace std;
 using namespace algo::search;
 
 /////////////////////////////////////////////
-/// Binary search
+/// Fixed search
 /////////////////////////////////////////////
 
 TEST(test_algo_search, binary_search_in_empty)

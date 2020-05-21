@@ -8,6 +8,7 @@
 #include "algo_image.hpp"
 
 #include <algorithm>
+#include <iostream>
 
 namespace algo::image {
 
@@ -20,11 +21,20 @@ uint8_t Img::At(const int& x, const int& y) const
   return data[y * size.cols + x];
 }
 
+void Img::Set(const int& x, const int& y, const uint8_t& value)
+{
+  data[y * size.cols + x] = value;
+}
+
 uint32_t IntegralImage::At(const int& x, const int& y) const
 {
   return data[y * size.cols + x];
 }
 
+void IntegralImage::Set(const int& x, const int& y, const uint32_t& value)
+{
+  data[y * size.cols + x] = value;
+}
 /////////////////////////////////////////////
 /// Fundamental functions
 /////////////////////////////////////////////
@@ -55,39 +65,31 @@ Img ToGray(const Img3& img3)
 /// Integral images
 /////////////////////////////////////////////
 
-/// \brief Computes recursively the sum from coordinate x,y to 0,0 in the input image.
-/// \param im The input image.
-/// \param x Column.
-/// \param y Row.
-/// \return The sum described above.
-uint32_t IntSum(const Img& im, const int& x, const int& y)
-{
-  if (x == 0 && y == 0) {
-    return im.At(x, y);
-  }
-
-  if (x == 0) {
-    return IntSum(im, x, y - 1) + im.At(x, y);// Sum of column
-  }
-
-  if (y == 0) {
-    return IntSum(im, x - 1, y) + im.At(x, y);// Sum of row
-  }
-
-  return -IntSum(im, x - 1, y - 1) + IntSum(im, x - 1, y) + IntSum(im, x, y - 1) + im.At(x, y);
-}
-
 IntegralImage ImgToIntegralImage(const Img& im)
 {
-  IntegralImage integral_image{Data32(im.size.rows * im.size.cols, 0), im.size};
+  IntegralImage img{Data32(im.size.rows * im.size.cols, 0), im.size};
 
-  for (size_t x = 0; x < im.size.cols; x++) {
-    for (size_t y = 0; y < im.size.rows; y++) {
-      integral_image.data[y * im.size.cols + x] = IntSum(im, x, y);
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+
+      if (x == 0 & y == 0) {
+        img.Set(x, y, im.At(0, 0));
+
+      } else if (x == 0) {
+        img.Set(x, y, img.At(0, y - 1) + im.At(x, y));
+
+      } else if (y == 0) {
+        img.Set(x, y, img.At(x - 1, y) + im.At(x, y));
+
+      } else {
+        uint32_t yy{img.At(x, y - 1)};
+        uint32_t xx{img.At(x - 1, y)};
+        uint32_t xy{img.At(x - 1, y - 1)};
+        img.Set(x, y, -xy + yy + xx + im.At(x, y));
+      }
     }
   }
-
-  return integral_image;
+  return img;
 }
 
 uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box)
@@ -254,5 +256,54 @@ Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height)
   res.size = im.size;
   return res;
 }
+
+/////////////////////////////////////////////
+/// Thresholding
+/////////////////////////////////////////////
+
+namespace threshold {
+
+Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white)
+{
+  Img img{im};
+
+  std::for_each(img.data.begin(), img.data.end(), [threshold, cut_white](uint8_t& x) {
+    if (x > threshold) {
+      x = cut_white ? 255 : 0;
+    } else {
+      x = cut_white ? 0 : 255;
+    }
+  });
+  return img;
+}
+
+Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
+{
+  IntegralImage img{ImgToIntegralImage(im)};
+  Img res{Data8(im.size.rows * im.size.cols, 0), im.size};
+
+  const int kMargin{region_size / 2};
+
+  for (int x = kMargin; x < im.size.cols - kMargin; x++) {
+    for (int y = kMargin; y < img.size.rows - kMargin; y++) {
+
+      Box box{x - kMargin, y - kMargin, region_size, region_size};
+      uint32_t box_sum{IntegralBoxSum(img, box)};
+      uint32_t avg = box_sum / (region_size * region_size);
+
+      if (im.At(x, y) > avg) {
+        res.Set(x, y, 255);
+      }
+    }
+  }
+
+  if (!cut_white) {
+    std::for_each(res.data.begin(), res.data.end(), [](uint8_t& x) { x = x == 0 ? 255 : 0; });
+  }
+
+  return res;
+}
+
+}// namespace threshold
 
 }//namespace algo::image

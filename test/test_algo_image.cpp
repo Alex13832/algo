@@ -72,3 +72,25 @@ TEST(test_algo_image, test_integral_sum)
   uint32_t sm{IntegralBoxSum(iimg, Box{1, 2, 4, 3})};
   EXPECT_EQ(sm, 111);
 }
+
+/////////////////////////////////////////////
+/// Thresholding
+/////////////////////////////////////////////
+
+TEST(test_algo_image, test_binary_thresholding)
+{
+  Data8 data{0, 10, 20, 30,
+             40, 50, 60, 70,
+             80, 90, 100, 110,
+             120, 130, 140, 150};
+
+  Img im{data, Size{4, 4}};
+  Img imt1{threshold::Fixed(im, 90, true)};
+
+  int ct1{static_cast<int>(std::count_if(imt1.data.begin(), imt1.data.end(), [](const uint8_t& x) { return x == 255; }))};
+  EXPECT_EQ(ct1, 6);
+
+  imt1 = {threshold::Fixed(im, 90, false)};
+  ct1 = static_cast<int>(std::count_if(imt1.data.begin(), imt1.data.end(), [](const uint8_t& x) { return x == 255; }));
+  EXPECT_EQ(ct1, 10);
+}

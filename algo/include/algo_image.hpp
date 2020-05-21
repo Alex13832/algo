@@ -5,6 +5,11 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
+/// 2016-06-28 Convolve
+/// 2016-06-28 Median filter
+/// 2016-06-28 Median filter
+/// 2016-06-28 Thresholding
+/// 2020-05-21 Integral image.
 ///
 
 #include <array>
@@ -53,6 +58,8 @@ struct Img {// Grayscale
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
   [[nodiscard]] uint8_t At(const int& x, const int& y) const;
+
+  void Set(const int& x, const int& y, const uint8_t& value);
 };
 
 struct IntegralImage {
@@ -64,6 +71,8 @@ struct IntegralImage {
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
   [[nodiscard]] uint32_t At(const int& x, const int& y) const;
+
+  void Set(const int& x, const int& y, const uint32_t& value);
 };
 
 // //////////////////////////////////////////
@@ -160,6 +169,29 @@ Img MedianFilter(const Img& im, const int& w_width, const int& w_height);
 /// \return A new median filtered image of im.
 /// \link <a href="https://en.wikipedia.org/wiki/Median_filter">Median filter, Wikipedia.</a>
 Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height);
+
+// //////////////////////////////////////////
+//  Thresholding
+// //////////////////////////////////////////
+
+namespace threshold {
+
+/// \brief Changes all data less than and greater than threshold to 0 and 255 respectively.
+/// \param im Input image.
+/// \param threshold Fixed value 0-255.
+/// \param cut_white Flip values to 255 or 0.
+/// \return A new image.
+Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white);
+
+/// \brief Computes the adaptive threshold of the input image. The thresholding decision is based on the mean value of the
+/// chose region size, e.g. 10x10 pixels (region_size^2).
+/// \param im Input image.
+/// \param region_size The region size to base the threshold decision on.
+/// \param cut_white Flip values to 255 or 0.
+/// \return A new image.
+Img Adaptive(const Img& im, const int& region_size, const bool& cut_white);
+
+}// namespace threshold
 
 }// namespace algo::image
 
