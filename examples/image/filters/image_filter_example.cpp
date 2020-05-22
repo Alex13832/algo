@@ -16,7 +16,7 @@ using namespace std;
 
 void ProcessFilters()
 {
-  cv::Mat img = cv::imread("testfiles/lena.png", 0);
+  cv::Mat img = cv::imread("testfiles/road.png", 0);
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
@@ -146,11 +146,11 @@ void ProcessAdaptiveThreshold()
 
 int main(int argc, char** argv)
 {
-  //ProcessFilters();
+  ProcessFilters();
   //ProcessFiltersColor();
   //ProcessMedian();
   //ProcessMedian3();
   //ProcessBinaryThreshold();
-  ProcessAdaptiveThreshold();
+  //ProcessAdaptiveThreshold();
   return 0;
 }

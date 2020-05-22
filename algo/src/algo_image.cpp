@@ -8,6 +8,7 @@
 #include "algo_image.hpp"
 
 #include <algorithm>
+#include <cmath>
 #include <iostream>
 
 namespace algo::image {
@@ -35,6 +36,16 @@ void IntegralImage::Set(const int& x, const int& y, const uint32_t& value)
 {
   data[y * size.cols + x] = value;
 }
+
+uint32_t ImgF::At(const int& x, const int& y) const
+{
+  return data[y * size.cols + x];
+}
+
+void ImgF::Set(const int& x, const int& y, const float& value)
+{
+  data[y * size.cols + x] = value;
+}
 /////////////////////////////////////////////
 /// Fundamental functions
 /////////////////////////////////////////////
@@ -58,6 +69,15 @@ Img ToGray(const Img3& img3)
   }
 
   Img img{data, img3.size};
+  return img;
+}
+
+Img InvertPixels(const Img& im)
+{
+  Img img{im};
+  std::transform(img.data.begin(), img.data.end(), img.data.begin(), [](uint8_t x) {
+    return 255 - x;
+  });
   return img;
 }
 
@@ -107,7 +127,8 @@ using Filter = std::array<float, 9>;
 
 constexpr Filter filter_sobel_x{-1.0 / 2.0, 0, 1.0 / 2.0, -2.0 / 2.0, 0, 2.0 / 2.0, -1.0 / 2.0, 0, 1.0 / 2.0};
 constexpr Filter filter_sobel_y{-1.0 / 2.0, -2.0 / 2.0, -1.0 / 2.0, 0, 0, 0, 1.0 / 2.0, 2.0 / 2.0, 1.0 / 2.0};
-constexpr Filter filter_edge{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
+constexpr Filter filter_edge{1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0};
+//constexpr Filter filter_edge{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
 constexpr Filter filter_smooth{1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 4.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0};
 constexpr Filter filter_sharp_agg{0, -1.0, 0, -1.0, 5.0, -1.0, 0, -1.0, 0};
 constexpr Filter filter_sharp_mod{-1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, 17.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0};
@@ -120,7 +141,7 @@ constexpr Filter filter_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
 constexpr Filter filter_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 constexpr Filter filter_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
 constexpr Filter filter_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Filter filter_nothing{1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0};
+constexpr Filter filter_nothing{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
 
 Filter GetFilter(const FilterType& filter_type)
 {
@@ -305,5 +326,89 @@ Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
 }
 
 }// namespace threshold
+
+namespace transform {
+
+Img HoughLines(const Img& im)
+{
+  int n_rows{im.size.rows};
+  int n_cols{im.size.cols};
+
+  const int kDMax = std::sqrt(n_cols * n_cols + n_rows * n_rows);
+  const int kAlphaMax{360};
+
+  // Smooth image and run through edge detector
+  Img img{Convolve(im, FilterType::EDGE_DETECT)};
+  //img = Convolve(img, FilterType::EDGE_DETECT);
+  img = InvertPixels(img);
+  ImgF himgf{Dataf(kDMax * kAlphaMax, 0), Size{kDMax, kAlphaMax}};
+
+  // Lambda for computing d, Klette p.125
+  auto d_comp = [n_cols, n_rows](auto x, auto y, auto alpha) {
+    return (x - n_cols / 2.0) * std::cos(alpha * M_PI / 180.0) + (y - n_rows / 2.0) * std::sin(alpha * M_PI / 180.0);
+  };
+
+  auto d_comp2 = [n_cols, n_rows](auto x, auto y, auto alpha) {
+    return x * std::cos(alpha * M_PI / 180.0) + y * std::sin(alpha * M_PI / 180.0);
+  };
+
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+
+      if (img.At(x, y) == 255) continue;
+
+      for (int alpha = 0; alpha < 360; alpha++) {
+        auto d = d_comp2(x, y, alpha);
+
+        himgf.Set(alpha, d, himgf.At(alpha, d) + 1.0);// Vote
+      }
+    }
+  }
+
+  // Find maximum and then convert to uint8_t image.
+  float max_elem{*std::max_element(himgf.data.begin(), himgf.data.end())};
+  Img himg{Data8(kDMax * kAlphaMax, 0), Size{kDMax, kAlphaMax}};
+
+  std::transform(himgf.data.begin(), himgf.data.end(), himg.data.begin(), [max_elem](float x) {
+    return (x / max_elem) * 255.0;
+  });
+
+  return himg;
+}
+
+}// namespace transform
+
+namespace detection {
+
+struct h_comp {
+  bool operator()(const HLine l1, const HLine l2) const
+  {
+    return l1.count > l2.count;
+  }
+} h_comp;
+
+Hlines DetectHoughLines(const Img& im, const int& n)
+{
+  Hlines all_lines;
+
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+
+      if (im.At(x, y) > 200) {
+        HLine line{x, y, im.At(x, y)};
+        all_lines.emplace_back(line);
+      }
+    }
+  }
+
+  std::sort(all_lines.begin(), all_lines.end(), h_comp);
+
+  Hlines lines(n);
+  std::copy_n(all_lines.begin(), n, lines.begin());
+
+  return lines;
+}
+
+};// namespace detection
 
 }//namespace algo::image

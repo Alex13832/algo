@@ -5,10 +5,9 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2016-06-28 Convolve
-/// 2016-06-28 Median filter
-/// 2016-06-28 Median filter
-/// 2016-06-28 Thresholding
+/// 2016-04-04 Convolve
+/// 2016-04-07 Thresholding
+/// 2016-04-08 Median filter
 /// 2020-05-21 Integral image.
 ///
 
@@ -31,6 +30,7 @@ constexpr uint8_t Blue{2};
 using Data8 = std::vector<uint8_t>;  // For grayscale images.
 using Data32 = std::vector<uint32_t>;// For integral images.
 using Data8_3 = std::array<Data8, 3>;// For color images.
+using Dataf = std::vector<float>;
 
 struct Size {
   int rows, cols;
@@ -44,12 +44,14 @@ struct Box {
   int x, y, width, height;
 };
 
-struct Img3 {// Color
+/// \brief For three channel (color) images.
+struct Img3 {
   Data8_3 data;
   Size size{};
 };
 
-struct Img {// Grayscale
+/// \brief For one-channel (grayscale) images.
+struct Img {
   Data8 data;
   Size size{};
 
@@ -75,6 +77,19 @@ struct IntegralImage {
   void Set(const int& x, const int& y, const uint32_t& value);
 };
 
+struct ImgF {
+  Dataf data;
+  Size size{};
+
+  /// \brief Returns the value at x, y.
+  /// \param x Coordinate x-value.
+  /// \param y Coordinate y-value.
+  /// \return The value at x, y.
+  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
+
+  void Set(const int& x, const int& y, const float& value);
+};
+
 // //////////////////////////////////////////
 //  Fundamental functions
 // //////////////////////////////////////////
@@ -90,6 +105,11 @@ Img NewImgGray(const int& rows, const int& cols);
 /// \param img3 Values to convert.
 /// \return A new gray scale image.
 Img ToGray(const Img3& img3);
+
+/// \brief Inverts all the pixels in the input image, (255 - pixel value).
+/// \param im[in] The input image.
+/// \return A new image.
+Img InvertPixels(const Img& im);
 
 // //////////////////////////////////////////
 //  Filters
@@ -192,6 +212,32 @@ Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white);
 Img Adaptive(const Img& im, const int& region_size, const bool& cut_white);
 
 }// namespace threshold
+
+namespace transform {
+
+/// \brief Computes the Hough line transform.
+/// \param im The input image.
+/// \return An image/matrix with the line intersection vote.
+Img HoughLines(const Img& im);
+
+}// namespace transform
+
+namespace detection {
+
+struct HLine {
+  int dist, alpha;// Distance and line angle.
+  int count;
+};
+
+using Hlines = std::vector<HLine>;
+
+/// \brief Finds the local maximums of transform::HoughLines image.
+/// \param im The input image with line intersection votes.
+/// \param n Number of lines to get.
+/// \return A list of lines.
+Hlines DetectHoughLines(const Img& im, const int& n);
+
+}// namespace detection
 
 }// namespace algo::image
 
