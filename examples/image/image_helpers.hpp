@@ -4,7 +4,7 @@
 /// \date 2020-05-21
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
-#include <include/algo_image.hpp>
+#include <include/algo_image_basic.hpp>
 #include <map>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
