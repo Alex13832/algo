@@ -9,13 +9,16 @@
 
 #include <algorithm>
 #include <cmath>
-#include <iostream>
 
 namespace algo::image {
 
 /////////////////////////////////////////////
 /// Image functions
 /////////////////////////////////////////////
+
+///////////////////////////////////
+/// 8-bit image.
+///////////////////////////////////
 
 uint8_t Img::At(const int& x, const int& y) const
 {
@@ -27,15 +30,14 @@ void Img::Set(const int& x, const int& y, const uint8_t& value)
   data[y * size.cols + x] = value;
 }
 
-uint32_t IntegralImage::At(const int& x, const int& y) const
+uint8_t& Img::operator[](int i)
 {
-  return data[y * size.cols + x];
+  return data[i];
 }
 
-void IntegralImage::Set(const int& x, const int& y, const uint32_t& value)
-{
-  data[y * size.cols + x] = value;
-}
+///////////////////////////////////
+/// Float image
+///////////////////////////////////
 
 uint32_t ImgF::At(const int& x, const int& y) const
 {
@@ -46,6 +48,26 @@ void ImgF::Set(const int& x, const int& y, const float& value)
 {
   data[y * size.cols + x] = value;
 }
+
+float& ImgF::operator[](int i)
+{
+  return data[i];
+}
+
+///////////////////////////////////
+/// Integral image
+///////////////////////////////////
+
+uint32_t IntegralImage::At(const int& x, const int& y) const
+{
+  return data[y * size.cols + x];
+}
+
+void IntegralImage::Set(const int& x, const int& y, const uint32_t& value)
+{
+  data[y * size.cols + x] = value;
+}
+
 /////////////////////////////////////////////
 /// Fundamental functions
 /////////////////////////////////////////////
@@ -327,7 +349,15 @@ Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
 
 }// namespace threshold
 
+/////////////////////////////////////////////
+/// Transform
+/////////////////////////////////////////////
+
 namespace transform {
+
+///////////////////////////////////
+/// Hough transform
+///////////////////////////////////
 
 Img HoughLines(const Img& im)
 {
@@ -337,16 +367,9 @@ Img HoughLines(const Img& im)
   const int kDMax = std::sqrt(n_cols * n_cols + n_rows * n_rows);
   const int kAlphaMax{360};
 
-  // Smooth image and run through edge detector
-  Img img{Convolve(im, FilterType::EDGE_DETECT)};
-  //img = Convolve(img, FilterType::EDGE_DETECT);
-  img = InvertPixels(img);
-  ImgF himgf{Dataf(kDMax * kAlphaMax, 0), Size{kDMax, kAlphaMax}};
-
-  // Lambda for computing d, Klette p.125
-  auto d_comp = [n_cols, n_rows](auto x, auto y, auto alpha) {
-    return (x - n_cols / 2.0) * std::cos(alpha * M_PI / 180.0) + (y - n_rows / 2.0) * std::sin(alpha * M_PI / 180.0);
-  };
+  // Run through edge detector
+  Img img{detection::CannyEdge(im)};
+  Img himg{Data8(kDMax * kAlphaMax, 255), Size{kDMax, kAlphaMax}};
 
   auto d_comp2 = [n_cols, n_rows](auto x, auto y, auto alpha) {
     return x * std::cos(alpha * M_PI / 180.0) + y * std::sin(alpha * M_PI / 180.0);
@@ -355,35 +378,132 @@ Img HoughLines(const Img& im)
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
 
-      if (img.At(x, y) == 255) continue;
+      if (img.At(x, y) == 0) continue;
 
-      for (int alpha = 0; alpha < 360; alpha++) {
+      for (int alpha = 0; alpha < kAlphaMax; alpha++) {
         auto d = d_comp2(x, y, alpha);
-
-        himgf.Set(alpha, d, himgf.At(alpha, d) + 1.0);// Vote
+        if (himg.At(alpha, d) > 0) {
+          himg.Set(alpha, d, himg.At(alpha, d) - 1);// Vote
+        }
       }
     }
   }
 
-  // Find maximum and then convert to uint8_t image.
-  float max_elem{*std::max_element(himgf.data.begin(), himgf.data.end())};
-  Img himg{Data8(kDMax * kAlphaMax, 0), Size{kDMax, kAlphaMax}};
-
-  std::transform(himgf.data.begin(), himgf.data.end(), himg.data.begin(), [max_elem](float x) {
-    return (x / max_elem) * 255.0;
-  });
-
-  return himg;
+  return InvertPixels(himg);
 }
 
 }// namespace transform
 
+/////////////////////////////////////////////
+/// Detection
+/////////////////////////////////////////////
+
 namespace detection {
+
+///////////////////////////////////
+/// Canny
+///////////////////////////////////
+
+Img CannyEdge(const Img& im)
+{
+  int threshold_min{31};//31
+  int threshold_max{91};//91
+  int n_pixels{im.size.rows * im.size.cols};
+  // Smooth with Gaussian kernel
+  Img img{Convolve(im, FilterType::GAUSSIAN_BLUR)};
+  // Intensity gradients
+  Img gx{Convolve(im, FilterType::SOBEL_X)};
+  Img gy{Convolve(im, FilterType::SOBEL_Y)};
+
+  // Magnitude
+  Img gm{im};
+  Img th{Data8(n_pixels, 0), im.size};
+
+  for (int i = 0; i < n_pixels; i++) {
+    gm[i] = std::hypot(gx[i], gy[i]);
+    double theta = std::atan2(gy[i], gx[i]) * 180 / M_PI;
+    // Round theta to 135, 90, 45 or 0.
+    th[i] = 135;
+    if (theta < (135.0 + 90.0) / 2.0) th[i] = 90;
+    if (theta < (90.0 + 45.0) / 2.0) th[i] = 45;
+    if (theta < (45.0 / 2.0)) th[i] = 0;
+  }
+
+  // Non-maximum suppression
+  Img np{gm};
+  Img thr_edges{Data8(n_pixels, 0), im.size};
+
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+      if (x == 0 || y == 0 || x == im.size.cols || y == im.size.rows) {
+        np.Set(x, y, 0);
+        continue;
+      }
+
+      int dir{th.At(x, y) % 4};
+      int n{np.At(x, y)};
+      // Check neighbors.
+      if (dir == 0) {// Horizontal
+        if (n < gm.At(x - 1, y) || n < gm.At(x + 1, y)) {
+          np.Set(x, y, 0);
+        }
+      }
+      if (dir == 1) {// Diagonal
+        if (n < gm.At(x + 1, y - 1) || n < gm.At(x - 1, y + 1)) {
+          np.Set(x, y, 0);
+        }
+      }
+      if (dir == 2) {// Vertical
+        if (n < gm.At(x, y - 1) || n < gm.At(x, y + 1)) {
+          np.Set(x, y, 0);
+        }
+      }
+      if (dir == 3) {// Diagonal
+        if (n < gm.At(x - 1, y - 1) || n < gm.At(x + 1, y + 1)) {
+          np.Set(x, y, 0);
+        }
+      }
+      // Keep edges > threshold_max
+      if (np.At(x, y) > threshold_max) {
+        thr_edges.Set(x, y, 1);
+      }
+      if (np.At(x, y) > threshold_min) {
+        thr_edges.Set(x, y, thr_edges.At(x, y) + 1);
+      }
+    }
+  }
+
+  // Tracking by hysteresis
+  Img res{Data8(n_pixels, 0), im.size};
+
+  for (int x = 0; x < img.size.cols; x++) {
+    for (int y = 0; y < img.size.rows; y++) {
+
+      if (thr_edges.At(x, y) == 0) continue;
+
+      if (thr_edges.At(x, y) == 2) {
+        res.Set(x, y, 255);
+      }
+
+      if (thr_edges.At(x, y) == 1) {
+        if (thr_edges.At(x - 1, y - 1) == 2 || thr_edges.At(x, y - 1) == 2 || thr_edges.At(x + 1, y - 1) == 2 || thr_edges.At(x - 1, y) == 2 || thr_edges.At(x + 1, y) == 2 || thr_edges.At(x - 1, y + 1) == 2 || thr_edges.At(x, y + 1) == 2 || thr_edges.At(x + 1, y + 1) == 2) {
+          res.Set(x, y, 255);
+        }
+      }
+    }
+  }
+
+  return res;
+}
+
+///////////////////////////////////
+/// Hough lines
+///////////////////////////////////
 
 struct h_comp {
   bool operator()(const HLine l1, const HLine l2) const
   {
-    return l1.count > l2.count;
+    return l1.sum > l2.sum;
   }
 } h_comp;
 
@@ -393,18 +513,14 @@ Hlines DetectHoughLines(const Img& im, const int& n)
 
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
-
-      if (im.At(x, y) > 200) {
-        HLine line{x, y, im.At(x, y)};
-        all_lines.emplace_back(line);
-      }
+      HLine line{y, x, im.At(x, y)};
+      all_lines.emplace_back(line);
     }
   }
 
   std::sort(all_lines.begin(), all_lines.end(), h_comp);
-
-  Hlines lines(n);
-  std::copy_n(all_lines.begin(), n, lines.begin());
+  Hlines lines;
+  std::copy_n(all_lines.begin(), n, std::back_inserter(lines));
 
   return lines;
 }

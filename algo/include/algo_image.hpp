@@ -44,25 +44,70 @@ struct Box {
   int x, y, width, height;
 };
 
-/// \brief For three channel (color) images.
+///////////////////////////////////
+/// 32-bit image.
+///////////////////////////////////
+
 struct Img3 {
   Data8_3 data;
   Size size{};
 };
 
-/// \brief For one-channel (grayscale) images.
+///////////////////////////////////
+/// 8-bit image.
+///////////////////////////////////
+
 struct Img {
   Data8 data;
   Size size{};
 
   /// \brief Returns the value at x, y.
-  /// \param x Coordinate x-value.
-  /// \param y Coordinate y-value.
+  /// \param x[in] Coordinate x-value.
+  /// \param y[in] Coordinate y-value.
   /// \return The value at x, y.
   [[nodiscard]] uint8_t At(const int& x, const int& y) const;
 
+  /// \brief Sets the value at x, y to value.
+  /// \param x[in] X-coordinate.
+  /// \param y[in] Y-coordinate.
+  /// \param value[in] New value at coordinate.
   void Set(const int& x, const int& y, const uint8_t& value);
+
+  /// \brief Operator overloading for quick access of data element.
+  /// \param i[in] Index.
+  /// \return Value at index.
+  uint8_t& operator[](int i);
 };
+
+///////////////////////////////////
+/// Float image
+///////////////////////////////////
+
+struct ImgF {
+  Dataf data;
+  Size size{};
+
+  /// \brief Returns the value at x, y.
+  /// \param x[in] Coordinate x-value.
+  /// \param y[in] Coordinate y-value.
+  /// \return The value at x, y.
+  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
+
+  /// \brief Sets the value at x, y to value.
+  /// \param x[in] X-coordinate.
+  /// \param y[in] Y-coordinate.
+  /// \param value[in] New value at coordinate.
+  void Set(const int& x, const int& y, const float& value);
+
+  /// \brief Operator overloading for quick access of data element.
+  /// \param i[in] Index.
+  /// \return Value at index.
+  float& operator[](int i);
+};
+
+///////////////////////////////////
+/// Integral image
+///////////////////////////////////
 
 struct IntegralImage {
   Data32 data;
@@ -75,19 +120,6 @@ struct IntegralImage {
   [[nodiscard]] uint32_t At(const int& x, const int& y) const;
 
   void Set(const int& x, const int& y, const uint32_t& value);
-};
-
-struct ImgF {
-  Dataf data;
-  Size size{};
-
-  /// \brief Returns the value at x, y.
-  /// \param x Coordinate x-value.
-  /// \param y Coordinate y-value.
-  /// \return The value at x, y.
-  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
-
-  void Set(const int& x, const int& y, const float& value);
 };
 
 // //////////////////////////////////////////
@@ -226,10 +258,15 @@ namespace detection {
 
 struct HLine {
   int dist, alpha;// Distance and line angle.
-  int count;
+  int sum;
 };
 
 using Hlines = std::vector<HLine>;
+
+/// \brief Detects the edges in the input image according to the Canny edge detection algorithm.
+/// \param im[in] The input image.
+/// \return Detected edges in a new image.
+Img CannyEdge(const Img& im);
 
 /// \brief Finds the local maximums of transform::HoughLines image.
 /// \param im The input image with line intersection votes.
