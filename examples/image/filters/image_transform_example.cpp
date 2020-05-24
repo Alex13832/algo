@@ -24,32 +24,21 @@ using namespace cv;
 
 void ProcessFilters()
 {
-  cv::Mat imgc = cv::imread("testfiles/road6.png");
+  cv::Mat imgc = cv::imread("testfiles/sudoku.png");
   cv::Mat img;
   cv::cvtColor(imgc, img, COLOR_BGR2GRAY);
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
+  im = detection::CannyEdge(im, 30, 91);
+  cv::Mat img2 = ImGrayToMat(im);
+  cv::imshow("Canny", img2);
 
-  Img imh = transform::HoughLines(im);
-  cv::Mat img3 = ImGrayToMat(imh);
-  cv::imshow("Hough", img3);
+  Lines lines{detection::DetectHoughLines(im, 45, 40)};
 
-  detection::Hlines hlines{detection::DetectHoughLines(imh, 30)};
-
-  for (const auto& line : hlines) {
-    double a = cos(line.alpha * M_PI / 180.0);
-    double b = sin(line.alpha * M_PI / 180.0);
-    double x = a * line.dist;
-    double y = b * line.dist;
-
-    int x1 = cvRound(x + 1000 * (-b));
-    int y1 = cvRound(y + 1000 * (a));
-    int x2 = cvRound(x - 1000 * (-b));
-    int y2 = cvRound(y - 1000 * (a));
-
-    cv::line(imgc, cv::Point{x1, y1}, cv::Point{x2, y2}, cv::Scalar{255, 255, 0}, 3);
+  for (const auto& line : lines) {
+    cv::line(imgc, cv::Point{line.p1.x, line.p1.y}, cv::Point{line.p2.x, line.p2.y}, cv::Scalar{255, 255, 0}, 2);
   }
 
   cv::imshow("Points", imgc);

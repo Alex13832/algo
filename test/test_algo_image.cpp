@@ -69,7 +69,7 @@ TEST(test_algo_image, test_integral_sum)
   Img im{data, Size{6, 6}};
   IntegralImage iimg{ImgToIntegralImage(im)};
 
-  uint32_t sm{IntegralBoxSum(iimg, Box{1, 2, 4, 3})};
+  uint32_t sm{IntegralBoxSum(iimg, Rectangle{1, 2, 4, 3})};
   EXPECT_EQ(sm, 111);
 }
 

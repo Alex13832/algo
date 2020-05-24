@@ -30,7 +30,7 @@ constexpr uint8_t Blue{2};
 using Data8 = std::vector<uint8_t>;  // For grayscale images.
 using Data32 = std::vector<uint32_t>;// For integral images.
 using Data8_3 = std::array<Data8, 3>;// For color images.
-using Dataf = std::vector<float>;
+using Dataf = std::vector<float>;    // For float images.
 
 struct Size {
   int rows, cols;
@@ -40,9 +40,15 @@ struct Point {
   int x, y;
 };
 
-struct Box {
+struct Rectangle {
   int x, y, width, height;
 };
+
+struct Line {
+  Point p1, p2;// Two points define a line in the xy-plane.
+};
+
+using Lines = std::vector<Line>;
 
 ///////////////////////////////////
 /// 32-bit image.
@@ -147,7 +153,7 @@ Img InvertPixels(const Img& im);
 //  Filters
 // //////////////////////////////////////////
 
-enum class FilterType {
+enum class KernelType {
   SOBEL_X,
   SOBEL_Y,
   EDGE_DETECT,
@@ -182,7 +188,7 @@ IntegralImage ImgToIntegralImage(const Img& im);
 /// \param pt_bl Point 3, bottom left.
 /// \param pt_br Point 4, bottom right.
 /// \return The sum.
-uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box);
+uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box);
 
 // //////////////////////////////////////////
 //  Convolutions
@@ -192,13 +198,13 @@ uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box);
 /// \param im Image to convolve.
 /// \param filter_type The filter to use, see FilterType.
 /// \return A grayscale image.
-Img Convolve(const Img& im, FilterType filter_type);
+Img Convolve(const Img& im, KernelType filter_type);
 
 /// \brief Performs convolution of color images.
 /// \param im The image.
 /// \param filter_type The filter to use, see Filtertype.
 /// \return A new color image.
-Img3 Convolve3(const Img3& im, FilterType filter_type);
+Img3 Convolve3(const Img3& im, KernelType filter_type);
 
 // //////////////////////////////////////////
 //  Median filters
@@ -266,13 +272,13 @@ using Hlines = std::vector<HLine>;
 /// \brief Detects the edges in the input image according to the Canny edge detection algorithm.
 /// \param im[in] The input image.
 /// \return Detected edges in a new image.
-Img CannyEdge(const Img& im);
+Img CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold_max = 91);
 
 /// \brief Finds the local maximums of transform::HoughLines image.
-/// \param im The input image with line intersection votes.
+/// \param im Canny edge image.
 /// \param n Number of lines to get.
 /// \return A list of lines.
-Hlines DetectHoughLines(const Img& im, const int& n);
+Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist = 30);
 
 }// namespace detection
 

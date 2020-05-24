@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <iostream>
 
 namespace algo::image {
 
@@ -134,7 +135,7 @@ IntegralImage ImgToIntegralImage(const Img& im)
   return img;
 }
 
-uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box)
+uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box)
 {
   return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1) - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
 }
@@ -145,61 +146,60 @@ uint32_t IntegralBoxSum(const IntegralImage& img, const Box& box)
 
 namespace {
 
-using Filter = std::array<float, 9>;
+using Kernel = std::array<float, 9>;
 
-constexpr Filter filter_sobel_x{-1.0 / 2.0, 0, 1.0 / 2.0, -2.0 / 2.0, 0, 2.0 / 2.0, -1.0 / 2.0, 0, 1.0 / 2.0};
-constexpr Filter filter_sobel_y{-1.0 / 2.0, -2.0 / 2.0, -1.0 / 2.0, 0, 0, 0, 1.0 / 2.0, 2.0 / 2.0, 1.0 / 2.0};
-constexpr Filter filter_edge{1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0};
-//constexpr Filter filter_edge{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Filter filter_smooth{1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 4.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0};
-constexpr Filter filter_sharp_agg{0, -1.0, 0, -1.0, 5.0, -1.0, 0, -1.0, 0};
-constexpr Filter filter_sharp_mod{-1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, 17.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0};
-constexpr Filter filter_gauss_blur{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 5.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
-constexpr Filter filter_blur_hard{1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0};
-constexpr Filter filter_blur_soft{0.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 1.0 / 2.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 0.0};
-constexpr Filter filter_emboss{-2.0, -1.0, 0.0, -1.0, 1.0, 1.0, 0.0, 1.0, 2.0};
-constexpr Filter filter_weighted{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
-constexpr Filter filter_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
-constexpr Filter filter_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
-constexpr Filter filter_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
-constexpr Filter filter_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Filter filter_nothing{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
+constexpr Kernel kernel_sobel_x{-1.0 / 2.0, 0, 1.0 / 2.0, -2.0 / 2.0, 0, 2.0 / 2.0, -1.0 / 2.0, 0, 1.0 / 2.0};
+constexpr Kernel kernel_sobel_y{-1.0 / 2.0, -2.0 / 2.0, -1.0 / 2.0, 0, 0, 0, 1.0 / 2.0, 2.0 / 2.0, 1.0 / 2.0};
+constexpr Kernel kernel_edge{1.0, 0.0, -1.0, 0.0, 0.0, 0.0, -1.0, 0.0, 1.0};
+constexpr Kernel kernel_smooth{1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 4.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0, 2.0 / 13.0, 1.0 / 13.0};
+constexpr Kernel kernel_sharp_agg{0, -1.0, 0, -1.0, 5.0, -1.0, 0, -1.0, 0};
+constexpr Kernel kernel_sharp_mod{-1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, 17.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0, -1.0 / 9.0};
+constexpr Kernel kernel_gauss_blur{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 5.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
+constexpr Kernel kernel_blur_hard{1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0, 1.0 / 9.0};
+constexpr Kernel kernel_blur_soft{0.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 1.0 / 2.0, 1.0 / 8.0, 0.0, 1.0 / 8.0, 0.0};
+constexpr Kernel kernel_emboss{-2.0, -1.0, 0.0, -1.0, 1.0, 1.0, 0.0, 1.0, 2.0};
+constexpr Kernel kernel_weighted{1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 4.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0, 2.0 / 16.0, 1.0 / 16.0};
+constexpr Kernel kernel_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
+constexpr Kernel kernel_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
+constexpr Kernel kernel_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
+constexpr Kernel kernel_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
+constexpr Kernel kernel_nothing{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
 
-Filter GetFilter(const FilterType& filter_type)
+Kernel GetKernel(const KernelType& filter_type)
 {
   switch (filter_type) {
-    case FilterType::SOBEL_X:
-      return filter_sobel_x;
-    case FilterType::SOBEL_Y:
-      return filter_sobel_y;
-    case FilterType::EDGE_DETECT:
-      return filter_edge;
-    case FilterType::SMOOTHING:
-      return filter_smooth;
-    case FilterType::SHARPEN_MODEST:
-      return filter_sharp_mod;
-    case FilterType::SHARPEN_AGGRESSIVE:
-      return filter_sharp_agg;
-    case FilterType::GAUSSIAN_BLUR:
-      return filter_gauss_blur;
-    case FilterType::BLUR_HARD:
-      return filter_blur_hard;
-    case FilterType::BLUR_SOFT:
-      return filter_blur_soft;
-    case FilterType::EMBOSS:
-      return filter_emboss;
-    case FilterType::WEIGHTED_AVERAGE:
-      return filter_weighted;
-    case FilterType::DILATION_VERTICAL:
-      return filter_dilation_v;
-    case FilterType::DILATION_HORIZONTAL:
-      return filter_dilation_h;
-    case FilterType::DILATION:
-      return filter_dilation;
-    case FilterType::HIGH_PASS:
-      return filter_high_pass;
+    case KernelType::SOBEL_X:
+      return kernel_sobel_x;
+    case KernelType::SOBEL_Y:
+      return kernel_sobel_y;
+    case KernelType::EDGE_DETECT:
+      return kernel_edge;
+    case KernelType::SMOOTHING:
+      return kernel_smooth;
+    case KernelType::SHARPEN_MODEST:
+      return kernel_sharp_mod;
+    case KernelType::SHARPEN_AGGRESSIVE:
+      return kernel_sharp_agg;
+    case KernelType::GAUSSIAN_BLUR:
+      return kernel_gauss_blur;
+    case KernelType::BLUR_HARD:
+      return kernel_blur_hard;
+    case KernelType::BLUR_SOFT:
+      return kernel_blur_soft;
+    case KernelType::EMBOSS:
+      return kernel_emboss;
+    case KernelType::WEIGHTED_AVERAGE:
+      return kernel_weighted;
+    case KernelType::DILATION_VERTICAL:
+      return kernel_dilation_v;
+    case KernelType::DILATION_HORIZONTAL:
+      return kernel_dilation_h;
+    case KernelType::DILATION:
+      return kernel_dilation;
+    case KernelType::HIGH_PASS:
+      return kernel_high_pass;
   }
-  return filter_nothing;
+  return kernel_nothing;
 }
 
 }// namespace
@@ -208,10 +208,10 @@ Filter GetFilter(const FilterType& filter_type)
 /// Convolutions
 /////////////////////////////////////////////
 
-Data8 ConvolvePriv(const Data8& im, size_t rows, size_t cols, FilterType filter_type)
+Data8 ConvolvePriv(const Data8& im, size_t rows, size_t cols, KernelType filter_type)
 {
   Data8 res(im.size(), 0);
-  const Filter filter{GetFilter(filter_type)};
+  const Kernel filter{GetKernel(filter_type)};
   uint8_t dim{3U};
   uint8_t sz{static_cast<uint8_t>(dim >> 1U)};
 
@@ -237,14 +237,14 @@ Data8 ConvolvePriv(const Data8& im, size_t rows, size_t cols, FilterType filter_
   return res;
 }
 
-Img Convolve(const Img& im, FilterType filter_type)
+Img Convolve(const Img& im, KernelType filter_type)
 {
   Img res{im};
   res.data = ConvolvePriv(res.data, im.size.rows, im.size.cols, filter_type);
   return res;
 }
 
-Img3 Convolve3(const Img3& im, FilterType filter_type)
+Img3 Convolve3(const Img3& im, KernelType filter_type)
 {
   Img3 res{im};
   res.data[Red] = ConvolvePriv(res.data[Red], im.size.rows, im.size.cols, filter_type);
@@ -330,7 +330,7 @@ Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
   for (int x = kMargin; x < im.size.cols - kMargin; x++) {
     for (int y = kMargin; y < img.size.rows - kMargin; y++) {
 
-      Box box{x - kMargin, y - kMargin, region_size, region_size};
+      Rectangle box{x - kMargin, y - kMargin, region_size, region_size};
       uint32_t box_sum{IntegralBoxSum(img, box)};
       uint32_t avg = box_sum / (region_size * region_size);
 
@@ -366,19 +366,18 @@ Img HoughLines(const Img& im)
 
   const int kDMax = std::sqrt(n_cols * n_cols + n_rows * n_rows);
   const int kAlphaMax{360};
-
-  // Run through edge detector
-  Img img{detection::CannyEdge(im)};
+  // All white from start.
   Img himg{Data8(kDMax * kAlphaMax, 255), Size{kDMax, kAlphaMax}};
 
   auto d_comp2 = [n_cols, n_rows](auto x, auto y, auto alpha) {
     return x * std::cos(alpha * M_PI / 180.0) + y * std::sin(alpha * M_PI / 180.0);
   };
 
-  for (int x = 0; x < im.size.cols; x++) {
-    for (int y = 0; y < im.size.rows; y++) {
+  // Run through edge detector
+  for (int x = 0; x < n_cols; x++) {
+    for (int y = 0; y < n_rows; y++) {
 
-      if (img.At(x, y) == 0) continue;
+      if (im.At(x, y) == 0) continue;// Not an edge-pixel.
 
       for (int alpha = 0; alpha < kAlphaMax; alpha++) {
         auto d = d_comp2(x, y, alpha);
@@ -389,7 +388,7 @@ Img HoughLines(const Img& im)
     }
   }
 
-  return InvertPixels(himg);
+  return InvertPixels(himg);// Better for finding maximums.
 }
 
 }// namespace transform
@@ -404,34 +403,29 @@ namespace detection {
 /// Canny
 ///////////////////////////////////
 
-Img CannyEdge(const Img& im)
+Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
 {
-  int threshold_min{31};//31
-  int threshold_max{91};//91
-  int n_pixels{im.size.rows * im.size.cols};
+  const int kNPixels{im.size.rows * im.size.cols};
   // Smooth with Gaussian kernel
-  Img img{Convolve(im, FilterType::GAUSSIAN_BLUR)};
+  Img img{Convolve(im, KernelType::GAUSSIAN_BLUR)};
   // Intensity gradients
-  Img gx{Convolve(im, FilterType::SOBEL_X)};
-  Img gy{Convolve(im, FilterType::SOBEL_Y)};
+  Img gx{Convolve(img, KernelType::SOBEL_X)};
+  Img gy{Convolve(img, KernelType::SOBEL_Y)};
 
   // Magnitude
   Img gm{im};
-  Img th{Data8(n_pixels, 0), im.size};
+  Img th{Data8(kNPixels, 0), im.size};
 
-  for (int i = 0; i < n_pixels; i++) {
+  for (int i = 0; i < kNPixels; i++) {
     gm[i] = std::hypot(gx[i], gy[i]);
     double theta = std::atan2(gy[i], gx[i]) * 180 / M_PI;
     // Round theta to 135, 90, 45 or 0.
-    th[i] = 135;
-    if (theta < (135.0 + 90.0) / 2.0) th[i] = 90;
-    if (theta < (90.0 + 45.0) / 2.0) th[i] = 45;
-    if (theta < (45.0 / 2.0)) th[i] = 0;
+    th[i] = static_cast<int>(std::round(theta * (5.0 / M_PI) + 5)) % 5;
   }
 
   // Non-maximum suppression
   Img np{gm};
-  Img thr_edges{Data8(n_pixels, 0), im.size};
+  Img thr_edges{Data8(kNPixels, 0), im.size};
 
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
@@ -474,10 +468,10 @@ Img CannyEdge(const Img& im)
   }
 
   // Tracking by hysteresis
-  Img res{Data8(n_pixels, 0), im.size};
+  Img res{Data8(kNPixels, 0), im.size};
 
-  for (int x = 0; x < img.size.cols; x++) {
-    for (int y = 0; y < img.size.rows; y++) {
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
 
       if (thr_edges.At(x, y) == 0) continue;
 
@@ -507,24 +501,53 @@ struct h_comp {
   }
 } h_comp;
 
-Hlines DetectHoughLines(const Img& im, const int& n)
+Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist)
 {
   Hlines all_lines;
+  const Img imh{transform::HoughLines(im)};
 
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
-      HLine line{y, x, im.At(x, y)};
+      if (imh.At(x, y) == 0) continue;
+
+      HLine line{y, x, imh.At(x, y)};
+
+      if (line.dist < min_line_dist) continue;
+
       all_lines.emplace_back(line);
     }
   }
 
   std::sort(all_lines.begin(), all_lines.end(), h_comp);
-  Hlines lines;
-  std::copy_n(all_lines.begin(), n, std::back_inserter(lines));
+  Hlines hlines;
+
+  if (n < all_lines.size()) {
+    std::copy_n(all_lines.begin(), n, std::back_inserter(hlines));
+  } else {
+    hlines = all_lines;
+  }
+
+  Lines lines;
+  // Convert to coordinates in the xy-plane.
+  // https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html#code
+  for (const auto& line : hlines) {
+    const double a{cos(line.alpha * M_PI / 180.0)};
+    const double b{sin(line.alpha * M_PI / 180.0)};
+    const double x{a * line.dist};
+    const double y{b * line.dist};
+    // Lines don't have end-points.
+    const int x1{static_cast<int>(round(x + 10000 * (-b)))};
+    const int y1{static_cast<int>(round(y + 10000 * (a)))};
+    const int x2{static_cast<int>(round(x - 10000 * (-b)))};
+    const int y2{static_cast<int>(round(y - 10000 * (a)))};
+
+    Line line1{Point{x1, y1}, Point{x2, y2}};
+    lines.emplace_back(line1);
+  }
 
   return lines;
 }
 
-};// namespace detection
+}// namespace detection
 
 }//namespace algo::image

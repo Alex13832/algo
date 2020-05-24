@@ -20,22 +20,22 @@ void ProcessFilters()
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
-  std::map<string, FilterType> filters = {
-      {"Sobel x", FilterType::SOBEL_X},
-      {"Sobel y", FilterType::SOBEL_Y},
-      {"Edge detect", FilterType::EDGE_DETECT},
-      {"Smoothing", FilterType::SMOOTHING},
-      {"Modest sharp", FilterType::SHARPEN_MODEST},
-      {"Aggressive sharp", FilterType::SHARPEN_AGGRESSIVE},
-      {"Gaussian blur", FilterType::GAUSSIAN_BLUR},
-      {"Hard blur", FilterType::BLUR_HARD},
-      {"Soft blur", FilterType::BLUR_SOFT},
-      {"High pass", FilterType::HIGH_PASS},
-      {"Emboss", FilterType::EMBOSS},
-      {"Weighted average", FilterType::WEIGHTED_AVERAGE},
-      {"Vertical dilation", FilterType::DILATION_VERTICAL},
-      {"Horizontal dilation", FilterType::DILATION_HORIZONTAL},
-      {"XY Dilation", FilterType::DILATION}};
+  std::map<string, KernelType> filters = {
+      {"Sobel x", KernelType::SOBEL_X},
+      {"Sobel y", KernelType::SOBEL_Y},
+      {"Edge detect", KernelType::EDGE_DETECT},
+      {"Smoothing", KernelType::SMOOTHING},
+      {"Modest sharp", KernelType::SHARPEN_MODEST},
+      {"Aggressive sharp", KernelType::SHARPEN_AGGRESSIVE},
+      {"Gaussian blur", KernelType::GAUSSIAN_BLUR},
+      {"Hard blur", KernelType::BLUR_HARD},
+      {"Soft blur", KernelType::BLUR_SOFT},
+      {"High pass", KernelType::HIGH_PASS},
+      {"Emboss", KernelType::EMBOSS},
+      {"Weighted average", KernelType::WEIGHTED_AVERAGE},
+      {"Vertical dilation", KernelType::DILATION_VERTICAL},
+      {"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
+      {"XY Dilation", KernelType::DILATION}};
 
   for (auto const& filter : filters) {
     Img im{MatToVec(img)};
@@ -53,22 +53,22 @@ void ProcessFiltersColor()
   img.convertTo(img, CV_8UC3);
   cv::imshow("Original", img);
 
-  std::map<string, FilterType> filters = {
-      {"Sobel x", FilterType::SOBEL_X},
-      {"Sobel y", FilterType::SOBEL_Y},
-      {"Edge detect", FilterType::EDGE_DETECT},
-      {"Smoothing", FilterType::SMOOTHING},
-      {"Modest sharp", FilterType::SHARPEN_MODEST},
-      {"Aggressive sharp", FilterType::SHARPEN_AGGRESSIVE},
-      {"Gaussian blur", FilterType::GAUSSIAN_BLUR},
-      {"Hard blur", FilterType::BLUR_HARD},
-      {"Soft blur", FilterType::BLUR_SOFT},
-      {"High pass", FilterType::HIGH_PASS},
-      {"Emboss", FilterType::EMBOSS},
-      {"Weighted average", FilterType::WEIGHTED_AVERAGE},
-      {"Vertical dilation", FilterType::DILATION_VERTICAL},
-      {"Horizontal dilation", FilterType::DILATION_HORIZONTAL},
-      {"XY Dilation", FilterType::DILATION}};
+  std::map<string, KernelType> filters = {
+      {"Sobel x", KernelType::SOBEL_X},
+      {"Sobel y", KernelType::SOBEL_Y},
+      {"Edge detect", KernelType::EDGE_DETECT},
+      {"Smoothing", KernelType::SMOOTHING},
+      {"Modest sharp", KernelType::SHARPEN_MODEST},
+      {"Aggressive sharp", KernelType::SHARPEN_AGGRESSIVE},
+      {"Gaussian blur", KernelType::GAUSSIAN_BLUR},
+      {"Hard blur", KernelType::BLUR_HARD},
+      {"Soft blur", KernelType::BLUR_SOFT},
+      {"High pass", KernelType::HIGH_PASS},
+      {"Emboss", KernelType::EMBOSS},
+      {"Weighted average", KernelType::WEIGHTED_AVERAGE},
+      {"Vertical dilation", KernelType::DILATION_VERTICAL},
+      {"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
+      {"XY Dilation", KernelType::DILATION}};
 
   for (auto const& filter : filters) {
     Img3 im{Mat3ToVec(img)};
