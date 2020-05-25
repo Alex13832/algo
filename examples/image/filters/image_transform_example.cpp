@@ -23,18 +23,18 @@ using namespace cv;
 
 void ProcessFilters()
 {
-  cv::Mat imgc = cv::imread("testfiles/sudoku.png");
+  cv::Mat imgc = cv::imread("testfiles/road.png");
   cv::Mat img;
   cv::cvtColor(imgc, img, COLOR_BGR2GRAY);
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
-  im = detection::CannyEdge(im, 30, 91);
+  im = detection::CannyEdge(im, 30, 90);
   cv::Mat img2 = ImGrayToMat(im);
   cv::imshow("Canny", img2);
 
-  Lines lines{detection::DetectHoughLines(im, 45, 40)};
+  Lines lines{detection::DetectHoughLines(im, 3, 10)};
 
   for (const auto& line : lines) {
     cv::line(imgc, cv::Point{line.p1.x, line.p1.y}, cv::Point{line.p2.x, line.p2.y}, cv::Scalar{255, 255, 0}, 2);

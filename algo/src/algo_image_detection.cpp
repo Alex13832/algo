@@ -24,8 +24,8 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
   // Smooth with Gaussian kernel
   Img img{Convolve(im, KernelType::GAUSSIAN_BLUR)};
   // Intensity gradients
-  Img gx{Convolve(img, KernelType::SOBEL_X)};
-  Img gy{Convolve(img, KernelType::SOBEL_Y)};
+  Img gx{Convolve(im, KernelType::SOBEL_X)};
+  Img gy{Convolve(im, KernelType::SOBEL_Y)};
 
   // Magnitude
   Img gm{im};
@@ -52,27 +52,23 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
       int dir{th.At(x, y) % 4};
       int n{np.At(x, y)};
       // Check neighbors.
-      if (dir == 0) {// Horizontal
-        if (n < gm.At(x - 1, y) || n < gm.At(x + 1, y)) {
-          np.Set(x, y, 0);
-        }
+      // Horizontal
+      if (dir == 0 && (n < gm.At(x - 1, y) || n < gm.At(x + 1, y))) {
+        np.Set(x, y, 0);
       }
-      if (dir == 1) {// Diagonal
-        if (n < gm.At(x + 1, y - 1) || n < gm.At(x - 1, y + 1)) {
-          np.Set(x, y, 0);
-        }
+      // Diagonal
+      if (dir == 1 && (n < gm.At(x + 1, y - 1) || n < gm.At(x - 1, y + 1))) {
+        np.Set(x, y, 0);
       }
-      if (dir == 2) {// Vertical
-        if (n < gm.At(x, y - 1) || n < gm.At(x, y + 1)) {
-          np.Set(x, y, 0);
-        }
+      // Vertical
+      if (dir == 2 && (n < gm.At(x, y - 1) || n < gm.At(x, y + 1))) {
+        np.Set(x, y, 0);
       }
-      if (dir == 3) {// Diagonal
-        if (n < gm.At(x - 1, y - 1) || n < gm.At(x + 1, y + 1)) {
-          np.Set(x, y, 0);
-        }
+      // Diagonal
+      if (dir == 3 && (n < gm.At(x - 1, y - 1) || n < gm.At(x + 1, y + 1))) {
+        np.Set(x, y, 0);
       }
-      // Keep edges > threshold_max
+      // Give each p(x,y) +1 if over thresholds.
       if (np.At(x, y) > threshold_max) {
         thr_edges.Set(x, y, 1);
       }
@@ -92,10 +88,11 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
 
       if (thr_edges.At(x, y) == 2) {
         res.Set(x, y, 255);
+        continue;
       }
 
       if (thr_edges.At(x, y) == 1) {
-
+        // There's a strong edge in the 8-neighborhood of x,y
         if (thr_edges.At(x - 1, y - 1) == 2
             || thr_edges.At(x, y - 1) == 2
             || thr_edges.At(x + 1, y - 1) == 2
@@ -110,7 +107,8 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
       }
     }
   }
-
+  // Simple improvement.
+  res = Convolve(res, KernelType::EMBOSS);// WEIGHTED_AVERAGE is ok.
   return res;
 }
 
@@ -125,17 +123,20 @@ struct h_comp {
   }
 } h_comp;
 
+namespace {
+constexpr int kMaxNbrLines{1000};
+}// namespace
+
 Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist)
 {
   Hlines all_lines;
-  const Img imh{transform::HoughLines(im)};
+  Img imh{transform::HoughLines(im)};
 
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
       if (imh.At(x, y) == 0) continue;
 
-      HLine line{y, x, imh.At(x, y)};
-
+      HLine line{y, x % 360, imh.At(x, y)};
       if (line.dist < min_line_dist) continue;
 
       all_lines.emplace_back(line);
@@ -143,13 +144,34 @@ Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist)
   }
 
   std::sort(all_lines.begin(), all_lines.end(), h_comp);
-  Hlines hlines;
+  // "Calibrated" minimum distance between points in the alpha-d-plane.
+  const double kDistThr{5.84413e-05 * im.size.cols * im.size.rows};
 
-  if (n < all_lines.size()) {
-    std::copy_n(all_lines.begin(), n, std::back_inserter(hlines));
-  } else {
-    hlines = all_lines;
+  std::vector<bool> skips(std::min(kMaxNbrLines, static_cast<int>(all_lines.size())), false);
+  // Lambda for computing distance in alpha-d-plane
+  auto dist = [](HLine line1, HLine line2) {
+    return std::sqrt(std::pow(line1.dist - line2.dist, 2)
+                     + std::pow(line1.alpha - line2.alpha, 2));
+  };
+
+  for (size_t i = 0; i < skips.size(); i++) {
+    for (size_t j = i + 1; j < skips.size(); j++) {
+      const double kDaDist{dist(all_lines[i], all_lines[j])};
+
+      if (kDaDist < kDistThr) {
+        skips[j] = true;
+      }
+    }
   }
+
+  Hlines filtered;
+  for (size_t i = 0; i < skips.size(); i++) {
+    if (!skips[i]) {
+      filtered.emplace_back(all_lines[i]);
+    }
+  }
+
+  Hlines hlines(filtered.begin(), filtered.begin() + std::min(n, static_cast<int>(filtered.size())));
 
   Lines lines;
   // Convert to coordinates in the xy-plane.
