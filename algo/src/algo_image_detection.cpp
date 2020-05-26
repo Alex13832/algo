@@ -12,7 +12,7 @@
 #include "algo_image_filter.hpp"
 #include "algo_image_transform.hpp"
 
-namespace algo::image::detection {
+namespace algo::image::detect {
 
 /////////////////////////////////////////////
 /// Canny
@@ -107,8 +107,7 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
       }
     }
   }
-  // Simple improvement.
-  res = Convolve(res, KernelType::EMBOSS);// WEIGHTED_AVERAGE is ok.
+
   return res;
 }
 
@@ -127,10 +126,12 @@ namespace {
 constexpr int kMaxNbrLines{1000};
 }// namespace
 
-Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist)
+Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
 {
   Hlines all_lines;
-  Img imh{transform::HoughLines(im)};
+  // Simple improvement.
+  Img imh{Convolve(im, KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.
+  imh = transform::HoughLines(imh);
 
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
@@ -194,4 +195,4 @@ Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist)
   return lines;
 }
 
-}// namespace algo::image::detection
+}// namespace algo::image::detect

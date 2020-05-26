@@ -14,7 +14,7 @@
 
 #include "algo_image_basic.hpp"
 
-namespace algo::image::detection {
+namespace algo::image::detect {
 
 struct HLine {
   int dist, alpha;// Distance and line angle.
@@ -33,7 +33,7 @@ Img CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold
 /// \param im Canny edge image.
 /// \param n Number of lines to get.
 /// \return A list of lines.
-Lines DetectHoughLines(const Img& im, const int& n, const int& min_line_dist = 30);
+Lines LinesHough(const Img& im, const int& n, const int& min_line_dist = 30);
 
 }// namespace algo::image::detection
 
