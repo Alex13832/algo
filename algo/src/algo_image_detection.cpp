@@ -130,7 +130,7 @@ constexpr auto DistComp = [](HLine l1, HLine l2) {
 };
 }// namespace
 
-Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
+Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep)
 {
   // Simple improvement.
   Img imh{Convolve(im, KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.
@@ -145,14 +145,12 @@ Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
   }
 
   std::sort(all_lines.begin(), all_lines.end(), h_comp);
-  // "Calibrated" minimum distance between points in the alpha-d-plane.
-  const double kDistThr{5.84413e-05 * im.size.cols * im.size.rows};
   std::vector<bool> skips(std::min(kMaxNbrLines, static_cast<int>(all_lines.size())), false);
 
   // Filter lines that are too close
   for (size_t i = 0; i < skips.size(); i++) {
     for (size_t j = i + 1; j < skips.size(); j++) {
-      if (DistComp(all_lines[i], all_lines[j]) < kDistThr) {
+      if (DistComp(all_lines[i], all_lines[j]) < min_line_sep) {
         skips[j] = true;
       }
     }

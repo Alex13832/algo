@@ -5,7 +5,8 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2020-05-23 Hough transform
+/// 2020-05-19 Hough lines transform
+/// 2020-05-26 Hough circles transform
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_IMAGE_TRANSFORM_HPP_

@@ -14,38 +14,38 @@
 namespace algo::image::transform {
 
 /////////////////////////////////////////////
-/// Hough transform
+/// Hough lines transform
 /////////////////////////////////////////////
+
+namespace {
+// For computing d
+constexpr auto LineFunc = [](auto x, auto y, auto alpha) {
+  return x * std::cos(alpha * M_PI / 180.0) + y * std::sin(alpha * M_PI / 180.0);
+};
+}// namespace
 
 Img HoughLines(const Img& im)
 {
-  int n_rows{im.size.rows};
-  int n_cols{im.size.cols};
-
-  const int kDMax = std::sqrt(n_cols * n_cols + n_rows * n_rows);
+  const int kNRows{im.size.rows};
+  const int kNCols{im.size.cols};
+  const int kDMax = std::sqrt(kNCols * kNCols + kNRows * kNRows);
   const int kAlphaMax{360};
   // All white from start.
   Img himg{Data8(kDMax * kAlphaMax, 255), Size{kDMax, kAlphaMax}};
 
-  auto d_comp2 = [n_cols, n_rows](auto x, auto y, auto alpha) {
-    return x * std::cos(alpha * M_PI / 180.0) + y * std::sin(alpha * M_PI / 180.0);
-  };
-
   // Run through edge detector
-  for (int x = 0; x < n_cols; x++) {
-    for (int y = 0; y < n_rows; y++) {
-
+  for (int x = 0; x < kNCols; x++) {
+    for (int y = 0; y < kNRows; y++) {
       if (im.At(x, y) == 0) continue;// Not an edge-pixel.
 
       for (int alpha = 0; alpha < kAlphaMax; alpha++) {
-        auto d = d_comp2(x, y, alpha);
+        auto d = LineFunc(x, y, alpha);
         if (himg.At(alpha, d) > 0) {
           himg.Set(alpha, d, himg.At(alpha, d) - 1);// Vote
         }
       }
     }
   }
-
   return InvertPixels(himg);// Better for finding maximums.
 }
 

@@ -17,12 +17,12 @@ using namespace cv;
 
 constexpr int kThreshMin{30};
 constexpr int kTreshMax{90};
-constexpr int kNbrLines{22};
-constexpr int kMinLineDist{10};
+constexpr int kNbrLines{7};
+constexpr int kMinLineDist{5};
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"testfiles/sudoku.png"};
+  const std::string kFileName{"testfiles/road7.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -35,7 +35,7 @@ int main(int argc, char** argv)
   cv::Mat img2 = ImGrayToMat(im);
   cv::imshow("Canny", img2);
 
-  Lines lines{detect::LinesHough(im, kNbrLines, kMinLineDist)};
+  Lines lines{detect::LinesHough(im, kNbrLines, kMinLineDist, 10)};
 
   for (const auto& line : lines) {
     cv::line(imgc, cv::Point{line.p1.x, line.p1.y}, cv::Point{line.p2.x, line.p2.y}, cv::Scalar{255, 255, 0}, 2);
