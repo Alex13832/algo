@@ -30,10 +30,10 @@ Img CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold
 
 /// \brief Finds the local maximums of transform::HoughLines image.
 /// \note For best results, use a Canny edge detector on the input image.
-/// \param im Canny edge image.
-/// \param n Number of lines to get.
+/// \param l1 Canny edge image.
+/// \param l2 Number of lines to get.
 /// \return A list of lines.
-Lines LinesHough(const Img& im, const int& n, const int& min_line_dist = 30);
+Lines LinesHough(const Img& l1, const int& l2, const int& min_line_dist = 30);
 
 }// namespace algo::image::detection
 

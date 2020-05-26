@@ -124,42 +124,35 @@ struct h_comp {
 
 namespace {
 constexpr int kMaxNbrLines{1000};
+// Lambda for computing distance in alpha-d-plane
+constexpr auto DistComp = [](HLine l1, HLine l2) {
+  return std::sqrt(std::pow(l1.dist - l2.dist, 2) + std::pow(l1.alpha - l2.alpha, 2));
+};
 }// namespace
 
 Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
 {
-  Hlines all_lines;
   // Simple improvement.
   Img imh{Convolve(im, KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.
   imh = transform::HoughLines(imh);
+  Hlines all_lines;
 
-  for (int x = 0; x < im.size.cols; x++) {
-    for (int y = 0; y < im.size.rows; y++) {
-      if (imh.At(x, y) == 0) continue;
-
-      HLine line{y, x % 360, imh.At(x, y)};
-      if (line.dist < min_line_dist) continue;
-
-      all_lines.emplace_back(line);
+  for (int alpha = 0; alpha < im.size.cols; alpha++) {
+    for (int d = 0; d < im.size.rows; d++) {
+      if (imh.At(alpha, d) == 0 || d < min_line_dist) continue;
+      all_lines.emplace_back(HLine{d, alpha % 360, imh.At(alpha, d)});
     }
   }
 
   std::sort(all_lines.begin(), all_lines.end(), h_comp);
   // "Calibrated" minimum distance between points in the alpha-d-plane.
   const double kDistThr{5.84413e-05 * im.size.cols * im.size.rows};
-
   std::vector<bool> skips(std::min(kMaxNbrLines, static_cast<int>(all_lines.size())), false);
-  // Lambda for computing distance in alpha-d-plane
-  auto dist = [](HLine line1, HLine line2) {
-    return std::sqrt(std::pow(line1.dist - line2.dist, 2)
-                     + std::pow(line1.alpha - line2.alpha, 2));
-  };
 
+  // Filter lines that are too close
   for (size_t i = 0; i < skips.size(); i++) {
     for (size_t j = i + 1; j < skips.size(); j++) {
-      const double kDaDist{dist(all_lines[i], all_lines[j])};
-
-      if (kDaDist < kDistThr) {
+      if (DistComp(all_lines[i], all_lines[j]) < kDistThr) {
         skips[j] = true;
       }
     }
@@ -173,7 +166,6 @@ Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
   }
 
   Hlines hlines(filtered.begin(), filtered.begin() + std::min(n, static_cast<int>(filtered.size())));
-
   Lines lines;
   // Convert to coordinates in the xy-plane.
   // https://docs.opencv.org/2.4/doc/tutorials/imgproc/imgtrans/hough_lines/hough_lines.html#code
@@ -191,8 +183,11 @@ Lines LinesHough(const Img& im, const int& n, const int& min_line_dist)
     Line line1{Point{x1, y1}, Point{x2, y2}};
     lines.emplace_back(line1);
   }
-
   return lines;
 }
+
+/////////////////////////////////////////////
+/// Hough circles
+/////////////////////////////////////////////
 
 }// namespace algo::image::detect

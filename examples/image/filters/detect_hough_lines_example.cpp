@@ -17,12 +17,12 @@ using namespace cv;
 
 constexpr int kThreshMin{30};
 constexpr int kTreshMax{90};
-constexpr int kNbrLines{6};
+constexpr int kNbrLines{22};
 constexpr int kMinLineDist{10};
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"testfiles/road6.png"};
+  const std::string kFileName{"testfiles/sudoku.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
