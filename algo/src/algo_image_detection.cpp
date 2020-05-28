@@ -8,6 +8,7 @@
 #include "algo_image_detection.hpp"
 
 #include <cmath>
+#include <iostream>
 
 #include "algo_image_filter.hpp"
 #include "algo_image_transform.hpp"
@@ -185,7 +186,62 @@ Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const in
 }
 
 /////////////////////////////////////////////
-/// Hough circles
+/// Corner detection
 /////////////////////////////////////////////
+
+namespace {
+/// \brief Checks the 8-neighborhood if the other values are less than loc_m, the center value.
+constexpr auto CheckNeighborhood = [](const std::vector<double>& R, auto n_cols, auto x, auto y, auto loc_m) {
+  return (R[(y - 1) * n_cols + x - 1] < loc_m)
+      || (R[y * n_cols + (x - 1)] < loc_m)
+      || (R[(y + 1) * n_cols + (x - 1)] < loc_m)
+      || (R[(y - 1) * n_cols + x] < loc_m)
+      || (R[(y + 1) * n_cols + x] < loc_m)
+      || (R[(y - 1) * n_cols + (x + 1)] < loc_m)
+      || (R[y * n_cols + x + 1] < loc_m)
+      || (R[(y + 1) * n_cols + (x + 1)] < loc_m);
+};
+
+}// namespace
+
+Points CornersHarris(const Img& im, const int& threshold)
+{
+  // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
+  // Blur and compute compute derivatives
+  const Img G{Convolve(im, KernelType::GAUSSIAN_BLUR)};
+  const Img Ix{Convolve(G, KernelType::SOBEL_X)};
+  const Img Iy{Convolve(G, KernelType::SOBEL_Y)};
+
+  const int kNCols{im.size.cols};
+  const int kNRows{im.size.rows};
+
+  Points points;
+  std::vector<double> r_val(kNCols * kNRows, 0.0);
+
+  for (int x = 0; x < kNCols; x++) {
+    for (int y = 0; y < kNRows; y++) {
+      const int eig1{Ix.At(x, y) * Ix.At(x, y)};
+      const int eig2{Iy.At(x, y) * Iy.At(x, y)};
+      const double m = eig1 * eig2 - 0.05 * (eig1 + eig2) * (eig1 + eig2);
+
+      if (m > threshold) {
+        r_val[y * kNCols + x] = m;
+        points.emplace_back(Point{x, y});
+      }
+    }
+  }
+
+  Points final_points;
+  for (const auto& pt : points) {
+    if (pt.x == 0 || pt.y == 0 || pt.x == kNCols || pt.y == kNRows) continue;
+
+    double loc_m{r_val[pt.y * kNCols + pt.y]};
+    // If weak neighbor found, don't include current point(x,y) in result.
+    if (!CheckNeighborhood(r_val, kNCols, pt.x, pt.y, loc_m)) {
+      final_points.emplace_back(pt);
+    }
+  }
+  return final_points;
+}
 
 }// namespace algo::image::detect

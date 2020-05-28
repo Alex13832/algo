@@ -25,28 +25,29 @@ constexpr uint8_t Red{0};
 constexpr uint8_t Green{1};
 constexpr uint8_t Blue{2};
 
-using Data8 = std::vector<uint8_t>;  // For grayscale images.
-using Data32 = std::vector<uint32_t>;// For integral images.
-using Data8_3 = std::array<Data8, 3>;// For color images.
-using Dataf = std::vector<float>;    // For float images.
-
-struct Size {
-  int rows, cols;
-};
-
 struct Point {
   int x, y;
-};
-
-struct Rectangle {
-  int x, y, width, height;
 };
 
 struct Line {
   Point p1, p2;// Two points define a line in the xy-plane.
 };
 
+struct Size {
+  int rows, cols;
+};
+
+struct Rectangle {
+  int x, y, width, height;
+};
+
+using Data8 = std::vector<uint8_t>;  // For grayscale images.
+using Data32 = std::vector<uint32_t>;// For integral images.
+using Data8_3 = std::array<Data8, 3>;// For color images.
+using Dataf = std::vector<float>;    // For float images.
+
 using Lines = std::vector<Line>;
+using Points = std::vector<Point>;
 
 // //////////////////////////////////////////
 //  Image types
