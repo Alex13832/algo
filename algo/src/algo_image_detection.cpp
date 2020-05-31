@@ -201,16 +201,19 @@ constexpr auto CheckNeighborhood = [](const std::vector<double>& R, auto n_cols,
       || (R[y * n_cols + x + 1] < loc_m)
       || (R[(y + 1) * n_cols + (x + 1)] < loc_m);
 };
+/// \brief Computes the Euclidean distance between pt1 and pt2.
+constexpr auto EuclideanDist = [](const Point pt1, const Point pt2) {
+  return std::sqrt(std::pow(pt1.x - pt2.x, 2) + std::pow(pt1.y - pt2.y, 2));
+};
 
 }// namespace
 
-Points CornersHarris(const Img& im, const int& threshold)
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type)
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
-  // Blur and compute compute derivatives
-  const Img G{Convolve(im, KernelType::GAUSSIAN_BLUR)};
-  const Img Ix{Convolve(G, KernelType::SOBEL_X)};
-  const Img Iy{Convolve(G, KernelType::SOBEL_Y)};
+  // Compute derivatives
+  const Img Ix{Convolve(im, KernelType::SOBEL_X)};
+  const Img Iy{Convolve(im, KernelType::SOBEL_Y)};
 
   const int kNCols{im.size.cols};
   const int kNRows{im.size.rows};
@@ -224,24 +227,29 @@ Points CornersHarris(const Img& im, const int& threshold)
       const int eig2{Iy.At(x, y) * Iy.At(x, y)};
       const double m = eig1 * eig2 - 0.05 * (eig1 + eig2) * (eig1 + eig2);
 
-      if (m > threshold) {
+      if (det_type == CornerDetType::kHarris && m > threshold) {
+        // Handle Harris corner detector type
+        r_val[y * kNCols + x] = m;
+        points.emplace_back(Point{x, y});
+      } else if (det_type == CornerDetType::kShiTomasi && std::min(eig1, eig2) > threshold) {
+        // Handle Shi-Tomas corner detector type
         r_val[y * kNCols + x] = m;
         points.emplace_back(Point{x, y});
       }
     }
   }
-
-  Points final_points;
+  // Filter corners based on the neighborhood cornerness.
+  Points corners;
   for (const auto& pt : points) {
     if (pt.x == 0 || pt.y == 0 || pt.x == kNCols || pt.y == kNRows) continue;
 
     double loc_m{r_val[pt.y * kNCols + pt.y]};
     // If weak neighbor found, don't include current point(x,y) in result.
     if (!CheckNeighborhood(r_val, kNCols, pt.x, pt.y, loc_m)) {
-      final_points.emplace_back(pt);
+      corners.emplace_back(pt);
     }
   }
-  return final_points;
+  return corners;
 }
 
 }// namespace algo::image::detect

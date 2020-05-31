@@ -7,7 +7,7 @@
 /// Change list:
 /// 2020-05-23 Canny edge
 /// 2020-05-24 Hough line
-/// 2020-05-27 CornersHarris.
+/// 2020-05-27 Corners.
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_IMAGE_DETECTION_HPP_
@@ -17,11 +17,19 @@
 
 namespace algo::image::detect {
 
+// //////////////////////////////////////////
+//  Canny edge
+// //////////////////////////////////////////
+
 /// \brief Detects the edges in the input image according to the Canny edge detection algorithm.
 /// \param im The input image.
 /// \return Detected edges in a new image.
 /// \link <a href="https://en.wikipedia.org/wiki/Canny_edge_detector">Canny edge detector, Wikipedia.</a>
 Img CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold_max = 91);
+
+// //////////////////////////////////////////
+//  Hough lines
+// //////////////////////////////////////////
 
 struct HLine {
   int dist, alpha;// Distance and line angle.
@@ -40,13 +48,23 @@ using Hlines = std::vector<HLine>;
 /// \link <a href="https://en.wikipedia.org/wiki/Hough_transform">Hough transform, Wikipedia.</a>
 Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep = 10);
 
+// //////////////////////////////////////////
+//  Corner
+// //////////////////////////////////////////
+
+enum class CornerDetType {
+  kHarris,
+  kShiTomasi,
+};
+
 /// \brief Finds the corners in the input image.
 /// \details This algorithm is based on the Harris
 /// \param im The input image.
 /// \param threshold The threshold used by the Harris algorithm to sort out weak corners.
+/// \param det_type Corner detection measure type, Harris or Shi-Tomasi.
 /// \return Corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Corner_detection">Corner detection, Wikipedia.</a>
-Points CornersHarris(const Img& im, const int& threshold);
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris);
 
 }// namespace algo::image::detect
 

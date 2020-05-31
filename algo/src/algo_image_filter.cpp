@@ -100,7 +100,7 @@ Data8 ConvolvePriv(const Data8& im, size_t rows, size_t cols, KernelType filter_
       if (sum < 0) sum = 0;
       if (sum > 255) sum = 255;
 
-      res[i * cols + j] = sum;
+      res[i * cols + j] = static_cast<uint8_t>(sum);
     }
   }
   return res;
