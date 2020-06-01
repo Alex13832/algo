@@ -8,7 +8,6 @@
 #include "algo_image_detection.hpp"
 
 #include <cmath>
-#include <iostream>
 
 #include "algo_image_filter.hpp"
 #include "algo_image_transform.hpp"
@@ -192,28 +191,39 @@ Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const in
 namespace {
 /// \brief Checks the 8-neighborhood if the other values are less than loc_m, the center value.
 constexpr auto CheckNeighborhood = [](const std::vector<double>& R, auto n_cols, auto x, auto y, auto loc_m) {
-  return (R[(y - 1) * n_cols + x - 1] < loc_m)
-      || (R[y * n_cols + (x - 1)] < loc_m)
-      || (R[(y + 1) * n_cols + (x - 1)] < loc_m)
-      || (R[(y - 1) * n_cols + x] < loc_m)
-      || (R[(y + 1) * n_cols + x] < loc_m)
-      || (R[(y - 1) * n_cols + (x + 1)] < loc_m)
-      || (R[y * n_cols + x + 1] < loc_m)
-      || (R[(y + 1) * n_cols + (x + 1)] < loc_m);
+  return (R[(y - 1) * n_cols + x - 1] >= loc_m)
+      && (R[y * n_cols + (x - 1)] >= loc_m)
+      && (R[(y + 1) * n_cols + (x - 1)] >= loc_m)
+      && (R[(y - 1) * n_cols + x] >= loc_m)
+      && (R[(y + 1) * n_cols + x] >= loc_m)
+      && (R[(y - 1) * n_cols + (x + 1)] >= loc_m)
+      && (R[y * n_cols + x + 1] >= loc_m)
+      && (R[(y + 1) * n_cols + (x + 1)] >= loc_m);
 };
-/// \brief Computes the Euclidean distance between pt1 and pt2.
-constexpr auto EuclideanDist = [](const Point pt1, const Point pt2) {
-  return std::sqrt(std::pow(pt1.x - pt2.x, 2) + std::pow(pt1.y - pt2.y, 2));
+
+struct Corner {
+  Point pt;
+  double cornerness;
 };
+
+struct c_comp {
+  bool operator()(const Corner c1, const Corner c2) const
+  {
+    return c1.cornerness > c2.cornerness;
+  }
+} h_comp;
 
 }// namespace
 
-Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type)
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type, const GaussWindowSettings& g_win_set)
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
   // Compute derivatives
-  const Img Ix{Convolve(im, filter::KernelType::SOBEL_X)};
-  const Img Iy{Convolve(im, filter::KernelType::SOBEL_Y)};
+  Img imm{filter::GaussianBlur(im, g_win_set.size, g_win_set.sigma)};
+  imm = filter::Convolve(imm, filter::KernelType::EMBOSS);
+  imm = filter::Convolve(imm, filter::KernelType::WEIGHTED_AVERAGE);
+  const Img Ix{Convolve(imm, filter::KernelType::SOBEL_X)};
+  const Img Iy{Convolve(imm, filter::KernelType::SOBEL_Y)};
 
   const int kNCols{im.size.cols};
   const int kNRows{im.size.rows};
@@ -233,23 +243,25 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
         points.emplace_back(Point{x, y});
       } else if (det_type == CornerDetType::kShiTomasi && std::min(eig1, eig2) > threshold) {
         // Handle Shi-Tomas corner detector type
-        r_val[y * kNCols + x] = m;
+        r_val[y * kNCols + x] = std::min(eig1, eig2);
         points.emplace_back(Point{x, y});
       }
     }
   }
   // Filter corners based on the neighborhood cornerness.
-  Points corners;
+  Points final_pts;
+  std::vector<Corner> corners;
   for (const auto& pt : points) {
     if (pt.x == 0 || pt.y == 0 || pt.x == kNCols || pt.y == kNRows) continue;
 
     double loc_m{r_val[pt.y * kNCols + pt.y]};
     // If weak neighbor found, don't include current point(x,y) in result.
-    if (!CheckNeighborhood(r_val, kNCols, pt.x, pt.y, loc_m)) {
-      corners.emplace_back(pt);
+    if (CheckNeighborhood(r_val, kNCols, pt.x, pt.y, loc_m)) {
+      final_pts.emplace_back(pt);
+      corners.emplace_back(Corner{pt, loc_m});
     }
   }
-  return corners;
+  return final_pts;
 }
 
 }// namespace algo::image::detect

@@ -57,6 +57,11 @@ enum class CornerDetType {
   kShiTomasi,
 };
 
+struct GaussWindowSettings {
+  Size size;  // Window size
+  float sigma;// Standard deviation of Gaussian kernel
+};
+
 /// \brief Finds the corners in the input image.
 /// \details This algorithm is based on the Harris
 /// \param im The input image.
@@ -64,7 +69,10 @@ enum class CornerDetType {
 /// \param det_type Corner detection measure type, Harris or Shi-Tomasi.
 /// \return Corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Corner_detection">Corner detection, Wikipedia.</a>
-Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris);
+Points Corners(
+    const Img& im, const int& threshold,
+    const CornerDetType& det_type = CornerDetType::kHarris,
+    const GaussWindowSettings& g_win_set = {Size{5, 5}, 1.2});
 
 }// namespace algo::image::detect
 

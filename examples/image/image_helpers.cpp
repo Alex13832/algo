@@ -43,12 +43,11 @@ cv::Mat ImGrayToMat(const Img& im)
 {
   cv::Mat img = cv::Mat::zeros(im.size.rows, im.size.cols, CV_8UC1);
 
-  for (int i = 0; i < im.size.rows; ++i) {
-    for (int j = 0; j < im.size.cols; ++j) {
-      img.at<char>(i, j) = (uint8_t) im.data[i * im.size.cols + j];
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+      img.at<uint8_t>(y, x) = static_cast<uint8_t>(im.At(x, y));
     }
   }
-
   return img;
 }
 

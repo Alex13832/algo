@@ -135,21 +135,21 @@ constexpr auto Gauss2D = [](auto x, auto y, auto sigma) {
   float b = -(x * x + y * y) / (2.0 * sigma * sigma);
   return a * std::pow(M_E, b);
 };
-}//namespace
 
 ImgF GaussianKernel(const Size& size, const float& sigma)
 {
   ImgF kernel{Dataf(size.cols * size.rows, 0), size};
-  int dim_x{size.cols / 2};
-  int dim_y{size.rows / 2};
+  const int kDimX{size.cols / 2};
+  const int kDimY{size.rows / 2};
 
-  for (int x = size.cols; x >= 0; --x) {
-    for (int y = size.rows; y >= 0; --y) {
-      kernel.Set(x, y, Gauss2D(dim_x - x, dim_y - y, sigma));
+  for (int x = size.cols - 1; x >= 0; --x) {
+    for (int y = size.rows - 1; y >= 0; --y) {
+      kernel.Set(x, y, Gauss2D(kDimX - x, kDimY - y, sigma));
     }
   }
   return kernel;
 }
+}//namespace
 
 Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
 {
@@ -167,21 +167,23 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   const size_t kSizeY = kRows >> 1U;
 
   // Filtering window
-  for (size_t x = kSizeY; x < im.size.cols - kSizeY; x++) {
-    for (size_t y = kSizeX; y < im.size.rows - kSizeX; y++) {
-      float sum = 0;
+  for (size_t x = 0; x < im.size.cols; x++) {
+    for (size_t y = 0; y < im.size.rows; y++) {
+
+      double sum = 0;
       for (size_t m = 0; m < size.cols; m++) {
         for (size_t k = 0; k < size.rows; k++) {
           // Avoid read and write outside bounds of image
           const size_t kPosX = std::min(std::max(0UL, x + m - kSizeX), static_cast<size_t>(im.size.cols - 1));
           const size_t kPosY = std::min(std::max(0UL, y + k - kSizeY), static_cast<size_t>(im.size.rows - 1));
-          const auto kImVal = static_cast<float>(im.At(kPosX, kPosY));
+          const auto kImVal = static_cast<double>(im.At(kPosX, kPosY));
           const float kVal{kernel.At(m, k)};
           // Image value * kernel value
           sum += kImVal * kVal;
         }
       }
-      uint8_t res_val = static_cast<uint8_t>(std::min(std::max(0.0f, sum), 255.0f));
+
+      uint8_t res_val = static_cast<uint8_t>(std::min(std::max(0.0, sum), 255.0));
       res.Set(x, y, res_val);
     }
   }

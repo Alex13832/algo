@@ -22,24 +22,21 @@ constexpr int kMinLineDist{5};
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"testfiles/building.png"};
+  const std::string kFileName{"testfiles/sudoku.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
   cv::cvtColor(imgc, img, cv::COLOR_BGR2GRAY);
   img.convertTo(img, CV_8UC1);
-  //  cv::imshow("Original", imgc);
+  cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
-  im = filter::GaussianBlur(im, Size{13, 13}, 1.0);
-  cv::Mat gb = ImGrayToMat(im);
-  cv::imshow("gb", gb);
 
-  Points points{detect::Corners(im, 1e2, detect::CornerDetType::kShiTomasi)};
+  Points points{detect::Corners(im, 5e3, detect::CornerDetType::kShiTomasi)};
 
   for (const auto& pt : points) {
     //cv::drawMarker(imgc, cv::Point{pt.x, pt.y}, cv::Scalar{255, 255, 0}, MARKER_SQUARE);
-    cv::circle(imgc, cv::Point{pt.x, pt.y}, 3, cv::Scalar{255, 255, 0}, 2);
+    cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 2);
   }
 
   // Show result
