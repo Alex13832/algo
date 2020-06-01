@@ -35,6 +35,8 @@ struct Line {
 
 struct Size {
   int rows, cols;
+
+  bool operator==(Size other) const { return rows == other.rows && cols == other.cols; }
 };
 
 struct Rectangle {
@@ -151,6 +153,23 @@ Img ToGray(const Img3& img3);
 /// \param im The input image.
 /// \return A new image.
 Img InvertPixels(const Img& im);
+
+/// \brief Arranges the pixels in im like a mirror, horizontally,
+/// \param im The input image.
+/// \return Mirrored image.
+Img FlipX(const Img& im);
+
+/// \brief Arrange the piels in im like a mirror, vertically.
+/// \param im The input image.
+/// \return Mirrored image.
+Img FlipY(const Img& im);
+
+/// \brief Returns he maximum values of im1 and im2.
+/// \details The sizes of im1 and im2 must match. If not, im1 is returned.
+/// \param im1 Input image 1.
+/// \param im2 Input image 2.
+/// \return Max of all pixels (im1, im2).
+Img MaxOf(const Img& im1, const Img& im2);
 
 // //////////////////////////////////////////
 //  Integral image

@@ -200,30 +200,19 @@ constexpr auto CheckNeighborhood = [](const std::vector<double>& R, auto n_cols,
       && (R[y * n_cols + x + 1] >= loc_m)
       && (R[(y + 1) * n_cols + (x + 1)] >= loc_m);
 };
-
-struct Corner {
-  Point pt;
-  double cornerness;
-};
-
-struct c_comp {
-  bool operator()(const Corner c1, const Corner c2) const
-  {
-    return c1.cornerness > c2.cornerness;
-  }
-} h_comp;
-
 }// namespace
 
 Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type, const GaussWindowSettings& g_win_set)
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
-  // Compute derivatives
+  // Blur image with Gaussian, compute derivatives, do some tricks.
   Img imm{filter::GaussianBlur(im, g_win_set.size, g_win_set.sigma)};
-  imm = filter::Convolve(imm, filter::KernelType::EMBOSS);
-  imm = filter::Convolve(imm, filter::KernelType::WEIGHTED_AVERAGE);
-  const Img Ix{Convolve(imm, filter::KernelType::SOBEL_X)};
-  const Img Iy{Convolve(imm, filter::KernelType::SOBEL_Y)};
+  Img Ix1{filter::Convolve(imm, filter::KernelType::SOBEL_X)};
+  Img Ix2{FlipX(filter::Convolve(FlipX(imm), filter::KernelType::SOBEL_X))};
+  Img Ix{MaxOf(Ix1, Ix2)};
+  Img Iy1{filter::Convolve(imm, filter::KernelType::SOBEL_Y)};
+  Img Iy2{FlipY(filter::Convolve(FlipY(imm), filter::KernelType::SOBEL_Y))};
+  Img Iy{MaxOf(Iy1, Iy2)};
 
   const int kNCols{im.size.cols};
   const int kNRows{im.size.rows};
@@ -241,6 +230,7 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
         // Handle Harris corner detector type
         r_val[y * kNCols + x] = m;
         points.emplace_back(Point{x, y});
+
       } else if (det_type == CornerDetType::kShiTomasi && std::min(eig1, eig2) > threshold) {
         // Handle Shi-Tomas corner detector type
         r_val[y * kNCols + x] = std::min(eig1, eig2);
@@ -250,7 +240,6 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
   }
   // Filter corners based on the neighborhood cornerness.
   Points final_pts;
-  std::vector<Corner> corners;
   for (const auto& pt : points) {
     if (pt.x == 0 || pt.y == 0 || pt.x == kNCols || pt.y == kNRows) continue;
 
@@ -258,7 +247,6 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
     // If weak neighbor found, don't include current point(x,y) in result.
     if (CheckNeighborhood(r_val, kNCols, pt.x, pt.y, loc_m)) {
       final_pts.emplace_back(pt);
-      corners.emplace_back(Corner{pt, loc_m});
     }
   }
   return final_pts;

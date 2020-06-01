@@ -103,6 +103,46 @@ Img InvertPixels(const Img& im)
   return img;
 }
 
+Img FlipX(const Img& im)
+{
+  Img img{Data8(im.size.rows * im.size.cols, 0), im.size};
+
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+      img.Set(x, y, im.At(im.size.cols - 1 - x, y));
+    }
+  }
+  return img;
+}
+
+Img FlipY(const Img& im)
+{
+  Img img{Data8(im.size.rows * im.size.cols, 0), im.size};
+
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
+      img.Set(x, y, im.At(x, im.size.rows - 1 - y));
+    }
+  }
+  return img;
+}
+
+Img MaxOf(const Img& im1, const Img& im2)
+{
+  if (!(im1.size == im2.size)) {
+    return im1;
+  }
+  Img img{Data8(im1.size.rows * im1.size.cols, 0), im1.size};
+
+  for (int x = 0; x < im1.size.cols; x++) {
+    for (int y = 0; y < im1.size.rows; y++) {
+      int max_val = std::max(im1.At(x, y), im2.At(x, y));
+      img.Set(x, y, max_val);
+    }
+  }
+  return img;
+}
+
 /////////////////////////////////////////////
 /// Integral images
 /////////////////////////////////////////////
