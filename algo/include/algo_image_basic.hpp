@@ -89,6 +89,32 @@ struct Img {
 };
 
 // ////////////////////////////////
+//  Float image
+// ////////////////////////////////
+
+struct ImgF {
+  Dataf data;
+  Size size{};
+
+  /// \brief Returns the value at x, y.
+  /// \param x Coordinate x-value.
+  /// \param y Coordinate y-value.
+  /// \return The value at x, y.
+  [[nodiscard]] float At(const int& x, const int& y) const;
+
+  /// \brief Sets the value at x, y to value.
+  /// \param x X-coordinate.
+  /// \param y Y-coordinate.
+  /// \param value New value at coordinate.
+  void Set(const int& x, const int& y, const float& value);
+
+  /// \brief Operator overloading for quick access of data element.
+  /// \param i Index.
+  /// \return Value at index.
+  float& operator[](int i);
+};
+
+// ////////////////////////////////
 //  Integral image
 // ////////////////////////////////
 

@@ -17,7 +17,7 @@ namespace algo::image {
 /////////////////////////////////////////////
 
 ///////////////////////////////////
-/// 8-bit image.
+/// 8-bit image
 ///////////////////////////////////
 
 uint8_t Img::At(const int& x, const int& y) const
@@ -31,6 +31,25 @@ void Img::Set(const int& x, const int& y, const uint8_t& value)
 }
 
 uint8_t& Img::operator[](int i)
+{
+  return data[i];
+}
+
+///////////////////////////////////
+/// Float image
+///////////////////////////////////
+
+float ImgF::At(const int& x, const int& y) const
+{
+  return data[y * size.cols + x];
+}
+
+void ImgF::Set(const int& x, const int& y, const float& value)
+{
+  data[y * size.cols + x] = value;
+}
+
+float& ImgF::operator[](int i)
 {
   return data[i];
 }

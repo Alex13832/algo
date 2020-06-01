@@ -7,6 +7,8 @@
 
 #include "algo_image_filter.hpp"
 
+#include <cmath>
+
 namespace algo::image {
 
 /////////////////////////////////////////////
@@ -119,6 +121,70 @@ Img3 Convolve3(const Img3& im, KernelType filter_type)
   res.data[Red] = ConvolvePriv(res.data[Red], im.size.rows, im.size.cols, filter_type);
   res.data[Green] = ConvolvePriv(res.data[Green], im.size.rows, im.size.cols, filter_type);
   res.data[Blue] = ConvolvePriv(res.data[Blue], im.size.rows, im.size.cols, filter_type);
+  return res;
+}
+
+/////////////////////////////////////////////
+/// Gaussian blur
+/////////////////////////////////////////////
+
+namespace {
+/// \brief Computes the 2D gauss value at x, y with standard deviation sigma.
+constexpr auto Gauss2D = [](auto x, auto y, auto sigma) {
+  float a = 1.0 / (2.0 * M_PI * sigma * sigma);
+  float b = -(x * x + y * y) / (2.0 * sigma * sigma);
+  return a * std::pow(M_E, b);
+};
+}//namespace
+
+ImgF GaussianKernel(const Size& size, const float& sigma)
+{
+  ImgF kernel{Dataf(size.cols * size.rows, 0), size};
+  int dim_x{size.cols / 2};
+  int dim_y{size.rows / 2};
+
+  for (int x = size.cols; x >= 0; --x) {
+    for (int y = size.rows; y >= 0; --y) {
+      kernel.Set(x, y, Gauss2D(dim_x - x, dim_y - y, sigma));
+    }
+  }
+  return kernel;
+}
+
+Img GaussBlur(const Img& im, const Size& size, const float& sigma)
+{
+  // Size x,y must be odd! Test
+  if (size.rows % 2 == 0 || size.cols % 2 == 0) {
+    return im;
+  }
+
+  const ImgF kernel{GaussianKernel(size, sigma)};
+  Img res{im};
+
+  const size_t kCols = size.cols;
+  const size_t kRows = size.rows;
+  const size_t kSizeX = kCols >> 1U;
+  const size_t kSizeY = kRows >> 1U;
+
+  // Filtering window
+  for (size_t x = kSizeY; x < im.size.cols - kSizeY; x++) {
+    for (size_t y = kSizeX; y < im.size.rows - kSizeX; y++) {
+      float sum = 0;
+      for (size_t m = 0; m < size.cols; m++) {
+        for (size_t k = 0; k < size.rows; k++) {
+          // Avoid read and write outside bounds of image
+          const size_t kPosX = std::min(std::max(0UL, x + m - kSizeX), static_cast<size_t>(im.size.cols - 1));
+          const size_t kPosY = std::min(std::max(0UL, y + k - kSizeY), static_cast<size_t>(im.size.rows - 1));
+          const auto kImVal = static_cast<float>(im.At(kPosX, kPosY));
+          const float kVal{kernel.At(m, k)};
+          // Image value * kernel value
+          sum += kImVal * kVal;
+        }
+      }
+      uint8_t res_val = static_cast<uint8_t>(std::min(std::max(0.0f, sum), 255.0f));
+      res.Set(x, y, res_val);
+    }
+  }
   return res;
 }
 

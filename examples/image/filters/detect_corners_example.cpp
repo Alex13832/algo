@@ -13,7 +13,7 @@
 
 using namespace algo::image;
 using namespace std;
-using namespace cv;
+///using namespace cv;
 
 constexpr int kThreshMin{30};
 constexpr int kTreshMax{90};
@@ -26,16 +26,20 @@ int main(int argc, char** argv)
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
-  cv::cvtColor(imgc, img, COLOR_BGR2GRAY);
+  cv::cvtColor(imgc, img, cv::COLOR_BGR2GRAY);
   img.convertTo(img, CV_8UC1);
-  cv::imshow("Original", imgc);
-  cv::GaussianBlur(img, img, cv::Size{7, 7}, 0.95);
+  //  cv::imshow("Original", imgc);
+
   Img im{MatToVec(img)};
+  im = GaussBlur(im, Size{5, 13}, 1.0);
+  cv::Mat gb = ImGrayToMat(im);
+  cv::imshow("gb", gb);
+
   Points points{detect::Corners(im, 1e2, detect::CornerDetType::kShiTomasi)};
 
   for (const auto& pt : points) {
     //cv::drawMarker(imgc, cv::Point{pt.x, pt.y}, cv::Scalar{255, 255, 0}, MARKER_SQUARE);
-    cv::circle(imgc, cv::Point{pt.x, pt.y}, 4, cv::Scalar{255, 255, 0}, 2);
+    cv::circle(imgc, cv::Point{pt.x, pt.y}, 3, cv::Scalar{255, 255, 0}, 2);
   }
 
   // Show result
