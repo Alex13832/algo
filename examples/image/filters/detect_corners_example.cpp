@@ -31,7 +31,7 @@ int main(int argc, char** argv)
   //  cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
-  im = GaussBlur(im, Size{5, 13}, 1.0);
+  im = filter::GaussianBlur(im, Size{13, 13}, 1.0);
   cv::Mat gb = ImGrayToMat(im);
   cv::imshow("gb", gb);
 

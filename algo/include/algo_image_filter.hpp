@@ -14,28 +14,28 @@
 
 #include "algo_image_basic.hpp"
 
-namespace algo::image {
+namespace algo::image::filter {
 
 // //////////////////////////////////////////
 //  Kernels
 // //////////////////////////////////////////
 
 enum class KernelType {
-  SOBEL_X,
-  SOBEL_Y,
-  EDGE_DETECT,
-  SMOOTHING,
-  SHARPEN_MODEST,
-  SHARPEN_AGGRESSIVE,
-  GAUSSIAN_BLUR,
-  BLUR_HARD,
-  BLUR_SOFT,
-  HIGH_PASS,
-  EMBOSS,
-  WEIGHTED_AVERAGE,
-  DILATION_VERTICAL,
-  DILATION_HORIZONTAL,
-  DILATION
+  SOBEL_X,            /// \brief Edgde detection X-dir.
+  SOBEL_Y,            /// \brief Edge detection Y-dir
+  EDGE_DETECT,        /// \brief Edge detection all-directions
+  SMOOTHING,          /// \brief Simple smoothing
+  SHARPEN_MODEST,     /// \brief Simple sharpen
+  SHARPEN_AGGRESSIVE, /// \brief
+  GAUSSIAN_BLUR,      /// \brief Approximated! \see  #GaussianBlur for better kernel.
+  BLUR_HARD,          /// \brief
+  BLUR_SOFT,          /// \brief
+  HIGH_PASS,          /// \brief
+  EMBOSS,             /// \brief Makes edges thicker
+  WEIGHTED_AVERAGE,   /// \brief
+  DILATION_VERTICAL,  /// \brief Makes edges narrow
+  DILATION_HORIZONTAL,/// \brief Makes edges narrow
+  DILATION            /// \brief Makes edges narrow
 };
 
 // //////////////////////////////////////////
@@ -58,7 +58,7 @@ Img3 Convolve3(const Img3& im, KernelType filter_type);
 //  Gaussian blur
 // //////////////////////////////////////////
 
-Img GaussBlur(const Img& im, const Size& size, const float& sigma);
+Img GaussianBlur(const Img& im, const Size& size, const float& sigma);
 
 // //////////////////////////////////////////
 //  Median filters
@@ -82,6 +82,6 @@ Img MedianFilter(const Img& im, const int& w_width, const int& w_height);
 /// \link <a href="https://en.wikipedia.org/wiki/Median_filter">Median filter, Wikipedia.</a>
 Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height);
 
-}// namespace algo::image
+}// namespace algo::image::filter
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_IMAGE_FILTER_HPP_

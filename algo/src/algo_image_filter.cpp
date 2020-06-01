@@ -9,7 +9,7 @@
 
 #include <cmath>
 
-namespace algo::image {
+namespace algo::image::filter {
 
 /////////////////////////////////////////////
 /// Kernels
@@ -151,7 +151,7 @@ ImgF GaussianKernel(const Size& size, const float& sigma)
   return kernel;
 }
 
-Img GaussBlur(const Img& im, const Size& size, const float& sigma)
+Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
 {
   // Size x,y must be odd! Test
   if (size.rows % 2 == 0 || size.cols % 2 == 0) {
@@ -235,4 +235,4 @@ Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height)
   return res;
 }
 
-}// namespace algo::image
+}// namespace algo::image::filter

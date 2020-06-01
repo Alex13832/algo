@@ -101,7 +101,7 @@ TEST(test_algo_image, test_binary_thresholding)
 
 TEST(test_algo_image, test_gaussian_blur)
 {
-  Img im;
-  //GaussBlur(im, Size{7,7}, 0.84089642);
-  GaussBlur(im, Size{5, 5}, 1.0);
+  //Img im;
+  //filter::GaussianBlur(im, Size{7,7}, 0.84089642);
+  //filter::GaussianBlur(im, Size{5, 5}, 1.0);
 }

@@ -23,10 +23,10 @@ Img CannyEdge(const Img& im, const int& threshold_min, const int& threshold_max)
 {
   const int kNPixels{im.size.rows * im.size.cols};
   // Smooth with Gaussian kernel
-  Img img{Convolve(im, KernelType::GAUSSIAN_BLUR)};
+  Img img{Convolve(im, filter::KernelType::GAUSSIAN_BLUR)};
   // Intensity gradients
-  Img gx{Convolve(im, KernelType::SOBEL_X)};
-  Img gy{Convolve(im, KernelType::SOBEL_Y)};
+  Img gx{Convolve(im, filter::KernelType::SOBEL_X)};
+  Img gy{Convolve(im, filter::KernelType::SOBEL_Y)};
 
   // Magnitude
   Img gm{im};
@@ -134,7 +134,7 @@ constexpr auto DistComp = [](HLine l1, HLine l2) {
 Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep)
 {
   // Simple improvement.
-  Img imh{Convolve(im, KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.
+  Img imh{Convolve(im, filter::KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.
   imh = transform::HoughLines(imh);
   Hlines all_lines;
 
@@ -212,8 +212,8 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
   // Compute derivatives
-  const Img Ix{Convolve(im, KernelType::SOBEL_X)};
-  const Img Iy{Convolve(im, KernelType::SOBEL_Y)};
+  const Img Ix{Convolve(im, filter::KernelType::SOBEL_X)};
+  const Img Iy{Convolve(im, filter::KernelType::SOBEL_Y)};
 
   const int kNCols{im.size.cols};
   const int kNRows{im.size.rows};

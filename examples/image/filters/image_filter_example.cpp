@@ -12,6 +12,7 @@
 #include <opencv2/imgproc.hpp>
 
 using namespace algo::image;
+using namespace algo::image::filter;
 using namespace std;
 
 void ProcessFilters()
