@@ -69,10 +69,9 @@ struct GaussWindowSettings {
 /// \param det_type Corner detection measure type, Harris or Shi-Tomasi.
 /// \return Corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Corner_detection">Corner detection, Wikipedia.</a>
-Points Corners(
-    const Img& im, const int& threshold,
-    const CornerDetType& det_type = CornerDetType::kHarris,
-    const GaussWindowSettings& g_win_set = {Size{5, 5}, 1.2});
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris,
+               const int& n_best = 0, const int& max_dist = 0,
+               const GaussWindowSettings& g_win_set = {Size{5, 5}, 2.5});
 
 }// namespace algo::image::detect
 
