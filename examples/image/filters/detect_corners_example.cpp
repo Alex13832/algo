@@ -13,7 +13,6 @@
 
 using namespace algo::image;
 using namespace std;
-///using namespace cv;
 
 constexpr int kThreshMin{30};
 constexpr int kTreshMax{90};
@@ -35,7 +34,6 @@ int main(int argc, char** argv)
   Points points{detect::Corners(im, 5e2, detect::CornerDetType::kShiTomasi, 0, 3)};
 
   for (const auto& pt : points) {
-    //cv::drawMarker(imgc, cv::Point{pt.x, pt.y}, cv::Scalar{255, 255, 0}, MARKER_SQUARE);
     cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 2);
   }
 
