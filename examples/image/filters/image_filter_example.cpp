@@ -15,9 +15,13 @@ using namespace algo::image;
 using namespace algo::image::filter;
 using namespace std;
 
-void ProcessFilters()
+namespace {
+string testfile_path() { return "../testfiles/"; };
+}// namespace
+
+void RunFiltersExample()
 {
-  cv::Mat img = cv::imread("testfiles/road.png", 0);
+  cv::Mat img = cv::imread(testfile_path() + "lena.png", 0);
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
@@ -48,9 +52,9 @@ void ProcessFilters()
   cv::waitKey(0);
 }
 
-void ProcessFiltersColor()
+void RunFiltersColorExample()
 {
-  cv::Mat img = cv::imread("testfiles/lena_color.png");
+  cv::Mat img = cv::imread(testfile_path() + "lena_color.png");
   img.convertTo(img, CV_8UC3);
   cv::imshow("Original", img);
 
@@ -81,9 +85,9 @@ void ProcessFiltersColor()
   cv::waitKey(0);
 }
 
-void ProcessMedian()
+void RunMedianExample()
 {
-  cv::Mat img = cv::imread("testfiles/lena_very_noisy.bmp", 0);
+  cv::Mat img = cv::imread(testfile_path() + "lena_very_noisy.bmp", 0);
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
@@ -95,9 +99,9 @@ void ProcessMedian()
   cv::waitKey(0);
 }
 
-void ProcessMedian3()
+void RunMedian3Example()
 {
-  cv::Mat img = cv::imread("testfiles/lena_noisy_color.png");
+  cv::Mat img = cv::imread(testfile_path() + "lena_noisy_color.png");
   img.convertTo(img, CV_8UC3);
   cv::imshow("Original", img);
 
@@ -109,9 +113,9 @@ void ProcessMedian3()
   cv::waitKey(0);
 }
 
-void ProcessBinaryThreshold()
+void RunBinaryThresholdExample()
 {
-  cv::Mat img{cv::imread("testfiles/receipt.png", 0)};
+  cv::Mat img{cv::imread(testfile_path() + "receipt.png", 0)};
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
@@ -127,9 +131,9 @@ void ProcessBinaryThreshold()
   cv::waitKey(0);
 }
 
-void ProcessAdaptiveThreshold()
+void RunAdaptiveThresholdExample()
 {
-  cv::Mat img{cv::imread("testfiles/receipt.png", 0)};
+  cv::Mat img{cv::imread(testfile_path() + "receipt.png", 0)};
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", img);
 
@@ -147,11 +151,11 @@ void ProcessAdaptiveThreshold()
 
 int main(int argc, char** argv)
 {
-  ProcessFilters();
-  //ProcessFiltersColor();
-  //ProcessMedian();
-  //ProcessMedian3();
-  //ProcessBinaryThreshold();
-  //ProcessAdaptiveThreshold();
+  //  RunFiltersExample();
+  //  RunFiltersColorExample();
+  //  RunMedianExample();
+  //  RunMedian3Example();
+  //  RunBinaryThresholdExample();
+  RunAdaptiveThresholdExample();
   return 0;
 }

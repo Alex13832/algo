@@ -12,26 +12,16 @@ set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 # ////////////////////////////////////////
 # Includes
 # ////////////////////////////////////////
-
 include_directories(algo)
 add_subdirectory(algo)
 
 # ////////////////////////////////////////
 # Test
 # ////////////////////////////////////////
-
 add_subdirectory(test)
 
 # ////////////////////////////////////////
 # Examples
 # ////////////////////////////////////////
-
 include_directories(examples)
 add_subdirectory(examples)
-
-# Quickhull example:
-target_link_libraries(qhull_run algo)
-# Closest pair example:
-target_link_libraries(closest_pair_run algo)
-# Triangulate example:
-target_link_libraries(triangulate_run algo)

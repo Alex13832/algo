@@ -15,14 +15,16 @@ using namespace algo::image;
 using namespace std;
 using namespace cv;
 
-constexpr int kThreshMin{30};
-constexpr int kTreshMax{90};
-constexpr int kNbrLines{7};
+namespace {
+constexpr int kThreshMin{10};
+constexpr int kTreshMax{50};
+constexpr int kNbrLines{6};
 constexpr int kMinLineDist{5};
+}// namespace
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"testfiles/road7.png"};
+  const std::string kFileName{"../testfiles/road9.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
