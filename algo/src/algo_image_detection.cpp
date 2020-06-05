@@ -219,7 +219,7 @@ struct c_comp {
 
 }// namespace
 
-Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type, const int& n_best, const int& max_dist, const GaussWindowSettings& g_win_set)
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type, const int& n_best, const int& min_dist, const GaussWindowSettings& g_win_set)
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
   // Blur image with Gaussian, compute derivatives, do some tricks.
@@ -274,11 +274,11 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
     }
   }
   // Get points that are not too close.
-  if (max_dist > 0) {
+  if (min_dist > 0) {
     std::vector<bool> skips(corner_pts.size(), false);
     for (int i = 0; i < corner_pts.size() - 1; i++) {
       for (int j = i + 1; j < corner_pts.size(); j++) {
-        if (Euclidean(corner_pts[i], corner_pts[j]) < max_dist * max_dist) {// Avoid computing sqrt.
+        if (Euclidean(corner_pts[i], corner_pts[j]) < min_dist * min_dist) {// Avoid computing sqrt.
           skips[j] = true;
         }
       }

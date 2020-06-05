@@ -15,7 +15,7 @@ To find edges in some input image, the Canny edge detection algorithm is used. N
 [Canny edge detector, Wikipedia.](https://en.wikipedia.org/wiki/Canny_edge_detector)
   
 ```cpp
-Img CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold_max = 91);
+Img detect::CannyEdge(const Img& im, const int& threshold_min = 31, const int& threshold_max = 91);
 ```
 Returns an image with the detected edges. `threshold_min`and `threshold_max` define the double threshold. In the
  Canny algorithm, a candidate edge pixel is set to strong when the pixel is over `threshold_max`, if the pixel is
@@ -49,7 +49,7 @@ The Hough transform is a central piece in the line detection algorithm. To learn
  [Hough transform, Wikipedia.](https://en.wikipedia.org/wiki/Hough_transform)
  
 ```cpp
-Lines LinesHough(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep = 10);
+Lines detect::LinesHough(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep = 10);
 ```
 Returns a list of lines detected in the input image `im`, `n` is the maximum number of lines to return, note that the
  algorithm gives no guarantee that it find `n` lines. `min_line_dist` is the minimum lenght of a detected line and
@@ -74,3 +74,42 @@ Source code in `examples/image/detect_hough_lines_example.cpp`.
 ![Lines on road1](images/lines_road1.png)
 
 ![Lines on road2](images/lines_road2.png)
+
+## Corner detection
+In this library there are two algorithms to detect corners in images. The same function is used, but one can select
+ either the Harris- or Shi-Tomasi- way of measuring if a location is a corner or not.
+ 
+ [Corner detectors, WIkipedia.](https://en.wikipedia.org/wiki/Corner_detection)
+ 
+ [Lecture notes, Saad J Bedros, University of Minnesota.](https://bit.ly/2XzCuis)
+ 
+```cpp
+Points detect::Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris,
+                       const int& n_best = 0, const int& min_dist = 0,
+                       const GaussWindowSettings& g_win_set = {Size{7, 7}, 1.0});
+```
+Returns a list of coordinates of corners in the input image `im`. By default, the `CornerDetType:kHarris
+` (`CornerDetType::kShiTomasi`) is
+ selected
+. The user chan select to get the `n_best`, the n corners with the highest measure of corner. It's also possible to
+ select the minimum distance between two pair of points, `min_dist`. To vary the quality of found corners, it's
+  recommended to tweak the Gaussian kernel window size and standard deviation in `g_win_set`. Note that the window
+   dimensions must be odd integers.
+   
+ The computation speed is dependent on the image size and the other input parameters.
+   
+ ### Usage
+ ```cpp
+using namespace algo:image;
+
+... 
+
+Points points{detect::Corners(im, 9e2, detect::CornerDetType::kShiTomasi, 0, 4, {5, 5, 1.0})};
+ ```
+
+### Examples
+
+![Coners in puzzle.](images/corners_puzzle.png) 
+
+![Coners in building, picture from Wikipedia.](images/corners_building.png) 
+

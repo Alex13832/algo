@@ -23,7 +23,7 @@ constexpr int kMinLineDist{5};
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"../testfiles/sudoku1.png"};
+  const std::string kFileName{"../testfiles/building.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -33,7 +33,7 @@ int main(int argc, char** argv)
 
   Img im{MatToVec(img)};
 
-  Points points{detect::Corners(im, 5e2, detect::CornerDetType::kShiTomasi, 0, 3)};
+  Points points{detect::Corners(im, 5e4, detect::CornerDetType::kHarris, 0, 2)};
 
   for (const auto& pt : points) {
     cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 2);
