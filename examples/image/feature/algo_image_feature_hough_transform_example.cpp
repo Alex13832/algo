@@ -1,7 +1,7 @@
 ///
-/// \brief Example source code for detection of Hough lines.
+/// \brief Example source code for Hough transform.
 /// \author alex011235
-/// \date 2020-05-19
+/// \date 2020-06-06 SWE national day :)
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 
@@ -15,16 +15,9 @@ using namespace algo::image;
 using namespace std;
 using namespace cv;
 
-namespace {
-constexpr int kThreshMin{10};
-constexpr int kTreshMax{50};
-constexpr int kNbrLines{6};
-constexpr int kMinLineDist{5};
-}// namespace
-
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"../testfiles/road9.png"};
+  const std::string kFileName{"../testfiles/road10.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -33,18 +26,11 @@ int main(int argc, char** argv)
   cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
-  im = detect::CannyEdge(im, kThreshMin, kTreshMax);
+  im = object::ExtractCannyEdges(im);
+  im = feature::HoughTransform(im);
   cv::Mat img2 = ImGrayToMat(im);
   cv::imshow("Canny", img2);
 
-  Lines lines{detect::LinesHough(im, kNbrLines, kMinLineDist, 10)};
-
-  for (const auto& line : lines) {
-    cv::line(imgc, cv::Point{line.p1.x, line.p1.y}, cv::Point{line.p2.x, line.p2.y}, cv::Scalar{255, 255, 0}, 2);
-  }
-
-  // Show result
-  cv::imshow("Detected lines", imgc);
   cv::waitKey(0);
   return 0;
 }

@@ -33,7 +33,7 @@ int main(int argc, char** argv)
   cv::imshow("Original", imgc);
 
   Img im{MatToVec(img)};
-  im = detect::CannyEdge(im, kThreshMin, kTreshMax);
+  im = object::ExtractCannyEdges(im, kThreshMin, kTreshMax);
   cv::Mat img2 = ImGrayToMat(im);
   cv::imshow("Canny", img2);
 

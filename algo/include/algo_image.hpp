@@ -9,8 +9,8 @@
 #define ALGO_ALGO_INCLUDE_ALGO_IMAGE_HPP_
 
 #include "algo_image_basic.hpp"
-#include "algo_image_detection.hpp"
+#include "algo_image_feature.hpp"
 #include "algo_image_filter.hpp"
-#include "algo_image_transform.hpp"
+#include "algo_image_object.hpp"
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_IMAGE_HPP_

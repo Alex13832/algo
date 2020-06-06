@@ -17,9 +17,9 @@ set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_graph.cpp
         ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
         ${PROJECT_SOURCE_DIR}/algo_image_basic.cpp
-        ${PROJECT_SOURCE_DIR}/algo_image_detection.cpp
+        ${PROJECT_SOURCE_DIR}/algo_image_feature.cpp
         ${PROJECT_SOURCE_DIR}/algo_image_filter.cpp
-        ${PROJECT_SOURCE_DIR}/algo_image_transform.cpp
+        ${PROJECT_SOURCE_DIR}/algo_image_object.cpp
         ${PROJECT_SOURCE_DIR}/algo_math.cpp
         ${PROJECT_SOURCE_DIR}/algo_network.cpp
         ${PROJECT_SOURCE_DIR}/algo_puzzle.cpp
