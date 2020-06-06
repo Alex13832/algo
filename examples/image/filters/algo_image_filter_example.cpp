@@ -19,16 +19,18 @@ namespace {
 string testfile_path() { return "../testfiles/"; };
 }// namespace
 
-void RunFiltersExample()
+void RunKernelConvolutions()
 {
   cv::Mat img = cv::imread(testfile_path() + "lena.png", 0);
   img.convertTo(img, CV_8UC1);
+  cv::resize(img, img, cv::Size{250, 250});
   cv::imshow("Original", img);
-
+  // Simple
   std::map<string, KernelType> filters = {
       {"Sobel x", KernelType::SOBEL_X},
       {"Sobel y", KernelType::SOBEL_Y},
       {"Edge detect", KernelType::EDGE_DETECT},
+      {"Emboss", KernelType::EMBOSS},
       {"Smoothing", KernelType::SMOOTHING},
       {"Modest sharp", KernelType::SHARPEN_MODEST},
       {"Aggressive sharp", KernelType::SHARPEN_AGGRESSIVE},
@@ -36,11 +38,8 @@ void RunFiltersExample()
       {"Hard blur", KernelType::BLUR_HARD},
       {"Soft blur", KernelType::BLUR_SOFT},
       {"High pass", KernelType::HIGH_PASS},
-      {"Emboss", KernelType::EMBOSS},
       {"Weighted average", KernelType::WEIGHTED_AVERAGE},
-      {"Vertical dilation", KernelType::DILATION_VERTICAL},
-      {"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
-      {"XY Dilation", KernelType::DILATION}};
+  };
 
   for (auto const& filter : filters) {
     Img im{MatToVec(img)};
@@ -49,13 +48,27 @@ void RunFiltersExample()
     cv::imshow(filter.first, img2);
   }
 
+  Img im{MatToVec(img)};
+  Img im_edge{Convolve(im, algo::image::filter::KernelType::EDGE_DETECT)};
+  im_edge = threshold::Fixed(im_edge, 50, true);
+
+  // Looks better with edge detection applied before these filters.
+  cv::imshow("edge", ImGrayToMat(im_edge));
+  Img im_dil_x{Convolve(im_edge, algo::image::filter::KernelType::DILATION_HORIZONTAL)};
+  cv::imshow("dilation x", ImGrayToMat(im_dil_x));
+  Img im_dil_y{Convolve(im_edge, algo::image::filter::KernelType::DILATION_VERTICAL)};
+  cv::imshow("dilation_y", ImGrayToMat(im_dil_y));
+  Img im_dil_xy{Convolve(im_edge, algo::image::filter::KernelType::DILATION)};
+  cv::imshow("dilation_xy", ImGrayToMat(im_dil_xy));
+
   cv::waitKey(0);
 }
 
-void RunFiltersColorExample()
+void RunColorKernelConvolutions()
 {
   cv::Mat img = cv::imread(testfile_path() + "lena_color.png");
   img.convertTo(img, CV_8UC3);
+  cv::resize(img, img, cv::Size{250, 250});
   cv::imshow("Original", img);
 
   std::map<string, KernelType> filters = {
@@ -71,9 +84,10 @@ void RunFiltersColorExample()
       {"High pass", KernelType::HIGH_PASS},
       {"Emboss", KernelType::EMBOSS},
       {"Weighted average", KernelType::WEIGHTED_AVERAGE},
-      {"Vertical dilation", KernelType::DILATION_VERTICAL},
-      {"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
-      {"XY Dilation", KernelType::DILATION}};
+      //{"Vertical dilation", KernelType::DILATION_VERTICAL},
+      //{"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
+      //{"XY Dilation", KernelType::DILATION}
+  };
 
   for (auto const& filter : filters) {
     Img3 im{Mat3ToVec(img)};
@@ -151,11 +165,11 @@ void RunAdaptiveThresholdExample()
 
 int main(int argc, char** argv)
 {
-  //  RunFiltersExample();
-  //  RunFiltersColorExample();
+  //RunKernelConvolutions();
+  RunColorKernelConvolutions();
   //  RunMedianExample();
   //  RunMedian3Example();
   //  RunBinaryThresholdExample();
-  RunAdaptiveThresholdExample();
+  // RunAdaptiveThresholdExample();
   return 0;
 }
