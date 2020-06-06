@@ -76,12 +76,12 @@ Source code in `examples/image/detect_hough_lines_example.cpp`.
 ![Lines on road2](images/lines_road2.png)
 
 ## Corner detection
-In this library there are two algorithms to detect corners in images. The same function is used, but one can select
- either the Harris- or Shi-Tomasi- way of measuring if a location is a corner or not.
+A traditional corner detector uses some way to measure how much a pixel is a corner. This library offers the Harris- and
+ Shi-Tomasi- cornerness calculations.
  
- [Corner detectors, WIkipedia.](https://en.wikipedia.org/wiki/Corner_detection)
+[Corner detectors, WIkipedia.](https://en.wikipedia.org/wiki/Corner_detection)
  
- [Lecture notes, Saad J Bedros, University of Minnesota.](https://bit.ly/2XzCuis)
+[Lecture notes, Saad J Bedros, University of Minnesota.](https://bit.ly/2XzCuis)
  
 ```cpp
 Points detect::Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris,
