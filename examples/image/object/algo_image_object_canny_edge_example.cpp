@@ -24,7 +24,7 @@ constexpr int kMinLineDist{5};
 
 int main(int argc, char** argv)
 {
-  const std::string kFileName{"../testfiles/road6.png"};
+  const std::string kFileName{"../testfiles/puzzle1.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;

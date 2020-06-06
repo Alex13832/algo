@@ -33,7 +33,7 @@ Img im{object::ExtractCannyEdges(im, kThreshMin, kTreshMax)};
 
 Source code in `examples/image/detection/detect_canny_edges_example.cpp`.
 
-![Canny edges](images/canny_sudoku.png)
+![Canny edges](images/canny_puzzle.png)
 
 ![Canny highway](images/canny_highway.png)
 
