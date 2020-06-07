@@ -21,21 +21,21 @@ namespace algo::image::filter {
 // //////////////////////////////////////////
 
 enum class KernelType {
-  SOBEL_X,            /// \brief Edgde detection X-dir.
-  SOBEL_Y,            /// \brief Edge detection Y-dir
-  EDGE_DETECT,        /// \brief Edge detection all-directions
-  SMOOTHING,          /// \brief Simple smoothing
-  SHARPEN_MODEST,     /// \brief Simple sharpen
-  SHARPEN_AGGRESSIVE, /// \brief
-  GAUSSIAN_BLUR,      /// \brief Approximated! \see  #GaussianBlur for better kernel.
-  BLUR_HARD,          /// \brief
-  BLUR_SOFT,          /// \brief
-  HIGH_PASS,          /// \brief
-  EMBOSS,             /// \brief Makes edges thicker
-  WEIGHTED_AVERAGE,   /// \brief
-  DILATION_VERTICAL,  /// \brief Makes edges narrow
-  DILATION_HORIZONTAL,/// \brief Makes edges narrow
-  DILATION            /// \brief Makes edges narrow
+  SOBEL_X,            /// Horizontal edge detection.
+  SOBEL_Y,            /// Vertical edge detection.
+  EDGE_DETECT,        /// Edge detection all-directions
+  SMOOTHING,          /// Simple image smoothing.
+  SHARPEN_MODEST,     /// Simple image sharpen.
+  SHARPEN_AGGRESSIVE, /// Sharpens image.
+  GAUSSIAN_BLUR,      /// Approximated. See `GaussianBlur` for better kernel.
+  BLUR_HARD,          /// Image blur.
+  BLUR_SOFT,          /// Image blur.
+  HIGH_PASS,          /// High pass filter.
+  EMBOSS,             /// Enhances edges.
+  WEIGHTED_AVERAGE,   /// Filters with average.
+  DILATION_HORIZONTAL,/// "Smears" image horizontally. *
+  DILATION_VERTICAL,  /// "Smears" image vertically. *
+  DILATION            /// "Smears" image in all directions. *
 };
 
 // //////////////////////////////////////////

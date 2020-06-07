@@ -94,14 +94,3 @@ TEST(test_algo_image, test_binary_thresholding)
   ct1 = static_cast<int>(std::count_if(imt1.data.begin(), imt1.data.end(), [](const uint8_t& x) { return x == 255; }));
   EXPECT_EQ(ct1, 10);
 }
-
-/////////////////////////////////////////////
-/// Gaussian blur
-/////////////////////////////////////////////
-
-TEST(test_algo_image, test_gaussian_blur)
-{
-  //Img im;
-  //filter::GaussianBlur(im, Size{7,7}, 0.84089642);
-  //filter::GaussianBlur(im, Size{5, 5}, 1.0);
-}

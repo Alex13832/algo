@@ -84,9 +84,6 @@ void RunColorKernelConvolutions()
       {"High pass", KernelType::HIGH_PASS},
       {"Emboss", KernelType::EMBOSS},
       {"Weighted average", KernelType::WEIGHTED_AVERAGE},
-      //{"Vertical dilation", KernelType::DILATION_VERTICAL},
-      //{"Horizontal dilation", KernelType::DILATION_HORIZONTAL},
-      //{"XY Dilation", KernelType::DILATION}
   };
 
   for (auto const& filter : filters) {
@@ -99,6 +96,25 @@ void RunColorKernelConvolutions()
   cv::waitKey(0);
 }
 
+void RunGaussianBlurExample()
+{
+  cv::Mat img = cv::imread(testfile_path() + "lena.png", 0);
+  img.convertTo(img, CV_8UC1);
+  cv::resize(img, img, cv::Size{250, 250});
+  cv::imshow("Original", img);
+  Img im{MatToVec(img)};
+
+  Img imgb1{GaussianBlur(im, Size{5, 5}, 1.0)};
+  cv::imshow("Gaussian blur 5 5 1.0", ImGrayToMat(imgb1));
+  Img imgb2{GaussianBlur(im, Size{5, 5}, 1.5)};
+  cv::imshow("Gaussian blur 5 5 1.5", ImGrayToMat(imgb2));
+  Img imgb3{GaussianBlur(im, Size{11, 11}, 1.0)};
+  cv::imshow("Gaussian blur 11 11 1.0", ImGrayToMat(imgb3));
+  Img imgb4{GaussianBlur(im, Size{11, 11}, 1.5)};
+  cv::imshow("Gaussian blur 11 11 1.5", ImGrayToMat(imgb4));
+  cv::waitKey(0);
+}
+
 void RunMedianExample()
 {
   cv::Mat img = cv::imread(testfile_path() + "lena_very_noisy.bmp", 0);
@@ -106,7 +122,7 @@ void RunMedianExample()
   cv::imshow("Original", img);
 
   Img im{MatToVec(img)};
-  Img res{MedianFilter(im, 3, 3)};
+  Img res{MedianFilter(im, 4, 4)};
   cv::Mat mat{ImGrayToMat(res)};
   cv::imshow("Result of median filter", mat);
 
@@ -120,7 +136,7 @@ void RunMedian3Example()
   cv::imshow("Original", img);
 
   Img3 im{Mat3ToVec(img)};
-  Img3 res{MedianFilter3(im, 6, 6)};
+  Img3 res{MedianFilter3(im, 4, 4)};
   cv::Mat mat{Im3ToMat(res)};
   cv::imshow("Result of median filter", mat);
 
@@ -152,11 +168,11 @@ void RunAdaptiveThresholdExample()
   cv::imshow("Original", img);
 
   Img im{MatToVec(img)};
-  Img res1{threshold::Adaptive(im, 12, true)};
+  Img res1{threshold::Adaptive(im, 13, true)};
   cv::Mat mat_res1{ImGrayToMat(res1)};
   cv::imshow("Result, cut white true", mat_res1);
 
-  Img res2{threshold::Adaptive(im, 12, false)};
+  Img res2{threshold::Adaptive(im, 13, false)};
   cv::Mat mat_res2{ImGrayToMat(res2)};
   cv::imshow("Result, cut white false", mat_res2);
 
@@ -166,10 +182,11 @@ void RunAdaptiveThresholdExample()
 int main(int argc, char** argv)
 {
   //RunKernelConvolutions();
-  RunColorKernelConvolutions();
-  //  RunMedianExample();
-  //  RunMedian3Example();
-  //  RunBinaryThresholdExample();
-  // RunAdaptiveThresholdExample();
+  //RunColorKernelConvolutions();
+  //RunGaussianBlurExample();
+  //RunMedianExample();
+  //RunMedian3Example();
+  //RunBinaryThresholdExample();
+  RunAdaptiveThresholdExample();
   return 0;
 }
