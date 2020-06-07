@@ -179,53 +179,5 @@ uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box)
   return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1) - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
 }
 
-/////////////////////////////////////////////
-/// Thresholding
-/////////////////////////////////////////////
-
-namespace threshold {
-
-Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white)
-{
-  Img img{im};
-
-  std::for_each(img.data.begin(), img.data.end(), [threshold, cut_white](uint8_t& x) {
-    if (x > threshold) {
-      x = cut_white ? 255 : 0;
-    } else {
-      x = cut_white ? 0 : 255;
-    }
-  });
-  return img;
-}
-
-Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
-{
-  IntegralImage img{ImgToIntegralImage(im)};
-  Img res{Data8(im.size.rows * im.size.cols, 0), im.size};
-
-  const int kMargin{region_size / 2};
-
-  for (int x = kMargin; x < im.size.cols - kMargin; x++) {
-    for (int y = kMargin; y < img.size.rows - kMargin; y++) {
-
-      Rectangle box{x - kMargin, y - kMargin, region_size, region_size};
-      uint32_t box_sum{IntegralBoxSum(img, box)};
-      uint32_t avg = box_sum / (region_size * region_size);
-
-      if (im.At(x, y) > avg) {
-        res.Set(x, y, 255);
-      }
-    }
-  }
-
-  if (!cut_white) {
-    std::for_each(res.data.begin(), res.data.end(), [](uint8_t& x) { x = x == 0 ? 255 : 0; });
-  }
-
-  return res;
-}
-
-}// namespace threshold
 
 }//namespace algo::image

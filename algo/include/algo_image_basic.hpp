@@ -190,28 +190,7 @@ IntegralImage ImgToIntegralImage(const Img& im);
 /// \return The sum.
 uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box);
 
-// //////////////////////////////////////////
-//  Thresholding
-// //////////////////////////////////////////
 
-namespace threshold {
-
-/// \brief Changes all data less than and greater than threshold to 0 and 255 respectively.
-/// \param im Input image.
-/// \param threshold Fixed value 0-255.
-/// \param cut_white Flip values to 255 or 0.
-/// \return A new image.
-Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white);
-
-/// \brief Computes the adaptive threshold of the input image. The thresholding decision is based on the mean value of the
-/// chose region size, e.g. 10x10 pixels (region_size^2).
-/// \param im Input image.
-/// \param region_size The region size to base the threshold decision on.
-/// \param cut_white Flip values to 255 or 0.
-/// \return A new image.
-Img Adaptive(const Img& im, const int& region_size, const bool& cut_white);
-
-}// namespace threshold
 
 }// namespace algo::image
 
