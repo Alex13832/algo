@@ -4,8 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-add_subdirectory(kmeans)
-add_subdirectory(knn)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_executable(data_mining_knn_run knn_example.cpp)
+target_link_libraries(data_mining_knn_run algo)

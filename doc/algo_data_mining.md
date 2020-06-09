@@ -29,8 +29,8 @@ Points points{{0.212603, 0.553522},
 Clusters clusters{KMeans(points, 3)};
 ```
 
-### Example
-![Kmeans1](images/kmeans1.png) ![Kmeans2](images/kmeans2.png)
+### Examples
+![Kmeans1](images/kmeans_1.png) ![Kmeans2](images/kmeans_2.png)
 
 ## K-nearest neighbors
 
@@ -70,7 +70,7 @@ LabeledPoints labeled_points{
 LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
 ```
 
-### Example
+### Examples
 The first image shows data with four labels and produces four clusters using `k = 5`, and two clusters found in the example in the second image.
 
 ![Knn-four-clusters](images/knn1.png) ![Knn-four-clusters](images/knn2.png)

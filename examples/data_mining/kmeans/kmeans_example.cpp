@@ -52,17 +52,16 @@ void WriteToFile(const Clusters& clusters, const string& filename)
 
   // Header
   file << "x"
-       << ", "
+       << ","
        << "y"
-       << ", "
+       << ","
        << "Cluster" << '\n';
 
   for (auto& cluster : clusters) {
-    clust++;
-
     for (auto pt : cluster) {
-      file << pt.x << ", " << pt.y << ", cluster " << std::to_string(clust) << '\n';
+      file << pt.x << ", " << pt.y << ", " << clust << '\n';
     }
+    clust++;
   }
 
   file.close();
@@ -70,10 +69,10 @@ void WriteToFile(const Clusters& clusters, const string& filename)
 
 int main()
 {
-  Points points{ReadFile("testfiles/kmeans_in.csv")};
+  Points points{ReadFile("../testfiles/kmeans_in2.csv")};
 
   Clusters clusters{KMeans(points, 3)};
 
-  WriteToFile(clusters, "testfiles/kmeans_out.csv");
+  WriteToFile(clusters, "../testfiles/kmeans_out2.csv");
   return 0;
 }
