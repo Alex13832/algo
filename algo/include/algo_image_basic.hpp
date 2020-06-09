@@ -56,7 +56,7 @@ using Points = std::vector<Point>;
 // //////////////////////////////////////////
 
 // ////////////////////////////////
-//  32-bit image
+//  Color image
 // ////////////////////////////////
 
 struct Img3 {
@@ -189,8 +189,6 @@ IntegralImage ImgToIntegralImage(const Img& im);
 /// \param pt_br Point 4, bottom right.
 /// \return The sum.
 uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box);
-
-
 
 }// namespace algo::image
 
