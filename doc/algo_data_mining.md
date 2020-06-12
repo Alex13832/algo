@@ -71,8 +71,10 @@ LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
 ```
 
 ### Examples
-The first image shows data with four labels and produces four clusters using `k = 5`, and two clusters found in the example in the second image.
+ `k = 5`.
 
-![Knn-four-clusters](images/knn1.png) ![Knn-four-clusters](images/knn2.png)
+![Knn-four-clusters](images/knn_in1.png) ![Knn-four-clusters](images/knn_out1.png)
+
+![Knn-four-clusters](images/knn_in2.png) ![Knn-four-clusters](images/knn_out2.png)
 
 

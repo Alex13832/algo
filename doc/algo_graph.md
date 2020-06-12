@@ -40,6 +40,8 @@ that use weights.
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -66,6 +68,8 @@ Returns `true` if `graph` is bipartite.
 
 ### Usage
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -103,6 +107,8 @@ Note that this algorithm can be very slow for large input.
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -139,6 +145,8 @@ Returns a list with the nodes that constructs the shortest path from `source` to
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;  
 
 ...
@@ -183,6 +191,8 @@ Returns the shortest path from `source` to `dest` in `graph`.
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -217,6 +227,8 @@ Returns a single path from `source` to `dest` in the input `graph`.
 #### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -249,6 +261,8 @@ Computes the minimum spanning tree of `graph` from the starting node `source`. T
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -290,6 +304,8 @@ This implementation does not check for this.
 
 ### Usage
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...
@@ -320,6 +336,8 @@ Each item in the output forms a sub-graph of `graph`, where each sub-graph is on
 ### Usage
 
 ```cpp
+#include <algo_graph.hpp>
+
 using namespace algo::graph;
 
 ...

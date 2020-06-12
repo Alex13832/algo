@@ -82,25 +82,25 @@ void WriteToFile(const LabeledPoints& labeled_points, const string& filename)
 
   // Header
   file << "x"
-       << ", "
+       << ","
        << "y"
-       << ", "
+       << ","
        << "Label" << '\n';
 
   for (auto& pt : labeled_points) {
-    file << pt.x << ", " << pt.y << "," << pt.label << '\n';
+    file << pt.x << "," << pt.y << "," << pt.label << '\n';
   }
 
   file.close();
 }
 
-int main()
+int main(int argc, char* argv[])
 {
-  LabeledPoints labeled_points{ReadLabeledData("testfiles/knn_labeled.csv")};
-  Points points{ReadPoints("testfiles/knn_unlabeled.csv")};
+  LabeledPoints labeled_points{ReadLabeledData("../testfiles/knn_labeled2.csv")};
+  Points points{ReadPoints("../testfiles/knn_unlabeled2.csv")};
 
   LabeledPoints classified_points{KNearestNeighbor(points, labeled_points, 5)};
 
-  WriteToFile(classified_points, "testfiles/knn_out.csv");
+  WriteToFile(classified_points, "../testfiles/knn_out2.csv");
   return 0;
 }

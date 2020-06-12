@@ -15,6 +15,8 @@ Returs the Hough transform as a new image. The image can now be used to search f
 
 ## Usage
 ```cpp
+#include <algo_image.hpp>
+
 using namespace algo::image;
 
 ...
@@ -54,6 +56,8 @@ Returns a list of coordinates of corners in the input image `im`. By default, th
    
  ### Usage
  ```cpp
+#include <algo_image.hpp>
+
 using namespace algo:image;
 
 ... 

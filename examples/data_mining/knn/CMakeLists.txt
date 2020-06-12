@@ -4,5 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-add_executable(data_mining_knn_run knn_example.cpp)
-target_link_libraries(data_mining_knn_run algo)
+add_executable(algo_data_mining_knn_run knn_example.cpp)
+target_link_libraries(algo_data_mining_knn_run algo)

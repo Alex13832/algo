@@ -10,6 +10,8 @@ Applies a convolution on the input image `im` with the kernel defined by the inp
 
 ### Usage
 ```cpp
+#include <algo_image.hpp>
+
 #using namespace algo::image;
 
 ... 
@@ -57,6 +59,8 @@ The larger size and standard deviation, the more smoothing will be added. It's a
 ### Usage
 
 ```cpp
+#include <algo_image.hpp>
+
 using namespace algo::image;
 
 ...
@@ -87,6 +91,8 @@ how large neighborhood the median will be based on. `MedianFilter` is for gray-s
 
 ### Usage
 ```cpp
+#include <algo_image.hpp>
+
 using namespace algo::image;
 
 ...
@@ -107,6 +113,8 @@ set the values greater than the fixed threshold to white. If `cut_white == false
 
 ### Usage
 ```cpp
+#include <algo_image.hpp>
+
 using namespace algo::image;
 
 ...
@@ -129,6 +137,8 @@ intensity value inside a sub-set of pixels, a rectangle with height = width = `r
 
 ### Usage
 ```cpp
+#include <algo_image.hpp>
+
 using namespace algo::image;
 
 ...
