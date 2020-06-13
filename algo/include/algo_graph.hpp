@@ -183,7 +183,7 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
 
 // //////////////////////////////////////////
-//  Foyd-Warshall, all-pair shortest dist
+//  Floyd-Warshall, all-pair shortest dist
 // //////////////////////////////////////////
 
 /// \brief Finds the shortest path between all the nodes in the input graph.
