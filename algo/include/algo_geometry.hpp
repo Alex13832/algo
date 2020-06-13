@@ -31,10 +31,10 @@ struct Point {
   }
 };
 
-struct Edge {
+struct Line {
   Point a, b;
 
-  bool operator==(const Edge& e) const
+  bool operator==(const Line& e) const
   {
     Point p_1 = e.a, p_2 = e.b;
     return (p_1 == a) && (p_2 == b);
@@ -42,7 +42,7 @@ struct Edge {
 };
 
 using Points = std::vector<Point>;
-using Edges = std::vector<Edge>;
+using Lines = std::vector<Line>;
 
 // //////////////////////////////////////////
 //  Closest pair of points
@@ -72,8 +72,8 @@ Points ConvexHull(Points points);
 
 /// \brief Computes the triangulation of a set of input 2D-points.
 /// \param pts The input points.
-/// \return The triangulation as a set of edges.
-Edges Triangulate(Points& pts);
+/// \return The triangulation as a set of lines.
+Lines Triangulate(Points& pts);
 
 }// namespace algo::geometry
 

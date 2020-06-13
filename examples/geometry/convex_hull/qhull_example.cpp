@@ -50,16 +50,16 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
   file.open(filename);
 
   file << "x"
-       << ", "
+       << ","
        << "y"
-       << ", "
-       << "Labels" << '\n';
+       << ","
+       << "Label" << '\n';
 
   for (auto p : all) {
-    file << p.x << ", " << p.y << ", Inside" << '\n';
+    file << p.x << ", " << p.y << ",1" << '\n';//Insed convex hull
   }
   for (auto p : points) {
-    file << p.x << ", " << p.y << ", Hull" << '\n';
+    file << p.x << ", " << p.y << ",2" << '\n';//Convex hull
   }
 
   file.close();
@@ -67,11 +67,11 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
 
 int main()
 {
-  Points points{ReadFile("testfiles/qhull_in.csv")};
+  Points points{ReadFile("../testfiles/convex_hull_in2.csv")};
 
   Points qh{ConvexHull(points)};
 
-  WriteToFile(qh, points, "testfiles/qhull_out.csv");
+  WriteToFile(qh, points, "../testfiles/convex_hull_out2.csv");
 
   return 0;
 }

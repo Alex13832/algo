@@ -36,7 +36,7 @@ struct y_comp {
 /// \param ln The line.
 /// \param p The point.
 /// \return 1 if above/right, -1 below/left.
-int Location(Edge ln, Point p)
+int Location(Line ln, Point p)
 {
   double temp{(ln.b.x - ln.a.x) * (p.y - ln.a.y) - (ln.b.y - ln.a.y) * (p.x - ln.a.x)};
   if (temp > 0) {
@@ -49,7 +49,7 @@ int Location(Edge ln, Point p)
 /// \param ln The line.
 /// \param p The point.
 /// \return Distance.
-double Distance(Edge ln, Point p)
+double Distance(Line ln, Point p)
 {
   double abx{ln.b.x - ln.a.x};
   double aby{ln.b.y - ln.a.y};
@@ -95,7 +95,7 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
     double max_dist{kDblMin};
 
     for (auto p : pts) {
-      double curr_dist{Distance(Edge{a, b}, p)};
+      double curr_dist{Distance(Line{a, b}, p)};
       if (curr_dist > max_dist) {
         max_dist = curr_dist;
         c = p;
@@ -109,8 +109,8 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
 
     Points A, B;
     std::for_each(pts.begin(), pts.end(), [&](Point p) {
-      if (Location(Edge{a, c}, p) == 1) A.emplace_back(p);
-      if (Location(Edge{c, b}, p) == 1) B.emplace_back(p);
+      if (Location(Line{a, c}, p) == 1) A.emplace_back(p);
+      if (Location(Line{c, b}, p) == 1) B.emplace_back(p);
     });
 
     // Recursive calls
@@ -142,7 +142,7 @@ Points ConvexHull(Points points)
 
   // Determine which side of line (a,b)
   std::for_each(points.begin(), points.end(), [&](Point p) {
-    Location(Edge{a, b}, p) == -1 ? left.emplace_back(p) : right.emplace_back(p);
+    Location(Line{a, b}, p) == -1 ? left.emplace_back(p) : right.emplace_back(p);
   });
 
   // Call qhull with two sets
@@ -309,7 +309,7 @@ void LexSortPoints(Points& pts)
   pts = pts_res;
 }
 
-Edges Triangulate(Points& pts)
+Lines Triangulate(Points& pts)
 {
   LexSortPoints(pts);
 
@@ -317,10 +317,10 @@ Edges Triangulate(Points& pts)
   bool intersection{false};
 
   // The three first points constructs a triangle.
-  Edge l0{pts[0], pts[1]};
-  Edge l1{pts[0], pts[2]};
-  Edge l2{pts[1], pts[2]};
-  Edges lines{l0, l1, l2};
+  Line l0{pts[0], pts[1]};
+  Line l1{pts[0], pts[2]};
+  Line l2{pts[1], pts[2]};
+  Lines lines{l0, l1, l2};
 
   // From this point add points to the only triangl incrementally.
   for (size_t i = 3; i < pts.size(); ++i) {
@@ -341,7 +341,7 @@ Edges Triangulate(Points& pts)
       }
 
       if (!intersection) {
-        Edge line{p0, *pi};
+        Line line{p0, *pi};
         lines.emplace_back(line);
       }
       intersection = false;

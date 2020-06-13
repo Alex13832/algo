@@ -4,5 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-add_executable(mst_run mst_example.cpp)
-target_link_libraries(mst_run algo)
+add_executable(algo_graph_mst_run mst_example.cpp)
+target_link_libraries(algo_graph_mst_run algo)

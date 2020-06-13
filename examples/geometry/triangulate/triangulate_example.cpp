@@ -44,7 +44,7 @@ Points ReadFile(const string& file)
 /// \param points The convex hull points.
 /// \param all All points.
 /// \param filename
-void WriteToFile(const Edges& lines, const string& filename)
+void WriteToFile(const Lines& lines, const string& filename)
 {
   ofstream file;
   file.open(filename);
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 {
   Points points{ReadFile("testfiles/triangulate_in.csv")};
 
-  Edges lines{Triangulate(points)};
+  Lines lines{Triangulate(points)};
 
   WriteToFile(lines, "testfiles/triangulate_out.csv");
   return 0;

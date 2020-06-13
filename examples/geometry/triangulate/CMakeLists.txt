@@ -4,5 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-add_executable(triangulate_run triangulate_example.cpp)
-target_link_libraries(triangulate_run algo)
+add_executable(algo_geometry_triangulate_run triangulate_example.cpp)
+target_link_libraries(algo_geometry_triangulate_run algo)

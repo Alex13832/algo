@@ -224,6 +224,6 @@ TEST(test_algo_geometry, triangulate_timple)
                 {0.614683, .516723},
                 {0.414966, .294147}};
 
-  Edges lines{Triangulate(points)};
+  Lines lines{Triangulate(points)};
   EXPECT_EQ(lines.size(), 5);
 }

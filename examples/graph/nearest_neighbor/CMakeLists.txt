@@ -4,5 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(algo)
 
-add_executable(nn_run nn_example.cpp)
-target_link_libraries(nn_run algo)
+add_executable(algo_graph_nn_run nn_example.cpp)
+target_link_libraries(algo_graph_nn_run algo)

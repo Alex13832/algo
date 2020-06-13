@@ -19,7 +19,7 @@ include.
 ## Data structures
 Namespace `algo::image`
 
-|Data structure| descrption| Example |
+|Data structure| Description | Example |
 |:---|:---|:---|
 |`Point`            |Cartesian coordinate.                          | `Point p{1, 2};`                                  | 
 |`Line`             |Two-dimensional line.                          | `Line l{Point{1,2}, Point{2,3}};`                 |    

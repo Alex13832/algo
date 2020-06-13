@@ -12,3 +12,6 @@ include_directories(convex_hull)
 
 add_subdirectory(triangulate)
 include_directories(triangulate)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})

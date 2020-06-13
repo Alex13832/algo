@@ -50,16 +50,16 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
   file.open(filename);
 
   file << "x"
-       << ", "
+       << ","
        << "y"
-       << ", "
-       << "Labels" << '\n';
+       << ","
+       << "Label" << '\n';
 
   for (auto p : all) {
-    file << p.x << ", " << p.y << ", Other" << '\n';
+    file << p.x << "," << p.y << ",1" << '\n';// All
   }
   for (auto p : points) {
-    file << p.x << ", " << p.y << ", Closest pair" << '\n';
+    file << p.x << "," << p.y << ",2" << '\n';// Closest pair
   }
 
   file.close();
@@ -67,10 +67,10 @@ void WriteToFile(const Points& points, const Points& all, const string& filename
 
 int main()
 {
-  Points points{ReadFile("testfiles/closest_pair_in.csv")};
+  Points points{ReadFile("../testfiles/closest_pair_in2.csv")};
 
   Points cp{ClosestPairOfPoints(points)};
 
-  WriteToFile(cp, points, "testfiles/closest_pair_out.csv");
+  WriteToFile(cp, points, "../testfiles/closest_pair_out2.csv");
   return 0;
 }
