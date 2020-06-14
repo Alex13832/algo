@@ -30,9 +30,9 @@ TEST(test_algo_math, discrete_pascals_triangle_zeroth_row)
   EXPECT_EQ(sum, 1);
 }
 
-TEST(test_algo_math, discrete__pascals_triangle_nth_row)
+TEST(test_algo_math, discrete_pascals_triangle_nth_row)
 {
-  unsigned n{5};
+  int n{5};
   // The sum of the entries in the nth row of Pascal's triangle is the nth power of 2.
   vector<vector<int>> rows{discrete::PascalsTriangle(n)};
   int sum{std::accumulate(rows[n].begin(), rows[n].end(), 0)};
@@ -61,46 +61,51 @@ TEST(test_algo_math, discrete_clock_angle)
 
 TEST(test_algo_math, discrete_knapsack)
 {
-  vector<int> values{60, 100, 120};
-  vector<int> weights{10, 20, 30};
+  Items items{{60, 10},
+              {100, 20},
+              {120, 30}};
+
   unsigned capacity{50};
-  uint max_load{Knapsack(values, weights, capacity)};
+  int max_load{Knapsack(items, capacity)};
   EXPECT_EQ(max_load, 220);
 
-  values = {10, 40, 30, 50};
-  weights = {5, 4, 6, 3};
+  Items items1{{10, 5},
+               {40, 4},
+               {30, 6},
+               {50, 3}};
+
   capacity = 10;
-  max_load = Knapsack(values, weights, capacity);
+  max_load = Knapsack(items1, capacity);
   EXPECT_EQ(max_load, 90);
 }
 
 TEST(test_algo_math, discrete_gcd)
 {
   long a{12}, b{20};
-  EXPECT_EQ(Gcd(a, 0L), a);
-  EXPECT_EQ(Gcd(a, a), a);
-  EXPECT_EQ(Gcd(a, b), Gcd(a - b, b));
-  EXPECT_EQ(Gcd(b, a), Gcd(b, a - b));
-  EXPECT_EQ(Gcd(42, 56), 14);
+  EXPECT_EQ(GCD(a, 0L), a);
+  EXPECT_EQ(GCD(a, a), a);
+  EXPECT_EQ(GCD(a, b), GCD(a - b, b));
+  EXPECT_EQ(GCD(b, a), GCD(b, a - b));
+  EXPECT_EQ(GCD(42, 56), 14);
 }
 
 TEST(test_algo_math, discrete_lcm)
 {
   long a{10}, b{20}, c{30};
-  EXPECT_EQ(Lcm(a, b), Lcm(b, a));
-  EXPECT_EQ(Lcm(a, a), a);
-  EXPECT_EQ(Lcm(a, Lcm(b, c)), Lcm(Lcm(a, b), c));
-  EXPECT_EQ(Lcm(a, Gcd(a, b)), a);
-  EXPECT_EQ(Lcm(21L, 6L), 42L);
+  EXPECT_EQ(LCM(a, b), LCM(b, a));
+  EXPECT_EQ(LCM(a, a), a);
+  EXPECT_EQ(LCM(a, LCM(b, c)), LCM(LCM(a, b), c));
+  EXPECT_EQ(LCM(a, GCD(a, b)), a);
+  EXPECT_EQ(LCM(21L, 6L), 42L);
 }
 
 TEST(test_algo_math, discrete_bin)
 {
   long n{45}, k{68}, h{76};
-  EXPECT_EQ(Bin(n, k), n / k * Bin(n - 1, k - 1));
-  EXPECT_EQ(Bin(n - 1, k) - Bin(n - 1, k - 1), (n - 2 * k) / n * Bin(n, k));
-  EXPECT_EQ(Bin(n, h) * Bin(n - h, k), Bin(n, k) * Bin(n - k, h));
-  EXPECT_EQ(Bin(n, k), (n + 1 - k) / k * Bin(n, k - 1));
+  EXPECT_EQ(BIN(n, k), n / k * BIN(n - 1, k - 1));
+  EXPECT_EQ(BIN(n - 1, k) - BIN(n - 1, k - 1), (n - 2 * k) / n * BIN(n, k));
+  EXPECT_EQ(BIN(n, h) * BIN(n - h, k), BIN(n, k) * BIN(n - k, h));
+  EXPECT_EQ(BIN(n, k), (n + 1 - k) / k * BIN(n, k - 1));
 }
 
 /////////////////////////////////////////////

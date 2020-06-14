@@ -17,16 +17,12 @@ namespace algo::data_mining {
 
 namespace {
 constexpr double kDblMax{1.79769e+308};
-}// namespace
-
-/// \brief Returns the distance between two points.
-/// \param p1 Point 1.
-/// \param p2 Point 2.
-/// \return The distance between p1 and p2.
-double Distance(geometry::Point p1, geometry::Point p2)
-{
+// Euclidean distance
+constexpr auto Dist2 = [](const geometry::Point& p1, const geometry::Point& p2) {
   return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
-}
+};
+
+}// namespace
 
 /////////////////////////////////////////////
 /// K-means
@@ -55,7 +51,7 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
       int cluster{0}, min_cluster{0};
 
       for (auto& ct : ctr) {
-        double dist_curr{Distance(ct.p, pt)};
+        double dist_curr{Dist2(ct.p, pt)};
 
         if (dist_curr < dist_min) {
           dist_min = dist_curr;
@@ -91,7 +87,7 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
     int cluster{0}, min_cluster{0};
 
     for (auto& ct : ctr) {
-      double dist_curr{Distance(ct.p, pt)};
+      double dist_curr{Dist2(ct.p, pt)};
 
       if (dist_curr < dist_min) {
         dist_min = dist_curr;
@@ -129,7 +125,7 @@ LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPo
   for (auto point : unlabeled_data) {
 
     for (auto& ld : labeled_data) {
-      ld.dist = Distance(point, {ld.x, ld.y});
+      ld.dist = Dist2(point, {ld.x, ld.y});
       labels.insert(ld.label);
     }
 

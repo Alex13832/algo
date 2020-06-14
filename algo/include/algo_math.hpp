@@ -17,12 +17,13 @@
 
 namespace algo::math::discrete {
 
+using PTriangle = std::vector<std::vector<int>>;
+
 /// \brief Returns the rows of Pascal's Triangle.
 /// \param depth The number of rows.
 /// \return The rows of Pascal's Triangle, each item in the vector is one row.
 /// \link <a href="https://en.wikipedia.org/wiki/Pascal%27s_triangle">Pascal's triangle, Wikipedia.</a>
-/// \todo Change the return type to something meaningful.
-std::vector<std::vector<int>> PascalsTriangle(const unsigned int& depth);
+PTriangle PascalsTriangle(const int& depth);
 
 /// \brief Computes the angle between the hour and minute hands.
 /// \param h The position of the hour hand, e.g. 12.
@@ -30,18 +31,21 @@ std::vector<std::vector<int>> PascalsTriangle(const unsigned int& depth);
 /// \return The angle between the hour and minute hands. Return -1 for faulty input.
 int ClockAngle(const int& h, const int& m);
 
-/// \brief Finds the maximum value subset of v such that sum of the weights of this subset is smaller
-/// than or equal to the capacity.
-/// \param v Value for each item.
-/// \param w Weight for each item.
-/// \param capacity The total capacity for the knapsack.
-/// \return The maximum load capacity.
+// Struct for item in knapsack
+struct Item {
+  int value, weight;
+};
+
+// Knapsack items
+using Items = std::vector<Item>;
+
+/// \brief Finds the maximum capacity for the knapsack problem.
+/// \param items Items possible to put in the knapsack.
+/// \param capacity Maximum capacity for the knapsack.
+/// \return Maximum knapsack capacity.
 /// \link <a href="https://en.wikipedia.org/wiki/Knapsack_problem">Knapsack, Wikipedia.</a>
 /// \link <a href="https://www.geeksforgeeks.org/0-1-knapsack-problem-dp-10/"> Knapsack, GeeksforGeeks.</a>
-/// \note Tested but do not output the expected result for some examples. However the GeeksForGeeks
-/// implementation outputs the same result.
-/// \todo Change the output to somehting meaningful.
-unsigned int Knapsack(const std::vector<int>& v, const std::vector<int>& w, unsigned capacity);
+int Knapsack(const Items& items, unsigned capacity);
 
 /// \brief Computes the greatest common divisor, using the Euclidean algorithm.
 /// \tparam T Type used.
@@ -50,26 +54,46 @@ unsigned int Knapsack(const std::vector<int>& v, const std::vector<int>& w, unsi
 /// \return GCD(a, b)
 /// \link <a href="https://en.wikipedia.org/wiki/Greatest_common_divisor">GCD, Wikipedia.</a>
 /// \link <a href="https://en.wikipedia.org/wiki/Euclidean_algorithm">Euclidean algorithm, Wikipedia.</a>
-template<typename T>
-T Gcd(T a, T b);
+constexpr auto GCD = [](auto a, auto b) {
+  // Euclidean algorithm:
+  decltype(a) c = 0;
+  while (b != 0) {
+    c = a % b;
+    a = b;
+    b = c;
+  }
+  return a;
+};
 
-/// \brief Computes the least common multiple.
-/// \tparam T Type used.
-/// \param a First number.
-/// \param b Second number.
-/// \return LCM(a, b)
-/// \link <a href="https://en.wikipedia.org/wiki/Least_common_multiple">LCM, Wikipedia.</a>
-template<typename T>
-T Lcm(T a, T b);
+/// \brief Computes the least common multiple using the properties of GCD: LCM(a,b) = a*b/GCD(a,b)
+constexpr auto LCM = [](auto a, auto b) {
+  return std::abs(a * b) / GCD(a, b);
+};
 
 /// \brief Computes the binomial coefficient of a and b.  nCk, n Choose k is the same computation.
 /// \tparam T Type used.
 /// \param n First number.
 /// \param k Second number.
-/// \return Bin(a, b)
+/// \return BIN(a, b)
 /// \link <a href="https://en.wikipedia.org/wiki/Binomial_coefficient">Binomial coefficient, Wikipedia.</a>
-template<typename T>
-T Bin(T n, T k);
+constexpr auto BIN = [](auto n, auto k) {
+  decltype(n) c = 0;
+  if (k > n) {
+    return c;
+  }
+  c = 1;
+  if ((k == 0) || (k == n)) {
+    return c;
+  }
+
+  k = std::min(k, n - k);
+
+  for (decltype(k) i = 0; i < k; i++) {
+    c = c * (n - i) / (i + 1);
+  }
+
+  return c;
+};
 
 }// namespace algo::math::discrete
 

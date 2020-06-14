@@ -19,7 +19,7 @@ Returns a stable matching between `men_pref` and `women_pref`. This could genera
  university prefences and the university student preferences and not only to men and women. Since the literature use
  men and women, this piece of code also does so.
 
-An input of men's preferences and women's as
+An input of men's and women's preferences
 
 ![e](https://private.codecogs.com/gif.latex?%5Clarge%20%5Cbegin%7Bmatrix%7D%202%20%26%204%20%26%201%20%26%203%20%5C%5C%203%20%26%201%20%26%204%20%26%202%20%5C%5C%202%20%26%203%20%26%201%20%26%204%20%5C%5C%204%20%26%201%20%26%203%20%26%202%20%5Cend%7Bmatrix%7D) 
 

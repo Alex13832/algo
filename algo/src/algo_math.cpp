@@ -16,9 +16,9 @@
 
 namespace algo::math::discrete {
 
-std::vector<std::vector<int>> PascalsTriangle(const unsigned int &depth)
+PTriangle PascalsTriangle(const int &depth)
 {
-  std::vector<std::vector<int>> rows{};
+  PTriangle rows{};
 
   for (size_t line = 1; line <= depth + 1; line++) {
     std::vector<int> row{};
@@ -48,15 +48,15 @@ int ClockAngle(const int &h, const int &m)
   return angle;
 }
 
-unsigned int Knapsack(const std::vector<int> &v, const std::vector<int> &w, unsigned capacity)
+int Knapsack(const Items &items, unsigned capacity)
 {
-  size_t n{v.size()};
+  size_t n{items.size()};
   std::vector<std::vector<int>> m(n + 1, std::vector<int>(capacity + 1, 0));
 
   for (size_t i = 1; i <= n; i++) {
     for (size_t j = 0; j <= capacity; j++) {
-      if (w[i - 1] <= j) {
-        m[i][j] = std::max(m[i - 1][j], m[i - 1][j - w[i - 1]] + v[i - 1]);
+      if (items[i - 1].weight <= j) {
+        m[i][j] = std::max(m[i - 1][j], m[i - 1][j - items[i - 1].weight] + items[i - 1].value);
       } else {
         m[i][j] = m[i - 1][j];
       }
@@ -65,50 +65,6 @@ unsigned int Knapsack(const std::vector<int> &v, const std::vector<int> &w, unsi
 
   return m[n][capacity];
 }
-
-template<typename T>
-T Gcd(T a, T b)
-{
-  // Euclidean algorithm:
-  T c{0};
-  while (b != 0) {
-    c = a % b;
-    a = b;
-    b = c;
-  }
-  return a;
-}
-
-template unsigned Gcd<unsigned>(unsigned a, unsigned b);
-template int Gcd<int>(int a, int b);
-template long Gcd<long>(long a, long b);
-
-template<typename T>
-T Lcm(T a, T b)
-{
-  return a * b / Gcd(a, b);
-}
-
-template long Lcm<long>(long a, long b);
-
-template<typename T>
-T Bin(T n, T k)
-{
-  if (k > n)
-    return 0;
-  if ((k == 0) || (k == n))
-    return 1;
-
-  k = std::min(k, n - k);
-
-  T c = 1;
-  for (T i = 0; i < k; i++)
-    c = c * (n - i) / (i + 1);
-
-  return c;
-}
-
-template long Bin<long>(long a, long b);
 
 }// namespace algo::math::discrete
 

@@ -58,6 +58,6 @@ using namespace std;
 
 ...
 
-vector<int> vec{-5, 5, 5, 5, -5, -5, -5, 5, 5, 5, 5, -5};
-int max_sum{MaxSubarray(vec)}; // 20
+vector<int> vec{5, 4, 1, 2, 3, 4};
+int max_sum{MaxSubarray(vec)}; // 10
 ```
