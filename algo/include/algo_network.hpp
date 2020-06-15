@@ -27,13 +27,13 @@ using Mat = std::vector<Arr>;
 /// \param error Convergence threshold.
 /// \return The probabilities of a user visiting page i.
 /// \link <a href="https://en.wikipedia.org/wiki/PageRank">PageRank, Wikipedia.</a>
-Arr PageRank(const Mat &W, const double &damping, const double &error);
+Arr PageRank(const Mat& W, const double& error, const double& damping = 0.85);
 
 /// \brief Converts a matrix with link counts to a transition matrix with probabilities.
 /// \param M Link count matrix.
 /// \param deg
 /// \return Transition matrix.
-Mat MatTransition(const Mat &M, const Arr &deg);
+Mat MatTransition(const Mat& M, const std::vector<int>& deg);
 
 }// namespace algo::network
 

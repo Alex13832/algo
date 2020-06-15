@@ -31,7 +31,7 @@ TEST(test_algo_network, pagerank_4x4)
         {1, 0.0, 0.0, 0.0},
         {0.5, 0.0, 0.5, 0.0}};
 
-  Arr rank{PageRank(M, 0.8, 0.001)};
+  Arr rank{PageRank(M, 0.001, 0.8)};
   double sum{accumulate(rank.begin(), rank.end(), 0.0)};
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
@@ -45,7 +45,7 @@ TEST(test_algo_network, pagerank_5x5_1)
         {0.0, 0.0, 0.0, 0.0, 1.0},
         {1.0, 0.0, 0.0, 0.0, 0.0}};
 
-  Arr rank{PageRank(M, 0.8, 0.001)};
+  Arr rank{PageRank(M, 0.001, 0.8)};
   double sum{accumulate(rank.begin(), rank.end(), 0.0)};
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
@@ -59,7 +59,7 @@ TEST(test_algo_network, pagerank_5x5_deg)
         {1, 0, 0, 0, 0},
         {1, 0, 1, 0, 0}};
 
-  Arr deg = {1, 5, 1, 1, 2};
+  std::vector<int> deg{1, 5, 1, 1, 2};
   Mat trans{MatTransition(M, deg)};
   Arr rank{PageRank(trans, 0.85, 0.0001)};
   double sum{accumulate(rank.begin(), rank.end(), 0.0)};
@@ -78,7 +78,7 @@ TEST(test_algo_network, pagerank_8x8)
         {0.0, 0.0, 0.0, 0.0, 0.5, 0.0, 0.0, 0.5},
         {0.0, 0.0, 0.0, 0.0, 0, 0.5, 0.5, 0.0}};
 
-  Arr rank{PageRank(M, 0.85, 0.0001)};
+  Arr rank{PageRank(M, 0.0001, 0.85)};
   double sum{accumulate(rank.begin(), rank.end(), 0.0)};
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
@@ -94,7 +94,7 @@ TEST(test_algo_network, pagerank_50)
   size_t N = stoi(line);
 
   Mat M(N, Arr(N));
-  Arr degree(N);
+  std::vector<int> degree(N);
 
   while (getline(infile, line)) {
     vector<int> temp;
@@ -129,8 +129,8 @@ TEST(test_algo_network, pagerank_50)
     degree[i] = accumulate(M[i].begin(), M[i].end(), 0.0);
   }
 
-  Mat p = MatTransition(M, degree);
-  Arr rank = PageRank(p, 0.85, 0.0001);
-  double sum = accumulate(rank.begin(), rank.end(), 0.0);
+  Mat p{MatTransition(M, degree)};
+  Arr rank{PageRank(p, 0.0001, 0.85)};
+  double sum{accumulate(rank.begin(), rank.end(), 0.0)};
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }

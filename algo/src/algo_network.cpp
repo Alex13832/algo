@@ -102,7 +102,7 @@ Arr MatVecMult(const Mat& M, const Arr& arr)
   return vtemp;
 }
 
-Mat MatTransition(const Mat& M, const Arr& deg)
+Mat MatTransition(const Mat& M, const std::vector<int>& deg)
 {
   size_t N = M.size();
   Mat p(N, Arr(N));
@@ -117,7 +117,7 @@ Mat MatTransition(const Mat& M, const Arr& deg)
   return p;
 }
 
-Arr PageRank(const Mat& W, const double& damping, const double& error)
+Arr PageRank(const Mat& W, const double& error, const double& damping)
 {
   Mat M{W};
   size_t sz{M.size()};
