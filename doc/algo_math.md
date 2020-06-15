@@ -126,3 +126,35 @@ It's calculated with
 constexpr auto BIN = [](auto n, auto k) {...};
 ```
 Retuns the result of ![e](https://private.codecogs.com/gif.latex?%5Csmall%20%5Cbinom%7Bn%7D%7Bk%7D).
+
+# Random numbers
+
+Images below kindly borrowed from Wikipedia.
+
+|Function|Properties|PDF (continuous) / PMF (discrete)|
+|---|---|:---:|
+|`double cont::Uniform(const double& a, const double& b);`      |![e](https://private.codecogs.com/gif.latex?%5Csmall%20-%5Cinfty%20%3Ca%3Cb%3C%5Cinfty%20%5C%2C)                                                                                           |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Uniform_Distribution_PDF_SVG.svg/250px-Uniform_Distribution_PDF_SVG.svg.png) |
+|`double cont::Random();`                                       |`Uniform(0, 1)`                                                                                                                                                                            | |
+|`double cont::Exp(const double& lambda);`                      |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%5Clambda%20%3E%200)                                                                                                                |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/0/02/Exponential_probability_density.svg/325px-Exponential_probability_density.svg.png)|
+|`double cont::Normal(const double& mu, const double& sigma);`  |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%7B%5Cdisplaystyle%20%5Cmu%20%5Cin%20%5Cmathbb%20%7BR%7D%20%7D%2C%20%5Cquad%20%5Csigma%5E2%3E0)                                     |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/7/74/Normal_Distribution_PDF.svg/340px-Normal_Distribution_PDF.svg.png)|
+|`double cont::Weibull(const double& lambda, const double& k);` |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%5Clambda%5Cin%20%280%2C%20&plus;%5Cinfty%29%5C%2C%2C%20%5Cquad%20k%5Cin%20%280%2C%20&plus;%5Cinfty%29%5C%2C)                       |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/5/58/Weibull_PDF.svg/325px-Weibull_PDF.svg.png) |
+|`int discr::Binomial(const int& n, const double& p);`          |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%7B%5Cdisplaystyle%20n%5Cin%20%5C%7B0%2C1%2C2%2C%5Cldots%20%5C%7D%7D%2C%20%5Cquad%20%7B%5Cdisplaystyle%20p%5Cin%20%5B0%2C1%5D%7D)   |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Binomial_distribution_pmf.svg/300px-Binomial_distribution_pmf.svg.png)|
+|`int discr::Poisson(const double& lambda);`                    |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%7B%5Cdisplaystyle%20%5Clambda%20%5Cin%20%5Cmathbb%20%7BR%7D%20%5E%7B&plus;%7D%7D)                                                  |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/1/16/Poisson_pmf.svg/325px-Poisson_pmf.svg.png)|
+|`int discr::Geometric(const double& p);`                       |![e](https://private.codecogs.com/gif.latex?%5Csmall%20%7B%5Cdisplaystyle%200%3Cp%5Cleq%201%7D)                                                                                            |![im](https://upload.wikimedia.org/wikipedia/commons/thumb/4/4b/Geometric_pmf.svg/450px-Geometric_pmf.svg.png)|
+
+# Prime numbers
+
+## Sieve of Eratosthenes
+>In mathematics, the sieve of Eratosthenes is an ancient algorithm for finding all prime numbers up to any given limit. [Wikipedia](https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes)
+
+```c++
+
+std::vector<T> GetPrimes(unsigned int n);
+```
+Returns a list of prime numbers where the last prime number is `<= n`.
+
+To verify that an integer is a prime number use this function;
+
+```c++
+bool IsPrime(T n);
+```

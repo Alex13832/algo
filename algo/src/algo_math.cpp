@@ -65,7 +65,6 @@ int Knapsack(const Items &items, unsigned capacity)
 
   return m[n][capacity];
 }
-
 }// namespace algo::math::discrete
 
 /////////////////////////////////////////////
