@@ -14,7 +14,6 @@ namespace algo::geometry {
 namespace {
 constexpr double kDblMin{2.2250738585072014e-308};
 constexpr double kDblMax{1.79769e+308};
-}// namespace
 
 // For sorting on x-priority.
 struct x_comp {
@@ -36,21 +35,19 @@ struct y_comp {
 /// \param ln The line.
 /// \param p The point.
 /// \return 1 if above/right, -1 below/left.
-int Location(Line ln, Point p)
-{
-  double temp{(ln.b.x - ln.a.x) * (p.y - ln.a.y) - (ln.b.y - ln.a.y) * (p.x - ln.a.x)};
+constexpr auto Location = [](const Line& ln, const Point& pt) {
+  double temp{(ln.b.x - ln.a.x) * (pt.y - ln.a.y) - (ln.b.y - ln.a.y) * (pt.x - ln.a.x)};
   if (temp > 0) {
     return 1;
   }
   return -1;
-}
+};
 
 /// \brief Determines the distance between a point p and the line ln.
 /// \param ln The line.
 /// \param p The point.
 /// \return Distance.
-double Distance(Line ln, Point p)
-{
+constexpr auto LDistance = [](const Line& ln, const Point& p) {
   double abx{ln.b.x - ln.a.x};
   double aby{ln.b.y - ln.a.y};
   double dist{abx * (ln.a.y - p.y) - aby * (ln.a.x - p.x)};
@@ -58,16 +55,17 @@ double Distance(Line ln, Point p)
     return -1.0 * dist;
   }
   return dist;
-}
+};
 
 /// \brief Returns the distance between two points.
 /// \param p1 Point 1.
 /// \param p2 Point 2.
 /// \return The distance between p1 and p2.
-double Distance(Point p1, Point p2)
-{
+constexpr auto PDistance = [](const Point& p1, const Point& p2) {
   return sqrt((double) pow(p1.x - p2.x, 2) + (double) pow(p1.y - p2.y, 2));
-}
+};
+
+}// namespace
 
 /////////////////////////////////////////////
 /// Quickhull
@@ -95,7 +93,7 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
     double max_dist{kDblMin};
 
     for (auto p : pts) {
-      double curr_dist{Distance(Line{a, b}, p)};
+      double curr_dist{LDistance(Line{a, b}, p)};
       if (curr_dist > max_dist) {
         max_dist = curr_dist;
         c = p;
@@ -170,8 +168,8 @@ std::pair<double, Points> ClosestPairBF(const Points& xp, const Points& yp)
     for (auto py : yp) {
 
       if (!(px.x == py.x && px.y == py.y)) {
-        if (Distance(px, py) < min_dist) {
-          min_dist = Distance(px, py);
+        if (PDistance(px, py) < min_dist) {
+          min_dist = PDistance(px, py);
           xp_min = px;
           yp_min = py;
         }
@@ -226,8 +224,8 @@ std::pair<double, Points> ClosestPair(const Points& xp, const Points& yp)
     size_t k = i + 1;
 
     while (k < ys.size() && ((ys[k].y - ys[i].y) < dist_min)) {
-      if (Distance(ys[k], ys[i]) < closest_dist) {
-        closest_dist = Distance(ys[k], ys[i]);
+      if (PDistance(ys[k], ys[i]) < closest_dist) {
+        closest_dist = PDistance(ys[k], ys[i]);
         closest_pair = {ys[k], ys[i]};
       }
       k++;
@@ -258,20 +256,17 @@ Points ClosestPairOfPoints(const Points& points)
 * http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
 */
 
-//0.01 small penalty
-bool ccw(Point p1, Point p2, Point p3)
-{
+namespace {
+
+constexpr auto CCW = [](const Point& p1, const Point& p2, const Point& p3) {
   return ((p3.y - p1.y) * (p2.x - p1.x)) >= ((p2.y - p1.y) * (p3.x - p1.x));
-}
+};
 
-//p0 pi pk pj
-bool SegmentIntersect(Point p1, Point p2, Point p3, Point p4)
-{
-  bool a = (ccw(p1, p3, p4) != ccw(p2, p3, p4))
-      && (ccw(p1, p2, p3) != ccw(p1, p2, p4));
+constexpr auto SegmentIntersect = [](Point p1, Point p2, Point p3, Point p4) {
+  bool a = (CCW(p1, p3, p4) != CCW(p2, p3, p4))
+      && (CCW(p1, p2, p3) != CCW(p1, p2, p4));
 
-  /** Degeneracy, if two points are equal, they should not
-  //count as intersection */
+  // Degeneracy, if two points are equal, they should not count as intersection
   bool b{p1 != p3};
   bool c{p1 != p4};
   bool d{p2 != p3};
@@ -280,7 +275,7 @@ bool SegmentIntersect(Point p1, Point p2, Point p3, Point p4)
   bool g{p3 != p4};
 
   return a && b && c && d && e && f && g;
-}
+};
 
 /// \brief Sorts the input points lexicographically,
 /// \param pts The input points.
@@ -308,6 +303,8 @@ void LexSortPoints(Points& pts)
 
   pts = pts_res;
 }
+
+}//namespace
 
 Lines Triangulate(Points& pts)
 {

@@ -11,29 +11,6 @@
 
 namespace algo::strings {
 
-std::string BitapSearch(const std::string &text, const std::string &pattern)
-{
-  size_t m = pattern.length();
-
-  if (m == 0) return text;
-
-  std::vector<int> R(m, 0);
-  R[0] = 1;
-
-  for (size_t i = 0; i < text.length(); i++) {
-    // Update the bit array
-    for (size_t k = m; k >= 1; k -= 1) {
-      R[k] = (R[k - 1] > 0) & (text[i] == pattern[k - 1]);
-    }
-
-    if (R[m] > 0) {
-      return text.substr(i - m + 1);
-    }
-  }
-
-  return std::string{};
-}
-
 int LastOccurrence(std::string str, char c)
 {
   int index = str.length();
@@ -111,29 +88,30 @@ std::string LongestCommonSubstring(std::string A, std::string B)
   return res;
 }
 
+namespace {
 /// \brief Returns the hash for str.
 /// \param str The string to hash.
 /// \return hash.
-unsigned long fingerprint(const std::string &str)
-{
+constexpr auto Fingerprint = [](auto str) {
   std::hash<std::string> shash;
   return shash(str);
-}
+};
+}//namespace
 
 std::vector<int> SearchRabinKarpSingle(const std::string &text, const std::string &pattern)
 {
   std::vector<int> pos;
   size_t n = text.length();
   size_t m = pattern.length();
-  unsigned long hash_p = fingerprint(pattern);
-  unsigned long hash_t = fingerprint(text.substr(0, m));
+  unsigned long hash_p = Fingerprint(pattern);
+  unsigned long hash_t = Fingerprint(text.substr(0, m));
 
   for (size_t i = 0; i < (n - m + 1); i++) {
     if (hash_t == hash_p) {
       if (text.substr(i, m) == pattern) pos.push_back(i);
     }
     std::string temp = text.substr(i + 1, m);
-    hash_t = fingerprint(temp);
+    hash_t = Fingerprint(temp);
   }
 
   return pos;
@@ -146,10 +124,10 @@ std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::str
   size_t n = text.length();
 
   for (const auto &pattern : patterns) {
-    hash_pm.insert(fingerprint(pattern));
+    hash_pm.insert(Fingerprint(pattern));
   }
 
-  unsigned long hash_t = fingerprint(text.substr(0, m));
+  unsigned long hash_t = Fingerprint(text.substr(0, m));
 
   for (size_t j = 0; j < (n - m + 1); j++) {
     bool h_find = hash_pm.find(hash_t) != hash_pm.end();
@@ -157,7 +135,7 @@ std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::str
     if (h_find && p_find) pos.push_back(j);
 
     std::string temp = text.substr(j + 1, m);
-    hash_t = fingerprint(temp);
+    hash_t = Fingerprint(temp);
   }
 
   return pos;

@@ -115,12 +115,14 @@ Edges GetEdges(const Graph &graph)
   return edges;
 }
 
+namespace {
 struct comp {
   bool operator()(const Connection &lhs, Connection &rhs) const
   {
     return lhs.weight > rhs.weight;
   }
 };
+}//namespace
 
 // //////////////////////////////////////////
 //  Breadth-First-Search (BFS)
@@ -265,6 +267,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
 //  Dijkstra's, shortest path
 // //////////////////////////////////////////
 
+namespace {
 /// \brief Computes the shortest path from all nodes back to source in the input graph.
 /// \param graph The input graph.
 /// \param source The source node.
@@ -297,6 +300,7 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
 
   return prev;
 }
+}// namespace
 
 Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest)
 {
@@ -386,6 +390,7 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 //  Foyd-Warshall, all-pair shortest dist
 // //////////////////////////////////////////
 
+namespace {
 void ShortestDistAllPairsPriv(const Graph &graph, WeightMat &dist, NodeMat &next)
 {
   size_t V{graph.size()};
@@ -412,6 +417,7 @@ void ShortestDistAllPairsPriv(const Graph &graph, WeightMat &dist, NodeMat &next
     }
   }
 }
+}//namespace
 
 NodeMat ShortestDistAllPairs(const Graph &graph)
 {
@@ -498,8 +504,8 @@ Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weigh
 //  Edmonds-Karp, max-flow
 // //////////////////////////////////////////
 
-double FindMinOfResiduals(const Graph &graph, const Nodes &path)
-{
+namespace {
+constexpr auto FindMinOfResiduals = [](const Graph &graph, const Nodes &path) {
   double min{kDblMax};
   Edges edges{GetEdges(graph)};
 
@@ -511,7 +517,8 @@ double FindMinOfResiduals(const Graph &graph, const Nodes &path)
     }
   }
   return min;
-}
+};
+}//namespace
 
 double MaxFlow(Graph graph, const int &source, const int &dest)
 {
@@ -567,6 +574,7 @@ double MaxFlow(Graph graph, const int &source, const int &dest)
 //  Kosaraju, strongly connected components
 // //////////////////////////////////////////
 
+namespace {
 // DFS
 void Explore(const Graph &graph, int n, Visited &explored, Nodes &res)
 {
@@ -592,6 +600,7 @@ Graph Reverse(const Graph &graph)
   }
   return graph1;
 }
+}//namespace
 
 NodeMat StrConnComponents(const Graph &graph)
 {

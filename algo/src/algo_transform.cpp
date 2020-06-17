@@ -11,16 +11,17 @@
 
 namespace algo::transform {
 
-bool IsPowOfTwo(size_t x)
-{
+namespace {
+constexpr auto IsPowOf2 = [](auto x) {
   return (x != 0) && ((x & (x - 1)) == 0);
-}
+};
+}//namespace
 
 FftTransf FFT(const FftTransf &A)
 {
   size_t N{A.size()};
   if (N <= 1) { return A; }
-  if (!IsPowOfTwo(N)) { return FftTransf{}; }
+  if (!IsPowOf2(N)) { return FftTransf{}; }
 
   FftTransf even_part{A[std::slice(0, N / 2, 2)]};
   FftTransf odd_part{A[std::slice(1, N / 2, 2)]};
@@ -42,7 +43,7 @@ FftTransf IFFT(const FftTransf &B)
 {
   size_t N{B.size()};
   if (N == 0) { return B; }
-  if (!IsPowOfTwo(N)) { return FftTransf{}; }
+  if (!IsPowOf2(N)) { return FftTransf{}; }
 
   FftTransf T{B};
   std::transform(begin(T), end(T), begin(T), [&](std::complex<double> &c) { return conj(c); });

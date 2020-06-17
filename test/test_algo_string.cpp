@@ -11,33 +11,6 @@ using namespace std;
 using namespace algo;
 
 /////////////////////////////////////////////
-/// Bitap search
-/////////////////////////////////////////////
-
-TEST(test_algo_string, bitap_search)
-{
-  string text{"this is a bitap test"};
-  string pattern{"bitap"};
-  string res{strings::BitapSearch(text, pattern)};
-  EXPECT_EQ(res, "bitap test");
-}
-
-TEST(test_algo_string, bitap_search_not_found)
-{
-  string text{"this is a bitap test"};
-  string pattern{"dijkstra"};
-  string res{strings::BitapSearch(text, pattern)};
-  EXPECT_EQ(res.size(), 0);
-}
-
-TEST(test_algo_string, bitap_empty_pattern)
-{
-  string text{"this is a bitap test"};
-  string res{strings::BitapSearch(text, "")};
-  EXPECT_EQ(res, text);
-}
-
-/////////////////////////////////////////////
 /// Boyer-More
 /////////////////////////////////////////////
 

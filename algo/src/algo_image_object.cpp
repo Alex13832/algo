@@ -115,6 +115,7 @@ Img ExtractCannyEdges(const Img& im, const int& threshold_min, const int& thresh
 /// Line detection
 /////////////////////////////////////////////
 
+namespace {
 struct h_comp {
   bool operator()(const HLine l1, const HLine l2) const
   {
@@ -122,7 +123,6 @@ struct h_comp {
   }
 } h_comp;
 
-namespace {
 constexpr int kMaxNbrLines{1000};
 // Lambda for computing distance in alpha-d-plane
 constexpr auto DistComp = [](HLine l1, HLine l2) {

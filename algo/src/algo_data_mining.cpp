@@ -105,6 +105,7 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
 /// KNN
 /////////////////////////////////////////////
 
+namespace {
 // For comparing distances
 struct LPointDistComp {
   bool operator()(const LabeledPoint& p1, const LabeledPoint& p2) const
@@ -112,6 +113,7 @@ struct LPointDistComp {
     return p1.dist < p2.dist;
   }
 };
+}//namespace
 
 LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k)
 {

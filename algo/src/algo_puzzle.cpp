@@ -12,35 +12,35 @@
 
 namespace algo::puzzle::sudoku {
 
+namespace {
+
 /// \brief Checks if a row is valid.
 /// \param grid The grid to check.
 /// \param row The row number.
 /// \param num The number to compare.
 /// \return True if valid, otherwise false.
-bool row_valid(const Grid& grid, const int& row, const int& num)
-{
+constexpr auto RowValid = [](const Grid& grid, const int& row, const int& num) {
   for (size_t i = 0; i < grid_size; ++i) {
     if (grid[row][i] == num) {
       return false;
     }
   }
   return true;
-}
+};
 
 /// \brief Checks if a column is valid.
 /// \param grid The grid to check.
 /// \param col The column number.
 /// \param num The number to compare.
 /// \return True if valid, otherwise false.
-bool col_valid(const Grid& grid, const int& col, const int& num)
-{
+constexpr auto ColValid = [](const Grid& grid, const int& col, const int& num) {
   for (size_t i = 0; i < grid_size; ++i) {
     if (grid[i][col] == num) {
       return false;
     }
   }
   return true;
-}
+};
 
 /// \brief Checks if a 3x3 cell is valid.
 /// \param grid The grid to check.
@@ -48,8 +48,7 @@ bool col_valid(const Grid& grid, const int& col, const int& num)
 /// \param col The row number.
 /// \param num The number to compare.
 /// \return True if valid, otherwise false.
-bool cell_valid(Grid grid, int row, int col, int num)
-{
+constexpr auto CellValid = [](Grid grid, int row, int col, int num) {
   int r1{row - row % 3};
   int r2{r1 + 3};
   int c1{col - col % 3};
@@ -63,7 +62,7 @@ bool cell_valid(Grid grid, int row, int col, int num)
     }
   }
   return true;
-}
+};
 
 /// \brief Solves the Sudoku puzzle recursively, and iteratively, starting from the top left corner.
 /// \param grid The grid containing the puzzle.
@@ -84,7 +83,7 @@ bool SolvePriv(Grid& grid, int x, int y)
   }
 
   for (size_t i = 1; i < grid_size + 1; i++) {
-    if (row_valid(grid, x, i) && col_valid(grid, y, i) && cell_valid(grid, x, y, i)) {
+    if (RowValid(grid, x, i) && ColValid(grid, y, i) && CellValid(grid, x, y, i)) {
       grid[x][y] = i;
 
       if (SolvePriv(grid, x, y)) {
@@ -96,6 +95,8 @@ bool SolvePriv(Grid& grid, int x, int y)
   grid[x][y] = 0;
   return false;
 }
+
+}//namespace
 
 Grid Solve(const Grid& grid)
 {
