@@ -35,6 +35,12 @@ TEST(test_algo_search, binary_search)
   EXPECT_EQ(Binary(vec, 8), 8);
 }
 
+TEST(test_algo_search, binary_search_many_threes)
+{
+  const vector<int> vec{0, 1, 2, 3, 3, 3, 3};
+  EXPECT_EQ(Binary(vec, 3), 3);
+}
+
 TEST(test_algo_search, binary_search_not_found)
 {
   const vector<int> vec{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14};
