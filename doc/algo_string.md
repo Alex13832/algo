@@ -48,8 +48,8 @@ CBA
 CAB
 ```
 
-Note that the number of possible permutations are equal to ![e](https://private.codecogs.com/gif.latex?n%21), where 
-![e](https://private.codecogs.com/gif.latex?n%) is the string length. If the length is 10 then the number of possible permutations are
+Note that the number of possible permutations is equal to ![e](https://private.codecogs.com/gif.latex?n%21), where 
+![e](https://private.codecogs.com/gif.latex?n%) is the string length. If the length is 10 then the number of possible permutations is
 ![e](https://private.codecogs.com/gif.latex?10%21%20%3D%203628800), which means that a lot of memory and execution time may be needed.
 
 ## Levenshtein distance
