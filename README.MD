@@ -1,24 +1,38 @@
 Algo
 ===============================
-This repository contains implementations of various known algorithms from selected fields of algorithm design in computer science, 
-mathematics, data mining and etc. A not so unrealistic goal is to have the source code 100% unit tested and a 100% code coverage. 
+This repository contains C++ implementations of various known algorithms from selected fields of algorithm design
 
-# Constraints
+* Data mining
+* Computational geometry
+* Graph theory
+* Greedy algorithms
+* Image analysis and computer vision
+* Network algorithms
+* Puzzle solving
+* Searching
+* Sequence
+* Sorting
+* Strings
+* Transforms
+
+## Constraints
 
 The algorithms are implemented **only** using the C++ standard library.
 
 The examples in `examples/` may use additional libraries but should not be required when building the library itself.
 
-# Resources
+## Resources
 
 ### Documentation 
 
-See the `doc/` folder for documentation.
+See the `doc` folder for documentation. The plots in the documentation has been generated with python and [Plotly](https://plotly.com).
 
 ### Data
-For generating and plotting data, the [Orange](https://orange.biolab.si) data mining tool is used. It's super easy to 
-output a data set in csv format to play with. The result of the C++ algorithms may then be plotted with the 
-same tool. Not a single line of code.
+Most test data has been generated thanks to the [Orange](https://orange.biolab.si) data mining tool.
+
+### Examples
+
+Seee the `examples` folder for examples. To run some of the examples, OpenCv is required.
 
 ### Unit tests
 The C++ code is tested with the [Google Test](https://github.com/google/googletest) framework.
