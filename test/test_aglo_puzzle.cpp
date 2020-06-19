@@ -67,7 +67,6 @@ TEST(test_algo_puzzle, sudoku_extreme)
              {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
   Grid solved{Solve(grid)};
-
   EXPECT_TRUE(equal(correct.begin(), correct.end(), solved.begin()));
 }
 
