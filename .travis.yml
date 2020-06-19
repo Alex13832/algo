@@ -2,9 +2,6 @@ dist: trusty
 sudo: false
 language: cpp
 
-git:
-  depth: false
-
 addons:
   apt:
     sources:
@@ -12,6 +9,8 @@ addons:
     packages:
       - g++-6
 
+
 script:
-  - cmake .
   - cmake --build .
+  - cd cmake-build-debug
+  - ./Algorithm_test_run
