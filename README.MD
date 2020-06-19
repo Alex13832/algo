@@ -28,11 +28,11 @@ The examples in `examples/` may use additional libraries but should not be requi
 See the `doc` folder for documentation. The plots in the documentation has been generated with python and [Plotly](https://plotly.com).
 
 ### Data
-Most test data has been generated thanks to the [Orange](https://orange.biolab.si) data mining tool.
+Most of the test data has been generated thanks to the [Orange](https://orange.biolab.si) data mining tool.
 
 ### Examples
 
-Seee the `examples` folder for examples. To run some of the examples, OpenCv is required.
+See the `examples` folder for examples. To run some of the examples, OpenCv is required.
 
 ### Unit tests
 The C++ code is tested with the [Google Test](https://github.com/google/googletest) framework.
