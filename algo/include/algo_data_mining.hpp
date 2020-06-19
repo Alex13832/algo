@@ -34,7 +34,7 @@ using Clusters = std::vector<geometry::Points>;
 
 /// \brief Returns the clusters of K-means. Each cluster i in 1...i...k contains a set of points.
 /// \param k Number of clusters.
-/// \return Clusters. If k is greated the points.size() it will return an empty object.
+/// \return Clusters. If k is greater than the points.size() it will return an empty object.
 /// \link <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-means, Wikipedia.</a>
 Clusters KMeans(geometry::Points points, const std::int8_t& k);
 

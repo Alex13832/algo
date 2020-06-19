@@ -387,7 +387,7 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 }
 
 // //////////////////////////////////////////
-//  Foyd-Warshall, all-pair shortest dist
+//  Floyd-Warshall, all-pair shortest dist
 // //////////////////////////////////////////
 
 namespace {

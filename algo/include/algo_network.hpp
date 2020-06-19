@@ -5,7 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
 ///
 /// Change list:
-/// 2015-06-20 Pagerank
+/// 2015-06-20 Page rank
 ///
 #ifndef ALGORITHM_NETWORK_NETWORK_ALGORITHMS_HPP_
 #define ALGORITHM_NETWORK_NETWORK_ALGORITHMS_HPP_

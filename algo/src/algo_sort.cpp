@@ -116,7 +116,7 @@ template void Gnome<std::string>(std::vector<std::string> &vec);
 /// Heap-sort
 /////////////////////////////////////////////
 
-/// \brief Sift-down operation for binary heaps. Puts new elements to the appropriate indicess.
+/// \brief Sift-down operation for binary heaps. Puts new elements to the appropriate indices.
 /// \tparam T Type in vector.
 /// \param vec the vector to arrange the elements.
 /// \param start The starting position.

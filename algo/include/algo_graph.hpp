@@ -174,8 +174,8 @@ Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &des
 std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 
 /// \brief Returns the shortest oath between the source and destination (dest) in the input graph.
-/// \details This algorithm uses the Bellman-Ford algorihtm whích allows negative edge weights. Use ShortestPathDijkstra
-/// if all edege weights are positive (faster).
+/// \details This algorithm uses the Bellman-Ford algorithm which allows negative edge weights. Use ShortestPathDijkstra
+/// if all edge weights are positive (faster).
 /// \param graph The input graph.
 /// \param source Source node.
 /// \param dest Destination node.
@@ -189,7 +189,7 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 /// \brief Finds the shortest path between all the nodes in the input graph.
 /// \details Implementation follows the Floyd-Warshall algorithm.
 /// \param graph The input graph.
-/// \return A matrix, where each entry (for each node) is the path to all other ndoes.
+/// \return A matrix, where each entry (for each node) is the path to all other nodes.
 /// \link <a href="https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm">Floyd-Warshall, Wikipedia.</a>
 NodeMat ShortestDistAllPairs(const Graph &graph);
 
@@ -231,7 +231,7 @@ double MaxFlow(Graph graph, const int &source, const int &dest);
 
 /// \brief Returns a list of the strongly connected components in graph.
 /// \details This function follows the Kosaraju algorithm.
-/// \param graph The input grahp.
+/// \param graph The input graph.
 /// \return A list of connected components, each item is a list of nodes.
 /// \link <a href="https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm">Kosaraju's algorithm, Wikipedia.</a>
 /// \link <a href="https://en.wikipedia.org/wiki/Strongly_connected_component">Strongly connected component, Wikipedia.<a/>

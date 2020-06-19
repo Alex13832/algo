@@ -54,6 +54,7 @@ constexpr auto L1Norm = [](const Arr& arr) {
 /// \param d Denominator.
 constexpr auto MatElemDiv = [](Arr& vec, const double& d) {
   std::transform(vec.begin(), vec.end(), vec.begin(), [&d](double x) { return x / d; });
+  return true;
 };
 
 /// \brief Element-wise multiplication of mat with d.
@@ -63,6 +64,7 @@ constexpr auto MatElemMult = [](Mat& mat, const double& d) {
   for (auto& arr : mat) {
     std::transform(arr.begin(), arr.end(), arr.begin(), [&d](double x) { return x * d; });
   }
+  return true;
 };
 
 /// \brief Matrix addition.

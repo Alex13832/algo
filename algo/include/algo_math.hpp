@@ -144,7 +144,7 @@ namespace discr {
 /// \param n Number of independent experiments.
 /// \param p The probability of the experiment.
 /// \return Binomial(n,p)
-/// \link <a href="https://en.wikipedia.org/wiki/Binomial_distribution">Binomial dstribution, Wikipedia.</a>
+/// \link <a href="https://en.wikipedia.org/wiki/Binomial_distribution">Binomial distribution, Wikipedia.</a>
 int Binomial(const int& n, const double& p);
 
 /// \brief Returns a random number sampled from the Poisson distribution.

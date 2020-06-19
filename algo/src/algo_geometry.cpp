@@ -71,7 +71,7 @@ constexpr auto PDistance = [](const Point& p1, const Point& p2) {
 /// Quickhull
 /////////////////////////////////////////////
 
-/// \brief Soubroutine of Quickhull. Not to be accessible from outside of this file. Use ConvexHull.
+/// \brief Subroutine of Quickhull. Not to be accessible from outside of this file. Use ConvexHull.
 /// This is the divide and conquer step in Quickhull.
 /// \param a Point.
 /// \param b Point.
@@ -252,7 +252,7 @@ Points ClosestPairOfPoints(const Points& points)
 
 /** ------------------------------------------------------------------
 * Functions for determining if two line segments intersect.
-* Implementerd according to
+* Implemented according to
 * http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
 */
 
@@ -319,7 +319,7 @@ Lines Triangulate(Points& pts)
   Line l2{pts[1], pts[2]};
   Lines lines{l0, l1, l2};
 
-  // From this point add points to the only triangl incrementally.
+  // From this point add points to the only triangulate incrementally.
   for (size_t i = 3; i < pts.size(); ++i) {
     Point& p0{pts[i]};
 

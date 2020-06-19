@@ -159,7 +159,7 @@ Img InvertPixels(const Img& im);
 /// \return Mirrored image.
 Img FlipX(const Img& im);
 
-/// \brief Arrange the piels in im like a mirror, vertically.
+/// \brief Arrange the pixels in im like a mirror, vertically.
 /// \param im The input image.
 /// \return Mirrored image.
 Img FlipY(const Img& im);

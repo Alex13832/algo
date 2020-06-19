@@ -51,7 +51,7 @@ void Gnome(std::vector<T> &vec);
 template<typename T>
 void Heap(std::vector<T> &vec);
 
-/// \brief Insertion sort algoritm.
+/// \brief Insertion sort algorithm.
 /// \tparam T Type in vector.
 /// \param vec The vector to be sorted.
 /// \link <a href="https://en.wikipedia.org/wiki/Insertion_sort">Insertion sort, Wikipedia.</a>

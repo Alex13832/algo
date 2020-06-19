@@ -18,7 +18,7 @@ namespace algo::greedy {
 using Match = std::pair<int, int>;
 using Prefs = std::vector<std::vector<int>>;
 
-/// \brief Returns a set of stable matchings of the input of preferred choices. The input needs to be
+/// \brief Returns a set of stable matching pairs of the input of preferred choices. The input needs to be
 /// converted to numbers, e.g. man 1 prefers woman 2. The stable matching is computed with the
 /// Gale-Shapley algorithm.
 /// \param men_pref Men's preferred women.
