@@ -35,5 +35,5 @@ Most of the test data has been generated thanks to the [Orange](https://orange.b
 See the `examples` folder for examples. To run some of the examples, OpenCv is required.
 
 ### Unit tests
-The C++ code is tested with the [Google Test](https://github.com/google/googletest) framework.
+The C++ code is tested with the [Google Test](https://github.com/google/googletest) framework. 
 

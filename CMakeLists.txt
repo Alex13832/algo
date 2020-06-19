@@ -16,12 +16,13 @@ include_directories(algo)
 add_subdirectory(algo)
 
 # ////////////////////////////////////////
-# Test
+# Test, needs Google Test
 # ////////////////////////////////////////
 add_subdirectory(test)
 
 # ////////////////////////////////////////
-# Examples
+# Examples, needs OpenCv,
+# uncomment to build
 # ////////////////////////////////////////
-include_directories(examples)
-add_subdirectory(examples)
+#include_directories(examples)
+# add_subdirectory(examples)

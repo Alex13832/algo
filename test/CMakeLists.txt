@@ -5,10 +5,14 @@
 project(AlgorithmTests)
 
 # Include Google Test
-add_subdirectory(lib)
+include(gtest.cmake)
 
 file(GLOB test_SRC "*.cpp")
 
 add_executable(Algorithm_test_run ${test_SRC})
 
-target_link_libraries(Algorithm_test_run algo gtest gtest_main)
+target_link_libraries(Algorithm_test_run algo)
+
+# GTest needs threading support
+find_package(Threads)
+target_link_libraries(Algorithm_test_run gtest ${CMAKE_THREAD_LIBS_INIT})
