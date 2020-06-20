@@ -15,3 +15,6 @@ add_subdirectory(graph)
 
 include_directories(image)
 add_subdirectory(image)
+
+include_directories(sort)
+add_subdirectory(sort)

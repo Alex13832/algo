@@ -28,3 +28,17 @@ using namespace std;
 vector<int> numbers{1, 9, 10, 2, 1, 1, 3, 2, 1, 4, 40, 40, 1};
 algo::sort::Merge(numbers);
 ```
+
+### Experiment
+
+Sort 50 000 integers and measure the execution time. Sorted from fastest to slowest. 
+
+|Algorithm| Execution time [ms] (MacBook pro 2016)|
+|---|---|
+|`Heap       `    |`34.673` |
+|`Quick      `    |`365.411` |
+|`Merge      `    |`1013.26` |
+|`Bucket     `    |`2539.16` |
+|`Insertion  `    |`19924.5` |
+|`Gnome      `    |`28286.9` |
+|`Bubble     `    |`49086.7`|

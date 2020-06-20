@@ -21,7 +21,6 @@ void Bubble(std::vector<T> &vec)
   if (vec.empty()) {
     return;
   }
-
   size_t n{vec.size()};
 
   for (size_t i = 0; i < n; i++) {
@@ -54,12 +53,12 @@ void Bucket(std::vector<T> &vec)
     return;
   }
 
-  auto max_elem_ptr{std::max_element(vec.begin(), vec.end())};
+  auto max_elem_ptr = std::max_element(vec.begin(), vec.end());
   int nbrOfBuckets{static_cast<int>(sqrt(*max_elem_ptr))};
   std::vector<std::vector<T>> buckets(nbrOfBuckets + 1);
 
   // Put in buckets
-  for (T x : vec) {
+  for (const T &x : vec) {
     buckets[static_cast<T>(sqrt(x))].push_back(x);
   }
 
@@ -80,7 +79,7 @@ void Bucket(std::vector<T> &vec)
 
 // Defines what types may be used for Bucket-sort.
 template void Bucket<unsigned>(std::vector<unsigned> &vec);
-template void Bucket<signed>(std::vector<signed> &vec);
+template void Bucket<int>(std::vector<int> &vec);
 template void Bucket<double>(std::vector<double> &vec);
 
 /////////////////////////////////////////////
@@ -108,7 +107,7 @@ void Gnome(std::vector<T> &vec)
 
 // Defines what types may be used for Gnome-sort.
 template void Gnome<unsigned>(std::vector<unsigned> &vec);
-template void Gnome<signed>(std::vector<signed> &vec);
+template void Gnome<int>(std::vector<int> &vec);
 template void Gnome<double>(std::vector<double> &vec);
 template void Gnome<std::string>(std::vector<std::string> &vec);
 
@@ -126,7 +125,6 @@ template<typename T>
 void Siftdown(std::vector<T> &vec, int start, int len)
 {
   int root{start};
-
   while (root * 2 + 1 <= len) {
     int child{root * 2 + 1};
     int swap{root};
@@ -188,13 +186,12 @@ void Heap(std::vector<T> &vec)
   if (vec.empty()) {
     return;
   }
-
   HeapSortPriv(vec, vec.size());
 }
 
 // Defines what types may be used for Heap-sort.
 template void Heap<unsigned>(std::vector<unsigned> &vec);
-template void Heap<signed>(std::vector<signed> &vec);
+template void Heap<int>(std::vector<int> &vec);
 template void Heap<double>(std::vector<double> &vec);
 template void Heap<std::string>(std::vector<std::string> &vec);
 
@@ -218,7 +215,7 @@ void Insertion(std::vector<T> &vec)
 
 // Defines what types may be used for Insertion-sort.
 template void Insertion<unsigned>(std::vector<unsigned> &vec);
-template void Insertion<signed>(std::vector<signed> &vec);
+template void Insertion<int>(std::vector<int> &vec);
 template void Insertion<double>(std::vector<double> &vec);
 template void Insertion<std::string>(std::vector<std::string> &vec);
 
@@ -255,7 +252,6 @@ std::vector<T> merge(std::list<T> &A, std::list<T> &B)
     C.push_back(B.front());
     B.pop_front();
   }
-
   return C;
 }
 
@@ -290,7 +286,6 @@ std::vector<T> MergeSortPriv(const std::vector<T> &lst)
   std::list<T> Al(A.size()), Bl(B.size());
   std::copy(A.begin(), A.end(), Al.begin());
   std::copy(B.begin(), B.end(), Bl.begin());
-
   return merge(Al, Bl);
 }
 
@@ -302,7 +297,7 @@ void Merge(std::vector<T> &lst)
 
 // Defines what types may be used for Merge-sort.
 template void Merge<unsigned>(std::vector<unsigned> &vec);
-template void Merge<signed>(std::vector<signed> &vec);
+template void Merge<int>(std::vector<int> &vec);
 template void Merge<double>(std::vector<double> &vec);
 template void Merge<std::string>(std::vector<std::string> &vec);
 
@@ -349,7 +344,7 @@ void Quick(std::vector<T> &vec)
 
 // Defines what types may be used for Quick-sort.
 template void Quick<unsigned>(std::vector<unsigned> &vec);
-template void Quick<signed>(std::vector<signed> &vec);
+template void Quick<int>(std::vector<int> &vec);
 template void Quick<double>(std::vector<double> &vec);
 template void Quick<std::string>(std::vector<std::string> &vec);
 }// namespace algo::sort
