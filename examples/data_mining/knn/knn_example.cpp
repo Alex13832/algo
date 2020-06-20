@@ -6,7 +6,7 @@
 ///
 
 #include <fstream>
-#include <include/algo_data_mining.hpp>
+#include <include/algo.hpp>
 #include <iostream>
 #include <string>
 

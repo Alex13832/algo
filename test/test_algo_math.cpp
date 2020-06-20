@@ -10,7 +10,7 @@
 
 #include "cmath"
 #include "gtest/gtest.h"
-#include "include/algo_math.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::math;

@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "gtest/gtest.h"
-#include "include/algo_puzzle.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::puzzle::sudoku;

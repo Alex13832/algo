@@ -7,7 +7,7 @@
 
 #include <cmath>
 #include <fstream>
-#include <include/algo_graph.hpp>
+#include <include/algo.hpp>
 #include <iostream>
 #include <string>
 

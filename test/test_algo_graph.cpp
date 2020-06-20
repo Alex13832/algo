@@ -8,11 +8,10 @@
 #include <algorithm>
 #include <fstream>
 #include <iostream>
-#include <numeric>
 #include <string>
 
 #include "gtest/gtest.h"
-#include "include/algo_graph.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::graph;

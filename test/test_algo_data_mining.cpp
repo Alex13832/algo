@@ -8,7 +8,7 @@
 #include <algorithm>
 
 #include "gtest/gtest.h"
-#include "include/algo_data_mining.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::data_mining;

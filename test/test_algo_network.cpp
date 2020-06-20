@@ -10,7 +10,7 @@
 #include <numeric>
 
 #include "gtest/gtest.h"
-#include "include/algo_network.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::network;

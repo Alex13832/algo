@@ -11,7 +11,7 @@
 #include <string>
 
 #include "gtest/gtest.h"
-#include "include/algo_greedy.hpp"
+#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::greedy;
