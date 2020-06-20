@@ -1,8 +1,6 @@
 Graph algorithms
 ========
 
-#### Cheat sheet
-
 | Function  | Algorithm  |  Weighted | Directed  |
 |---|---|---|---|
 | `BFS`| Breadth-First-Search | No| Any |
@@ -15,7 +13,21 @@ Graph algorithms
 | `MinSpanningTree` | Prims  | Yes `+`  | No  |
 | `MaxFlow` | Edmonds-Karp | Yes `+ -` | Yes |
 |`StrConnComponents`| Kosaraju | No | Yes |
- 
+
+## Data structures
+|Data structure| Description | Example |
+|:---|:---|:---|
+|`Nodes`|A `vector<int>` defining nodes in a graph.|`Nodes n{1, 2, 3};`|
+|`Weights`|A `vector<double>` defining weights between nodes.|`Weights w{0.1, 0.2, 0.3};`|
+|`Visited`|A `vector<bool>` that indicates that a node has been visited.|`Visited v{true, false};`|
+|`Edge`|An edge between two nodes.|`Edge e{0, 1, 0.5};`|
+|`Edges`|A `vector` of edges.|-|
+|`Connection`|For connecting a node to another node (with weight).|`Connection c{1, 0.5};`|
+|`Path`|Contains a list of nodes that may be a path in a graph.|-| 
+|`Graph`|The most important data structure. Aka `std::vector<std::vector<Connection>>`.|-| 
+|`NodeMat`|Used when constructing paths.|See tests.|  
+|`WeightMat`|Contains weights instead of nodes when constructing paths.|| 
+   
 ## Breadth-First-Search
 >Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. 
 >It starts at the tree root (or some arbitrary node of a graph, sometimes referred to as a 'search key'), 

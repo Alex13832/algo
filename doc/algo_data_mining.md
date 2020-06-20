@@ -3,6 +3,14 @@ Data mining algorithms
 
 ## Data structures 
 
+|Data structure| Description | Example |
+|:---|:---|:---|
+|`Centroid`|Describes a centre of a cluster of points. ||
+|`Centroids`|A list of centroids.||
+|`Clusters`|A list of a list of data points for a cluster.||
+|`LabeledPoint`|A data point with label.| `LabeledPoint p{1.0, 1.0, 2.0, "Label"};`|
+|`LabeledPoints`|A list of labeled points.||
+
 ## K-Means Clustering
 
 ```cpp
