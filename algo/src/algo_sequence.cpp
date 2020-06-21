@@ -2,7 +2,7 @@
 /// \brief Source file for sequence algorithms.
 /// \author alex011235
 /// \date 2020-04-20
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_sequence.hpp"
@@ -37,7 +37,7 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
   for (size_t i = 0; i < N; i++) {
     T min{1}, max{L}, mid{0};
 
-    /* Binary search */
+    // Binary search
     while (min <= max) {
       mid = ceil((min + max) / 2);
 
@@ -89,7 +89,6 @@ T MaxSubarray(const std::vector<T> &vec)
     current = std::max(0, current + s);
     best_sum = std::max(best_sum, current);
   }
-
   return best_sum;
 }
 

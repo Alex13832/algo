@@ -2,7 +2,7 @@
 /// \brief Example source code for MST.
 /// \author alex011235
 /// \date 2020-05-01
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <fstream>

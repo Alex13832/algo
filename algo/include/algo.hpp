@@ -2,7 +2,7 @@
 /// \brief Generic header for algorithms.
 /// \author alex011235
 /// \date 2020-06-20
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_HPP_

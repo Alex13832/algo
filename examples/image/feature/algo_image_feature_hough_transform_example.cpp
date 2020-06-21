@@ -2,7 +2,7 @@
 /// \brief Example source code for Hough transform.
 /// \author alex011235
 /// \date 2020-06-06 SWE national day :)
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <image_helpers.hpp>

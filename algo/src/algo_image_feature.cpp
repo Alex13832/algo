@@ -1,8 +1,8 @@
 ///
-/// \brief Source code for image transform algorithms.
+/// \brief Source code for image feature algorithms.
 /// \author alex011235
 /// \date 2020-05-23
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_image_feature.hpp"

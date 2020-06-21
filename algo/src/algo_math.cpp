@@ -1,7 +1,7 @@
 ///
 /// \brief Source file for math algorithms.
 /// \author alex011235
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_math.hpp"
@@ -31,7 +31,6 @@ PTriangle PascalsTriangle(const int &depth)
 
     rows.emplace_back(row);
   }
-
   return rows;
 }
 
@@ -44,7 +43,6 @@ int ClockAngle(const int &h, const int &m)
   int hour_angle{((h % 12) * 60 + m) / 2};
   int minute_angle{6 * m};
   int angle{abs(hour_angle - minute_angle)};
-  //angle = std::min(360 - angle, angle);
   return angle;
 }
 
@@ -62,7 +60,6 @@ int Knapsack(const Items &items, unsigned capacity)
       }
     }
   }
-
   return m[n][capacity];
 }
 }// namespace algo::math::discrete
@@ -144,7 +141,6 @@ int Poisson(const double &lambda)
     u = cont::Random();
     p *= u;
   } while (p > L);
-
   return k - 1;
 }
 
@@ -160,7 +156,6 @@ int Geometric(const double &p)
     x = cont::Random();
     k++;
   }
-
   return k;
 }
 
@@ -214,7 +209,6 @@ std::vector<T> GetPrimes(unsigned int n)
     }
     candidate++;
   }
-
   return primes;
 }
 

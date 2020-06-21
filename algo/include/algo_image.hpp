@@ -2,7 +2,7 @@
 /// \brief Generic header for image algorithms.
 /// \author alex011235
 /// \date 2020-05-24
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_IMAGE_HPP_

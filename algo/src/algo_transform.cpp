@@ -2,7 +2,7 @@
 /// \brief Source file for transform algorithms.
 /// \author alex011235
 /// \date 2020-04-19
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_transform.hpp"
@@ -35,7 +35,6 @@ FftTransf FFT(const FftTransf &A)
     B[i] = res_ev[i] + comp;
     B[i + N / 2] = res_ev[i] - comp;
   }
-
   return B;
 }
 
@@ -54,7 +53,6 @@ FftTransf IFFT(const FftTransf &B)
     std::complex<double> c(real(comp) / N, imag(comp) / N);
     comp = c;
   });
-
   return A;
 }
 

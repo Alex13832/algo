@@ -2,7 +2,7 @@
 /// \brief Unit tests for string algorithms.
 /// \author alex011235
 /// \date 2019-10-13
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 #include "gtest/gtest.h"
 #include "include/algo.hpp"

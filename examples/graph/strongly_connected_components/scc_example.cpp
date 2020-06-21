@@ -2,7 +2,7 @@
 /// \brief Example source code for strongly connected components.
 /// \author alex011235
 /// \date 2020-05-17
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <cmath>

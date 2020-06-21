@@ -1,7 +1,7 @@
 ///
 /// \brief Source file for puzzle algorithms.
 /// \author alex011235
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_puzzle.hpp"
@@ -106,7 +106,6 @@ Grid Solve(const Grid& grid)
   if (solved) {
     return ret;
   }
-
   return grid;
 }
 

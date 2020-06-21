@@ -2,7 +2,7 @@
 /// \brief Example source code for detection of corners.
 /// \author alex011235
 /// \date 2020-05-27
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <image_helpers.hpp>

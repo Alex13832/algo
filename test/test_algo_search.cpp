@@ -2,7 +2,7 @@
 /// \brief Unit tests for search algorithms.
 /// \author alex011235
 /// \date 2020-04-20
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <algorithm>

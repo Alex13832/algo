@@ -1,7 +1,7 @@
 ///
 /// \brief Header for sort algorithms.
 /// \author alex011235
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 /// Change list:
 /// 2015-06-21 Quick-sort

@@ -1,7 +1,7 @@
 ///
 /// \brief Header for puzzle algorithms.
 /// \author alex011235
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 /// Change list:
 /// 2016-10-16 Sudoku backtracking algorithm

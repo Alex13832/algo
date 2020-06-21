@@ -2,10 +2,7 @@
 /// \brief Source file for greedy algorithms.
 /// \author alex011235
 /// \date 2020-04-20
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
-///
-/// Change list:
-/// 2015-06-17 Gale-Shapley, Stable marriage.
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_greedy.hpp"

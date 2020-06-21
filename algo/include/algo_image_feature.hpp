@@ -2,7 +2,7 @@
 /// \brief Header  for image feature extraction algorithms.
 /// \author alex011235
 /// \date 2020-05-23
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 /// Change list:
 /// 2020-05-19 Hough lines transform

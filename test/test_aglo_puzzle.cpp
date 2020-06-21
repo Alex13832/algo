@@ -2,7 +2,7 @@
 /// \brief Unit tests for puzzle algorithms.
 /// \author alex011235
 /// \date 2020-05-02
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <algorithm>

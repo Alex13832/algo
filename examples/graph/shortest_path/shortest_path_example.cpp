@@ -2,7 +2,7 @@
 /// \brief Example source code for Dijkstra shortest path.
 /// \author alex011235
 /// \date 2020-05-08
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include <cmath>

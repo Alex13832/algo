@@ -2,7 +2,7 @@
 /// \brief Source file for geometry algorithms.
 /// \author alex011235
 /// \date 2020-04-27
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
 #include "algo_geometry.hpp"
@@ -250,11 +250,11 @@ Points ClosestPairOfPoints(const Points& points)
 /// Triangulation of points
 /////////////////////////////////////////////
 
-/** ------------------------------------------------------------------
-* Functions for determining if two line segments intersect.
-* Implemented according to
-* http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
-*/
+/// ------------------------------------------------------------------
+/// Functions for determining if two line segments intersect.
+/// Implemented according to
+/// http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
+/// ------------------------------------------------------------------
 
 namespace {
 
@@ -281,7 +281,6 @@ constexpr auto SegmentIntersect = [](Point p1, Point p2, Point p3, Point p4) {
 /// \param pts The input points.
 void LexSortPoints(Points& pts)
 {
-  //  std::sort(pts.begin(), pts.end(), x_comp());
   double x{pts[0].x};
   Points pts2;
   Points pts_res;
@@ -323,7 +322,7 @@ Lines Triangulate(Points& pts)
   for (size_t i = 3; i < pts.size(); ++i) {
     Point& p0{pts[i]};
 
-    /* Target point pi */
+    // Target point pi
     for (auto pi = visited.rbegin(); pi != visited.rend(); ++pi) {
 
       // Verify that the segment p0-pi doesn't intersect e

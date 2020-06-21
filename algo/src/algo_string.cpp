@@ -2,7 +2,7 @@
 /// \brief Source file for string algorithms.
 /// \author alex011235
 /// \date 2020-04-19
-/// \link <a href=https://github.com/alex011235/algorithm>Algorithm, Github</a>
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 #include "algo_string.hpp"
 
@@ -45,7 +45,6 @@ std::vector<int> SearchBoyerMoore(std::string &text, const std::string &pattern)
       j = m - 1;
     }
   } while (i < n - 1);
-
   return matches;
 }
 
@@ -78,13 +77,11 @@ std::string LongestCommonSubstring(std::string A, std::string B)
       }
     }
   }
-
   std::string res = A.substr(x_longest - max_substr, max_substr);
 
   if (res[0] == ' ') {
     return std::string(res.begin() + 1, res.end());
   }
-
   return res;
 }
 
@@ -113,7 +110,6 @@ std::vector<int> SearchRabinKarpSingle(const std::string &text, const std::strin
     std::string temp = text.substr(i + 1, m);
     hash_t = Fingerprint(temp);
   }
-
   return pos;
 }
 
@@ -137,7 +133,6 @@ std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::str
     std::string temp = text.substr(j + 1, m);
     hash_t = Fingerprint(temp);
   }
-
   return pos;
 }
 
@@ -189,7 +184,6 @@ int LevDistance(const std::string &word_a, const std::string &word_b)
       d[i][j] = std::min(d[i - 1][j] + 1, std::min(d[i][j - 1] + 1, d[i - 1][j - 1] + cost));
     }
   }
-
   return d[a_size][b_size];
 }
 
@@ -228,7 +222,6 @@ std::string Compress(const std::string &str)
         }
         count = 1;
       }
-
       old_char = c;
     }
   }
@@ -252,7 +245,6 @@ bool HasUniqueChars(const std::string &str)
       return false;
     }
   }
-
   return true;
 }
 
