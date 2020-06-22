@@ -27,7 +27,7 @@ script:
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
   - make
-  -
+
 after_script:
   - cd test
   - ./Algorithm_test_run
