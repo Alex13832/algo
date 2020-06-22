@@ -180,7 +180,6 @@ bool IsPrime(T n);
 /// \param n The maximum prime number (limit).
 /// \return A vector<T> of prime numbers.
 /// \link <a href="https://en.wikipedia.org/wiki/Sieve_of_Eratosthenes">Sieve of Eratosthenes, Wikipedia.</a>
-/// \todo Change ouput to something meaningful.
 template<typename T>
 std::vector<T> GetPrimes(unsigned int n);
 

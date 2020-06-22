@@ -75,6 +75,7 @@ vector<Match> ReadCorrect(const std::string &file)
   return matches;
 }
 
+/// \todo{alex011235} Make this test pass.
 //TEST(test_algo_greedy, stable_match_test_four_people)
 //{
 //  Prefs m_prefs{ReadPrefFile(kFilePath + "men4.txt")};
@@ -85,7 +86,8 @@ vector<Match> ReadCorrect(const std::string &file)
 //  EXPECT_FALSE(matches.empty());
 //  EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
 //}
-//
+
+/// \todo{alex011235} Make this test pass.
 //TEST(test_algo_greedy, stable_match_test_eight_people)
 //{
 //  Prefs m_prefs{ReadPrefFile(kFilePath + "men8.txt")};
