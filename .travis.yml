@@ -11,6 +11,12 @@ addons:
       - gcc-6
       - g++-6
       - cmake
+
+before_script:
+  - mkdir build
+  - cd build
+  - cmake ..
+
 script:
   # Link gcc-6 and g++-6 to their standard commands
   - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
@@ -20,5 +26,8 @@ script:
   - export CXX=/usr/bin/g++-6
   # Check versions of gcc, g++ and cmake
   - gcc -v && g++ -v && cmake --version
-  - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake .
-  - cmake --build .
+  - make
+  -
+after_script:
+  - cd test
+  - ./Algorithm_test_run
