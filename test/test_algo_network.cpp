@@ -83,7 +83,7 @@ TEST(test_algo_network, pagerank_8x8)
   EXPECT_TRUE(sum > 0.99 && sum < 1.01);
 }
 
-/// \todo{alex011235} Make this test pass.
+/// \todo{alex011235} Change the path to the test file, this will probably make it pass.
 //TEST(test_algo_network, pagerank_50)
 //{
 //  // Testfile downloaded from http://introcs.cs.princeton.edu/java/16pagerank/

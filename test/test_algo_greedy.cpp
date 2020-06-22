@@ -17,7 +17,7 @@ using namespace std;
 using namespace algo::greedy;
 
 namespace {
-const std::string kFilePath{"../../test/testfiles/stable_match/"};
+const std::string kFilePath{"testfiles/stable_match/"};
 }
 
 /////////////////////////////////////////////
@@ -75,26 +75,24 @@ vector<Match> ReadCorrect(const std::string &file)
   return matches;
 }
 
-/// \todo{alex011235} Make this test pass.
-//TEST(test_algo_greedy, stable_match_test_four_people)
-//{
-//  Prefs m_prefs{ReadPrefFile(kFilePath + "men4.txt")};
-//  Prefs w_prefs{ReadPrefFile(kFilePath + "women4.txt")};
-//  vector<Match> correct{ReadCorrect(kFilePath + "correct4.txt")};
-//
-//  std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
-//  EXPECT_FALSE(matches.empty());
-//  EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
-//}
+TEST(test_algo_greedy, stable_match_test_four_people)
+{
+  Prefs m_prefs{ReadPrefFile(kFilePath + "men4.txt")};
+  Prefs w_prefs{ReadPrefFile(kFilePath + "women4.txt")};
+  vector<Match> correct{ReadCorrect(kFilePath + "correct4.txt")};
 
-/// \todo{alex011235} Make this test pass.
-//TEST(test_algo_greedy, stable_match_test_eight_people)
-//{
-//  Prefs m_prefs{ReadPrefFile(kFilePath + "men8.txt")};
-//  Prefs w_prefs{ReadPrefFile(kFilePath + "women8.txt")};
-//  vector<Match> correct{ReadCorrect(kFilePath + "correct8.txt")};
-//
-//  std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
-//  EXPECT_FALSE(matches.empty());
-//  EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
-//}
+  std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
+  EXPECT_FALSE(matches.empty());
+  EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
+}
+
+TEST(test_algo_greedy, stable_match_test_eight_people)
+{
+  Prefs m_prefs{ReadPrefFile(kFilePath + "men8.txt")};
+  Prefs w_prefs{ReadPrefFile(kFilePath + "women8.txt")};
+  vector<Match> correct{ReadCorrect(kFilePath + "correct8.txt")};
+
+  std::vector<Match> matches{StableMatching(m_prefs, w_prefs)};
+  EXPECT_FALSE(matches.empty());
+  EXPECT_TRUE(equal(correct.begin(), correct.end(), matches.begin()));
+}

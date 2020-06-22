@@ -20,3 +20,6 @@ target_link_libraries(algo_tests ${CMAKE_PROJECT_NAME})
 #find_package(Threads)
 #target_link_libraries(algo_tests gtest gtest_main ${CMAKE_THREAD_LIBS_INIT})
 target_link_libraries(algo_tests gtest gtest_main)
+
+file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
+        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
