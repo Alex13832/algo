@@ -1,13 +1,7 @@
 dist: trusty
 sudo: required
 language: cpp
-
-addons:
-  apt:
-    sources:
-      - ubuntu-toolchain-r-test
-    packages:
-      - g++-6
+os: osx
 
 script:
   - CXX=/usr/bin/g++-6 CC=/usr/bin/gcc-6 cmake .
