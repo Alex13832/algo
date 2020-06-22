@@ -6,3 +6,7 @@ os: osx
 script:
   - cmake .
   - cmake --build .
+
+after_script:
+  - cd test
+  - ./Algorithm_test_run
