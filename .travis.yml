@@ -12,5 +12,5 @@ addons:
       - clang-5.0
 
 script:
-  - CXX=/usr/bin/clang++-5.0 CC=/usr/bin/clang-5.0 cmake .
+  - cmake .
   - cmake --build .
