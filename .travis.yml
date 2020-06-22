@@ -10,12 +10,8 @@ script:
   - cd test
   - ./algo_tests
 
-#after_script:
-#  - cd test
-#  - ./algo_tests
-
 after_success:
   - echo "SUCCESS"
 
-#after_failure:
-#  - echo "FAILURE"
+after_failure:
+  - echo "FAILURE"
