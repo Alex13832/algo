@@ -10,10 +10,10 @@ include(gtest.cmake)
 
 file(GLOB test_SRC "*.cpp")
 
-add_executable(Algorithm_test_run ${test_SRC})
+add_executable(algo_tests ${test_SRC})
 
-target_link_libraries(Algorithm_test_run ${CMAKE_PROJECT_NAME})
+target_link_libraries(algo_tests ${CMAKE_PROJECT_NAME})
 
 # GTest needs threading support
 find_package(Threads)
-target_link_libraries(Algorithm_test_run gtest ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(algo_tests gtest ${CMAKE_THREAD_LIBS_INIT})

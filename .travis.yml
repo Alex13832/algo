@@ -9,4 +9,4 @@ script:
 
 after_script:
   - cd test
-  - ./Algorithm_test_run
+  - ./algo_tests
