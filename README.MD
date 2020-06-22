@@ -1,4 +1,4 @@
-Algo
+Algo :rocket:
 ===============================
 This repository contains C++ implementations of various known algorithms from selected fields of algorithm design
 

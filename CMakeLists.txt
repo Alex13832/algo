@@ -25,4 +25,4 @@ add_subdirectory(test)
 # uncomment to build
 # ////////////////////////////////////////
 #include_directories(examples)
-add_subdirectory(examples)
+#add_subdirectory(examples)
