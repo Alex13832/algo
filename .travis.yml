@@ -6,13 +6,16 @@ os: osx
 script:
   - cmake .
   - cmake --build .
-
-after_script:
+  - make
   - cd test
-  - ./algo_tests
+  - ctest
+
+#after_script:
+#  - cd test
+#  - ./algo_tests
 
 after_success:
   - echo "SUCCESS"
 
 after_failure:
-  - echos "FAILURE"
+  - echo "FAILURE"
