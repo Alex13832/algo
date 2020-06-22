@@ -4,10 +4,10 @@
 # //////////////////////////////////////////////////////////
 
 cmake_minimum_required(VERSION 3.14)
-set(CMAKE_C_COMPILER "gcc")
-PROJECT(algo LANGUAGES "CXX" VERSION "2.0.1")
-set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_PROJECT_NAME algo)
+set(CMAKE_C_COMPILER "gcc")
+PROJECT(${CMAKE_PROJECT_NAME} LANGUAGES "CXX" VERSION "2.0.1")
+set(CMAKE_CXX_STANDARD 17)
 #set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
 # ////////////////////////////////////////

@@ -4,7 +4,7 @@
 # //////////////////////////////////////////////////////////
 
 cmake_minimum_required(VERSION 3.14)
-project(algo CXX)
+project(${CMAKE_PROJECT_NAME} CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
 
@@ -33,4 +33,4 @@ set(ALGO_SRCS
 include_directories("${PROJECT_BINARY_DIR}")
 include_directories("${PROJECT_INCLUDE_DIR}")
 
-add_library(${PROJECT_NAME} SHARED ${ALGO_SRCS})
+add_library(${CMAKE_PROJECT_NAME} SHARED ${ALGO_SRCS})

@@ -2,7 +2,7 @@
 # author: alex011235
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
-project(algo)
+project(${CMAKE_PROJECT_NAME})
 
 include_directories(minimum_spanning_tree)
 add_subdirectory(minimum_spanning_tree)

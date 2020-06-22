@@ -2,13 +2,13 @@
 # author: alex011235
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
-project(algo)
+project(${CMAKE_PROJECT_NAME})
 
 find_package(OpenCV REQUIRED)
 
 add_library(image_helpers STATIC image_helpers.cpp)
 target_link_libraries(image_helpers ${OpenCV_LIBS})
-target_link_libraries(image_helpers algo)
+target_link_libraries(image_helpers ${CMAKE_PROJECT_NAME})
 
 add_subdirectory(feature)
 add_subdirectory(filters)

@@ -2,7 +2,7 @@
 # author: alex011235
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
-project(algo)
+project(${CMAKE_PROJECT_NAME})
 
 add_subdirectory(kmeans)
 add_subdirectory(knn)

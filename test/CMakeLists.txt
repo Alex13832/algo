@@ -11,7 +11,7 @@ file(GLOB test_SRC "*.cpp")
 
 add_executable(Algorithm_test_run ${test_SRC})
 
-target_link_libraries(Algorithm_test_run algo)
+target_link_libraries(Algorithm_test_run ${CMAKE_PROJECT_NAME})
 
 # GTest needs threading support
 find_package(Threads)
