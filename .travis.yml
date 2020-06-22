@@ -1,5 +1,2 @@
 git:
   submodules: true
-
-before_install:
-  - git submodule update
