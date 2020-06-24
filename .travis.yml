@@ -4,8 +4,6 @@ language: cpp
 os: osx
 
 before_install:
-  - brew update
-  - brew install pyenv
   - eval "$(pyenv init -)"
   - pyenv install 2.7.6
   - pyenv global 2.7.6
@@ -14,7 +12,7 @@ before_install:
   - pyenv rehash
 
 script:
-  - - ./configure --enable-gcov && make && make check
+  - ./configure --enable-gcov && make && make check
   - cmake .
   - cmake --build .
   - make
