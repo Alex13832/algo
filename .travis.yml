@@ -5,8 +5,8 @@ os: osx
 
 before_install:
   - eval "$(pyenv init -)"
-  - pyenv install 2.7.6
-  - pyenv global 2.7.6
+  - pyenv install 3.8.3
+  - pyenv global 3.8.3
   - pyenv rehash
   - pip install cpp-coveralls
   - pyenv rehash
