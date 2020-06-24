@@ -6,6 +6,7 @@ compiler:
 os: osx
 
 before_install:
+  - brew install openssl
   - eval "$(pyenv init -)"
   - pyenv install 2.7.6
   - pyenv global 2.7.6
