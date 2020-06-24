@@ -3,22 +3,15 @@ sudo: required
 language: cpp
 compiler:
   - gcc
-os: osx
 
-before_install:
-  - brew install openssl
-  - eval "$(pyenv init -)"
-  - pyenv rehash
-  - pip install cpp-coveralls
-  - pyenv rehash
+matrix:
+  include:
 
-script:
-  - ./configure --enable-gcov
-  - cmake .
-  - cmake --build .
-  - make
-  - cd test
-  - ./algo_tests
+    - os: osx
 
-after_success:
-  - coveralls
+      script:
+        - cmake .
+        - cmake --build .
+        - make
+        - cd test
+        - ./algo_tests
