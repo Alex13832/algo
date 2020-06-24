@@ -4,10 +4,9 @@ language: cpp
 os: osx
 
 before_install:
-  - pip install cpp-coveralls
+  - pip install --user cpp-coveralls
 
 script:
-  - ./configure --enable-gcov && make && make check
   - cmake .
   - cmake --build .
   - make
