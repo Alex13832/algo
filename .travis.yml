@@ -3,8 +3,18 @@ sudo: required
 language: cpp
 os: osx
 
+before_install:
+  - brew update
+  - brew install pyenv
+  - eval "$(pyenv init -)"
+  - pyenv install 2.7.6
+  - pyenv global 2.7.6
+  - pyenv rehash
+  - pip install cpp-coveralls
+  - pyenv rehash
+
 script:
-  - sbt clean coverage test
+  - - ./configure --enable-gcov && make && make check
   - cmake .
   - cmake --build .
   - make
@@ -12,4 +22,4 @@ script:
   - ./algo_tests
 
 after_success:
-  - sbt coveralls
+  - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
