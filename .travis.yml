@@ -4,6 +4,7 @@ language: cpp
 os: osx
 
 script:
+  - sbt clean coverage test
   - cmake .
   - cmake --build .
   - make
@@ -11,7 +12,4 @@ script:
   - ./algo_tests
 
 after_success:
-  - echo "SUCCESS"
-
-after_failure:
-  - echo "FAILURE"
+  - sbt coveralls
