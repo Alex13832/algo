@@ -11,7 +11,6 @@ endif (POLICY CMP0048)
 PROJECT(algo LANGUAGES "CXX")
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_STANDARD 17)
-
 #set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
 
 # ////////////////////////////////////////
