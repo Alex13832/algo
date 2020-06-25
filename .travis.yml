@@ -17,7 +17,6 @@ matrix:
         - cd test
         - ./algo_tests
 
-
     - os: linux
 
       addons:
@@ -28,19 +27,15 @@ matrix:
             - gcc-6
             - g++-6
             - cmake
+            - cmake-data
 
       compiler:
-        - clang
         - gcc
-
 
       before_script:
         - mkdir build
         - cd build
         - cmake ..
-        -
 
       script:
         - make
-
-
