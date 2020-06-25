@@ -3,7 +3,7 @@
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
 
-cmake_minimum_required(VERSION 2.8.8)
+cmake_minimum_required(VERSION 3.14)
 project(${CMAKE_PROJECT_NAME} CXX)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage")
