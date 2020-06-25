@@ -3,9 +3,13 @@
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
 
-cmake_minimum_required(VERSION 3.14)
-#project(algo)
-PROJECT(algo LANGUAGES "CXX" VERSION "2.0.1")
+cmake_minimum_required(VERSION 2.8.8)
+if (POLICY CMP0048)
+    cmake_policy(SET CMP0048 NEW)
+endif (POLICY CMP0048)
+PROJECT(algo LANGUAGES "CXX")
+
+
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_STANDARD 17)
 
