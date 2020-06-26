@@ -48,6 +48,9 @@ matrix:
             - g++-6
             - cmake
 
+      before_install:
+        - sudo apt get install cmake
+
       script:
         - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
         - ln -s /usr/bin/g++-6 /usr/local/bin/g++
