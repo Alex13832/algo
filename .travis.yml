@@ -49,7 +49,7 @@ matrix:
             - cmake
 
       before_install:
-        - sudo apt get install cmake
+        - sudo apt-get install cmake
 
       script:
         - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
