@@ -56,7 +56,6 @@ matrix:
         - pip install --user cpp-coveralls
 
       script:
-        - ./configure --enable-gcov
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
         # Build
