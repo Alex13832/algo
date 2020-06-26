@@ -7,6 +7,8 @@
 
 #include "algo_graph.hpp"
 
+#include <algorithm>
+#include <climits>
 #include <numeric>
 #include <queue>
 
