@@ -5,8 +5,6 @@
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
-#include <fstream>
-#include <iostream>
 #include <numeric>
 
 #include "gtest/gtest.h"
@@ -15,12 +13,9 @@
 using namespace std;
 using namespace algo::network;
 
-namespace {
-const std::string kFilePath{"../../test/testfiles/pagerank/"};
-}
-
 /////////////////////////////////////////////
 /// PageRank tests
+/// \todo{alex011235} Understand why tests fail on Ubuntu Bionic.
 /////////////////////////////////////////////
 
 TEST(test_algo_network, pagerank_4x4)
