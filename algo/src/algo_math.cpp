@@ -6,7 +6,6 @@
 
 #include "algo_math.hpp"
 
-#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <random>
@@ -43,7 +42,7 @@ int ClockAngle(const int &h, const int &m)
 
   int hour_angle{((h % 12) * 60 + m) / 2};
   int minute_angle{6 * m};
-  int angle{abs(hour_angle - minute_angle)};
+  int angle{std::abs(hour_angle - minute_angle)};
   return angle;
 }
 

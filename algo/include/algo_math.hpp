@@ -13,6 +13,8 @@
 #ifndef ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 #define ALGORITHM_MATHS_MATHS_ALGORITHMS_HPP_
 
+#include <algorithm>
+#include <cstdlib>
 #include <vector>
 
 namespace algo::math::discrete {
