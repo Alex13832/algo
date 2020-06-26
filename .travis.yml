@@ -6,8 +6,7 @@ matrix:
     - dist: trusty
     - sudo: required
     - language: cpp
-
-      compiler: gcc
+    - compiler: gcc
 
       script:
         - cmake .
@@ -22,7 +21,7 @@ matrix:
     - dist: trusty
     - sudo: required
     - language: cpp
-      compiler:clang
+    - compiler: clang
 
       script:
         - cmake .
@@ -37,7 +36,7 @@ matrix:
     - dist: trusty
     - sudo: required
     - language: cpp
-      compiler: gcc
+    - compiler: gcc
 
       addons:
         apt:
