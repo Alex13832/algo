@@ -49,15 +49,22 @@ matrix:
             - cmake
 
       before_install:
-        - sudo apt-get install cmake
+        - sudo apt purge --auto-remove cmake
+        - version=3.17
+        - build=3
+        - mkdir ~/temp
+        - cd ~/temp
+        - wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
+        - tar -xzvf cmake-$version.$build.tar.gz
+        - cd cmake-$version.$build/
+        - ./bootstrap
+        - make -j$(nproc)
+        - sudo make install
 
       script:
-        - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
-        - ln -s /usr/bin/g++-6 /usr/local/bin/g++
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
-        - gcc -v && g++ -v && cmake --version
-        # Run your build
+        # Build
         - mkdir build
         - cd build
         - cmake ..
