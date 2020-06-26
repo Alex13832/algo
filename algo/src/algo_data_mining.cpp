@@ -7,6 +7,7 @@
 
 #include "algo_data_mining.hpp"
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <set>
