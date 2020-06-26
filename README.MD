@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/alex011235/algo.svg?branch=master)](https://travis-ci.org/alex011235/algo) ![coveralls](https://coveralls.io/repos/github/alex011235/algo/badge.svg?branch=master)
+[![Build Status](https://travis-ci.org/alex011235/algo.svg?branch=master)](https://travis-ci.org/alex011235/algo) [![Coverage Status](https://coveralls.io/repos/github/alex011235/algo/badge.svg?branch=master)](https://coveralls.io/github/alex011235/algo?branch=master)
 
 Algo :rocket:
 ===============================
