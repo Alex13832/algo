@@ -7,6 +7,7 @@
 
 #include "algo_geometry.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 namespace algo::geometry {
