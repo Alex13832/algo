@@ -6,6 +6,7 @@
 ///
 #include "algo_string.hpp"
 
+#include <algorithm>
 #include <numeric>
 #include <vector>
 

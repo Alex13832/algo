@@ -7,6 +7,7 @@
 
 #include "algo_image_object.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 #include "algo_image_feature.hpp"
@@ -184,5 +185,4 @@ Lines ExtractLines(const Img& im, const int& n, const int& min_line_dist, const 
   return lines;
 }
 
-
-}// namespace algo::image::detect
+}// namespace algo::image::object

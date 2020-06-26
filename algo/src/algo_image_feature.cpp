@@ -7,6 +7,7 @@
 
 #include "algo_image_feature.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 #include "algo_image_basic.hpp"

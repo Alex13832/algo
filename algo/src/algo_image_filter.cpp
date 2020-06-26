@@ -7,6 +7,7 @@
 
 #include "algo_image_filter.hpp"
 
+#include <algorithm>
 #include <cmath>
 
 namespace algo::image::filter {

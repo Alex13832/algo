@@ -49,7 +49,7 @@ FftTransf IFFT(const FftTransf &B)
   FftTransf A{FFT(T)};
   std::transform(begin(A), end(A), begin(A), [&](std::complex<double> &c) { return conj(c); });
 
-  for_each(begin(A), end(A), [&](std::complex<double> &comp) {
+  std::for_each(begin(A), end(A), [&](std::complex<double> &comp) {
     std::complex<double> c(real(comp) / N, imag(comp) / N);
     comp = c;
   });

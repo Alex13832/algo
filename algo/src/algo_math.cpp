@@ -6,6 +6,7 @@
 
 #include "algo_math.hpp"
 
+#include <algorithm>
 #include <chrono>
 #include <cmath>
 #include <random>
