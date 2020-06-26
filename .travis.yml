@@ -67,7 +67,7 @@ matrix:
 
       after_success:
         #- coveralls --exclude lib --exclude tests --gcov-options '\-lp'
-        - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*"
+        - coveralls --root . -E ".*gtest.*" -E ".*CMakeFiles.*" -E "*example*"
         #- cd test
         #- coverage run --source=algo_tests
         #- coveralls
