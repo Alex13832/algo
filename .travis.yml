@@ -34,7 +34,7 @@ matrix:
     # Linux GCC -------------
 
     - os: linux
-      dist: trusty
+      dist: bionic
       sudo: required
       language: cpp
       compiler: gcc
@@ -48,22 +48,7 @@ matrix:
             - g++-6
             - cmake
 
-      before_install:
-        - cwd=$(pwd)
-        - sudo apt purge --auto-remove cmake
-        - version=3.17
-        - build=3
-        - mkdir ~/temp
-        - cd ~/temp
-        - wget https://cmake.org/files/v$version/cmake-$version.$build.tar.gz
-        - tar -xzvf cmake-$version.$build.tar.gz
-        - cd cmake-$version.$build/
-        - ./bootstrap
-        - make -j$(nproc)
-        - sudo make install
-
       script:
-        - cd $cwd
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
         # Build
