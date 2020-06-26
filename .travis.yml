@@ -1,15 +1,13 @@
-dist: trusty
-sudo: required
-language: cpp
-
 matrix:
   include:
 
     # OSX GCC ---------------
     - os: osx
+    - dist: trusty
+    - sudo: required
+    - language: cpp
 
-      compiler:
-        - gcc
+      compiler: gcc
 
       script:
         - cmake .
@@ -21,9 +19,10 @@ matrix:
     # OSX CLANG -------------
 
     - os: osx
-
-      compiler:
-        - clang
+    - dist: trusty
+    - sudo: required
+    - language: cpp
+      compiler:clang
 
       script:
         - cmake .
@@ -32,12 +31,13 @@ matrix:
         - cd test
         - ./algo_tests
 
-    # Linux / GCC -----------
+    # Linux GCC -------------
 
     - os: linux
-
-      compiler:
-        - gcc
+    - dist: trusty
+    - sudo: required
+    - language: cpp
+      compiler: gcc
 
       addons:
         apt:
