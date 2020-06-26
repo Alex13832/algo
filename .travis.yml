@@ -5,6 +5,7 @@ language: cpp
 matrix:
   include:
 
+    # OSX GCC ---------------
     - os: osx
 
       compiler:
@@ -17,15 +18,46 @@ matrix:
         - cd test
         - ./algo_tests
 
+    # OSX CLANG -------------
+
+    - os: osx
+
+      compiler:
+        - clang
+
+      script:
+        - cmake .
+        - cmake --build .
+        - make
+        - cd test
+        - ./algo_tests
+
+    # Linux / GCC -----------
+
     - os: linux
 
       compiler:
         - gcc
 
-      before_script:
+      addons:
+        apt:
+          sources:
+            - ubuntu-toolchain-r-test
+          packages:
+            - gcc-6
+            - g++-6
+            - cmake
+
+      script:
+        - ln -s /usr/bin/gcc-6 /usr/local/bin/gcc
+        - ln -s /usr/bin/g++-6 /usr/local/bin/g++
+        - export CC=/usr/bin/gcc-6
+        - export CXX=/usr/bin/g++-6
+        - gcc -v && g++ -v && cmake --version
+        # Run your build
         - mkdir build
         - cd build
         - cmake ..
-
-      script:
         - make
+        - cd test
+        - ./algo_test
