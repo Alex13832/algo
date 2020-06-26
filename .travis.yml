@@ -65,9 +65,8 @@ matrix:
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
         # Build
-        - mkdir build
-        - cd build
-        - cmake ..
+        - cmake .
+        - cmake --build .
         - make
         - cd test
-        - ./algo_test
+        - ./algo_tests
