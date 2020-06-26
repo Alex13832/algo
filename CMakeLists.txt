@@ -4,14 +4,10 @@
 # //////////////////////////////////////////////////////////
 
 cmake_minimum_required(VERSION 3.12)
-if (POLICY CMP0048)
-    cmake_policy(SET CMP0048 NEW)
-endif (POLICY CMP0048)
-
 PROJECT(algo LANGUAGES "CXX")
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_STANDARD 17)
-#set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
 
 # ////////////////////////////////////////
 # Includes
