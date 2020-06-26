@@ -4,7 +4,6 @@ matrix:
     # OSX GCC ---------------
 
     - os: osx
-      dist: trusty
       sudo: required
       language: cpp
       compiler: gcc
@@ -19,7 +18,6 @@ matrix:
     # OSX CLANG -------------
 
     - os: osx
-      dist: trusty
       sudo: required
       language: cpp
       compiler: clang
