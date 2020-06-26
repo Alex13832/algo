@@ -2,13 +2,12 @@ matrix:
   include:
 
     # OSX GCC ---------------
-    - os: osx
-    - dist: trusty
-    - sudo: required
-    - language: cpp
 
-      compiler:
-        - gcc
+    - os: osx
+      dist: trusty
+      sudo: required
+      language: cpp
+      compiler: gcc
 
       script:
         - cmake .
@@ -20,12 +19,10 @@ matrix:
     # OSX CLANG -------------
 
     - os: osx
-    - dist: trusty
-    - sudo: required
-    - language: cpp
-
-      compiler:
-        - clang
+      dist: trusty
+      sudo: required
+      language: cpp
+      compiler: clang
 
       script:
         - cmake .
@@ -37,12 +34,10 @@ matrix:
     # Linux GCC -------------
 
     - os: linux
-    - dist: trusty
-    - sudo: required
-    - language: cpp
-
-      compiler:
-        - gcc
+      dist: trusty
+      sudo: required
+      language: cpp
+      compiler: gcc
 
       addons:
         apt:
