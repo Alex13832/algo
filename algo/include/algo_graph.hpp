@@ -17,6 +17,7 @@
 /// 2020-05-13 IsBipartite
 ///
 
+#include <cstddef>
 #include <vector>
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_GRAPH_HPP_
