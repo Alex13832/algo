@@ -59,12 +59,12 @@ matrix:
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
         # Build
-        - cmake .
-        - cmake --build .
-        - make
-        - ./configure --enable-gcov && make && make check
-        - cd test
-        - ./algo_tests
+        #- cmake .
+        #- cmake --build .
+        #- make
+        - ../configure --enable-gcov && make && make check
+        #- cd test
+        #- ./algo_tests
 
       after_success:
         #        - coveralls -E ".*gtest.*" -E ".*CMakeFiles.*"
