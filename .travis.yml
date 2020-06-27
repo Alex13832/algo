@@ -63,7 +63,7 @@ matrix:
         - cmake --build .
         #- make
         - cd test
-        - ./algo_tests --enable-gcov && make && make check
+        - ./algo_tests --enable-gcov
         #- ./algo_tests
 
       after_success:
