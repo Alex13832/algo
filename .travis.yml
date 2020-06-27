@@ -15,8 +15,8 @@ matrix:
       compiler: gcc
 
       script:
-        - cmake . -- -j2
-        - cmake --build .
+        - cmake .
+        - cmake --build . -- -j2
         - make
         - cd test
         - ./algo_tests
@@ -29,8 +29,8 @@ matrix:
       compiler: clang
 
       script:
-        - cmake . -- -j2
-        - cmake --build .
+        - cmake .
+        - cmake --build . -- -j2
         - make
         - cd test
         - ./algo_tests
@@ -48,12 +48,12 @@ matrix:
           sources:
             - ubuntu-toolchain-r-test
           packages:
-            - gcc-5
-            - g++-5
+            - gcc-6
+            - g++-6
             - cmake
 
       script:
-        - CXX=/usr/bin/g++-5 CC=/usr/bin/gcc-5 cmake . -D ENABLE_COVERAGE:BOOL=TRUE
+        - cmake . -D ENABLE_COVERAGE:BOOL=TRUE
         - cmake --build . -- -j2
         - ctest -j2
         - bash <(curl -s https://codecov.io/bash
