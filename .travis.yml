@@ -19,7 +19,7 @@ matrix:
         - cmake --build . -- -j2
         - make
         - cd test
-        - ./algo_tests
+        - ctest -j2
 
     # OSX CLANG -------------
 
@@ -33,7 +33,7 @@ matrix:
         - cmake --build . -- -j2
         - make
         - cd test
-        - ./algo_tests
+        - ctest -j2
 
     # Linux GCC -------------
 
