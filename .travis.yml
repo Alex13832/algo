@@ -63,8 +63,8 @@ matrix:
         - cmake --build .
         - make
         - cd test
-        - ./algo_tests
+        - ./algo_tests coverage
 
       after_success:
 #        - coveralls -E ".*gtest.*" -E ".*CMakeFiles.*"
-        - coveralls -E ".*gtest.*" -E ".*CMakeFiles.*" -b algo/CMakeFiles/algo.dir/src
+        - cpp-coveraalls --dryrun
