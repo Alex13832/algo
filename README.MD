@@ -1,4 +1,4 @@
-[![Build Status](https://travis-ci.org/alex011235/algo.svg?branch=master)](https://travis-ci.org/alex011235/algo)
+[![Build Status](https://travis-ci.org/alex011235/algo.svg?branch=master)](https://travis-ci.org/alex011235/algo) [![codecov](https://codecov.io/gh/alex011235/algo/branch/master/graph/badge.svg)](https://codecov.io/gh/alex011235/algo)
 
 Algo :rocket:
 ===============================
