@@ -62,7 +62,7 @@ matrix:
         #- cmake .
         #- cmake --build .
         #- make
-        - ../configure --enable-gcov && make && make check
+        - ./configure --enable-gcov && make && make check
         #- cd test
         #- ./algo_tests
 
