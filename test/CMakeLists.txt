@@ -2,9 +2,6 @@
 # author: alex011235
 # https://github.com/alex011235/algorithm
 # //////////////////////////////////////////////////////////
-cmake_minimum_required(VERSION 3.12)
-project(AlgorithmTests)
-
 # Include Google Test
 add_subdirectory(gtest)
 include_directories(gtest)
