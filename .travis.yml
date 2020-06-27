@@ -59,7 +59,7 @@ matrix:
         - export CC=/usr/bin/gcc-6
         - export CXX=/usr/bin/g++-6
         # Build
-        #- cmake .
+        - cmake .
         #- cmake --build .
         #- make
         - ./configure --enable-gcov && make && make check
