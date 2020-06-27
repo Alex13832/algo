@@ -4,10 +4,19 @@
 # //////////////////////////////////////////////////////////
 
 cmake_minimum_required(VERSION 3.12)
+
+if (CMAKE_COMPILER_IS_GNUCC)
+    option(ENABLE_COVERAGE "Enable coverage reporting for gcc/clang" FALSE)
+
+    if (ENABLE_COVERAGE)
+        add_compile_options(--coverage -O0)
+    endif ()
+endif ()
+
 PROJECT(algo LANGUAGES "CXX")
 set(CMAKE_C_COMPILER "gcc")
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
+#set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
 
 # ////////////////////////////////////////
 # Includes

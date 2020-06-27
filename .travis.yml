@@ -52,21 +52,10 @@ matrix:
             - g++-6
             - cmake
 
-      before_install:
-        - pip install --user cpp-coveralls
-
       script:
-        - export CC=/usr/bin/gcc-6
-        - export CXX=/usr/bin/g++-6
-        # Build
-        - cmake .
-        - cmake --build .
-        #- make
+        - CXX=/usr/bin/gxx-6 CC=/usr/bin/gcc-6 cmake . D ENABLE_COVERAGE:BOOL=TRUE
+        - cmake --build . --j2
         - cd test
-        - ./algo_tests --enable-gcov
-        #- ./algo_tests
-
-      after_success:
-        #        - coveralls -E ".*gtest.*" -E ".*CMakeFiles.*"
-        #        - cpp-coveraalls --dryrun
-        - coveralls --exclude lib --exclude tests --gcov-options '\-lp'
+        - ./algo_tests -j2
+        - cd ..
+        - bash <(curl -s https://codecov.io/bash
