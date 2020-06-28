@@ -1,37 +1,37 @@
-/////
-///// \brief Unit tests for network algorithms.
-///// \author alex011235
-///// \date 2020-04-25
-///// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
-/////
-//
-//#include <numeric>
-//
-//#include "gtest/gtest.h"
-//#include "include/algo.hpp"
-//
-//using namespace std;
-//using namespace algo::network;
-//
-///////////////////////////////////////////////
-///// PageRank tests
-///// \todo{alex011235} Understand why tests fail on Ubuntu Bionic.
-///////////////////////////////////////////////
-//
-//TEST(test_algo_network, pagerank_4x4)
-//{
-//  // This is the transition matrix with probabilities.
-//  Mat M{{0.0, 0.3333, 0.3333, 0.3333},
-//        {0.0, 0.0, 0.5, 0.5},
-//        {1, 0.0, 0.0, 0.0},
-//        {0.5, 0.0, 0.5, 0.0}};
-//
-//  Arr rank{PageRank(M, 0.001, 0.8)};
-//  double sum{accumulate(rank.begin(), rank.end(), 0.0)};
-//  //EXPECT_GT(sum, 0.98);
-//  //EXPECT_LT(sum, 1.02);
-//}
-//
+///
+/// \brief Unit tests for network algorithms.
+/// \author alex011235
+/// \date 2020-04-25
+/// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
+///
+
+#include <numeric>
+
+#include "gtest/gtest.h"
+#include "include/algo.hpp"
+
+using namespace std;
+using namespace algo::network;
+
+/////////////////////////////////////////////
+/// PageRank tests
+/// \todo{alex011235} Understand why tests fail on Ubuntu Bionic.
+/////////////////////////////////////////////
+
+TEST(test_algo_network, pagerank_4x4)
+{
+  // This is the transition matrix with probabilities.
+  Mat M{{0.0, 0.3333, 0.3333, 0.3333},
+        {0.0, 0.0, 0.5, 0.5},
+        {1, 0.0, 0.0, 0.0},
+        {0.5, 0.0, 0.5, 0.0}};
+
+  Arr rank{PageRank(M, 0.001, 0.8)};
+  double sum{accumulate(rank.begin(), rank.end(), 0.0)};
+  EXPECT_GT(sum, 0.98);
+  EXPECT_LT(sum, 1.02);
+}
+
 //TEST(test_algo_network, pagerank_5x5_1)
 //{
 //  // This is the transition matrix with probabilities.
