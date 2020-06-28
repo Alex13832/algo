@@ -94,7 +94,7 @@ void WriteToFile(const LabeledPoints& labeled_points, const string& filename)
   file.close();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
   LabeledPoints labeled_points{ReadLabeledData("../testfiles/knn_labeled2.csv")};
   Points points{ReadPoints("../testfiles/knn_unlabeled2.csv")};

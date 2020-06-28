@@ -65,7 +65,7 @@ void WriteToFile(const Lines& lines, const string& filename)
   file.close();
 }
 
-int main(int argc, char* argv[])
+int main()
 {
   Points points{ReadFile("testfiles/triangulate_in.csv")};
 

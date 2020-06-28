@@ -14,14 +14,7 @@
 using namespace algo::image;
 using namespace std;
 
-namespace {
-constexpr int kThreshMin{30};
-constexpr int kTreshMax{90};
-constexpr int kNbrLines{7};
-constexpr int kMinLineDist{5};
-}// namespace
-
-int main(int argc, char** argv)
+int main()
 {
   const std::string kFileName{"../testfiles/puzzle1.png"};
 

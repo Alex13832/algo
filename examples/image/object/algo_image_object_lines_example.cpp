@@ -22,7 +22,7 @@ constexpr int kNbrLines{6};
 constexpr int kMinLineDist{5};
 }// namespace
 
-int main(int argc, char** argv)
+int main()
 {
   const std::string kFileName{"../testfiles/puzzle1.png"};
 

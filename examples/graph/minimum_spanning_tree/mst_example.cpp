@@ -96,7 +96,7 @@ void WriteToFile(const Graph& graph, const vector<DataLine>& lines, const string
     for (auto cell : graph[i]) {
 
       for (auto line : lines) {
-        if (line.node1 == i && line.node2 == cell.node) {
+        if (static_cast<size_t>(line.node1) == i && line.node2 == cell.node) {
           file << i << "," << cell.node << "," << line.w << "," << line.x0 << "," << line.y0 << "," << line.x1 << "," << line.y1 << '\n';
         }
       }

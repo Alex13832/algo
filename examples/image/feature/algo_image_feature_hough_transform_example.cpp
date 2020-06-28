@@ -15,7 +15,7 @@ using namespace algo::image;
 using namespace std;
 using namespace cv;
 
-int main(int argc, char** argv)
+int main()
 {
   const std::string kFileName{"../testfiles/road10.png"};
 

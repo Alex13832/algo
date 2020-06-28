@@ -179,14 +179,14 @@ void RunAdaptiveThresholdExample()
   cv::waitKey(0);
 }
 
-int main(int argc, char** argv)
+int main()
 {
-  //RunKernelConvolutions();
-  //RunColorKernelConvolutions();
-  //RunGaussianBlurExample();
-  //RunMedianExample();
-  //RunMedian3Example();
-  //RunBinaryThresholdExample();
+  RunKernelConvolutions();
+  RunColorKernelConvolutions();
+  RunGaussianBlurExample();
+  RunMedianExample();
+  RunMedian3Example();
+  RunBinaryThresholdExample();
   RunAdaptiveThresholdExample();
   return 0;
 }

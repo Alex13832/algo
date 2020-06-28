@@ -22,8 +22,8 @@ int main()
 {
   chrono::steady_clock::time_point begin, end;
 
-  srand(unsigned(std::time(0)));
-  vector<int> rands(50000);
+  srand(unsigned(std::time(nullptr)));
+  vector<int> rands(5000);
   generate(rands.begin(), rands.end(), RandomNumber);
 
   // Bubble sort ///////////////////////////////
