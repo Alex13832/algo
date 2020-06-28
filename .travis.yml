@@ -4,6 +4,8 @@
 # //////////////////////////////////////////////////////////
 # \todo{alex011235} Add Windows as target OS.
 
+warnings_are_errors: true
+
 matrix:
   include:
 
@@ -55,9 +57,7 @@ matrix:
       script:
         - cmake . -DENABLE_COVERAGE=1
         - cmake --build . -- -j2
-        - cd test
-        - ./algo_tests
-        - cd ..
-        #- ctest -j2
+        - ctest -j2
+        -
       after_success:
         - bash <(curl -s https://codecov.io/bash)

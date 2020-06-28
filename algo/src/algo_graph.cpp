@@ -29,7 +29,7 @@ Graph NewGraph(size_t size)
 
 bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
 {
-  if (u >= graph.size() || v >= graph.size() || u == v) {
+  if (u >= static_cast<int>(graph.size()) || v >= static_cast<int>(graph.size()) || u == v) {
     return false;
   }
 

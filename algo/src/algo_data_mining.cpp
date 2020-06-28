@@ -31,7 +31,7 @@ constexpr auto Dist2 = [](const geometry::Point& p1, const geometry::Point& p2) 
 
 Clusters KMeans(geometry::Points points, const std::int8_t& k)
 {
-  if (k > points.size() || k == 0 || points.empty()) {
+  if (k > static_cast<int>(points.size()) || k == 0 || points.empty()) {
     return Clusters{};
   }
 
@@ -73,7 +73,7 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
       if (geometry::Point{ct.mean_x, ct.mean_y} == ct.p) { converge++; }
 
       // Update centroid location and reset the rest
-      ct = {ct.mean_x, ct.mean_y, 0, 0.0, 0};
+      ct = {{ct.mean_x, ct.mean_y}, 0, 0.0, 0};
     }
 
     // Check if clusters has converged
