@@ -55,5 +55,8 @@ matrix:
       script:
         - cmake . -DENABLE_COVERAGE=1
         - cmake --build . -- -j2
-        - ctest -j2
+        - cd test
+        - ./algo_tests
+        - cd ..
+        #- ctest -j2
         - bash <(curl -s https://codecov.io/bash)
