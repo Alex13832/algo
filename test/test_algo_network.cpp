@@ -21,7 +21,7 @@ using namespace algo::network;
 TEST(test_algo_network, pagerank_4x4)
 {
   // This is the transition matrix with probabilities.
-  Mat M{{0.0, 0.3333, 0.3333, 0.3333},
+  Mat M{{0.0, 1.0 / 3.0, 1.0 / 3.0, 1.0 / 3.0},
         {0.0, 0.0, 0.5, 0.5},
         {1, 0.0, 0.0, 0.0},
         {0.5, 0.0, 0.5, 0.0}};

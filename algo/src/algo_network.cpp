@@ -15,7 +15,6 @@
 namespace algo::network {
 
 namespace {
-constexpr double DBL_MAX{1.7976931348623158e+308};
 
 /// \brief Returns an array with uniformly distributed numbers between 0 and 1.
 /// \param N The number of elements in the returned array.
@@ -117,19 +116,18 @@ Arr PageRank(const Mat& W, const double& error, const double& damping)
 {
   Mat M{W};
   size_t sz{M.size()};
+
   Arr vr{RandArr(sz)};
   double nrm{L1Norm(vr)};
-
   MatElemDiv(vr, nrm);
 
-  Arr v_end(sz, DBL_MAX);
-  double q{(1 - damping) / sz};
-
+  double q{(1.0 - damping) / static_cast<double>(sz)};
   MatElemMult(M, damping);
   Mat rhs(sz, Arr(sz, q));
-
   Mat M_hat{MatAdd(M, rhs)};
-  double l2{DBL_MAX};
+
+  Arr v_end;
+  double l2;
 
   // Repeat until L2-norm is smaller than the input error.
   do {

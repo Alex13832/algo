@@ -12,6 +12,7 @@ add_executable(algo_tests ${test_SRC})
 target_link_libraries(algo_tests ${CMAKE_PROJECT_NAME})
 target_link_libraries(algo_tests gtest gtest_main)
 target_link_libraries(algo_tests --coverage)
+
 add_test(AlgoTests algo_tests)
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
