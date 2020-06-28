@@ -167,7 +167,7 @@ int LevDistance(const std::string &word_a, const std::string &word_b)
   size_t a_size{word_a.length()};
   size_t b_size{word_b.length()};
 
-  int d[a_size + 1][b_size + 1];
+  std::vector<std::vector<int>> d(a_size + 1, std::vector<int>(b_size + 1, 0));
   d[0][0] = 0;
 
   for (size_t i = 1; i < a_size + 1; i++) d[i][0] = i;
@@ -195,7 +195,7 @@ bool IsRotated(const std::string &str1, const std::string &str2)
   std::string str11(2 * len - 1, ' ');
   std::copy(str1.begin(), str1.end(), str11.begin());
   std::copy(str1.begin(), str1.end(), str11.begin() + len);
-  return str11.find(str2) != -1;
+  return str11.find(str2) != std::string::npos;
 }
 
 std::string Compress(const std::string &str)

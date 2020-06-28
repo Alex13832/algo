@@ -29,7 +29,7 @@ Graph NewGraph(size_t size)
 
 bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
 {
-  if (u >= static_cast<int>(graph.size()) || v >= static_cast<int>(graph.size()) || u == v) {
+  if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size() || u == v) {
     return false;
   }
 
@@ -40,7 +40,7 @@ bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
 
 bool MakeEdge(Graph &graph, const int &u, const int &v)
 {
-  if (u >= graph.size() || v >= graph.size()) {
+  if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
   }
   graph[u].emplace_back(Connection{v, 0.0});
@@ -50,7 +50,7 @@ bool MakeEdge(Graph &graph, const int &u, const int &v)
 
 bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w)
 {
-  if (u >= graph.size() || v >= graph.size()) {
+  if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
   }
   graph[u].push_back(Connection{v, w});
@@ -59,7 +59,7 @@ bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w)
 
 bool MakeDirEdge(Graph &graph, const int &u, const int &v)
 {
-  if (u >= graph.size() || v >= graph.size()) {
+  if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
   }
   graph[u].push_back(Connection{v, 0.0});
@@ -78,7 +78,7 @@ void SetWeight(Graph &graph, const int &u, const int &v, double weight)
 
 double GetWeight(Graph &graph, const int &u, const int &v)
 {
-  if (u < 0 || u >= graph.size()) {
+  if (u < 0 || static_cast<size_t>(u) >= graph.size()) {
     return 0.0;
   }
 
@@ -109,9 +109,9 @@ Edges GetEdges(const Graph &graph)
   Edges edges;
 
   // Construct a list of edges
-  for (int i = 0; i < graph.size(); ++i) {
+  for (size_t i = 0; i < graph.size(); ++i) {
     for (const auto &c : graph[i]) {
-      edges.emplace_back(Edge{i, c.node, c.weight});
+      edges.emplace_back(Edge{static_cast<int>(i), c.node, c.weight});
     }
   }
   return edges;
@@ -133,7 +133,7 @@ struct comp {
 Nodes BFS(const Graph &graph, const int &source)
 {
   // Forbidden input.
-  if (graph.empty() || source < 0 || source >= graph.size()) {
+  if (graph.empty() || source < 0 || static_cast<size_t>(source) >= graph.size()) {
     return Nodes{};
   }
 
@@ -163,7 +163,7 @@ Nodes BFS(const Graph &graph, const int &source)
 Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
 {
   // Forbidden input:
-  size_t N{graph.size()};
+  int N = graph.size();
   if (N < 2 || dest > N || source > N || source < 0 || dest < 0 || source == dest) {
     return Path{Nodes{}, false};
   }
@@ -224,7 +224,7 @@ bool IsBipartite(const Graph &graph)
 Nodes AllNodesPath(const Graph &graph, const int &source)
 {
   // Forbidden input.
-  if (graph.size() < 3 || source < 0 || source >= graph.size()) {
+  if (graph.size() < 3 || source < 0 || static_cast<size_t>(source) >= graph.size()) {
     return Nodes{};
   }
   int current_node{source};
@@ -258,7 +258,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
   }
 
   // Try next source
-  if (path.size() != graph.size() && source < graph.size()) {
+  if (path.size() != graph.size() && static_cast<size_t>(source) < graph.size()) {
     path = AllNodesPath(graph, source + 1);
   }
 
@@ -307,7 +307,8 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
 Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest)
 {
   // Forbidden input.
-  if (dest > graph.size() || source > graph.size() || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
+  if (static_cast<size_t>(dest) > graph.size() || static_cast<size_t>(source) > graph.size()
+      || graph.size() < 2 || source < 0 || dest < 0 || source == dest) {
     return Nodes{};
   }
 
@@ -332,7 +333,7 @@ Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &des
 std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
 {
   // Forbidden input.
-  if (source < 0 || graph.size() < 3 || source >= graph.size()) {
+  if (source < 0 || graph.size() < 3 || static_cast<size_t>(source) >= graph.size()) {
     return std::make_pair(Weights{}, Nodes{});
   }
 
@@ -369,7 +370,7 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
 std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest)
 {
   // Forbidden input.
-  if (source < 0 || source >= graph.size() || dest < 0 || dest >= graph.size() || graph.size() < 3) {
+  if (source < 0 || static_cast<size_t>(source) >= graph.size() || dest < 0 || static_cast<size_t>(dest) >= graph.size() || graph.size() < 3) {
     return std::make_pair(Nodes{}, 0.0);
   }
 
@@ -433,7 +434,8 @@ NodeMat ShortestDistAllPairs(const Graph &graph)
 
 Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest)
 {
-  if (graph.size() < 3 || source < 0 || dest < 0 || source >= graph.size() || dest >= graph.size() || source == dest) {
+  if (graph.size() < 3 || source < 0 || dest < 0 || static_cast<size_t>(source) >= graph.size()
+      || static_cast<size_t>(dest) >= graph.size() || source == dest) {
     return Nodes{};
   }
 
@@ -461,7 +463,7 @@ Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int 
 Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight)
 {
   // Forbidden input.
-  if (source >= graph.size() || source < 0 || graph.empty()) {
+  if (static_cast<size_t>(source) >= graph.size() || source < 0 || graph.empty()) {
     return Graph{NewGraph(0)};
   }
 
@@ -525,7 +527,7 @@ constexpr auto FindMinOfResiduals = [](const Graph &graph, const Nodes &path) {
 double MaxFlow(Graph graph, const int &source, const int &dest)
 {
   // Forbidden input.
-  if (source < 0 || dest < 0 || source >= graph.size() || dest >= graph.size() || source == dest) {
+  if (source < 0 || dest < 0 || static_cast<size_t>(source) >= graph.size() || static_cast<size_t>(dest) >= graph.size() || source == dest) {
     return 0.0;
   }
 

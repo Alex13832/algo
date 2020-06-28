@@ -145,8 +145,8 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
   // Get points that are not too close.
   if (min_dist > 0) {
     std::vector<bool> skips(corner_pts.size(), false);
-    for (int i = 0; i < corner_pts.size() - 1; i++) {
-      for (int j = i + 1; j < corner_pts.size(); j++) {
+    for (size_t i = 0; i < corner_pts.size() - 1; i++) {
+      for (size_t j = i + 1; j < corner_pts.size(); j++) {
         if (Euclidean(corner_pts[i], corner_pts[j]) < min_dist * min_dist) {// Avoid computing sqrt.
           skips[j] = true;
         }
@@ -154,7 +154,7 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
     }
 
     Points pts;
-    for (int i = 0; i < skips.size(); i++) {
+    for (size_t i = 0; i < skips.size(); i++) {
       if (!skips[i]) {
         pts.emplace_back(corner_pts[i]);
       }

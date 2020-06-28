@@ -92,7 +92,7 @@ void Gnome(std::vector<T> &vec)
   int i{0};
   size_t n{vec.size()};
 
-  while (i < n) {
+  while (static_cast<size_t>(i) < n) {
 
     if (i == 0)
       i++;

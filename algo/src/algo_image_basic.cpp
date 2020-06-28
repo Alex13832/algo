@@ -86,7 +86,7 @@ Img ToGray(const Img3& img3)
   int size{img3.size.rows * img3.size.cols};
   Data8 data(size, 0);
 
-  for (size_t i = 0; i < size; i++) {
+  for (int i = 0; i < size; i++) {
     data[i] = 0.3 * img3.data[Red][i] + 0.59 * img3.data[Green][i] + 0.11 * img3.data[Blue][i];
   }
 

@@ -20,11 +20,11 @@ PTriangle PascalsTriangle(const int &depth)
 {
   PTriangle rows{};
 
-  for (size_t line = 1; line <= depth + 1; line++) {
+  for (int line = 1; line <= depth + 1; line++) {
     std::vector<int> row{};
     unsigned int C{1};
 
-    for (size_t i = 1; i <= line; i++) {
+    for (int i = 1; i <= line; i++) {
       row.emplace_back(C);
       C = C * (line - i) / i;
     }
@@ -53,7 +53,7 @@ int Knapsack(const Items &items, unsigned capacity)
 
   for (size_t i = 1; i <= n; i++) {
     for (size_t j = 0; j <= capacity; j++) {
-      if (items[i - 1].weight <= j) {
+      if (items[i - 1].weight <= static_cast<int>(j)) {
         m[i][j] = std::max(m[i - 1][j], m[i - 1][j - items[i - 1].weight] + items[i - 1].value);
       } else {
         m[i][j] = m[i - 1][j];
@@ -192,7 +192,7 @@ std::vector<T> GetPrimes(unsigned int n)
       k = 0;
       x = i * i;
 
-      while (j <= n) {
+      while (static_cast<size_t>(j) <= n) {
         j = x + k * i;
         is_prime[j] = false;
         k++;
@@ -203,7 +203,7 @@ std::vector<T> GetPrimes(unsigned int n)
   std::vector<T> primes;
   T candidate = 0;
 
-  while (candidate <= n) {
+  while (static_cast<size_t>(candidate) <= n) {
     if (is_prime[candidate]) {
       primes.emplace_back(candidate);
     }
