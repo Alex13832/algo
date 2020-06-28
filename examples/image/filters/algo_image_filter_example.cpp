@@ -122,7 +122,7 @@ void RunMedianExample()
   cv::imshow("Original", img);
 
   Img im{MatToVec(img)};
-  Img res{MedianFilter(im, 4, 4)};
+  Img res{MedianFilter(im, Size{4, 4})};
   cv::Mat mat{ImGrayToMat(res)};
   cv::imshow("Result of median filter", mat);
 
@@ -136,7 +136,7 @@ void RunMedian3Example()
   cv::imshow("Original", img);
 
   Img3 im{Mat3ToVec(img)};
-  Img3 res{MedianFilter3(im, 4, 4)};
+  Img3 res{MedianFilter3(im, Size{4, 4})};
   cv::Mat mat{Im3ToMat(res)};
   cv::imshow("Result of median filter", mat);
 
