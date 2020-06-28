@@ -132,7 +132,7 @@ Arr PageRank(const Mat& W, const double& error, const double& damping)
   double l2{DBL_MAX};
 
   // Repeat until L2-norm is smaller than the input error.
-  while (l2 > error) {
+  do {
     v_end = vr;
     vr = MatVecMult(M_hat, vr);
 
@@ -142,7 +142,9 @@ Arr PageRank(const Mat& W, const double& error, const double& damping)
     }
 
     l2 = L2Norm(temp);
-  }
+
+  } while (l2 > error);
+
   return vr;
 }
 
