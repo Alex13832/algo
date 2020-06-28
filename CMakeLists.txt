@@ -19,7 +19,7 @@ endif ()
 if (MSVC)
     add_compile_options(/W4)
 else ()
-    add_compile_options(-Wall -Wextra -Wpedantic -Werror)
+    add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-missing-braces -Wmissing-field-initializers)
 endif ()
 
 enable_testing()
