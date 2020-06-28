@@ -108,6 +108,19 @@ TEST(test_algo_math, discrete_bin)
   EXPECT_EQ(BIN(n, k), (n + 1 - k) / k * BIN(n, k - 1));
 }
 
+TEST(test_algo_math, discrete_bin_corner_cases)
+{
+  EXPECT_EQ(BIN(1, 0), 1);
+  EXPECT_EQ(BIN(1, 1), 1);
+}
+
+TEST(tesg_algo_math, discrete_bin_standard)
+{
+  EXPECT_EQ(BIN(5, 3), 10);
+  EXPECT_EQ(BIN(19, 3), 969);
+  EXPECT_EQ(BIN(9, 8), 9);
+}
+
 /////////////////////////////////////////////
 /// Random numbers
 /////////////////////////////////////////////
