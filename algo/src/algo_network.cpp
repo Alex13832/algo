@@ -44,7 +44,7 @@ constexpr auto L2Norm = [](const Arr& arr) {
 /// \return The L1 norm of arr.
 constexpr auto L1Norm = [](const Arr& arr) {
   Arr cp{arr};
-  std::transform(cp.begin(), cp.end(), cp.begin(), [](double x) { return abs(x); });
+  std::transform(cp.begin(), cp.end(), cp.begin(), [](double x) { return std::abs(x); });
   return std::accumulate(cp.begin(), cp.end(), 0.0);
 };
 
