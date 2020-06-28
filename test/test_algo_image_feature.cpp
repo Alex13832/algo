@@ -101,25 +101,6 @@ Img GetCornerImg()
 }// namespace
 
 /////////////////////////////////////////////
-/// Hough transform
-/////////////////////////////////////////////
-
-TEST(test_algo_image, test_hough_transform)
-{
-  Img corner_img{GetCornerImg()};
-  Img imh{HoughTransform(corner_img)};
-
-  const int kNRows{corner_img.size.rows};
-  const int kNCols{corner_img.size.cols};
-  int d_max = std::sqrt(kNCols * kNCols + kNRows * kNRows);
-  d_max += 10;
-  const int kAlphaMax{360};
-
-  EXPECT_EQ(imh.size.rows, d_max);
-  EXPECT_EQ(imh.size.cols, kAlphaMax);
-}
-
-/////////////////////////////////////////////
 /// Corners
 /////////////////////////////////////////////
 
