@@ -98,7 +98,7 @@ Img InvertPixels(const Img& im)
 {
   Img img{im};
   std::transform(img.data.begin(), img.data.end(), img.data.begin(), [](uint8_t x) {
-    return 255 - x;
+    return std::max(255 - x, 0);
   });
   return img;
 }
@@ -178,6 +178,5 @@ uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box)
 {
   return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1) - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
 }
-
 
 }//namespace algo::image

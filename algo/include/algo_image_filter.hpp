@@ -35,7 +35,7 @@ enum class KernelType {
   WEIGHTED_AVERAGE,   /// Filters with average.
   DILATION_HORIZONTAL,/// "Smears" image horizontally. *
   DILATION_VERTICAL,  /// "Smears" image vertically. *
-  DILATION            /// "Smears" image in all directions. *
+  DILATION,           /// "Smears" image in all directions. *
 };
 
 // //////////////////////////////////////////
@@ -67,20 +67,18 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma);
 /// \brief Filters the input image with a median filter.
 /// \details This filter will remove noise.
 /// \param im The input image.
-/// \param w_width Width of filter window.
-/// \param w_height Height of filter window.
+/// \param w_size The window size of the filter.
 /// \return New median filtered image of im.
 /// \link <a href="https://en.wikipedia.org/wiki/Median_filter">Median filter, Wikipedia.</a>
-Img MedianFilter(const Img& im, const int& w_width, const int& w_height);
+Img MedianFilter(const Img& im, const Size& w_size);
 
 /// \brief Filters a color image with a median filter.
 /// \note The result will become blurry for too large windows. Very noisy images will look better.
 /// \param im Input color image.
-/// \param w_width Width of filter window.
-/// \param w_height Height of filter window.
+/// \param The window size of the filter.
 /// \return A new median filtered image of im.
 /// \link <a href="https://en.wikipedia.org/wiki/Median_filter">Median filter, Wikipedia.</a>
-Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height);
+Img3 MedianFilter3(const Img3& im, const Size& w_size);
 
 // //////////////////////////////////////////
 //  Thresholding

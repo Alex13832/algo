@@ -30,10 +30,11 @@ Img HoughTransform(const Img& im)
 {
   const int kNRows{im.size.rows};
   const int kNCols{im.size.cols};
-  const int kDMax = std::sqrt(kNCols * kNCols + kNRows * kNRows);
+  int d_max = std::sqrt(kNCols * kNCols + kNRows * kNRows);
+  d_max += 10;
   const int kAlphaMax{360};
   // All white from start.
-  Img himg{Data8(kDMax * kAlphaMax, 255), Size{kDMax, kAlphaMax}};
+  Img himg{Data8(d_max * kAlphaMax, 255), Size{d_max, kAlphaMax}};
 
   // Run through edge detector
   for (int x = 0; x < kNCols; x++) {
@@ -48,7 +49,8 @@ Img HoughTransform(const Img& im)
       }
     }
   }
-  return InvertPixels(himg);// Better for finding maximums.
+  Img im_inv{InvertPixels(himg)};
+  return im_inv;// Better for finding maximums.
 }
 
 /////////////////////////////////////////////

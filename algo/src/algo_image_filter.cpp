@@ -35,7 +35,6 @@ constexpr Kernel kernel_dilation_v{0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0};
 constexpr Kernel kernel_dilation_h{0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0.0, 0.0, 0.0};
 constexpr Kernel kernel_dilation{0.0, 1.0, 0.0, 1.0, 1.0, 1.0, 0.0, 1.0, 0.0};
 constexpr Kernel kernel_high_pass{-1.0, -1.0, -1.0, -1.0, 8.0, -1.0, -1.0, -1.0, -1.0};
-constexpr Kernel kernel_nothing{0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0};
 
 Kernel GetKernel(const KernelType& filter_type)
 {
@@ -68,10 +67,10 @@ Kernel GetKernel(const KernelType& filter_type)
       return kernel_dilation_h;
     case KernelType::DILATION:
       return kernel_dilation;
-    case KernelType::HIGH_PASS:
-      return kernel_high_pass;
+    case KernelType::HIGH_PASS: break;
   }
-  return kernel_nothing;
+
+  return kernel_high_pass;
 }
 
 }// namespace
@@ -156,7 +155,12 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
 {
   // Size x,y must be odd! Test
   if (size.rows % 2 == 0 || size.cols % 2 == 0) {
-    return im;
+    return Img{{}, Size{0, 0}};
+  }
+
+  // Window size larger than image size
+  if (size.rows >= im.size.rows || size.cols >= im.size.cols) {
+    return Img{{}, Size{0, 0}};
   }
 
   const ImgF kernel{GaussianKernel(size, sigma)};
@@ -168,12 +172,12 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   const size_t kSizeY = kRows >> 1U;
 
   // Filtering window
-  for (size_t x = 0; x < im.size.cols; x++) {
-    for (size_t y = 0; y < im.size.rows; y++) {
+  for (int x = 0; x < im.size.cols; x++) {
+    for (int y = 0; y < im.size.rows; y++) {
 
       double sum = 0;
-      for (size_t m = 0; m < size.cols; m++) {
-        for (size_t k = 0; k < size.rows; k++) {
+      for (int m = 0; m < size.cols; m++) {
+        for (int k = 0; k < size.rows; k++) {
           // Avoid read and write outside bounds of image
           const size_t kPosX = std::min(std::max(0UL, x + m - kSizeX), static_cast<size_t>(im.size.cols - 1));
           const size_t kPosY = std::min(std::max(0UL, y + k - kSizeY), static_cast<size_t>(im.size.rows - 1));
@@ -201,14 +205,14 @@ Data8 MedianFilterPriv(const Data8& im, const int& rows, const int& cols, const 
   int edge_x{w_width / 2};
   int edge_y{w_height / 2};
 
-  for (size_t x = 0; x < cols - edge_x; x++) {
-    for (size_t y = 0; y < rows - edge_y; y++) {
+  for (int x = 0; x < cols - edge_x; x++) {
+    for (int y = 0; y < rows - edge_y; y++) {
 
       std::vector<int> window(w_height * w_height, 0);
       int i{0};
 
-      for (size_t wx = 0; wx < w_width; wx++) {
-        for (size_t wy = 0; wy < w_height; wy++) {
+      for (int wx = 0; wx < w_width; wx++) {
+        for (int wy = 0; wy < w_height; wy++) {
           window[i] = im[(y + wy - edge_y) * cols + (x + wx - edge_x)];
           i++;
         }
@@ -220,20 +224,28 @@ Data8 MedianFilterPriv(const Data8& im, const int& rows, const int& cols, const 
   return res;
 }
 
-Img MedianFilter(const Img& im, const int& w_width, const int& w_height)
+Img MedianFilter(const Img& im, const Size& w_size)
 {
+  if (w_size.rows >= im.size.rows || w_size.cols >= im.size.cols) {
+    return Img{{}, Size{0, 0}};
+  }
+
   Img res;
-  res.data = MedianFilterPriv(im.data, im.size.rows, im.size.cols, w_width, w_height);
+  res.data = MedianFilterPriv(im.data, im.size.rows, im.size.cols, w_size.cols, w_size.rows);
   res.size = im.size;
   return res;
 }
 
-Img3 MedianFilter3(const Img3& im, const int& w_width, const int& w_height)
+Img3 MedianFilter3(const Img3& im, const Size& w_size)
 {
+  if (w_size.rows >= im.size.rows || w_size.cols >= im.size.cols) {
+    return Img3{{}, Size{0, 0}};
+  }
+
   Img3 res;
-  res.data[Red] = MedianFilterPriv(im.data[Red], im.size.rows, im.size.cols, w_width, w_height);
-  res.data[Green] = MedianFilterPriv(im.data[Green], im.size.rows, im.size.cols, w_width, w_height);
-  res.data[Blue] = MedianFilterPriv(im.data[Blue], im.size.rows, im.size.cols, w_width, w_height);
+  res.data[Red] = MedianFilterPriv(im.data[Red], im.size.rows, im.size.cols, w_size.cols, w_size.rows);
+  res.data[Green] = MedianFilterPriv(im.data[Green], im.size.rows, im.size.cols, w_size.cols, w_size.rows);
+  res.data[Blue] = MedianFilterPriv(im.data[Blue], im.size.rows, im.size.cols, w_size.cols, w_size.rows);
   res.size = im.size;
   return res;
 }
@@ -260,6 +272,11 @@ Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white)
 
 Img Adaptive(const Img& im, const int& region_size, const bool& cut_white)
 {
+  // Thresholding window is too big.
+  if (region_size >= im.size.cols || region_size >= im.size.rows) {
+    return Img{{}, Size{0, 0}};
+  }
+
   IntegralImage img{ImgToIntegralImage(im)};
   Img res{Data8(im.size.rows * im.size.cols, 0), im.size};
 
