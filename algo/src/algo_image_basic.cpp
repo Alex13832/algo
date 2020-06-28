@@ -154,7 +154,7 @@ IntegralImage ImgToIntegralImage(const Img& im)
   for (int x = 0; x < im.size.cols; x++) {
     for (int y = 0; y < im.size.rows; y++) {
 
-      if (x == 0 & y == 0) {
+      if (x == 0 && y == 0) {
         img.Set(x, y, im.At(0, 0));
 
       } else if (x == 0) {
