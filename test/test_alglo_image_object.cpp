@@ -121,9 +121,9 @@ TEST(test_algo_image, test_canny_edge)
 /// Line detection
 /////////////////////////////////////////////
 
-TEST(test_algo_image, test_line_detection)
-{
-  Img test_im{GetTestImage()};
-  Lines lines{ExtractLines(test_im, 4, 10)};
-  EXPECT_FALSE(lines.empty());
-}
+//TEST(test_algo_image, test_line_detection)
+//{
+//  Img test_im{GetTestImage()};
+//  Lines lines{ExtractLines(test_im, 4, 10)};
+//  EXPECT_FALSE(lines.empty());
+//}
