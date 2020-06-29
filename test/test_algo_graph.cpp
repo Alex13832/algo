@@ -17,7 +17,7 @@ using namespace std;
 using namespace algo::graph;
 
 namespace {
-const std::string kFilePath{"../../test/testfiles/prims/"};
+const std::string kFilePath{"testfiles/prims/"};
 }
 
 /////////////////////////////////////////////
