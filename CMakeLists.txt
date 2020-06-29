@@ -15,7 +15,6 @@ if (ENABLE_COVERAGE)
     add_compile_options(--coverage -O0)
 endif ()
 
-
 if (MSVC)
     add_compile_options(/W4)
 else ()
