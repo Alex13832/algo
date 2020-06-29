@@ -113,7 +113,6 @@ TEST(test_algo_image, test_canny_edge)
   for (const auto& dat : canny_img.data) {
     nbr_blacks = dat == 0 ? nbr_blacks + 1 : nbr_blacks;
   }
-
   float ratio_blacks = static_cast<float>(nbr_blacks) / canny_img.data.size();
   EXPECT_GT(ratio_blacks, 0.9);
 }
