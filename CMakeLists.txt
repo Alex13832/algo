@@ -25,7 +25,7 @@ endif ()
 enable_testing()
 
 #set(CMAKE_C_COMPILER "gcc")
-#set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
+set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
 
 # ////////////////////////////////////////
 # Includes

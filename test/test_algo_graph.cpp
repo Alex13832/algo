@@ -168,16 +168,16 @@ Graph ReadPrimsFile()
   return G;
 }
 
-//TEST(test_algo_graph, prims_project_euler_107)
-//{
-//  Graph G{ReadPrimsFile()};
-//  double total_weight{0.0};
-//  Graph gmst{MinSpanningTree(G, 0, total_weight)};
-//
-//  double ans = 261832.0 - total_weight;
-//
-//  //EXPECT_EQ(ans, 259679.0);
-//}
+TEST(test_algo_graph, prims_project_euler_107)
+{
+  Graph G{ReadPrimsFile()};
+  double total_weight{0.0};
+  Graph gmst{MinSpanningTree(G, 0, total_weight)};
+
+  double ans = 261832.0 - total_weight;
+
+  EXPECT_EQ(ans, 259679.0);
+}
 
 /////////////////////////////////////////////
 /// Dijkstra's tests
