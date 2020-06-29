@@ -56,6 +56,4 @@ matrix:
         - cmake . -DENABLE_COVERAGE=1
         - cmake --build . -- -j2
         - ctest -j2
-
-      after_success:
         - bash <(curl -s https://codecov.io/bash)
