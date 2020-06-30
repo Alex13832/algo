@@ -31,7 +31,6 @@ Img HoughTransform(const Img& im)
   const int kNRows{im.size.rows};
   const int kNCols{im.size.cols};
   int d_max = std::sqrt(kNCols * kNCols + kNRows * kNRows);
-  d_max += 10;
   const int kAlphaMax{360};
   // All white from start.
   Img himg{Data8(d_max * kAlphaMax, 255), Size{d_max, kAlphaMax}};
@@ -42,7 +41,8 @@ Img HoughTransform(const Img& im)
       if (im.At(x, y) == 0) continue;// Not an edge-pixel.
 
       for (int alpha = 0; alpha < kAlphaMax; alpha++) {
-        auto d = LineFunc(x, y, alpha);
+        int d = LineFunc(x, y, alpha);
+        d = std::max(static_cast<int>(d), 0);
         if (himg.At(alpha, d) > 0) {
           himg.Set(alpha, d, himg.At(alpha, d) - 1);// Vote
         }
