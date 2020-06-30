@@ -100,7 +100,7 @@ Img GetTestImage()
 }// namespace
 
 /////////////////////////////////////////////
-/// Canny edge detection
+/// Canny edge detect
 /////////////////////////////////////////////
 
 TEST(test_algo_image, test_canny_edge)
@@ -118,7 +118,7 @@ TEST(test_algo_image, test_canny_edge)
 }
 
 /////////////////////////////////////////////
-/// Line detection
+/// Line detect
 /////////////////////////////////////////////
 
 TEST(test_algo_image, test_line_detection)
