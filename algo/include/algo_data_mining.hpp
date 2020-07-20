@@ -7,6 +7,7 @@
 /// Change list:
 /// 2015-08-14 KNN
 /// 2015-08-16 K-means
+/// 2020-07-19 DBSCAN
 ///
 
 #ifndef ALGORITHM_DATA_MINING_DATA_MINING_ALGORITHMS_HPP_
@@ -57,6 +58,25 @@ using LabeledPoints = std::vector<LabeledPoint>;
 /// \return Labeled data based on the rules of KNN.
 /// \link <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">KNN, Wikipedia.</a>
 LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k);
+
+// ///////////////////////////////////////////
+// DBSCAN
+// ///////////////////////////////////////////
+
+enum class DistFunc { Manhattan,///< L1, "Manhattan" distance.
+                      Euclidean ///< L2, Euclidean distance.
+};
+
+/// \brief Finds the clusters of DBSCAN algorithm. Depending on chosen max-distance eps and minimum amount of points in a cluster,
+/// the algorithm will return n clusters. It's not possible to choose the number of clusters, which can be a benefit.
+/// \details Density-based spatial clustering of application with noise.
+/// \param points The input points to scan for clusters.
+/// \param dist_func The distance function, e.g. L1 or L2.
+/// \param eps The maximum distance between two neighbor points.
+/// \param min_pts The minimum number of neighbors within the distance eps that a point must have.
+/// \return A list of points with label. Label == "0" means noise. Label > "1" means cluster number.
+/// \link <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN, Wikipedia.</a>
+LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const double& eps, const int& min_pts);
 
 }// namespace algo::data_mining
 

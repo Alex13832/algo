@@ -4,9 +4,5 @@
 # //////////////////////////////////////////////////////////
 project(${CMAKE_PROJECT_NAME})
 
-add_subdirectory(dbscan)
-add_subdirectory(kmeans)
-add_subdirectory(knn)
-
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
-        DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+add_executable(algo_data_mining_dbscan_run dbscan_example.cpp)
+target_link_libraries(algo_data_mining_dbscan_run ${CMAKE_PROJECT_NAME})

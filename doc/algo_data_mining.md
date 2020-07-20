@@ -86,3 +86,61 @@ LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
 ![Knn-four-clusters](images/knn_in2.png) ![Knn-four-clusters](images/knn_out2.png)
 
 
+## DBSCAN
+>Density-based spatial clustering of applications with noise (DBSCAN) is a data clustering algorithm [...]. It is a 
+>density-based clustering non-parametric algorithm: given a set of points in some space, it groups together points 
+>that are closely packed together (points with many nearby neighbors), marking as outliers points that lie alone in 
+>low-density regions.
+
+```cpp
+LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const float& eps, const int& min_pts);
+```
+
+Returns a list of two-dimensional points with an assigned label. Label "0" is equal to noise, or outlier. If the
+label is greater than "0" then it is the assigned cluster number.
+
+### Usage
+Namespace(s) omitted.
+
+```cpp
+#include <algo.hpp>
+
+using namespace algo::data_mining;
+using namespace algo::geometry;
+
+...
+
+Points pts{
+  {0.0428843, 0.967891},
+  {0.0418432, 0.943829},
+  {0.0564176, 0.928188},
+  {0.0751562, 0.937813},
+  {0.0720331, 0.963079},
+  {0.0616228, 0.970297},
+  {0.0564176, 0.953454},
+  {0.0886895, 0.952251},
+  {0.0793203, 0.982328},
+  {0.0605818, 0.984735},
+  {0.032474, 0.95586},
+  {0.871543, 0.104055},
+  {0.862174, 0.081196},
+  {0.867379, 0.0547275},
+  {0.903815, 0.0619462},
+  {0.900692, 0.0908209},
+  {0.889241, 0.0787898},
+  {0.890282, 0.116086},
+  {0.911102, 0.0884147},
+  {0.885077, 0.05954},
+  {0.0907716, 0.0980396},
+  {0.917348, 0.972703}};
+
+LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.2, 3)};
+```
+
+### Examples
+
+`DBSCAN(points, DistFunc::Euclidean, 0.1, 50)` 
+
+![DBSCSAN-four-clusters](images/dbscan1.png) ![DBSCSAN-four-clusters](images/dbscan2.png)
+
+![DBSCSAN-four-clusters](images/dbscan3.png) ![DBSCSAN-four-clusters](images/dbscan4.png)

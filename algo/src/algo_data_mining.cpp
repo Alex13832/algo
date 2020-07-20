@@ -10,6 +10,8 @@
 #include <algorithm>
 #include <chrono>
 #include <cmath>
+#include <iostream>
+#include <queue>
 #include <set>
 
 #include "algo_math.hpp"
@@ -151,6 +153,103 @@ LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPo
   }
 
   return ret_labeled;
+}
+
+/////////////////////////////////////////////
+/// DBSCAN
+/////////////////////////////////////////////
+
+namespace {
+constexpr auto Dist = [](DistFunc dist_func, const geometry::Point& pt1, const geometry::Point& pt2) {
+  if (dist_func == DistFunc::Manhattan) {
+    return std::abs(std::abs(pt1.x) + std::abs(pt1.y) - std::abs(pt2.x) + std::abs(pt2.y));
+  }
+  if (dist_func == DistFunc::Euclidean) {
+    return Dist2(pt1, pt2);
+  }
+  return 0.0;
+};
+
+struct Neighbor {
+  LabeledPoint pt;
+  int idx;
+};
+
+using Neighbors = std::queue<Neighbor>;
+
+/// \brief Finds the neighbours of pt in lpts that are within eps distance. Skips itself (pt) in the result.
+/// \param lpts All the points to scan for neighbors.
+/// \param dist_func The distance functions, e.g. L1, L2.
+/// \param pt The main point that is the "center" when looking for neighbors.
+/// \param eps The maximum distance between two neighbors.
+/// \param skip_idx The index of pt in lpts, so it can be skipped.
+/// \return All the quialified neighbors of pt in lpts.
+Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const LabeledPoint& pt, const double& eps, size_t skip)
+{
+  Neighbors neighbors;
+  for (size_t idx = 0; idx < lpts.size(); idx++) {
+    if (idx == skip) {
+      continue;
+    }
+    double dist = Dist(dist_func, {lpts[idx].x, lpts[idx].y}, {pt.x, pt.y});
+    if (dist < eps) {
+      neighbors.push(Neighbor{lpts[idx], static_cast<int>(idx)});
+    }
+  }
+  return neighbors;
+}
+}//namespace
+
+LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const double& eps, const int& min_pts)
+{
+  LabeledPoints lpts;
+  if (static_cast<size_t>(min_pts) >= points.size() || min_pts == 0 || points.empty() || eps <= 0.0) {
+    return lpts;
+  }
+
+  int cluster_count{0};
+  for (const auto& pt : points) {
+    lpts.emplace_back(LabeledPoint{pt.x, pt.y, 0.0, "undef"});
+  }
+
+  // DBSCAN algorithm
+  for (size_t idx = 0; idx < lpts.size(); idx++) {
+    if (lpts[idx].label != "undef") {
+      continue;
+    }
+
+    Neighbors neighbors{RangeQuery(lpts, dist_func, lpts[idx], eps, idx)};
+    if (neighbors.size() < static_cast<size_t>(min_pts)) {
+      lpts[idx].label = "0";// Noise
+      continue;
+    }
+    cluster_count++;
+    lpts[idx].label = std::to_string(cluster_count);
+
+    while (!neighbors.empty()) {
+      Neighbor q = neighbors.front();
+      neighbors.pop();
+
+      if (q.pt.label == "0") {// Noise
+        lpts[q.idx].label = std::to_string(cluster_count);
+      }
+
+      if (q.pt.label == "undef") {
+        lpts[q.idx].label = std::to_string(cluster_count);
+        Neighbors neighbors_n{RangeQuery(lpts, dist_func, q.pt, eps, q.idx)};
+
+        if (neighbors_n.size() >= static_cast<size_t>(min_pts)) {
+          while (!neighbors_n.empty()) {
+            Neighbor nb = neighbors_n.front();
+            neighbors_n.pop();
+            lpts[nb.idx].label = std::to_string(cluster_count);
+            neighbors.push(nb);
+          }
+        }
+      }
+    }
+  }
+  return lpts;
 }
 
 }// namespace algo::data_mining

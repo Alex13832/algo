@@ -253,3 +253,148 @@ TEST(test_algo_data_mining, knn_standard)
     EXPECT_EQ(lp.label, "C2");
   });
 }
+
+/////////////////////////////////////////////
+/// DBSCAN
+/////////////////////////////////////////////
+
+TEST(test_algo_data_mining, dbscan_1)
+{
+  Points pts{
+      {0.0428843, 0.967891},
+      {0.0418432, 0.943829},
+      {0.0564176, 0.928188},
+      {0.0751562, 0.937813},
+      {0.0720331, 0.963079},
+      {0.0616228, 0.970297},
+      {0.0564176, 0.953454},
+      {0.0886895, 0.952251},
+      {0.0793203, 0.982328},
+      {0.0605818, 0.984735},
+      {0.032474, 0.95586},
+      {0.871543, 0.104055},
+      {0.862174, 0.081196},
+      {0.867379, 0.0547275},
+      {0.903815, 0.0619462},
+      {0.900692, 0.0908209},
+      {0.889241, 0.0787898},
+      {0.890282, 0.116086},
+      {0.911102, 0.0884147},
+      {0.885077, 0.05954},
+      {0.0907716, 0.0980396},
+      {0.917348, 0.972703}};
+
+  LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.2, 3)};
+
+  EXPECT_EQ(lpts.size(), pts.size());
+  int num_0 = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "1"; });
+  EXPECT_EQ(num_0, 11);
+  int num_1 = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "2"; });
+  EXPECT_EQ(num_1, 9);
+  int num_noise = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "0"; });
+  EXPECT_EQ(num_noise, 2);
+}
+
+TEST(test_algo_data_mining, dbscan_2)
+{
+  Points pts{
+      {0.142823, 0.856001},
+      {0.145946, 0.82833},
+      {0.164685, 0.829533},
+      {0.161562, 0.858408},
+      {0.0262278, 0.963079},
+      {0.0262278, 0.722456},
+      {0.279198, 0.712831},
+      {0.238598, 0.970297},
+      {0.155315, 0.842767},
+      {0.137618, 0.84397},
+      {0.148028, 0.872845},
+      {0.170931, 0.851189},
+      {0.489486, 0.338662},
+      {0.48428, 0.326631},
+      {0.489486, 0.3146},
+      {0.498855, 0.315803},
+      {0.50406, 0.329038},
+      {0.503019, 0.345881},
+      {0.483239, 0.3531},
+      {0.474911, 0.335053},
+      {0.476993, 0.3146},
+      {0.485321, 0.29896},
+      {0.498855, 0.360318},
+      {0.587342, 0.471005},
+      {0.402039, 0.165414},
+      {0.348947, 0.434912},
+      {0.632107, 0.170226}};
+
+  LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.11, 5)};
+
+  EXPECT_EQ(lpts.size(), pts.size());
+  int num_0 = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "1"; });
+  EXPECT_EQ(num_0, 8);
+  int num_1 = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "2"; });
+  EXPECT_EQ(num_1, 11);
+  int num_noise = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "0"; });
+  EXPECT_EQ(num_noise, 8);
+}
+
+TEST(test_algo_data_mining, dbscan_3)
+{
+  Points pts{
+      {0.117838, 0.806674},
+      {0.111592, 0.286929},
+      {0.602958, 0.640644},
+      {0.2209, 0.517926},
+      {0.207367, 0.492661},
+      {0.20008, 0.463786},
+      {0.221941, 0.439724},
+      {0.254213, 0.451755},
+      {0.263582, 0.49988},
+      {0.25109, 0.528754},
+      {0.241721, 0.505895},
+      {0.228187, 0.479427},
+      {0.162603, 0.301366},
+      {0.128249, 0.310991},
+      {0.1397, 0.291741},
+      {0.25109, 0.479427},
+      {0.237557, 0.456568},
+      {0.226105, 0.502286},
+      {0.212572, 0.462583}};
+
+  LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.11, 7)};
+
+  EXPECT_EQ(lpts.size(), pts.size());
+  int num_0 = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "1"; });
+  EXPECT_EQ(num_0, 13);
+  int num_noise = std::count_if(lpts.begin(), lpts.end(), [](const auto& lpt) { return lpt.label == "0"; });
+  EXPECT_EQ(num_noise, 6);
+}
+
+TEST(test_algo_data_mining, dbscan_forbidden_cases)
+{
+  Points pts{
+      {0.0428843, 0.967891},
+      {0.0418432, 0.943829},
+      {0.885077, 0.05954},
+      {0.0907716, 0.0980396},
+      {0.917348, 0.972703}};
+
+  // Test min_points too big
+  LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.2, 5)};
+  EXPECT_TRUE(lpts.empty());
+
+  // Test min_points zero
+  lpts = DBSCAN(pts, DistFunc::Euclidean, 0.2, 0);
+  EXPECT_TRUE(lpts.empty());
+
+  // Test empty input
+  lpts = DBSCAN({}, DistFunc::Euclidean, 0.2, 2);
+  EXPECT_TRUE(lpts.empty());
+
+  // Test eps is 0.0
+  lpts = DBSCAN(pts, DistFunc::Euclidean, 0.0, 2);
+  EXPECT_TRUE(lpts.empty());
+
+  //Test negative eps
+  lpts = DBSCAN(pts, DistFunc::Euclidean, -0.1, 2);
+  EXPECT_TRUE(lpts.empty());
+}
