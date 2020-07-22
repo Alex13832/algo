@@ -184,13 +184,10 @@ using Neighbors = std::queue<Neighbor>;
 /// \param eps The maximum distance between two neighbors.
 /// \param skip_idx The index of pt in lpts, so it can be skipped.
 /// \return All the quialified neighbors of pt in lpts.
-Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const LabeledPoint& pt, const double& eps, size_t skip)
+Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const LabeledPoint& pt, const double& eps)
 {
   Neighbors neighbors;
   for (size_t idx = 0; idx < lpts.size(); idx++) {
-    if (idx == skip) {
-      continue;
-    }
     double dist = Dist(dist_func, {lpts[idx].x, lpts[idx].y}, {pt.x, pt.y});
     if (dist < eps) {
       neighbors.push(Neighbor{lpts[idx], static_cast<int>(idx)});
@@ -218,7 +215,7 @@ LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, 
       continue;
     }
 
-    Neighbors neighbors{RangeQuery(lpts, dist_func, lpts[idx], eps, idx)};
+    Neighbors neighbors{RangeQuery(lpts, dist_func, lpts[idx], eps)};
     if (neighbors.size() < static_cast<size_t>(min_pts)) {
       lpts[idx].label = "0";// Noise
       continue;
@@ -236,7 +233,7 @@ LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, 
 
       if (q.pt.label == "undef") {
         lpts[q.idx].label = std::to_string(cluster_count);
-        Neighbors neighbors_n{RangeQuery(lpts, dist_func, q.pt, eps, q.idx)};
+        Neighbors neighbors_n{RangeQuery(lpts, dist_func, q.pt, eps)};
 
         if (neighbors_n.size() >= static_cast<size_t>(min_pts)) {
           while (!neighbors_n.empty()) {

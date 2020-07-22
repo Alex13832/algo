@@ -61,7 +61,7 @@ void WriteToFile(const LabeledPoints& labeled_points, const string& filename)
 
 int main()
 {
-  Points points{ReadFile("../testfiles/dbscan_in4.csv")};
+  Points points{ReadFile("../testfiles/dbscan_in2.csv")};
   LabeledPoints labeled_points{DBSCAN(points, DistFunc::Euclidean, 0.1, 50)};
   WriteToFile(labeled_points, "../testfiles/dbscan_out1.csv");
   return 0;
