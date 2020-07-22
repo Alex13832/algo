@@ -41,5 +41,5 @@ add_subdirectory(test)
 # Examples, needs OpenCv,
 # uncomment to build
 # ////////////////////////////////////////
-include_directories(examples)
-add_subdirectory(examples)
+#include_directories(examples)
+#add_subdirectory(examples)
