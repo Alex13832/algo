@@ -188,7 +188,7 @@ Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const
 {
   Neighbors neighbors;
   for (size_t idx = 0; idx < lpts.size(); idx++) {
-    double dist = Dist(dist_func, {lpts[idx].x, lpts[idx].y}, {pt.x, pt.y});
+    double dist{Dist(dist_func, {lpts[idx].x, lpts[idx].y}, {pt.x, pt.y})};
     if (dist < eps) {
       neighbors.push(Neighbor{lpts[idx], static_cast<int>(idx)});
     }
@@ -203,12 +203,10 @@ LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, 
   if (static_cast<size_t>(min_pts) >= points.size() || min_pts == 0 || points.empty() || eps <= 0.0) {
     return lpts;
   }
-
-  int cluster_count{0};
   for (const auto& pt : points) {
     lpts.emplace_back(LabeledPoint{pt.x, pt.y, 0.0, "undef"});
   }
-
+  int cluster_count{0};
   // DBSCAN algorithm
   for (size_t idx = 0; idx < lpts.size(); idx++) {
     if (lpts[idx].label != "undef") {
@@ -224,20 +222,19 @@ LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, 
     lpts[idx].label = std::to_string(cluster_count);
 
     while (!neighbors.empty()) {
-      Neighbor q = neighbors.front();
+      Neighbor q{neighbors.front()};
       neighbors.pop();
 
       if (q.pt.label == "0") {// Noise
         lpts[q.idx].label = std::to_string(cluster_count);
       }
-
       if (q.pt.label == "undef") {
         lpts[q.idx].label = std::to_string(cluster_count);
         Neighbors neighbors_n{RangeQuery(lpts, dist_func, q.pt, eps)};
 
         if (neighbors_n.size() >= static_cast<size_t>(min_pts)) {
           while (!neighbors_n.empty()) {
-            Neighbor nb = neighbors_n.front();
+            Neighbor nb{neighbors_n.front()};
             neighbors_n.pop();
             lpts[nb.idx].label = std::to_string(cluster_count);
             neighbors.push(nb);
