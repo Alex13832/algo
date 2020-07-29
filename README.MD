@@ -22,7 +22,7 @@ This repository contains C++ implementations of various known algorithms from se
 
 ## Build
 If an IDE is used, it has to be able to handle CMake files. An excellent IDE for C++ is [CLion](https://www.jetbrains.com/clion/), 
-which unfortunately is not free (€19.90).
+which unfortunately is not free (€19.90 monthly).
 
 Run the following commands inside the root directory of this project:
 ```shell script
