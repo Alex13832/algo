@@ -13,8 +13,10 @@ add_subdirectory(geometry)
 include_directories(graph)
 add_subdirectory(graph)
 
-include_directories(image)
-add_subdirectory(image)
+if (OPENCV_INSTALLED)
+    include_directories(image)
+    add_subdirectory(image)
+endif ()
 
 include_directories(sort)
 add_subdirectory(sort)
