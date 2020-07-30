@@ -26,6 +26,8 @@ else ()
     add_compile_options(-Wall -Wextra -Wpedantic -Werror -Wno-missing-braces -Wmissing-field-initializers)
 endif ()
 
+enable_testing()
+
 if (ENABLE_COVERAGE_LOCALLY)
     set(CMAKE_C_COMPILER "gcc")
     set(CMAKE_CXX_FLAGS "-fprofile-arcs -ftest-coverage ")
