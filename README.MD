@@ -218,6 +218,12 @@ For documentation and further information see the `doc` path.
 * Simple string compression
 * Test uniqueness  
 
+
+## Donations 
+
+Paypal
+
+![Paypal](doc/images/QR-kod.png)
    
 
 
