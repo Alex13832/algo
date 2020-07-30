@@ -298,7 +298,7 @@ The Euclidean distance betweean a pair of nodes is used as weight.
 
 ![Mst in 1](images/mst1.png) ![Mst in 2](images/mst2.png)
 
-## Max-flow
+## Edmond-Karp's Max-flow algorithm
 
 >In optimization theory, maximum flow problems involve finding a feasible flow through a flow network that obtains the 
 >maximum possible flow rate. [Wikipedia](https://en.wikipedia.org/wiki/Maximum_flow_problem).
