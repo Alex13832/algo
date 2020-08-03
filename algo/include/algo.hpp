@@ -8,6 +8,7 @@
 #ifndef ALGO_ALGO_INCLUDE_ALGO_HPP_
 #define ALGO_ALGO_INCLUDE_ALGO_HPP_
 
+#include "algo_bit.hpp"
 #include "algo_data_mining.hpp"
 #include "algo_geometry.hpp"
 #include "algo_graph.hpp"
