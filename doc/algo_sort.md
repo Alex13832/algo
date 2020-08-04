@@ -18,8 +18,9 @@ The algorithms are templates and should be easy to extend with new types.
 All sorting algorithms are used in the same manner, in this example the Merge sort algorithm will be demonstrated.
 
 ```cpp
-#include <algo_sort.hpp>
 #include <vector>
+
+#include "algo.hpp"
 
 using namespace std;
 

@@ -21,7 +21,7 @@ Outputs `k` clusters. The input 2D-points in `points` will be clustered based on
 ### Usage
 Namespace(s) omitted. 
 ```cpp
-#include <algo_data_mining.hpp>
+#include "algo.hpp"
 
 using namespace algo::data_mining;
 using namespace algo::geometry;
@@ -53,7 +53,7 @@ Labels the points in `unlabeled_data` based on the `k` nearest neighbors in `lab
 Namespace(s) omitted.
  
 ```cpp
-#include <algo_data_mining.hpp>
+#include "algo.hpp"
 
 using namespace algo::data_mining;
 using namespace algo::geometry;
@@ -103,7 +103,7 @@ label is greater than "0" then it is the assigned cluster number.
 Namespace(s) omitted.
 
 ```cpp
-#include <algo.hpp>
+#include "algo.hpp"
 
 using namespace algo::data_mining;
 using namespace algo::geometry;

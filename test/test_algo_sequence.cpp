@@ -9,8 +9,8 @@
 #include <cmath>
 #include <numeric>
 
+#include "algo.hpp"
 #include "gtest/gtest.h"
-#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::sequence;

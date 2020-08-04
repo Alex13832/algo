@@ -34,7 +34,7 @@ respectively, where each line corresponds to one person's preferences, would res
 ### Usage
 
 ```cpp
-#include <algo_greedy.hpp>
+#include "algo.hpp"
 
 using namespace algo::greedy;
 using nameppace std;

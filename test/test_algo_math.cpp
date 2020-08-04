@@ -8,9 +8,9 @@
 #include <functional>
 #include <numeric>
 
+#include "algo.hpp"
 #include "cmath"
 #include "gtest/gtest.h"
-#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo::math;

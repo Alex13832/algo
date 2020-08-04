@@ -10,9 +10,7 @@ Takes an unsolved Sudoku puzzle and returns the result. Empty cells are marked a
  
 ### Usage
 ```cpp
-#include <algo_puzzle.hpp>
-
-using namespace algo::puzzle::sudoku;
+#include "algo.hpp"
 
 ...  
 
@@ -26,5 +24,5 @@ Grid grid{{{0, 0, 2, 1, 0, 0, 0, 0, 9},
            {0, 4, 0, 0, 3, 0, 0, 1, 0},
            {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
-  Grid solved{Solve(grid)};
+  Grid solved{algo::puzzle::sudoku::Solve(grid)};
 ```

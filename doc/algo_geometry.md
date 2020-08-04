@@ -20,7 +20,7 @@ Returns the closest pair of points of the input set of 2D-points.
 
 ### Usage
 ```cpp
-#include <algo_geometry.hpp>
+#include "algo.hpp"
 
 using namespace algo::geometry;
 
@@ -53,7 +53,7 @@ Returns the convex hull of `points`, the convex hull is in the returned `Points`
 
 ### Usage
 ```cpp
-#include <algo_geometry.hpp>
+#include "algo.hpp"
 
 using namespace algo::geometry;
 
@@ -84,6 +84,8 @@ Triangulates the input points `pts` and returns a set of pair of points in `Line
 ### Usage
 
 ```cpp
+#include "algo.hpp"
+
 using namespace algo::geometry;
 
 ...

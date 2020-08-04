@@ -8,7 +8,6 @@
 #include "algo_image_basic.hpp"
 
 #include <algorithm>
-#include <cmath>
 
 namespace algo::image {
 

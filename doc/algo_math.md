@@ -28,8 +28,9 @@ The first six rows in the Pascal's triangle are:
 
 ### Usage
 ```c++
-#include <algo_math.hpp>
 #include <iostream>
+
+#include "algo.hpp"
 
 using namespace algo::math::discrete;
 usign namespace std;
@@ -82,7 +83,7 @@ hold the value and capacity for each item. `Items` is the same as `std::vector<I
 ### Usage
 
 ```c++
-#include <algo_mathc.hpp>
+#include "algo.hpp"
 
 using namespace algo::math::discrete;
 

@@ -30,16 +30,15 @@ test cases found are however accurate and correct.
 ### Usage and example
 
 ```c++
-#include <algo_transform.hpp>
+#include "algo.hpp"
 
-using namespace algo::transform;
 using namespace std;
 
 ...
 
 FftTransf data{1.0, 4.0, 3.0, 2.0};
-data = FFT(data);
-data = IFFT(data);
+data = algo::transform::FFT(data);
+data = algo::transform::IFFT(data);
 ```
 
 

@@ -7,9 +7,10 @@
 
 #include <cmath>
 #include <fstream>
-#include <include/algo.hpp>
 #include <iostream>
 #include <string>
+
+#include "algo.hpp"
 
 using namespace std;
 using namespace algo::graph;

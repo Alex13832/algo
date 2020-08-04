@@ -20,8 +20,9 @@ Returns the sequence that is the longest increasing sub-sequence of `seq`. Assum
 
 ### Usage
 ```cpp
-#include <algo_sequence.hpp>
 #include <vector>
+
+#include "algo.hpp"
 
 using namespace algo::sequence;
 using namespace std;
@@ -50,8 +51,9 @@ is the longest increasing subarray with sum 10.
 
 ### Usage
 ```cpp
-#include <algo_sequence.hpp>
 #include <vector>
+
+#include "algo.hpp"
 
 using namespace algo::sequence;
 using namespace std;

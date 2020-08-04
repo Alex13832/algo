@@ -9,7 +9,7 @@
 #include <iostream>
 #include <string>
 
-#include "include/algo.hpp"
+#include "algo.hpp"
 
 using namespace std;
 using namespace algo::geometry;

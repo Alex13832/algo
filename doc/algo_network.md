@@ -38,8 +38,9 @@ There is one link from site 0 to site 1, two links from site 1 to 2 and so on.
 
 ### Usage and example
 ```c++
-#include <algo_network.hpp>
 #include <vector>
+
+#include "algo.hpp"
 
 using namespace algo::network;
 using namespace std;

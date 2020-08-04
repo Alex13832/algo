@@ -5,11 +5,12 @@
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
-#include <image_helpers.hpp>
-#include <include/algo.hpp>
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
 #include <string>
+
+#include "algo.hpp"
+#include "image_helpers.hpp"
 
 using namespace algo::image;
 using namespace std;

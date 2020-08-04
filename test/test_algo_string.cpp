@@ -4,8 +4,8 @@
 /// \date 2019-10-13
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
+#include "algo.hpp"
 #include "gtest/gtest.h"
-#include "include/algo.hpp"
 
 using namespace std;
 using namespace algo;

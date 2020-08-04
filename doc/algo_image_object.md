@@ -19,7 +19,7 @@ Returns an image with the detected edges. `threshold_min`and `threshold_max` def
    
  ### Usage
 ```cpp
-#include <algo_image.hpp>
+#include "algo.hpp"
 
 using namespace algo::image;
 
@@ -54,7 +54,7 @@ Returns a list of lines detected in the input image `im`, `n` is the maximum num
   
 ### Usage
 ```cpp
-#include <algo_image.hpp>
+#include "algo.hpp"
 
 #using namespace algo::image
 

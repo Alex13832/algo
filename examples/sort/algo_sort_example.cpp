@@ -9,9 +9,10 @@
 #include <chrono>
 #include <cstdlib>
 #include <ctime>
-#include <include/algo_sort.hpp>
 #include <iostream>
 #include <vector>
+
+#include "algo.hpp"
 
 using namespace std;
 
