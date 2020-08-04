@@ -8,8 +8,6 @@
 #ifndef ALGO_ALGO_INCLUDE_ALGO_BIT_HPP_
 #define ALGO_ALGO_INCLUDE_ALGO_BIT_HPP_
 
-#include <cmath>
-
 /////////////////////////////////////////////
 // Legend:
 // &     And
