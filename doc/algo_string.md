@@ -3,7 +3,7 @@ String algorithms
 
 ## String matching
 
-This namespace  (`algo::strings`) contains two algorithms for string matching, the (1) Boyer Moore- and (2) Rabin Karp algorithms.
+This namespace  (`algo::string`) contains two algorithms for string matching, the (1) Boyer Moore- and (2) Rabin Karp algorithms.
 
 ```c++
 std::vector<int> SearchBoyerMoore(std::string &text, const std::string &pattern);

@@ -54,7 +54,7 @@ TEST(test_algo_sort, bubble_sort_other_type_float)
 
 TEST(test_algo_sort, bubble_sort_ther_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Bubble(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }
@@ -139,7 +139,7 @@ TEST(test_algo_sort, gnome_sort_other_type_float)
 
 TEST(test_algo_sort, gnome_sort_other_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Gnome(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }
@@ -185,7 +185,7 @@ TEST(test_algo_sort, heap_sort_other_type_float)
 
 TEST(test_algo_sort, heap_sort_other_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Heap(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }
@@ -231,7 +231,7 @@ TEST(test_algo_sort, insertion_sort_other_type_float)
 
 TEST(test_algo_sort, insertion_sort_other_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Insertion(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }
@@ -277,7 +277,7 @@ TEST(test_algo_sort, merge_sort_other_type_float)
 
 TEST(test_algo_sort, merge_sort_other_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Merge(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }
@@ -323,7 +323,7 @@ TEST(test_algo_sort, quicksort_other_type_float)
 
 TEST(test_algo_sort, quicksort_other_type_string)
 {
-  vector<string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
+  vector<std::string> strings{"Venus", "Mars", "Jupiter", "Saturn", "Mercury"};
   sort::Quick(strings);
   EXPECT_TRUE(is_sorted(strings.begin(), strings.end()));
 }

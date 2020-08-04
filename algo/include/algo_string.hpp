@@ -18,7 +18,7 @@
 #include <string>
 #include <vector>
 
-namespace algo::strings {
+namespace algo::string {
 
 /// \brief Returns the found locations of the pattern in text.
 /// The implementation is based on the Boyer-Moore string-search algorithm.

@@ -8,7 +8,7 @@
 
 #include <vector>
 
-namespace algo::strings {
+namespace algo::string {
 
 int LastOccurrence(std::string str, char c)
 {
