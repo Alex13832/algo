@@ -4,6 +4,7 @@ Algo :rocket:
 ===============================
 This repository contains C++ implementations of various known algorithms from selected fields of algorithm design
 
+* [Bit manipulation](https://github.com/alex011235/algo/blob/master/doc/algo_bit.md)
 * [Data mining](https://github.com/alex011235/algo/blob/master/doc/algo_data_mining.md)
 * [Computational geometry](https://github.com/alex011235/algo/blob/master/doc/algo_geometry.md)
 * [Graph theory](https://github.com/alex011235/algo/blob/master/doc/algo_graph.md)
