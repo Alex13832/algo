@@ -173,11 +173,11 @@ TEST(test_algo_string, heaps_generate)
 
 TEST(test_algo_string, levest_dist_standard)
 {
-  EXPECT_EQ(algo::string::LevDistance("abracadabra", "cadabraabra"), 6);
-  EXPECT_EQ(algo::string::LevDistance("book", "back"), 2);
-  EXPECT_EQ(algo::string::LevDistance("book", "book"), 0);
-  EXPECT_EQ(algo::string::LevDistance("book", "read"), 4);
-  EXPECT_EQ(algo::string::LevDistance("book", ""), 4);
+  EXPECT_EQ(algo::string::metric::Levenshtein("abracadabra", "cadabraabra"), 6);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "back"), 2);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "book"), 0);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "read"), 4);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", ""), 4);
 }
 
 /////////////////////////////////////////////

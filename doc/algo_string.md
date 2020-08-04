@@ -59,7 +59,7 @@ Note that the number of possible permutations is equal to ![e](https://private.c
 >(insertions, deletions or substitutions) required to change one word into the other. [Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance)
 
 ```c++
-int LevDistance(const std::string &word_a, const std::string &word_b);
+int Levenshtein(const std::string &word_a, const std::string &word_b);
 ```
 Returns the Levenshtein distance between the input strings `word_a` and `word_b`.
 

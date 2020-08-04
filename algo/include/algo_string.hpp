@@ -55,14 +55,6 @@ std::string LongestCommonSubstring(std::string A, std::string B);
 /// \link <a href="https://en.wikipedia.org/wiki/Heap%27s_algorithm">Heap's algorithm, Wikipedia.</a>
 std::vector<std::string> GenerateAllPermutations(std::string &str);
 
-/// \brief Calculates the Levenshtein distance between two strings. This is a string metric for measuring the
-/// difference between two strings.
-/// \param word_a Source word.
-/// \param word_b Target word.
-/// \return Calculated distance.
-/// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
-int LevDistance(const std::string &word_a, const std::string &word_b);
-
 /// \brief Checks if str2 is a rotation of str1, e.g: atc is a rotation of cat.
 /// \param str1 First string.
 /// \param str2 Second string,
@@ -78,6 +70,18 @@ std::string Compress(const std::string &str);
 /// \param str The string to test.
 /// \return True if unique chars otherwise false.
 bool HasUniqueChars(const std::string &str);
-}// namespace algo::strings
+
+namespace metric {
+
+/// \brief Calculates the Levenshtein distance between two strings. This is a string metric for measuring the
+/// difference between two strings.
+/// \param word_a Source word.
+/// \param word_b Target word.
+/// \return Calculated distance.
+/// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
+int Levenshtein(const std::string &word_a, const std::string &word_b);
+
+}// namespace metric
+}// namespace algo::string
 
 #endif//ALGORITHM_SRC_STRING_STRING_HPP_
