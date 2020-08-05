@@ -14,6 +14,7 @@ using namespace algo;
 /// Boyer-More
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_nbr_of_occurences_0)
 {
   std::string text{"Banana banana"};
@@ -22,6 +23,7 @@ TEST(test_algo_string, boyer_more_nbr_of_occurences_0)
   EXPECT_EQ(matches.size(), 0);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_nbr_of_occurences_1)
 {
   std::string text{"Banana banana"};
@@ -30,6 +32,7 @@ TEST(test_algo_string, boyer_more_nbr_of_occurences_1)
   EXPECT_EQ(matches.size(), 1);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_nbr_of_occurences_many)
 {
   std::string text{
@@ -46,6 +49,7 @@ TEST(test_algo_string, boyer_more_nbr_of_occurences_many)
   EXPECT_EQ(matches.size(), 8);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_empty_input_pattern)
 {
   std::string text{"Banana banana"};
@@ -53,14 +57,16 @@ TEST(test_algo_string, boyer_more_empty_input_pattern)
   EXPECT_EQ(matches.size(), 0);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_empty_input_text)
 {
-  std::string text{""};
+  std::string text;
   std::string pattern{"Banana"};
   vector<int> matches{algo::string::SearchBoyerMoore(text, pattern)};
   EXPECT_EQ(matches.size(), 0);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, boyer_more_empty_input)
 {
   std::string empty;
@@ -72,6 +78,7 @@ TEST(test_algo_string, boyer_more_empty_input)
 /// Longest common substring
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_standard)
 {
   std::string A{"otirpporeijgpowkruskaldijkstrawithicecreamergjeågjeopnpoqerhgldijkstrassadar"};
@@ -80,6 +87,7 @@ TEST(test_algo_string, longest_common_substring_standard)
   EXPECT_EQ(C, "kruskaldijkstrawithicecream");
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_empty_first)
 {
   std::string A;
@@ -88,6 +96,7 @@ TEST(test_algo_string, longest_common_substring_empty_first)
   EXPECT_EQ(C, "");
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_empty_second)
 {
   std::string A{"otirpporeijgpowkruskaldijkstrawithicecreamergjeågjeopnpoqerhgldijkstrassadar"};
@@ -96,6 +105,7 @@ TEST(test_algo_string, longest_common_substring_empty_second)
   EXPECT_EQ(C, "");
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_empty_input)
 {
   std::string A, B;
@@ -103,6 +113,7 @@ TEST(test_algo_string, longest_common_substring_empty_input)
   EXPECT_EQ(C, "");
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_one_word)
 {
   std::string A{"calculator"};
@@ -111,6 +122,7 @@ TEST(test_algo_string, longest_common_substring_one_word)
   EXPECT_EQ(C, "culat");
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, longest_common_substring_one_char)
 {
   std::string x{algo::string::LongestCommonSubstring("x", "x")};
@@ -124,6 +136,7 @@ TEST(test_algo_string, longest_common_substring_one_char)
 /// Rabin-Karp
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, rabin_karp_single_input)
 {
   std::string sentence{"one two one three one two hello one"};
@@ -131,6 +144,7 @@ TEST(test_algo_string, rabin_karp_single_input)
   EXPECT_EQ(pos.size(), 4);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, rabin_karp_multi_input)
 {
   std::string sentence{"one two one three one two hello one"};
@@ -139,6 +153,7 @@ TEST(test_algo_string, rabin_karp_multi_input)
   EXPECT_EQ(pos.size(), 6);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, rabin_karp_not_found_single)
 {
   std::string sentence{"one two one three one two hello one"};
@@ -146,6 +161,7 @@ TEST(test_algo_string, rabin_karp_not_found_single)
   EXPECT_EQ(pos.size(), 0);
 }
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, rabin_karp_not_found_multi)
 {
   std::string sentence{"one two one three one two hello one"};
@@ -158,6 +174,7 @@ TEST(test_algo_string, rabin_karp_not_found_multi)
 /// Heap's algorithm
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, heaps_generate)
 {
   std::string sample{"METAL"};
@@ -168,22 +185,10 @@ TEST(test_algo_string, heaps_generate)
 }
 
 /////////////////////////////////////////////
-/// Levenshtein distance
-/////////////////////////////////////////////
-
-TEST(test_algo_string, levest_dist_standard)
-{
-  EXPECT_EQ(algo::string::metric::Levenshtein("abracadabra", "cadabraabra"), 6);
-  EXPECT_EQ(algo::string::metric::Levenshtein("book", "back"), 2);
-  EXPECT_EQ(algo::string::metric::Levenshtein("book", "book"), 0);
-  EXPECT_EQ(algo::string::metric::Levenshtein("book", "read"), 4);
-  EXPECT_EQ(algo::string::metric::Levenshtein("book", ""), 4);
-}
-
-/////////////////////////////////////////////
 /// Rotated string
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, rotated_string_standard)
 {
   EXPECT_FALSE(algo::string::IsRotated("judaspriest", "priestsjudas"));
@@ -196,9 +201,10 @@ TEST(test_algo_string, rotated_string_standard)
 /// Compressed string
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, compressed_string_standard)
 {
-  std::string str{""};
+  std::string str;
   EXPECT_EQ(algo::string::Compress(str), "");
   str = "aa";
   EXPECT_EQ(algo::string::Compress(str), "aa");
@@ -212,6 +218,7 @@ TEST(test_algo_string, compressed_string_standard)
 /// Unique chars
 /////////////////////////////////////////////
 
+//NOLINTNEXTLINE
 TEST(test_algo_string, has_unique_chars_standard)
 {
   EXPECT_TRUE(algo::string::HasUniqueChars("abcdefg123"));
@@ -219,4 +226,78 @@ TEST(test_algo_string, has_unique_chars_standard)
   EXPECT_TRUE(algo::string::HasUniqueChars(""));
   EXPECT_FALSE(algo::string::HasUniqueChars("abcdefg113"));
   EXPECT_FALSE(algo::string::HasUniqueChars("aa"));
+}
+
+/////////////////////////////////////////////
+/// Levenshtein distance
+/////////////////////////////////////////////
+
+//NOLINTNEXTLINE
+TEST(test_algo_string, levest_dist_standard)
+{
+  EXPECT_EQ(algo::string::metric::Levenshtein("abracadabra", "cadabraabra"), 6);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "back"), 2);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "book"), 0);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", "read"), 4);
+  EXPECT_EQ(algo::string::metric::Levenshtein("book", ""), 4);
+}
+
+/////////////////////////////////////////////
+/// Hamming distance
+/////////////////////////////////////////////
+
+//NOLINTNEXTLINE
+TEST(test_algo_string, test_hamming_distance)
+{
+  EXPECT_EQ(algo::string::metric::Hamming("Venus", "Jupiter"), -1);
+  EXPECT_EQ(algo::string::metric::Hamming("", ""), 0);
+  EXPECT_EQ(algo::string::metric::Hamming("A", "a"), 1);
+  EXPECT_EQ(algo::string::metric::Hamming("Aa", "Ab"), 1);
+  EXPECT_EQ(algo::string::metric::Hamming("Karolin", "Kerstin"), 3);
+  EXPECT_EQ(algo::string::metric::Hamming("Kathrin", "Kerstin"), 4);
+  EXPECT_EQ(algo::string::metric::Hamming("1011101", "1001001"), 2);
+}
+
+/////////////////////////////////////////////
+/// Dice coefficient
+/////////////////////////////////////////////
+
+//NOLINTNEXTLINE
+TEST(test_algo_string, test_dice_coeff)
+{
+  EXPECT_EQ(algo::string::metric::Dice("night", "nacht"), 0.25);
+  double dice{algo::string::metric::Dice("complement", "compliment")};
+  EXPECT_GT(dice, 0.7777);
+  EXPECT_LT(dice, 0.7778);
+  dice = algo::string::metric::Dice("bazaar", "bizarre");
+  EXPECT_GT(dice, 0.3635);
+  EXPECT_LT(dice, 0.3637);
+  dice = algo::string::metric::Dice("algorithms are fun", "logarithms are not");
+  EXPECT_GT(dice, 0.5881);
+  EXPECT_LT(dice, 0.5883);
+  EXPECT_EQ(algo::string::metric::Dice("equal string", "equal string"), 1.0);
+  EXPECT_EQ(algo::string::metric::Dice("ga ga ga", "ga ga ga"), 1.0);
+}
+
+/////////////////////////////////////////////
+/// Jaro-Winkler (distance)
+/////////////////////////////////////////////
+
+//NOLINTNEXTLINE
+TEST(test_algo_string, test_jaro_winkler)
+{
+  double jw{algo::string::metric::JaroWinkler("crate", "trace")};
+  EXPECT_GT(jw, 0.733333);
+  EXPECT_LT(jw, 0.733334);
+
+  jw = algo::string::metric::JaroWinkler("trate", "trace");
+  EXPECT_GT(jw, 0.906666);
+  EXPECT_LT(jw, 0.906668);
+
+  jw = algo::string::metric::JaroWinkler("arnab", "aranb");
+  EXPECT_GT(jw, 0.946666);
+  EXPECT_LT(jw, 0.946668);
+
+  jw = algo::string::metric::JaroWinkler("dwayne", "duane");
+  EXPECT_EQ(jw, 0.822);
 }

@@ -52,17 +52,6 @@ Note that the number of possible permutations is equal to ![e](https://private.c
 ![e](https://private.codecogs.com/gif.latex?n%) is the string length. If the length is 10 then the number of possible permutations is
 ![e](https://private.codecogs.com/gif.latex?10%21%20%3D%203628800), which means that a lot of memory and execution time may be needed.
 
-## Levenshtein distance
-
->In information theory, linguistics and computer science, the Levenshtein distance is a string metric for measuring the difference 
->between two sequences. Informally, the Levenshtein distance between two words is the minimum number of single-character edits 
->(insertions, deletions or substitutions) required to change one word into the other. [Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance)
-
-```c++
-int Levenshtein(const std::string &word_a, const std::string &word_b);
-```
-Returns the Levenshtein distance between the input strings `word_a` and `word_b`.
-
 ## String rotation
 ```c++
 bool IsRotated(const std::string &str1, const std::string &str2);
@@ -81,3 +70,54 @@ Returns a compressed version of `str`. For example `caaaaaaaaateeeeeepiillllar` 
 bool HasUniqueChars(const std::string &str);
 ```
 Returns true if `str` has all unique chars.
+
+## String metrics
+
+String metrics are usually used to compare the similarity of two strings. "How different are two strings?"
+is a questions that gets answered.
+
+### Levenshtein distance
+
+>In information theory, linguistics and computer science, the Levenshtein distance is a string metric for measuring the difference 
+>between two sequences. Informally, the Levenshtein distance between two words is the minimum number of single-character edits 
+>(insertions, deletions or substitutions) required to change one word into the other. [Wikipedia](https://en.wikipedia.org/wiki/Levenshtein_distance)
+
+```c++
+int Levenshtein(const std::string &word_a, const std::string &word_b);
+```
+Returns the Levenshtein distance between the input strings `word_a` and `word_b`.
+
+### Hamming distance
+The hamming distance computes how many characters that are not equal, at the same position, in the 
+input strings. That means that the algorithm only works on strings of equal lengths.
+
+```c++
+int Hamming(const std::string &word_a, const std::string &word_b);
+```
+Returns the number of different characters in `word_a` and `word_b`. 
+
+#### Example
+The hamming distance of `dude` and `dudes` is `-1` since they are not equal in length.
+
+The hamming distance of `dude` and `rude` is `1`.
+
+### Dice's coefficient
+This algorithm computes the similarity by comparing the bigrams in the input strings. A bigram
+is two consecutive characters in a string.
+
+[Here](http://www.algomation.com/algorithm/sorensen-dice-string-similarity) is a very good demonstration 
+of how the algorithm works.
+
+```c++
+double Dice(const std::string &word_a, const std::string &word_b);
+```
+Returns the coefficient.
+
+The similarity is computed with
+
+![eq](https://latex.codecogs.com/gif.latex?s%20%3D%20%5Cfrac%7B2%20n_t%7D%7Bn_a%20&plus;%20n_b%7D)
+
+where ![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_t) is the number of equal bigrams in 
+`word_a` and `word_b`, ![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_a) and 
+![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_b) the number of bigrams in `word_a` and `word_b`
+respectively.

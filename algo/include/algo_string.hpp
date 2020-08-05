@@ -71,6 +71,10 @@ std::string Compress(const std::string &str);
 /// \return True if unique chars otherwise false.
 bool HasUniqueChars(const std::string &str);
 
+/////////////////////////////////////////////
+/// String metric
+/////////////////////////////////////////////
+
 namespace metric {
 
 /// \brief Calculates the Levenshtein distance between two strings. This is a string metric for measuring the
@@ -80,6 +84,21 @@ namespace metric {
 /// \return Calculated distance.
 /// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
 int Levenshtein(const std::string &word_a, const std::string &word_b);
+
+/// \brief Computes the Hamming distance between word_a and word_b.
+/// \param word_a First word in comparison.
+/// \param word_b Second word in comparison.
+/// \return The Hamming distance.
+/// \link <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance, Wikipedia.</a>
+int Hamming(const std::string &word_a, const std::string &word_b);
+
+/// \brief Computes the Dice's coefficient between word_a and word_b.
+/// \param word_a First word.
+/// \param word_b Second word.
+/// \return Dice's coefficient.
+double Dice(const std::string &word_a, const std::string &word_b);
+
+double JaroWinkler(const std::string &word_a, const std::string &word_b);
 
 }// namespace metric
 }// namespace algo::string

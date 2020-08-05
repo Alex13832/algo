@@ -6,6 +6,7 @@
 ///
 #include "algo_string.hpp"
 
+#include <cmath>
 #include <vector>
 
 namespace algo::string {
@@ -222,6 +223,11 @@ bool HasUniqueChars(const std::string &str)
   }
   return true;
 }
+
+/////////////////////////////////////////////
+/// String metric
+/////////////////////////////////////////////
+
 namespace metric {
 
 int Levenshtein(const std::string &word_a, const std::string &word_b)
@@ -246,6 +252,92 @@ int Levenshtein(const std::string &word_a, const std::string &word_b)
     }
   }
   return d[a_size][b_size];
+}
+
+int Hamming(const std::string &word_a, const std::string &word_b)
+{
+  if (word_a.size() != word_b.size()) {
+    return -1;
+  }
+  size_t counter{0};
+  size_t size{word_a.size()};
+
+  for (size_t i = 0; i < size; i++) {
+    if (word_a.at(i) != word_b.at(i)) {
+      counter++;
+    }
+  }
+  return counter;
+}
+
+double Dice(const std::string &word_a, const std::string &word_b)
+{
+  std::vector<std::string> bigrams_a, bigrams_b;
+
+  for (size_t i = 0; i < word_a.size() - 1; i++) {
+    std::string str{word_a[i], word_a[i + 1]};
+    bigrams_a.emplace_back(str);
+  }
+  for (size_t i = 0; i < word_b.size() - 1; i++) {
+    std::string str{word_b[i], word_b[i + 1]};
+    bigrams_b.emplace_back(str);
+  }
+  // Find the intersect of bigrams
+  int intersect{0};
+  for (const auto &bigram : bigrams_a) {
+    if (std::find(bigrams_b.begin(), bigrams_b.end(), bigram) != bigrams_b.end()) {
+      intersect++;
+    }
+  }
+  // Compute score
+  return 2.0 * intersect / static_cast<double>(bigrams_a.size() + bigrams_b.size());
+}
+
+namespace {
+
+constexpr auto Jaro = [](const std::string &word_a, const std::string &word_b) {
+  double max_dist = std::floor(std::max(word_a.size(), word_b.size()) / 2.0) - 1.0;
+  double m{0.0}, t{0.0};
+
+  for (int i = 0; i < static_cast<int>(word_a.size()); i++) {
+    for (int j = 0; j < static_cast<int>(word_b.size()); j++) {
+      if (word_a[i] == word_b[j]) {
+        if (i == j) {
+          m += 1.0;
+        } else if (std::abs(i - j) <= max_dist) {
+          t += 1.0;
+          m += 1.0;
+        }
+      }
+    }
+  }
+  if (m == 0) {
+    return 0.0;
+  }
+
+  return 1.0 / 3.0 * (m / word_a.size() + m / word_b.size() + (m - t) / m);// t counted twice.
+};
+
+}// namespace
+
+double JaroWinkler(const std::string &word_a, const std::string &word_b)
+{
+  if (word_a == word_b) {
+    return 1.0;// Max score.
+  }
+  int l = 0;            // Length of the common prefix up to four chars.
+  const double kP = 0.1;// Scaling factor.
+
+  int sz = static_cast<int>(std::min(word_a.size(), word_b.size()));// Max size
+  for (int i = 0; i < std::min(4, sz); i++) {
+    if (word_a[i] == word_b[i]) {
+      l++;
+    } else {
+      break;
+    }
+  }
+  double jaro{Jaro(word_a, word_b)};
+  return jaro + l * kP * (1.0 - jaro);
 }
 
 }// namespace metric
