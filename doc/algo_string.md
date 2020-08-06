@@ -74,7 +74,7 @@ Returns true if `str` has all unique chars.
 ## String metrics
 
 String metrics are usually used to compare the similarity of two strings. "How different are two strings?"
-is a questions that gets answered.
+is the question that gets answered.
 
 ### Levenshtein distance
 
@@ -131,7 +131,7 @@ that match from the beginning.
 ```c++
 double JaroWinkler(const std::string &word_a, const std::string &word_b);
 ``` 
-Returns the Jari-Winkler edit distance. For equl strings, `1.0` is returned, non-equal, `0.0`.
+Returns the Jaro-Winkler edit distance. `1.0` and `0.0` are returned for equal and non-eqaul strings respectively.
 
 See the [Wikipedia](https://en.wikipedia.org/wiki/Jaro–Winkler_distance) and [GeeksforGeeks](https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/) 
 pages on Jaro-Winkler for more information. Both links cover the mathematical theory behind the algorithm.
