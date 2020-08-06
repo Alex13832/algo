@@ -6,6 +6,7 @@
 ///
 #include "algo_string.hpp"
 
+#include <algorithm>
 #include <cmath>
 #include <vector>
 
@@ -184,8 +185,8 @@ std::string Compress(const std::string &str)
   int count{0};
 
   for (size_t i = 0; i <= n; i++) {
-    int c = str[i];
-
+    auto uc = static_cast<unsigned char>(str[i]);
+    int c = uc;
     // Count the number of times the current char occurs.
     if (c == old_char) {
       count++;
@@ -285,7 +286,7 @@ double Dice(const std::string &word_a, const std::string &word_b)
   // Find the intersect of bigrams
   int intersect{0};
   for (const auto &bigram : bigrams_a) {
-    if (std::find(bigrams_b.begin(), bigrams_b.end(), bigram) != bigrams_b.end()) {
+    if (find(bigrams_b.begin(), bigrams_b.end(), bigram) != bigrams_b.end()) {
       intersect++;
     }
   }
@@ -297,16 +298,13 @@ namespace {
 
 constexpr auto Jaro = [](const std::string &word_a, const std::string &word_b) {
   double max_dist = std::floor(std::max(word_a.size(), word_b.size()) / 2.0) - 1.0;
-
-  std::string wa = word_a, wb = word_b;
+  std::string wa{word_a}, wb{word_b};
 
   if (word_b.size() < word_a.size()) {
     wa = word_b;
     wb = word_a;
   }
-
   std::vector<std::pair<int, int>> match;
-
   for (int i = 0; i < static_cast<int>(wa.size()); i++) {
     for (int j = 0; j < static_cast<int>(wb.size()); j++) {
       if (wa[i] == wb[j] && std::abs(i - j) <= max_dist) {
@@ -315,22 +313,17 @@ constexpr auto Jaro = [](const std::string &word_a, const std::string &word_b) {
       }
     }
   }
-
   auto m = static_cast<double>(match.size());
   double t{0.0};
-
   for (const auto &mt : match) {
     if (mt.first > mt.second) {
       t += 1.0;
     }
   }
-
   if (m == 0) {
     return 0.0;
   }
-
-  double jaro = 1.0 / 3.0 * (m / wa.size() + m / wb.size() + (m - t) / m);// t counted twice.
-  return jaro;
+  return 1.0 / 3.0 * (m / wa.size() + m / wb.size() + (m - t) / m);
 };
 
 }// namespace
@@ -340,8 +333,8 @@ double JaroWinkler(const std::string &word_a, const std::string &word_b)
   if (word_a == word_b) {
     return 1.0;// Max score.
   }
-  int l = 0;            // Length of the common prefix up to four chars.
-  const double kP = 0.1;// Scaling factor.
+  int l{0};            // Length of the common prefix up to four chars.
+  const double kP{0.1};// Scaling factor.
 
   int sz = static_cast<int>(std::min(word_a.size(), word_b.size()));// Max size
   for (int i = 0; i < std::min(4, sz); i++) {

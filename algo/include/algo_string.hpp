@@ -77,27 +77,33 @@ bool HasUniqueChars(const std::string &str);
 
 namespace metric {
 
-/// \brief Calculates the Levenshtein distance between two strings. This is a string metric for measuring the
+/// \brief Returns the Levenshtein distance between two strings. This is a string metric for measuring the
 /// difference between two strings.
-/// \param word_a Source word.
-/// \param word_b Target word.
+/// \param word_a First word.
+/// \param word_b Second word.
 /// \return Calculated distance.
 /// \link <a href="https://en.wikipedia.org/wiki/Levenshtein_distance">Levenshtein distance, Wikipedia.</a>
 int Levenshtein(const std::string &word_a, const std::string &word_b);
 
-/// \brief Computes the Hamming distance between word_a and word_b.
-/// \param word_a First word in comparison.
-/// \param word_b Second word in comparison.
+/// \brief Returns the Hamming distance between word_a and word_b.
+/// \param word_a First word.
+/// \param word_b Second word.
 /// \return The Hamming distance.
 /// \link <a href="https://en.wikipedia.org/wiki/Hamming_distance">Hamming distance, Wikipedia.</a>
 int Hamming(const std::string &word_a, const std::string &word_b);
 
-/// \brief Computes the Dice's coefficient between word_a and word_b.
+/// \brief Returns the Dice's coefficient between word_a and word_b.
 /// \param word_a First word.
 /// \param word_b Second word.
 /// \return Dice's coefficient.
 double Dice(const std::string &word_a, const std::string &word_b);
 
+/// \brief Returns the Jaro-Winkler distance/distance/metric/whatever.
+/// \param word_a First word.
+/// \param word_b Second word.
+/// \return The Jaro-Winkler distance.
+/// \note Jaro-Winkler is not a metric in the mathematical sense, it does nt obey the triangle equality, see Wikipedia.
+/// \link <a href="https://en.wikipedia.org/wiki/Jaro–Winkler_distance">Jaro-Winkler, Wikipedia.</a>
 double JaroWinkler(const std::string &word_a, const std::string &word_b);
 
 }// namespace metric

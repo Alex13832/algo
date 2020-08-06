@@ -121,3 +121,17 @@ where ![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_t) is the number o
 `word_a` and `word_b`, ![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_a) and 
 ![eq](https://latex.codecogs.com/gif.latex?%5Csmall%20n_b) the number of bigrams in `word_a` and `word_b`
 respectively.
+
+### Jaro-Winkler distance
+The Jaro-Winkler is not a metric in a mathematical sence, since it doesn't obey the triangle inequality. Let's cheat a 
+little and place the algorithm in the metric namcespace anyway together with metric algorithms. It computes
+an edit ditance similar to the Levenshtein algorithm. Jaro-Winkler is ranged from 0 to 1. It favours ratings to strings 
+that match from the beginning.
+
+```c++
+double JaroWinkler(const std::string &word_a, const std::string &word_b);
+``` 
+Returns the Jari-Winkler edit distance. For equl strings, `1.0` is returned, non-equal, `0.0`.
+
+See the [Wikipedia](https://en.wikipedia.org/wiki/Jaro–Winkler_distance) and [GeeksforGeeks](https://www.geeksforgeeks.org/jaro-and-jaro-winkler-similarity/) 
+pages on Jaro-Winkler for more information. Both links cover the mathematical theory behind the algorithm.
