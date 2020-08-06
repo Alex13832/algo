@@ -56,7 +56,7 @@ Returns a list of lines detected in the input image `im`, `n` is the maximum num
 ```cpp
 #include "algo.hpp"
 
-#using namespace algo::image
+using namespace algo::image
 
 ...
 
