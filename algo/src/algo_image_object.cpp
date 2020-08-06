@@ -25,8 +25,8 @@ Img ExtractCannyEdges(const Img& im, const int& threshold_min, const int& thresh
   // Smooth with Gaussian kernel
   Img img{Convolve(im, filter::KernelType::GAUSSIAN_BLUR)};
   // Intensity gradients
-  Img gx{Convolve(im, filter::KernelType::SOBEL_X)};
-  Img gy{Convolve(im, filter::KernelType::SOBEL_Y)};
+  Img gx{Convolve(img, filter::KernelType::SOBEL_X)};
+  Img gy{Convolve(img, filter::KernelType::SOBEL_Y)};
 
   // Magnitude
   Img gm{im};

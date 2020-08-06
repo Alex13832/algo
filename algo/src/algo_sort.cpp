@@ -155,7 +155,7 @@ void Siftdown(std::vector<T> &vec, int start, int len)
 template<typename T>
 void Heapify(std::vector<T> &vec, size_t len)
 {
-  int start = floor((len - 2) / 2);
+  int start = floor((len - 2.0) / 2.0);
 
   while (start >= 0) {
     Siftdown(vec, start, len - 1);

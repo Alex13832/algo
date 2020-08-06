@@ -35,11 +35,11 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
   T L{1};
 
   for (size_t i = 0; i < N; i++) {
-    T min{1}, max{L}, mid{0};
+    T min{1}, max{L};
 
     // Binary search
     while (min <= max) {
-      mid = ceil((min + max) / 2);
+      T mid = ceil((min + max) / 2.0);
 
       if (seq[M[mid]] < seq[i]) {
         min = mid + 1;

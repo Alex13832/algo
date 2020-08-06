@@ -215,7 +215,7 @@ std::pair<double, Points> ClosestPair(const Points& xp, const Points& yp)
 
   Points ys;
   std::copy_if(xp.begin(), xp.end(), std::back_inserter(ys), [&dist_min, &xmid](Point p) {
-    return abs(xmid.x - p.x) < dist_min;
+    return std::abs(xmid.x - p.x) < dist_min;
   });
 
   double closest_dist{dist_min};

@@ -184,7 +184,7 @@ std::vector<T> GetPrimes(unsigned int n)
   std::vector<bool> is_prime(n * 2, true);
   uint limit = static_cast<uint>(sqrt(n) + 1);
 
-  T j{0}, k{0}, x{0};
+  T j, k, x;
 
   for (size_t i = 2; i < limit; i++) {
     if (is_prime[i]) {
