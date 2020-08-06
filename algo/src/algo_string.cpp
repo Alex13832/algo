@@ -297,25 +297,40 @@ namespace {
 
 constexpr auto Jaro = [](const std::string &word_a, const std::string &word_b) {
   double max_dist = std::floor(std::max(word_a.size(), word_b.size()) / 2.0) - 1.0;
-  double m{0.0}, t{0.0};
 
-  for (int i = 0; i < static_cast<int>(word_a.size()); i++) {
-    for (int j = 0; j < static_cast<int>(word_b.size()); j++) {
-      if (word_a[i] == word_b[j]) {
-        if (i == j) {
-          m += 1.0;
-        } else if (std::abs(i - j) <= max_dist) {
-          t += 1.0;
-          m += 1.0;
-        }
+  std::string wa = word_a, wb = word_b;
+
+  if (word_b.size() < word_a.size()) {
+    wa = word_b;
+    wb = word_a;
+  }
+
+  std::vector<std::pair<int, int>> match;
+
+  for (int i = 0; i < static_cast<int>(wa.size()); i++) {
+    for (int j = 0; j < static_cast<int>(wb.size()); j++) {
+      if (wa[i] == wb[j] && std::abs(i - j) <= max_dist) {
+        match.emplace_back(std::make_pair(i, j));
+        break;
       }
     }
   }
+
+  auto m = static_cast<double>(match.size());
+  double t{0.0};
+
+  for (const auto &mt : match) {
+    if (mt.first > mt.second) {
+      t += 1.0;
+    }
+  }
+
   if (m == 0) {
     return 0.0;
   }
 
-  return 1.0 / 3.0 * (m / word_a.size() + m / word_b.size() + (m - t) / m);// t counted twice.
+  double jaro = 1.0 / 3.0 * (m / wa.size() + m / wb.size() + (m - t) / m);// t counted twice.
+  return jaro;
 };
 
 }// namespace

@@ -290,6 +290,9 @@ TEST(test_algo_string, test_jaro_winkler)
   EXPECT_GT(jw, 0.733333);
   EXPECT_LT(jw, 0.733334);
 
+  jw = algo::string::metric::JaroWinkler("crate", "crate");
+  EXPECT_EQ(jw, 1.0);
+
   jw = algo::string::metric::JaroWinkler("trate", "trace");
   EXPECT_GT(jw, 0.906666);
   EXPECT_LT(jw, 0.906668);
@@ -299,5 +302,6 @@ TEST(test_algo_string, test_jaro_winkler)
   EXPECT_LT(jw, 0.946668);
 
   jw = algo::string::metric::JaroWinkler("dwayne", "duane");
-  EXPECT_EQ(jw, 0.822);
+  EXPECT_GT(jw, 0.839);
+  EXPECT_LT(jw, 0.841);
 }
