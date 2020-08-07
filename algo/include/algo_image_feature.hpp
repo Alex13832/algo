@@ -60,7 +60,7 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
 /// \param corner_threshold Number of pixels that must be darker/brighter than the center pixel.
 /// \return The FAST corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Features_from_accelerated_segment_test">FAST, Wikipedia.</a>
-Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold);
+Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold = 11);
 
 }// namespace algo::image::feature
 
