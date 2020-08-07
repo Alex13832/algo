@@ -8,6 +8,7 @@
 #include "algo_image_feature.hpp"
 
 #include <algorithm>
+#include <array>
 #include <cmath>
 
 #include "algo_image_basic.hpp"
@@ -162,6 +163,53 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
     corner_pts = pts;
   }
   return corner_pts;
+}
+
+/////////////////////////////////////////////
+/// FAST Corners
+/////////////////////////////////////////////
+
+namespace {
+// These points will be used to get the circumference on the Bresenham disc.
+constexpr std::array<Point, 16> bresenham{{{3, 0}, {3, -1}, {2, -2}, {1, -3}, {0, -3}, {-1, -3}, {-2, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-2, 2}, {-1, 3}, {0, 3}, {1, 3}, {2, 2}, {3, 1}}};
+
+///\brief Returns a counter for how many pixels that are darker and brighter (+- pixel_thr) than the candidate pixel (x,y).
+// If the pixels are not continuous, the counter(s) will be reset.
+constexpr auto CornerMeasure = [](const Img& im, auto x, auto y, auto count_thr, auto pixel_thr) {
+  int dark_count{0};  // Counter to check how many pixels that are darker then the centre pixel on the Bresenham circle.
+  int bright_count{0};// Counter for brighter.
+
+  for (const auto& p : bresenham) {
+    int xp{x + p.x};
+    int yp{y + p.y};
+
+    if (im.At(x, y) + pixel_thr < im.At(xp, yp)) {
+      bright_count++;
+    } else if (bright_count < count_thr) {// This means that the pixels are not continuous.
+      bright_count = 0;
+    }
+    if (im.At(x, y) - pixel_thr > im.At(xp, yp)) {
+      dark_count++;
+    } else if (dark_count < count_thr) {// This means that the pixels are not continuous.
+      dark_count = 0;
+    }
+  }
+  return dark_count > count_thr || bright_count > count_thr;
+};
+
+}// namespace
+
+Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold)
+{
+  Points points;
+  for (int i = 3; i < im.size.cols - 3; i++) {
+    for (int j = 3; j < im.size.rows - 3; j++) {
+      if (CornerMeasure(im, i, j, corner_threshold, intensity_threshold)) {
+        points.emplace_back(Point{i, j});
+      }
+    }
+  }
+  return points;
 }
 
 }// namespace algo::image::feature

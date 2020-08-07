@@ -50,6 +50,18 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
                const int& n_best = 0, const int& min_dist = 0,
                const GaussWindowSettings& g_win_set = {Size{7, 7}, 1.0});
 
+// //////////////////////////////////////////
+//  FAST Corner
+// //////////////////////////////////////////
+
+/// \brief Returns the corners found with the FAST (Features from an accelerated segment test) algorithm.
+/// \param im Input image.
+/// \param radius The digital disk radius.
+/// \param corner_threshold Number of pixels that must be darker/brighter than the center pixel.
+/// \return The FAST corners.
+/// \link <a href="https://en.wikipedia.org/wiki/Features_from_accelerated_segment_test">FAST, Wikipedia.</a>
+Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold);
+
 }// namespace algo::image::feature
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_IMAGE_FEATURE_HPP_
