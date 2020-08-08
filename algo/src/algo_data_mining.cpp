@@ -35,7 +35,6 @@ Clusters KMeans(geometry::Points points, const std::int8_t& k)
   if (k > static_cast<int>(points.size()) || k == 0 || points.empty()) {
     return Clusters{};
   }
-
   Centroids ctr(k);
   size_t N{points.size()};
   // Initialize random centroids
