@@ -246,16 +246,13 @@ constexpr auto IsMaximum = [](const Img& b, const Img& m, const Img& a, auto x, 
   uint8_t cp{m.At(x, y)};
   const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
   // Check that the centre pixel is larger than all its 26 neighbors.
-  if (m.At(xn, yn) > cp && m.At(xn, y) > cp && m.At(xn, yp) > cp && m.At(x, yn) > cp
+  return m.At(xn, yn) > cp && m.At(xn, y) > cp && m.At(xn, yp) > cp && m.At(x, yn) > cp
       && m.At(x, yp) > cp && m.At(xp, yn) > cp && m.At(xp, y) > cp && m.At(xp, yp) > cp
       && b.At(xn, yn) > cp && b.At(xn, y) > cp && b.At(xn, yp) > cp && b.At(x, yn) > cp
       && b.At(x, y) > cp && b.At(x, yp) > cp && b.At(xp, yn) > cp && b.At(xp, y) > cp
       && b.At(xp, yp) > cp && a.At(xn, yn) > cp && a.At(xn, y) > cp && a.At(xn, yp) > cp
       && a.At(x, yn) > cp && a.At(x, y) > cp && a.At(x, yp) > cp && a.At(xp, yn) > cp
-      && a.At(xp, y) > cp && a.At(xp, yp) > cp) {
-    return true;
-  }
-  return false;
+      && a.At(xp, y) > cp && a.At(xp, yp) > cp;
 };
 
 // b == below, m == middle, a == above
@@ -263,16 +260,13 @@ constexpr auto IsMinimum = [](const Img& b, const Img& m, const Img& a, auto x, 
   uint8_t cp{m.At(x, y)};
   const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
   // Check that the centre pixel is smaller than all its 26 neighbors.
-  if (m.At(xn, yn) < cp && m.At(xn, y) < cp && m.At(xn, yp) < cp && m.At(x, yn) < cp
+  return m.At(xn, yn) < cp && m.At(xn, y) < cp && m.At(xn, yp) < cp && m.At(x, yn) < cp
       && m.At(x, yp) < cp && m.At(xp, yn) < cp && m.At(xp, y) < cp && m.At(xp, yp) < cp
       && b.At(xn, yn) < cp && b.At(xn, y) < cp && b.At(xn, yp) < cp && b.At(x, yn) < cp
       && b.At(x, y) < cp && b.At(x, yp) < cp && b.At(xp, yn) < cp && b.At(xp, y) < cp
       && b.At(xp, yp) < cp && a.At(xn, yn) < cp && a.At(xn, y) < cp && a.At(xn, yp) < cp
       && a.At(x, yn) < cp && a.At(x, y) < cp && a.At(x, yp) < cp && a.At(xp, yn) < cp
-      && a.At(xp, y) < cp && a.At(xp, yp) < cp) {
-    return true;
-  }
-  return false;
+      && a.At(xp, y) < cp && a.At(xp, yp) < cp;
 };
 
 Points GetExtrema(const std::vector<Img>& pyramid, const Img& img)
