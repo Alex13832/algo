@@ -142,6 +142,22 @@ Img MaxOf(const Img& im1, const Img& im2)
   return img;
 }
 
+Img Subtract(const Img& im1, const Img& im2)
+{
+  if (!(im1.size == im2.size)) {
+    return im1;
+  }
+  Img img{Data8(im1.size.rows * im1.size.cols, 0), im1.size};
+
+  for (int x = 0; x < im1.size.cols; x++) {
+    for (int y = 0; y < im1.size.rows; y++) {
+      int val = im2.At(x, y) - im1.At(x, y);
+      img.Set(x, y, val);
+    }
+  }
+  return img;
+}
+
 /////////////////////////////////////////////
 /// Integral images
 /////////////////////////////////////////////

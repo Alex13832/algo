@@ -212,4 +212,95 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
   return points;
 }
 
+/////////////////////////////////////////////
+/// SIFT Keypoints
+/////////////////////////////////////////////
+
+namespace {
+
+std::vector<Img> DoGPyramid(const Img& img)
+{
+  std::vector<Img> pyramid;// DoG images.
+  float sigma{1.6};        // Starting value for std in DoG.
+  float k{M_SQRT2};        // Starting value for k.
+
+  const int kNbrOctaves{4};
+  const int kNbrGaussians{5};// Per octave, 4*4=16 images, (subtraction between two consecutive pairs).
+  const Size size{3, 3};
+
+  Img gaussian_prev{algo::image::filter::GaussianBlur(img, size, k * sigma)};
+  // Generates the pyramid.
+  for (int i = 0; i < kNbrOctaves; i++) {
+    for (int j = 1; j < kNbrGaussians; j++) {
+      Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, size, k * sigma)};
+      pyramid.emplace_back(algo::image::Subtract(gaussian_prev, gaussian_next));
+      gaussian_prev = gaussian_next;
+    }
+    sigma *= 2.0;
+  }
+  return pyramid;
+}
+
+// b == below, m == middle, a == above
+constexpr auto IsMaximum = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
+  uint8_t cp{m.At(x, y)};
+  const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
+  // Check that the centre pixel is larger than all its 26 neighbors.
+  if (m.At(xn, yn) > cp && m.At(xn, y) > cp && m.At(xn, yp) > cp && m.At(x, yn) > cp
+      && m.At(x, yp) > cp && m.At(xp, yn) > cp && m.At(xp, y) > cp && m.At(xp, yp) > cp
+      && b.At(xn, yn) > cp && b.At(xn, y) > cp && b.At(xn, yp) > cp && b.At(x, yn) > cp
+      && b.At(x, y) > cp && b.At(x, yp) > cp && b.At(xp, yn) > cp && b.At(xp, y) > cp
+      && b.At(xp, yp) > cp && a.At(xn, yn) > cp && a.At(xn, y) > cp && a.At(xn, yp) > cp
+      && a.At(x, yn) > cp && a.At(x, y) > cp && a.At(x, yp) > cp && a.At(xp, yn) > cp
+      && a.At(xp, y) > cp && a.At(xp, yp) > cp) {
+    return true;
+  }
+  return false;
+};
+
+// b == below, m == middle, a == above
+constexpr auto IsMinimum = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
+  uint8_t cp{m.At(x, y)};
+  const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
+  // Check that the centre pixel is smaller than all its 26 neighbors.
+  if (m.At(xn, yn) < cp && m.At(xn, y) < cp && m.At(xn, yp) < cp && m.At(x, yn) < cp
+      && m.At(x, yp) < cp && m.At(xp, yn) < cp && m.At(xp, y) < cp && m.At(xp, yp) < cp
+      && b.At(xn, yn) < cp && b.At(xn, y) < cp && b.At(xn, yp) < cp && b.At(x, yn) < cp
+      && b.At(x, y) < cp && b.At(x, yp) < cp && b.At(xp, yn) < cp && b.At(xp, y) < cp
+      && b.At(xp, yp) < cp && a.At(xn, yn) < cp && a.At(xn, y) < cp && a.At(xn, yp) < cp
+      && a.At(x, yn) < cp && a.At(x, y) < cp && a.At(x, yp) < cp && a.At(xp, yn) < cp
+      && a.At(xp, y) < cp && a.At(xp, yp) < cp) {
+    return true;
+  }
+  return false;
+};
+
+Points GetExtrema(const std::vector<Img>& pyramid, const Img& img)
+{
+  Size size{pyramid[0].size};
+  Points extrema;
+  // Check every pixel, this might take some time...
+  for (int i = 1; i < size.cols - 1; i++) {
+    for (int j = 1; j < size.rows - 1; j++) {
+
+      for (int p = 0; p < pyramid.size() - 2; p++) {
+        if (IsMaximum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j) || IsMinimum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j)) {
+          extrema.emplace_back(Point{i, j});
+        }
+      }
+    }
+  }
+  return extrema;
+}
+
+}// namespace
+
+Points SiftKeypoints(const Img& img)
+{
+  std::vector<Img> pyramid{DoGPyramid(img)};
+  Points points{GetExtrema(pyramid, img)};
+
+  return points;
+}
+
 }// namespace algo::image::feature

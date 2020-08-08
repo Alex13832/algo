@@ -62,6 +62,12 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
 /// \link <a href="https://en.wikipedia.org/wiki/Features_from_accelerated_segment_test">FAST, Wikipedia.</a>
 Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold = 11);
 
+// //////////////////////////////////////////
+//  SIFT Keypoints
+// //////////////////////////////////////////
+
+Points SiftKeypoints(const Img& img);
+
 }// namespace algo::image::feature
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_IMAGE_FEATURE_HPP_

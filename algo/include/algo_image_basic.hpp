@@ -171,6 +171,12 @@ Img FlipY(const Img& im);
 /// \return Max of all pixels (im1, im2).
 Img MaxOf(const Img& im1, const Img& im2);
 
+/// Subtracts im1 with im2.
+/// \param im1 First image.
+/// \param im2 Second image.
+/// \return The subtracted result.
+Img Subtract(const Img& im1, const Img& im2);
+
 // //////////////////////////////////////////
 //  Integral image
 // //////////////////////////////////////////
