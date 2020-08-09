@@ -99,6 +99,6 @@ Points points{algo::image::feature::FASTCorners(im, 20, 11)};
 
 ### Examples
 
-`corner_threshold` 8 vs 11 
+`corner_threshold` 8 to 11 
 
-![Fast Corners](images/fast_corners.png)
+![Fast Corners](images/fast_corners_8_11.png)
