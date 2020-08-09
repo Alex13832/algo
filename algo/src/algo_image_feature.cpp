@@ -79,7 +79,7 @@ struct Corner {
   Point pt;
   double cornerness;
 };
-/// \brief For sorting corners on cornerness value.
+///\brief For sorting corners on cornerness value.
 struct c_comp {
   bool operator()(const Corner c1, const Corner c2) const
   {
@@ -220,20 +220,17 @@ namespace {
 
 std::vector<Img> DoGPyramid(const Img& img)
 {
-  std::vector<Img> pyramid;// DoG images.
-  float sigma{1.6};        // Starting value for std in DoG.
-  float k{M_SQRT2};        // Starting value for k.
+  std::vector<Img> pyramid; // DoG images.
+  float sigma{1.6};         // Starting value for std in DoG.
+  const int kNbrGaussian{5};// Per octave, 4*4=16 images, (subtraction between two consecutive pairs).
+  const int kNbrOctaves{4}; // Number of levels in pyramid.
 
-  const int kNbrOctaves{4};
-  const int kNbrGaussians{5};// Per octave, 4*4=16 images, (subtraction between two consecutive pairs).
-  const Size size{3, 3};
-
-  Img gaussian_prev{algo::image::filter::GaussianBlur(img, size, k * sigma)};
+  Img gaussian_prev{algo::image::filter::GaussianBlur(img, Size{3, 3}, M_SQRT2 * sigma)};
   // Generates the pyramid.
   for (int i = 0; i < kNbrOctaves; i++) {
-    for (int j = 1; j < kNbrGaussians; j++) {
-      Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, size, k * sigma)};
-      pyramid.emplace_back(algo::image::Subtract(gaussian_prev, gaussian_next));
+    for (int j = 0; j < kNbrGaussian; j++) {
+      Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, Size{3, 3}, M_SQRT2 * sigma)};
+      pyramid.emplace_back(algo::image::Subtract(gaussian_next, gaussian_prev));
       gaussian_prev = gaussian_next;
     }
     sigma *= 2.0;
@@ -243,7 +240,7 @@ std::vector<Img> DoGPyramid(const Img& img)
 
 // b == below, m == middle, a == above
 constexpr auto IsMaximum = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
-  uint8_t cp{m.At(x, y)};
+  uint8_t cp{m.At(x, y)};// cp = centre-pixel (save space).
   const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
   // Check that the centre pixel is larger than all its 26 neighbors.
   return m.At(xn, yn) > cp && m.At(xn, y) > cp && m.At(xn, yp) > cp && m.At(x, yn) > cp
@@ -273,11 +270,12 @@ Points GetExtrema(const std::vector<Img>& pyramid, const Img& img)
 {
   Size size{pyramid[0].size};
   Points extrema;
-  // Check every pixel, this might take some time...
+  // Check (close to) every pixel, this might take some time...
   for (int i = 1; i < size.cols - 1; i++) {
     for (int j = 1; j < size.rows - 1; j++) {
 
       for (int p = 0; p < pyramid.size() - 2; p++) {
+        // Check for extrema points
         if (IsMaximum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j) || IsMinimum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j)) {
           extrema.emplace_back(Point{i, j});
         }
@@ -291,8 +289,36 @@ Points GetExtrema(const std::vector<Img>& pyramid, const Img& img)
 
 Points SiftKeypoints(const Img& img)
 {
-  std::vector<Img> pyramid{DoGPyramid(img)};
-  Points points{GetExtrema(pyramid, img)};
+  Img imh{Convolve(img, filter::KernelType::EMBOSS)};// ?
+  std::vector<Img> pyramid{DoGPyramid(imh)};
+  Points extrema{GetExtrema(pyramid, imh)};
+  Points extrema_no_low_contrast;
+
+  for (const auto& pt : extrema) {
+    if (pyramid[0].At(pt.x, pt.y) > 240) {
+      extrema_no_low_contrast.emplace_back(pt);
+    }
+  }
+
+  const Img Ix1{filter::Convolve(pyramid[0], filter::KernelType::SOBEL_X)};
+  const Img Ix2{FlipX(filter::Convolve(FlipX(pyramid[0]), filter::KernelType::SOBEL_X))};
+  const Img Ix{MaxOf(Ix1, Ix2)};
+  const Img Iy1{filter::Convolve(pyramid[0], filter::KernelType::SOBEL_Y)};
+  const Img Iy2{FlipY(filter::Convolve(FlipY(pyramid[0]), filter::KernelType::SOBEL_Y))};
+  const Img Iy{MaxOf(Iy1, Iy2)};
+
+  Points points;
+
+  for (const auto& pt : extrema_no_low_contrast) {
+    const double kEig1 = Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y);
+    const double kEig2 = Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y);
+    if ((kEig1 / kEig2) > 100.0) {
+      points.emplace_back(pt);
+    }
+  }
+
+  // TODO: Discard low-contrast keypoints.
+  // TODO: Eliminate edge responses.
 
   return points;
 }

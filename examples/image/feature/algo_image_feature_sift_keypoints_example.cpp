@@ -17,7 +17,7 @@ using namespace std;
 
 int main()
 {
-  const std::string kFileName{"../testfiles/notredame.png"};
+  const std::string kFileName{"../testfiles/gizmo2.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -38,7 +38,7 @@ int main()
   Points points{feature::SiftKeypoints(im)};
 
   for (const auto& pt : points) {
-    cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 2);
+    cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 3);
   }
 
   // Show result
