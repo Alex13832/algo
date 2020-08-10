@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <iostream>
 
 #include "algo_image_basic.hpp"
 #include "algo_image_filter.hpp"
@@ -218,28 +219,33 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 
 namespace {
 
-std::vector<Img> DoGPyramid(const Img& img)
-{
-  std::vector<Img> pyramid; // DoG images.
-  float sigma{1.6};         // Starting value for std in DoG.
-  const int kNbrGaussian{5};// Per octave, 4*4=16 images, (subtraction between two consecutive pairs).
-  const int kNbrOctaves{4}; // Number of levels in pyramid.
+constexpr auto DoGPyramid = [](const Img& img) {
+  std::vector<Img> pyramid;// DoG images.
+  float sigma{1.6};        // Starting value for std in DoG.
+  float k = M_SQRT2;
+  const int kNbrGaussian{4};
+  const int kNbrOctaves{3};
+  const Size kSize{3, 3};
 
-  Img gaussian_prev{algo::image::filter::GaussianBlur(img, Size{3, 3}, M_SQRT2 * sigma)};
+  Img gaussian_prev{algo::image::filter::GaussianBlur(img, kSize, k * sigma)};
   // Generates the pyramid.
   for (int i = 0; i < kNbrOctaves; i++) {
     for (int j = 0; j < kNbrGaussian; j++) {
-      Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, Size{3, 3}, M_SQRT2 * sigma)};
-      pyramid.emplace_back(algo::image::Subtract(gaussian_next, gaussian_prev));
+      Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, kSize, k * sigma)};
+      Img rim = NewImgGray(img.size.rows, img.size.cols);
+      for (size_t idx = 0; idx < gaussian_prev.data.size(); idx++) {
+        rim.data[idx] = gaussian_next.data[idx] - gaussian_prev.data[idx];
+      }
+      pyramid.emplace_back(rim);
       gaussian_prev = gaussian_next;
     }
     sigma *= 2.0;
   }
   return pyramid;
-}
+};
 
 // b == below, m == middle, a == above
-constexpr auto IsMaximum = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
+constexpr auto IsMaxi = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
   uint8_t cp{m.At(x, y)};// cp = centre-pixel (save space).
   const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
   // Check that the centre pixel is larger than all its 26 neighbors.
@@ -253,7 +259,7 @@ constexpr auto IsMaximum = [](const Img& b, const Img& m, const Img& a, auto x, 
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsMinimum = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
+constexpr auto IsMini = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
   uint8_t cp{m.At(x, y)};
   const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
   // Check that the centre pixel is smaller than all its 26 neighbors.
@@ -266,60 +272,61 @@ constexpr auto IsMinimum = [](const Img& b, const Img& m, const Img& a, auto x, 
       && a.At(xp, y) < cp && a.At(xp, yp) < cp;
 };
 
-Points GetExtrema(const std::vector<Img>& pyramid, const Img& img)
-{
-  Size size{pyramid[0].size};
+constexpr auto GetExtrema = [](const std::vector<Img>& pyr) {
+  Size size{pyr[0].size};// They are all the same size
   Points extrema;
   // Check (close to) every pixel, this might take some time...
-  for (int i = 1; i < size.cols - 1; i++) {
-    for (int j = 1; j < size.rows - 1; j++) {
-
-      for (int p = 0; p < pyramid.size() - 2; p++) {
-        // Check for extrema points
-        if (IsMaximum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j) || IsMinimum(pyramid[p], pyramid[p + 1], pyramid[p + 2], i, j)) {
-          extrema.emplace_back(Point{i, j});
+  for (int x = 1; x < size.cols - 1; x++) {
+    for (int y = 1; y < size.rows - 1; y++) {
+      for (auto it = pyr.begin(); it != (pyr.end() - 2); it++) {
+        if (IsMaxi(*it, *(it + 1), *(it + 2), x, y) || IsMini(*(it), *(it + 1), *(it + 2), x, y)) {
+          extrema.emplace_back(Point{x, y});
         }
       }
     }
   }
   return extrema;
-}
+};
 
 }// namespace
 
 Points SiftKeypoints(const Img& img)
 {
-  Img imh{Convolve(img, filter::KernelType::EMBOSS)};// ?
+  Img imh{Convolve(img, filter::KernelType::HIGH_PASS)};
   std::vector<Img> pyramid{DoGPyramid(imh)};
-  Points extrema{GetExtrema(pyramid, imh)};
+  Points extrema{GetExtrema(pyramid)};
   Points extrema_no_low_contrast;
 
   for (const auto& pt : extrema) {
-    if (pyramid[0].At(pt.x, pt.y) > 240) {
+    if ((img.At(pt.x, pt.y)) > 10) {
       extrema_no_low_contrast.emplace_back(pt);
     }
   }
 
-  const Img Ix1{filter::Convolve(pyramid[0], filter::KernelType::SOBEL_X)};
-  const Img Ix2{FlipX(filter::Convolve(FlipX(pyramid[0]), filter::KernelType::SOBEL_X))};
-  const Img Ix{MaxOf(Ix1, Ix2)};
-  const Img Iy1{filter::Convolve(pyramid[0], filter::KernelType::SOBEL_Y)};
-  const Img Iy2{FlipY(filter::Convolve(FlipY(pyramid[0]), filter::KernelType::SOBEL_Y))};
-  const Img Iy{MaxOf(Iy1, Iy2)};
+  const Img Ix1{filter::Convolve(img, filter::KernelType::SOBEL_X)};
+  const ImgF Ix{algo::image::ToFloat(Ix1)};
+  const Img Iy1{filter::Convolve(img, filter::KernelType::SOBEL_Y)};
+  const ImgF Iy{algo::image::ToFloat(Iy1)};
 
   Points points;
+  float eig_thr{0.03};
 
   for (const auto& pt : extrema_no_low_contrast) {
-    const double kEig1 = Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y);
-    const double kEig2 = Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y);
-    if ((kEig1 / kEig2) > 100.0) {
+    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};
+    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};
+
+    if (kEig1 == 0.0 && kEig2 == 0.0) {
+      continue;
+    }
+    if ((kEig1 / kEig2) > eig_thr) {
       points.emplace_back(pt);
+      continue;
+    }
+    if ((kEig2 / kEig1) > eig_thr) {
+      points.emplace_back(pt);
+      continue;
     }
   }
-
-  // TODO: Discard low-contrast keypoints.
-  // TODO: Eliminate edge responses.
-
   return points;
 }
 

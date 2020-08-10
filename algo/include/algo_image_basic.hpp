@@ -149,6 +149,8 @@ Img NewImgGray(const int& rows, const int& cols);
 /// \return A new gray scale image.
 Img ToGray(const Img3& img3);
 
+ImgF ToFloat(const Img& img);
+
 /// \brief Inverts all the pixels in the input image, (255 - pixel value).
 /// \param im The input image.
 /// \return A new image.

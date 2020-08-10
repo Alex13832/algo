@@ -93,6 +93,18 @@ Img ToGray(const Img3& img3)
   return img;
 }
 
+ImgF ToFloat(const Img& img)
+{
+  ImgF imf{Dataf(img.size.rows * img.size.cols, 0), img.size};
+
+  for (int x = 0; x < img.size.cols; x++) {
+    for (int y = 0; y < img.size.rows; y++) {
+      imf.Set(x, y, img.At(img.size.cols - 1 - x, y) / 255.0);
+    }
+  }
+  return imf;
+}
+
 Img InvertPixels(const Img& im)
 {
   Img img{im};
@@ -151,7 +163,9 @@ Img Subtract(const Img& im1, const Img& im2)
 
   for (int x = 0; x < im1.size.cols; x++) {
     for (int y = 0; y < im1.size.rows; y++) {
-      int val = im2.At(x, y) - im1.At(x, y);
+      uint8_t val = im1.At(x, y) - im2.At(x, y);
+      if (val < 0) val = 0;
+      if (val > 255) val = 255;
       img.Set(x, y, val);
     }
   }

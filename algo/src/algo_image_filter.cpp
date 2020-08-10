@@ -141,40 +141,23 @@ ImgF GaussianKernel(const Size& size, const float& sigma)
   ImgF kernel{Dataf(size.cols * size.rows, 0), size};
   const int kDimX{size.cols / 2};
   const int kDimY{size.rows / 2};
+  float sum{0.0};
 
   for (int x = size.cols - 1; x >= 0; --x) {
     for (int y = size.rows - 1; y >= 0; --y) {
       kernel.Set(x, y, Gauss2D(kDimX - x, kDimY - y, sigma));
+      sum += kernel.At(x, y);
+    }
+  }
+  if (sum == 0.0) {
+    return kernel;
+  }
+  for (int x = size.cols - 1; x >= 0; --x) {
+    for (int y = size.rows - 1; y >= 0; --y) {
+      kernel.Set(x, y, kernel.At(x, y) / sum);
     }
   }
   return kernel;
-}
-
-// https://stackoverflow.com/questions/8204645/implementing-gaussian-blur-how-to-calculate-convolution-matrix-kernel/8204867#8204867
-ImgF GaussKernel(const Size& size, const float& sigma)
-{
-  ImgF kern{Dataf(size.cols * size.rows, 0), size};
-
-  int W = size.rows;
-  double kernel[W][W];
-  double mean = W / 2;
-  double sum = 0.0;// For accumulating the kernel values
-  for (int x = 0; x < W; ++x) {
-    for (int y = 0; y < W; ++y) {
-      kernel[x][y] = exp(-0.5 * (pow((x - mean) / sigma, 2.0) + pow((y - mean) / sigma, 2.0)))
-          / (2 * M_PI * sigma * sigma);
-      // Accumulate the kernel values
-      sum += kernel[x][y];
-    }
-  }
-  // Normalize the kernel
-  for (int x = 0; x < W; ++x) {
-    for (int y = 0; y < W; ++y) {
-      kernel[x][y] /= sum;
-      kern.Set(x, y, static_cast<float>(kernel[x][y]));
-    }
-  }
-  return kern;
 }
 
 }//namespace
@@ -192,8 +175,8 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   }
 
   //const ImgF kernel{GaussianKernel(size, sigma)};
-  const ImgF kernel{GaussKernel(size, sigma)};
-  Img res{im};
+  const ImgF kernel{GaussianKernel(size, sigma)};
+  Img res{NewImgGray(im.size.rows, im.size.cols)};
 
   const size_t kCols = size.cols;
   const size_t kRows = size.rows;
@@ -207,18 +190,11 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
       double sum = 0;
       for (int m = 0; m < size.cols; m++) {
         for (int k = 0; k < size.rows; k++) {
-          // Avoid read and write outside bounds of image
-          const size_t kPosX = std::min(std::max(0UL, x + m - kSizeX), static_cast<size_t>(im.size.cols - 1));
-          const size_t kPosY = std::min(std::max(0UL, y + k - kSizeY), static_cast<size_t>(im.size.rows - 1));
-          const auto kImVal = static_cast<double>(im.At(kPosX, kPosY));
-          const float kVal{kernel.At(m, k)};
           // Image value * kernel value
-          sum += kImVal * kVal;
+          sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
         }
       }
-
-      uint8_t res_val = static_cast<uint8_t>(std::min(std::max(0.0, sum), 255.0));
-      res.Set(x, y, res_val);
+      res.Set(x, y, static_cast<uint8_t>(sum));
     }
   }
   return res;

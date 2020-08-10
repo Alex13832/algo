@@ -7,6 +7,8 @@
 
 #include <opencv2/highgui.hpp>
 #include <opencv2/imgproc.hpp>
+#include <opencv2/xfeatures2d.hpp>
+#include <opencv2/xfeatures2d/nonfree.hpp>
 #include <string>
 
 #include "algo.hpp"
@@ -17,7 +19,7 @@ using namespace std;
 
 int main()
 {
-  const std::string kFileName{"../testfiles/gizmo2.png"};
+  const std::string kFileName{"../testfiles/notredame2.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -25,24 +27,30 @@ int main()
   img.convertTo(img, CV_8UC1);
   cv::imshow("Original", imgc);
 
+  // Check what OpenCV will output
+  cv::Ptr<cv::Feature2D> f2d = cv::xfeatures2d::SIFT::create();
+  std::vector<cv::KeyPoint> keypoints;
+  f2d->detect(img, keypoints);
+  std::cout << "OpenCV nbr points " << keypoints.size() << std::endl;
+
+  // This repo's SIFT output:
   Img im{MatToVec(img)};
+  Points points = feature::SiftKeypoints(im);
 
-  //  std::vector<Img> pyramid = feature::SiftKeypoints(im);
-  //  int counter = 0;
-  //  for (const auto& pyr : pyramid) {
-  //    cv::Mat mat = ImGrayToMat(pyr);
-  //    cv::imshow("Pyramid " + to_string(counter++), mat);
-  //    cv::waitKey(0);
-  //  }
-
-  Points points{feature::SiftKeypoints(im)};
+  std::cout << "Framework nbr points " << points.size() << std::endl;
+  cv::Mat mat = imgc.clone();
 
   for (const auto& pt : points) {
-    cv::circle(imgc, cv::Point{pt.x, pt.y}, 1, cv::Scalar{255, 255, 0}, 3);
+    cv::circle(imgc, cv::Point{pt.x, pt.y}, 3, cv::Scalar{255, 255, 0}, 1);
+  }
+
+  for (const auto& kp : keypoints) {
+    cv::circle(mat, cv::Point{(int) kp.pt.x, (int) kp.pt.y}, 3, cv::Scalar{0, 255, 255}, 1);
   }
 
   // Show result
   cv::imshow("SIFT", imgc);
+  cv::imshow("SIFT cv", mat);
   cv::waitKey(0);
   return 0;
 }
