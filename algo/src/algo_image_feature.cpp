@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <iostream>
 
 #include "algo_image_basic.hpp"
 #include "algo_image_filter.hpp"
@@ -226,13 +225,14 @@ constexpr auto DoGPyramid = [](const Img& img) {
   const int kNbrGaussian{4};
   const int kNbrOctaves{3};
   const Size kSize{3, 3};
+  Img rim{Data8(img.size.rows * img.size.cols, 0), img.size};
 
   Img gaussian_prev{algo::image::filter::GaussianBlur(img, kSize, k * sigma)};
   // Generates the pyramid.
   for (int i = 0; i < kNbrOctaves; i++) {
     for (int j = 0; j < kNbrGaussian; j++) {
       Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, kSize, k * sigma)};
-      Img rim = NewImgGray(img.size.rows, img.size.cols);
+
       for (size_t idx = 0; idx < gaussian_prev.data.size(); idx++) {
         rim.data[idx] = gaussian_next.data[idx] - gaussian_prev.data[idx];
       }
@@ -245,31 +245,34 @@ constexpr auto DoGPyramid = [](const Img& img) {
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsMaxi = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
-  uint8_t cp{m.At(x, y)};// cp = centre-pixel (save space).
-  const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
+constexpr auto IsMaxi = [](const Img& b, const Img& m, const Img& a, const auto& xx, const auto& yy) {
+  uint8_t cp{m.data[yy * m.size.cols + xx]};
+  const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
+  const int c = b.size.cols;
+
   // Check that the centre pixel is larger than all its 26 neighbors.
-  return m.At(xn, yn) > cp && m.At(xn, y) > cp && m.At(xn, yp) > cp && m.At(x, yn) > cp
-      && m.At(x, yp) > cp && m.At(xp, yn) > cp && m.At(xp, y) > cp && m.At(xp, yp) > cp
-      && b.At(xn, yn) > cp && b.At(xn, y) > cp && b.At(xn, yp) > cp && b.At(x, yn) > cp
-      && b.At(x, y) > cp && b.At(x, yp) > cp && b.At(xp, yn) > cp && b.At(xp, y) > cp
-      && b.At(xp, yp) > cp && a.At(xn, yn) > cp && a.At(xn, y) > cp && a.At(xn, yp) > cp
-      && a.At(x, yn) > cp && a.At(x, y) > cp && a.At(x, yp) > cp && a.At(xp, yn) > cp
-      && a.At(xp, y) > cp && a.At(xp, yp) > cp;
+  return m.data[yn * c + xn] > cp && m.data[yy * c + xn] > cp && m.data[yp * c + xn] > cp && m.data[yn * c + xx] > cp
+      && m.data[yp * c + xx] > cp && m.data[yn * c + xp] > cp && m.data[yy * c + xp] > cp && m.data[yp * c + xp] > cp
+      && b.data[yn * c + xn] > cp && b.data[yy * c + xn] > cp && b.data[yp * c + xn] > cp && b.data[yn * c + xx] > cp
+      && b.data[yy * c + xx] > cp && b.data[yp * c + xx] > cp && b.data[yn * c + xp] > cp && b.data[yy * c + xp] > cp
+      && b.data[yp * c + xp] > cp && a.data[yn * c + xn] > cp && a.data[yy * c + xn] > cp && a.data[yp * c + xn] > cp
+      && a.data[yn * c + xx] > cp && a.data[yy * c + xx] > cp && a.data[yp * c + xx] > cp && a.data[yn * c + xp] > cp
+      && a.data[yy * c + xp] > cp && a.data[yp * c + xp] > cp;
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsMini = [](const Img& b, const Img& m, const Img& a, auto x, auto y) {
-  uint8_t cp{m.At(x, y)};
-  const int xn{x - 1}, xp{x + 1}, yn{y - 1}, yp{y + 1};
+constexpr auto IsMini = [](const Img& b, const Img& m, const Img& a, const auto& xx, const auto& yy) {
+  uint8_t cp{m.data[yy * m.size.cols + xx]};
+  const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
+  const int c = b.size.cols;
   // Check that the centre pixel is smaller than all its 26 neighbors.
-  return m.At(xn, yn) < cp && m.At(xn, y) < cp && m.At(xn, yp) < cp && m.At(x, yn) < cp
-      && m.At(x, yp) < cp && m.At(xp, yn) < cp && m.At(xp, y) < cp && m.At(xp, yp) < cp
-      && b.At(xn, yn) < cp && b.At(xn, y) < cp && b.At(xn, yp) < cp && b.At(x, yn) < cp
-      && b.At(x, y) < cp && b.At(x, yp) < cp && b.At(xp, yn) < cp && b.At(xp, y) < cp
-      && b.At(xp, yp) < cp && a.At(xn, yn) < cp && a.At(xn, y) < cp && a.At(xn, yp) < cp
-      && a.At(x, yn) < cp && a.At(x, y) < cp && a.At(x, yp) < cp && a.At(xp, yn) < cp
-      && a.At(xp, y) < cp && a.At(xp, yp) < cp;
+  return m.data[yn * c + xn] < cp && m.data[yy * c + xn] < cp && m.data[yp * c + xn] < cp && m.data[yn * c + xx] < cp
+      && m.data[yp * c + xx] < cp && m.data[yn * c + xp] < cp && m.data[yy * c + xp] < cp && m.data[yp * c + xp] < cp
+      && b.data[yn * c + xn] < cp && b.data[yy * c + xn] < cp && b.data[yp * c + xn] < cp && b.data[yn * c + xx] < cp
+      && b.data[yy * c + xx] < cp && b.data[yp * c + xx] < cp && b.data[yn * c + xp] < cp && b.data[yy * c + xp] < cp
+      && b.data[yp * c + xp] < cp && a.data[yn * c + xn] < cp && a.data[yy * c + xn] < cp && a.data[yp * c + xn] < cp
+      && a.data[yn * c + xx] < cp && a.data[yy * c + xx] < cp && a.data[yp * c + xx] < cp && a.data[yn * c + xp] < cp
+      && a.data[yy * c + xp] < cp && a.data[yp * c + xp] < cp;
 };
 
 constexpr auto GetExtrema = [](const std::vector<Img>& pyr) {
@@ -312,8 +315,8 @@ Points SiftKeypoints(const Img& img)
   float eig_thr{0.03};
 
   for (const auto& pt : extrema_no_low_contrast) {
-    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};
-    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};
+    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};// Eigenvalues
+    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};// Eigenvalues
 
     if (kEig1 == 0.0 && kEig2 == 0.0) {
       continue;

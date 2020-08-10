@@ -145,8 +145,8 @@ ImgF GaussianKernel(const Size& size, const float& sigma)
 
   for (int x = size.cols - 1; x >= 0; --x) {
     for (int y = size.rows - 1; y >= 0; --y) {
-      kernel.Set(x, y, Gauss2D(kDimX - x, kDimY - y, sigma));
-      sum += kernel.At(x, y);
+      kernel.data[y * kernel.size.cols + x] = Gauss2D(kDimX - x, kDimY - y, sigma);
+      sum += kernel.data[y * kernel.size.cols + x];
     }
   }
   if (sum == 0.0) {
@@ -154,7 +154,7 @@ ImgF GaussianKernel(const Size& size, const float& sigma)
   }
   for (int x = size.cols - 1; x >= 0; --x) {
     for (int y = size.rows - 1; y >= 0; --y) {
-      kernel.Set(x, y, kernel.At(x, y) / sum);
+      kernel.data[y * kernel.size.cols + x] /= sum;
     }
   }
   return kernel;
@@ -168,15 +168,13 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   if (size.rows % 2 == 0 || size.cols % 2 == 0) {
     return Img{{}, Size{0, 0}};
   }
-
   // Window size larger than image size
   if (size.rows >= im.size.rows || size.cols >= im.size.cols) {
     return Img{{}, Size{0, 0}};
   }
-
   //const ImgF kernel{GaussianKernel(size, sigma)};
   const ImgF kernel{GaussianKernel(size, sigma)};
-  Img res{NewImgGray(im.size.rows, im.size.cols)};
+  Img res{Data8(im.size.rows * im.size.cols, 0), im.size};
 
   const size_t kCols = size.cols;
   const size_t kRows = size.rows;
@@ -191,10 +189,11 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
       for (int m = 0; m < size.cols; m++) {
         for (int k = 0; k < size.rows; k++) {
           // Image value * kernel value
-          sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
+          //sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
+          sum += static_cast<double>(im.data[(y + k - kSizeY) * im.size.cols + (x + m - kSizeX)]) * kernel.data[k * kernel.size.cols + m];
         }
       }
-      res.Set(x, y, static_cast<uint8_t>(sum));
+      res.data[y * res.size.cols + x] = static_cast<uint8_t>(sum);
     }
   }
   return res;
