@@ -131,7 +131,8 @@ Img3 Convolve3(const Img3& im, KernelType filter_type)
 namespace {
 /// \brief Computes the 2D gauss value at x, y with standard deviation sigma.
 constexpr auto Gauss2D = [](auto x, auto y, auto sigma) {
-  float a = 1.0 / (2.0 * M_PI * sigma * sigma);
+  //  float a = 1.0 / (2.0 * M_PI * sigma * sigma);
+  float a{1.0};
   float b = -(x * x + y * y) / (2.0 * sigma * sigma);
   return a * std::pow(M_E, b);
 };

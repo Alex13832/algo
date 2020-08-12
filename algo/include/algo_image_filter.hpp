@@ -66,6 +66,8 @@ Img3 Convolve3(const Img3& im, KernelType filter_type);
 /// \link <a href="https://en.wikipedia.org/wiki/Gaussian_blur">Gaussian blur, Wikipedia.</a>
 Img GaussianBlur(const Img& im, const Size& size, const float& sigma);
 
+ImgF GaussianBlurF(const ImgF& im, const Size& size, const float& sigma);
+
 Img GaussBlur(const Img& im, const Size& size, const float& sigma);
 
 // //////////////////////////////////////////

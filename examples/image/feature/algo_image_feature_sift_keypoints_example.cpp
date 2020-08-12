@@ -19,7 +19,7 @@ using namespace std;
 
 int main()
 {
-  const std::string kFileName{"../testfiles/notredame2.png"};
+  const std::string kFileName{"../testfiles/butterfly.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;

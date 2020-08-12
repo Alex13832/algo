@@ -99,7 +99,7 @@ ImgF ToFloat(const Img& img)
 
   for (int x = 0; x < img.size.cols; x++) {
     for (int y = 0; y < img.size.rows; y++) {
-      imf.Set(x, y, img.At(img.size.cols - 1 - x, y) / 255.0);
+      imf.Set(x, y, img.At(img.size.cols - 1 - x, y) / 255.0f);
     }
   }
   return imf;

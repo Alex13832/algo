@@ -219,13 +219,15 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 namespace {
 
 constexpr auto DoGPyramid = [](const Img& img) {
-  std::vector<Img> pyramid;// DoG images.
-  float sigma{1.6};        // Starting value for std in DoG.
+  //std::vector<Img> pyramid;// DoG images.
+  float sigma{1.6};// Starting value for std in DoG.
   float k = M_SQRT2;
   const int kNbrGaussian{4};
-  const int kNbrOctaves{3};
+  const int kNbrOctaves{4};
   const Size kSize{3, 3};
-  Img rim{Data8(img.size.rows * img.size.cols, 0), img.size};
+  //Img rim{Data8(img.size.rows * img.size.cols, 0), img.size};
+  std::vector<std::vector<int16_t>> pyramid;
+  std::vector<int16_t> diff(img.size.cols * img.size.rows, 0);
 
   Img gaussian_prev{algo::image::filter::GaussianBlur(img, kSize, k * sigma)};
   // Generates the pyramid.
@@ -234,9 +236,9 @@ constexpr auto DoGPyramid = [](const Img& img) {
       Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, kSize, k * sigma)};
 
       for (size_t idx = 0; idx < gaussian_prev.data.size(); idx++) {
-        rim.data[idx] = gaussian_next.data[idx] - gaussian_prev.data[idx];
+        diff[idx] = gaussian_next.data[idx] - gaussian_prev.data[idx];
       }
-      pyramid.emplace_back(rim);
+      pyramid.emplace_back(diff);
       gaussian_prev = gaussian_next;
     }
     sigma *= 2.0;
@@ -245,45 +247,115 @@ constexpr auto DoGPyramid = [](const Img& img) {
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsMaxi = [](const Img& b, const Img& m, const Img& a, const auto& xx, const auto& yy) {
-  uint8_t cp{m.data[yy * m.size.cols + xx]};
+constexpr auto IsExtrema = [](const std::vector<int16_t>& b, const std::vector<int16_t>& m, const std::vector<int16_t>& a, const Size& size, const auto& xx, const auto& yy) {
+  const int c{size.cols};
+  const int16_t cp{m[yy * c + xx]};
   const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
-  const int c = b.size.cols;
-
-  // Check that the centre pixel is larger than all its 26 neighbors.
-  return m.data[yn * c + xn] > cp && m.data[yy * c + xn] > cp && m.data[yp * c + xn] > cp && m.data[yn * c + xx] > cp
-      && m.data[yp * c + xx] > cp && m.data[yn * c + xp] > cp && m.data[yy * c + xp] > cp && m.data[yp * c + xp] > cp
-      && b.data[yn * c + xn] > cp && b.data[yy * c + xn] > cp && b.data[yp * c + xn] > cp && b.data[yn * c + xx] > cp
-      && b.data[yy * c + xx] > cp && b.data[yp * c + xx] > cp && b.data[yn * c + xp] > cp && b.data[yy * c + xp] > cp
-      && b.data[yp * c + xp] > cp && a.data[yn * c + xn] > cp && a.data[yy * c + xn] > cp && a.data[yp * c + xn] > cp
-      && a.data[yn * c + xx] > cp && a.data[yy * c + xx] > cp && a.data[yp * c + xx] > cp && a.data[yn * c + xp] > cp
-      && a.data[yy * c + xp] > cp && a.data[yp * c + xp] > cp;
-};
-
-// b == below, m == middle, a == above
-constexpr auto IsMini = [](const Img& b, const Img& m, const Img& a, const auto& xx, const auto& yy) {
-  uint8_t cp{m.data[yy * m.size.cols + xx]};
-  const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
-  const int c = b.size.cols;
   // Check that the centre pixel is smaller than all its 26 neighbors.
-  return m.data[yn * c + xn] < cp && m.data[yy * c + xn] < cp && m.data[yp * c + xn] < cp && m.data[yn * c + xx] < cp
-      && m.data[yp * c + xx] < cp && m.data[yn * c + xp] < cp && m.data[yy * c + xp] < cp && m.data[yp * c + xp] < cp
-      && b.data[yn * c + xn] < cp && b.data[yy * c + xn] < cp && b.data[yp * c + xn] < cp && b.data[yn * c + xx] < cp
-      && b.data[yy * c + xx] < cp && b.data[yp * c + xx] < cp && b.data[yn * c + xp] < cp && b.data[yy * c + xp] < cp
-      && b.data[yp * c + xp] < cp && a.data[yn * c + xn] < cp && a.data[yy * c + xn] < cp && a.data[yp * c + xn] < cp
-      && a.data[yn * c + xx] < cp && a.data[yy * c + xx] < cp && a.data[yp * c + xx] < cp && a.data[yn * c + xp] < cp
-      && a.data[yy * c + xp] < cp && a.data[yp * c + xp] < cp;
+  bool is_mini = m[yn * c + xn] >= cp && m[yy * c + xn] >= cp && m[yp * c + xn] >= cp && m[yn * c + xx] >= cp
+      && m[yp * c + xx] >= cp && m[yn * c + xp] >= cp && m[yy * c + xp] >= cp && m[yp * c + xp] >= cp
+      && b[yn * c + xn] >= cp && b[yy * c + xn] >= cp && b[yp * c + xn] >= cp && b[yn * c + xx] >= cp
+      && b[yy * c + xx] >= cp && b[yp * c + xx] >= cp && b[yn * c + xp] >= cp && b[yy * c + xp] >= cp
+      && b[yp * c + xp] >= cp && a[yn * c + xn] >= cp && a[yy * c + xn] >= cp && a[yp * c + xn] >= cp
+      && a[yn * c + xx] >= cp && a[yy * c + xx] >= cp && a[yp * c + xx] >= cp && a[yn * c + xp] >= cp
+      && a[yy * c + xp] >= cp && a[yp * c + xp] >= cp && cp > 0;
+  // Check that the centre pixel is larger than all its 26 neighbors.
+  bool is_maxi = m[yn * c + xn] <= cp && m[yy * c + xn] <= cp && m[yp * c + xn] <= cp && m[yn * c + xx] <= cp
+      && m[yp * c + xx] <= cp && m[yn * c + xp] <= cp && m[yy * c + xp] <= cp && m[yp * c + xp] <= cp
+      && b[yn * c + xn] <= cp && b[yy * c + xn] <= cp && b[yp * c + xn] <= cp && b[yn * c + xx] <= cp
+      && b[yy * c + xx] <= cp && b[yp * c + xx] <= cp && b[yn * c + xp] <= cp && b[yy * c + xp] <= cp
+      && b[yp * c + xp] <= cp && a[yn * c + xn] <= cp && a[yy * c + xn] <= cp && a[yp * c + xn] <= cp
+      && a[yn * c + xx] <= cp && a[yy * c + xx] <= cp && a[yp * c + xx] <= cp && a[yn * c + xp] <= cp
+      && a[yy * c + xp] <= cp && a[yp * c + xp] <= cp && cp < 0;
+
+  return is_mini || is_maxi;
 };
 
-constexpr auto GetExtrema = [](const std::vector<Img>& pyr) {
-  Size size{pyr[0].size};// They are all the same size
+using Mat = std::vector<std::vector<float>>;
+
+/// \brief Computes the determinan of a 3x3 matrix.
+// https://en.wikipedia.org/wiki/Determinant
+constexpr auto determinant = [](const auto& M) {
+  const float& a{M[0][0]};
+  const float& b{M[0][1]};
+  const float& c{M[0][2]};
+  const float& d{M[1][0]};
+  const float& e{M[1][1]};
+  const float& f{M[1][2]};
+  const float& g{M[2][0]};
+  const float& h{M[2][1]};
+  const float& i{M[2][2]};
+  return a * e * i + b * f * g + c * d * h - c * e * g - b * d * i - a * f * h;
+};
+
+/// \brief Solves a 3x3 equation system by using Cramer's rule.
+/// https://en.wikipedia.org/wiki/Cramer%27s_rule
+constexpr auto SolveEq = [](const auto& H, const auto& d) {
+  float detH = determinant(H);
+  const Mat m1{{d[0], H[0][1], H[0][2]},
+               {d[1], H[1][1], H[1][2]},
+               {d[2], H[2][1], H[2][2]}};
+  const float detM1{determinant(m1)};
+
+  const Mat m2{{H[0][0], d[0], H[0][2]},
+               {H[1][0], d[1], H[1][2]},
+               {H[2][0], d[2], H[2][2]}};
+  const float detM2{determinant(m2)};
+
+  const Mat m3{{H[0][0], H[0][1], d[0]},
+               {H[1][0], H[1][1], d[1]},
+               {H[2][0], H[1][1], d[2]}};
+  const float detM3{determinant(m3)};
+
+  const float x{detM1 / detH};
+  const float y{detM2 / detH};
+  const float z{detM3 / detH};
+  return std::vector<float>{x, y, z};
+};
+
+constexpr auto GetExtrema = [](std::vector<std::vector<int16_t>>& pyr, Size size) {
   Points extrema;
   // Check (close to) every pixel, this might take some time...
   for (int x = 1; x < size.cols - 1; x++) {
     for (int y = 1; y < size.rows - 1; y++) {
       for (auto it = pyr.begin(); it != (pyr.end() - 2); it++) {
-        if (IsMaxi(*it, *(it + 1), *(it + 2), x, y) || IsMini(*(it), *(it + 1), *(it + 2), x, y)) {
-          extrema.emplace_back(Point{x, y});
+        // Get three layers from the pyramid.
+        const std::vector<int16_t>& prev{*it};
+        const std::vector<int16_t>& mid{*(it + 1)};
+        const std::vector<int16_t>& next{*(it + 2)};
+
+        if (IsExtrema(prev, mid, next, size, x, y)) {
+          // Check, next step: interpolation of nearby data for accurate position.
+          // In other words: Compute offset from dDoG(x,y,sigma), using Taylor expansion, if > 0.5 then discard this point.
+          // https://en.wikipedia.org/wiki/Scale-invariant_feature_transform
+
+          const float deriv_scale = 0.5f;
+          const float second_deriv_scale = 1.0f;
+          const float cross_deriv_scale = 0.25f;
+          int yy = y * size.cols;
+          int c = size.cols;
+          std::vector<float> dD{(float) (mid[yy + x + 1] - mid[yy + x - 1]) * deriv_scale,
+                                (float) (mid[(y + 1) * c + x] - mid[(y - 1) * c + x]) * deriv_scale,
+                                (float) (next[yy + x] - prev[yy + x]) * deriv_scale};
+
+          float v2 = (float) mid[yy + x] * 2.0;
+
+          float dxx = (float) (mid[yy + x + 1] + mid.at(yy + x - 1) - v2) * second_deriv_scale;
+          float dyy = (float) (mid[(y + 1) * c + x] + mid[(y - 1) * c + x] - v2) * second_deriv_scale;
+          float dss = (float) (next[yy + x] + prev[yy + x] - v2) * second_deriv_scale;
+          float dxy = (float) (mid[(y + 1) * c + x + 1] - mid[(y + 1) * c + x - 1] - mid[(y - 1) * c + x + 1] + mid[(y - 1) * c + x - 1]) * cross_deriv_scale;
+          float dxs = (float) (next[yy + x + 1] - next[yy + x - 1] - prev[yy + x + 1] - prev[yy + x - 1]) * cross_deriv_scale;
+          float dys = (float) (next[(y + 1) * c + x] - next[(y - 1) * c + x] - prev[(y + 1) * c + x] + prev[(y - 1) * c + x]) * cross_deriv_scale;
+
+          const Mat H{{dxx, dxy, dxs},
+                      {dxy, dyy, dys},
+                      {dxs, dys, dss}};
+
+          std::vector<float> solved{SolveEq(H, dD)};
+
+          if (std::abs(solved[0] > 0.3f && std::abs(solved[1]) > 0.3f && std::abs(solved[2]) > 0.3f)) {
+            extrema.emplace_back(Point{x, y});
+          }
         }
       }
     }
@@ -296,41 +368,33 @@ constexpr auto GetExtrema = [](const std::vector<Img>& pyr) {
 Points SiftKeypoints(const Img& img)
 {
   Img imh{Convolve(img, filter::KernelType::HIGH_PASS)};
-  std::vector<Img> pyramid{DoGPyramid(imh)};
-  Points extrema{GetExtrema(pyramid)};
+  std::vector<std::vector<int16_t>> pyramid{DoGPyramid(imh)};
+  Points extrema{GetExtrema(pyramid, img.size)};
   Points extrema_no_low_contrast;
 
-  for (const auto& pt : extrema) {
-    if ((img.At(pt.x, pt.y)) > 10) {
-      extrema_no_low_contrast.emplace_back(pt);
-    }
-  }
-
-  const Img Ix1{filter::Convolve(img, filter::KernelType::SOBEL_X)};
-  const ImgF Ix{algo::image::ToFloat(Ix1)};
-  const Img Iy1{filter::Convolve(img, filter::KernelType::SOBEL_Y)};
-  const ImgF Iy{algo::image::ToFloat(Iy1)};
-
-  Points points;
-  float eig_thr{0.03};
-
-  for (const auto& pt : extrema_no_low_contrast) {
-    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};// Eigenvalues
-    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};// Eigenvalues
-
-    if (kEig1 == 0.0 && kEig2 == 0.0) {
-      continue;
-    }
-    if ((kEig1 / kEig2) > eig_thr) {
-      points.emplace_back(pt);
-      continue;
-    }
-    if ((kEig2 / kEig1) > eig_thr) {
-      points.emplace_back(pt);
-      continue;
-    }
-  }
-  return points;
+  //  for (const auto& pt : extrema) {
+  //    if ((img.At(pt.x, pt.y)) > 10) {
+  //      extrema_no_low_contrast.emplace_back(pt);
+  //    }
+  //  }
+  //
+  //  const Img Ix1{filter::Convolve(img, filter::KernelType::SOBEL_X)};
+  //  const ImgF Ix{algo::image::ToFloat(Ix1)};
+  //  const Img Iy1{filter::Convolve(img, filter::KernelType::SOBEL_Y)};
+  //  const ImgF Iy{algo::image::ToFloat(Iy1)};
+  //
+  //  Points points;
+  //  float eig_thr{.1};
+  //
+  //  for (const auto& pt : extrema_no_low_contrast) {
+  //    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};// Eigenvalues
+  //    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};// Eigenvalues
+  //
+  //    if (kEig1 > eig_thr && kEig2 > eig_thr) {
+  //      points.emplace_back(pt);
+  //    }
+  //  }
+  return extrema;
 }
 
 }// namespace algo::image::feature
