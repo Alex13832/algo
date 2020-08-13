@@ -66,7 +66,14 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 //  SIFT Keypoints
 // //////////////////////////////////////////
 
-Points SiftKeypoints(const Img& img);
+struct Keypoint {
+  int x, y;
+  double mag, theta;
+};
+
+using Keypoints = std::vector<Keypoint>;
+
+Keypoints SiftKeypoints(const Img& img);
 
 }// namespace algo::image::feature
 

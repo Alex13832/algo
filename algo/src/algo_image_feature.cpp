@@ -10,6 +10,7 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
+#include <iostream>
 
 #include "algo_image_basic.hpp"
 #include "algo_image_filter.hpp"
@@ -218,26 +219,33 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 
 namespace {
 
-constexpr auto DoGPyramid = [](const Img& img) {
+using Mat = std::vector<std::vector<float>>;
+
+std::vector<Mat> gaussians;
+
+constexpr auto DoGPyramid = [](const Img& img, const auto& nbr_octaves, const auto& nbr_gaussians) {
   //std::vector<Img> pyramid;// DoG images.
   float sigma{1.6};// Starting value for std in DoG.
   float k = M_SQRT2;
-  const int kNbrGaussian{4};
-  const int kNbrOctaves{4};
   const Size kSize{3, 3};
-  //Img rim{Data8(img.size.rows * img.size.cols, 0), img.size};
-  std::vector<std::vector<int16_t>> pyramid;
-  std::vector<int16_t> diff(img.size.cols * img.size.rows, 0);
+  std::vector<Mat> pyramid;
+  Mat diff{static_cast<size_t>(img.size.rows), std::vector<float>(img.size.cols, 0)};
+  Mat gaussian{static_cast<size_t>(img.size.rows), std::vector<float>(img.size.cols, 0)};
 
   Img gaussian_prev{algo::image::filter::GaussianBlur(img, kSize, k * sigma)};
   // Generates the pyramid.
-  for (int i = 0; i < kNbrOctaves; i++) {
-    for (int j = 0; j < kNbrGaussian; j++) {
+  for (int i = 0; i < nbr_octaves; i++) {
+    for (int j = 0; j < nbr_gaussians; j++) {
+
       Img gaussian_next{algo::image::filter::GaussianBlur(gaussian_prev, kSize, k * sigma)};
 
-      for (size_t idx = 0; idx < gaussian_prev.data.size(); idx++) {
-        diff[idx] = gaussian_next.data[idx] - gaussian_prev.data[idx];
+      for (size_t y = 0; y < img.size.rows; y++) {
+        for (size_t x = 0; x < img.size.cols; x++) {
+          diff[y][x] = gaussian_prev.data[y * img.size.cols + x] - gaussian_next.data[y * img.size.cols + x];
+          gaussian[y][x] = gaussian_prev.data[y * img.size.cols + x];
+        }
       }
+      gaussians.emplace_back(gaussian);
       pyramid.emplace_back(diff);
       gaussian_prev = gaussian_next;
     }
@@ -247,31 +255,28 @@ constexpr auto DoGPyramid = [](const Img& img) {
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsExtrema = [](const std::vector<int16_t>& b, const std::vector<int16_t>& m, const std::vector<int16_t>& a, const Size& size, const auto& xx, const auto& yy) {
-  const int c{size.cols};
-  const int16_t cp{m[yy * c + xx]};
+constexpr auto IsExtrema = [](const Mat& b, const Mat& m, const Mat& a, const Size& size, const auto& xx, const auto& yy) {
+  const float cp{m[yy][xx]};
   const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
   // Check that the centre pixel is smaller than all its 26 neighbors.
-  bool is_mini = m[yn * c + xn] >= cp && m[yy * c + xn] >= cp && m[yp * c + xn] >= cp && m[yn * c + xx] >= cp
-      && m[yp * c + xx] >= cp && m[yn * c + xp] >= cp && m[yy * c + xp] >= cp && m[yp * c + xp] >= cp
-      && b[yn * c + xn] >= cp && b[yy * c + xn] >= cp && b[yp * c + xn] >= cp && b[yn * c + xx] >= cp
-      && b[yy * c + xx] >= cp && b[yp * c + xx] >= cp && b[yn * c + xp] >= cp && b[yy * c + xp] >= cp
-      && b[yp * c + xp] >= cp && a[yn * c + xn] >= cp && a[yy * c + xn] >= cp && a[yp * c + xn] >= cp
-      && a[yn * c + xx] >= cp && a[yy * c + xx] >= cp && a[yp * c + xx] >= cp && a[yn * c + xp] >= cp
-      && a[yy * c + xp] >= cp && a[yp * c + xp] >= cp && cp > 0;
+  bool is_mini = m[yn][xn] >= cp && m[yy][xn] >= cp && m[yp][xn] >= cp && m[yn][xx] >= cp
+      && m[yp][xx] >= cp && m[yn][xp] >= cp && m[yy][xp] >= cp && m[yp][xp] >= cp
+      && b[yn][xn] >= cp && b[yy][xn] >= cp && b[yp][xn] >= cp && b[yn][xx] >= cp
+      && b[yy][xx] >= cp && b[yp][xx] >= cp && b[yn][xp] >= cp && b[yy][xp] >= cp
+      && b[yp][xp] >= cp && a[yn][xn] >= cp && a[yy][xn] >= cp && a[yp][xn] >= cp
+      && a[yn][xx] >= cp && a[yy][xx] >= cp && a[yp][xx] >= cp && a[yn][xp] >= cp
+      && a[yy][xp] >= cp && a[yp][xp] >= cp && cp > 0;
   // Check that the centre pixel is larger than all its 26 neighbors.
-  bool is_maxi = m[yn * c + xn] <= cp && m[yy * c + xn] <= cp && m[yp * c + xn] <= cp && m[yn * c + xx] <= cp
-      && m[yp * c + xx] <= cp && m[yn * c + xp] <= cp && m[yy * c + xp] <= cp && m[yp * c + xp] <= cp
-      && b[yn * c + xn] <= cp && b[yy * c + xn] <= cp && b[yp * c + xn] <= cp && b[yn * c + xx] <= cp
-      && b[yy * c + xx] <= cp && b[yp * c + xx] <= cp && b[yn * c + xp] <= cp && b[yy * c + xp] <= cp
-      && b[yp * c + xp] <= cp && a[yn * c + xn] <= cp && a[yy * c + xn] <= cp && a[yp * c + xn] <= cp
-      && a[yn * c + xx] <= cp && a[yy * c + xx] <= cp && a[yp * c + xx] <= cp && a[yn * c + xp] <= cp
-      && a[yy * c + xp] <= cp && a[yp * c + xp] <= cp && cp < 0;
+  bool is_maxi = m[yn][xn] <= cp && m[yy][xn] <= cp && m[yp][xn] <= cp && m[yn][xx] <= cp
+      && m[yp][xx] <= cp && m[yn][xp] <= cp && m[yy][xp] <= cp && m[yp][xp] <= cp
+      && b[yn][xn] <= cp && b[yy][xn] <= cp && b[yp][xn] <= cp && b[yn][xx] <= cp
+      && b[yy][xx] <= cp && b[yp][xx] <= cp && b[yn][xp] <= cp && b[yy][xp] <= cp
+      && b[yp][xp] <= cp && a[yn][xn] <= cp && a[yy][xn] <= cp && a[yp][xn] <= cp
+      && a[yn][xx] <= cp && a[yy][xx] <= cp && a[yp][xx] <= cp && a[yn][xp] <= cp
+      && a[yy][xp] <= cp && a[yp][xp] <= cp && cp < 0;
 
   return is_mini || is_maxi;
 };
-
-using Mat = std::vector<std::vector<float>>;
 
 /// \brief Computes the determinan of a 3x3 matrix.
 // https://en.wikipedia.org/wiki/Determinant
@@ -288,23 +293,26 @@ constexpr auto determinant = [](const auto& M) {
   return a * e * i + b * f * g + c * d * h - c * e * g - b * d * i - a * f * h;
 };
 
+Mat m1, m2, m3;
+
 /// \brief Solves a 3x3 equation system by using Cramer's rule.
 /// https://en.wikipedia.org/wiki/Cramer%27s_rule
-constexpr auto SolveEq = [](const auto& H, const auto& d) {
+std::vector<float> SolveEq(const Mat& H, const std::vector<float>& d)
+{
   float detH = determinant(H);
-  const Mat m1{{d[0], H[0][1], H[0][2]},
-               {d[1], H[1][1], H[1][2]},
-               {d[2], H[2][1], H[2][2]}};
+  m1 = {{d[0], H[0][1], H[0][2]},
+        {d[1], H[1][1], H[1][2]},
+        {d[2], H[2][1], H[2][2]}};
   const float detM1{determinant(m1)};
 
-  const Mat m2{{H[0][0], d[0], H[0][2]},
-               {H[1][0], d[1], H[1][2]},
-               {H[2][0], d[2], H[2][2]}};
+  m2 = {{H[0][0], d[0], H[0][2]},
+        {H[1][0], d[1], H[1][2]},
+        {H[2][0], d[2], H[2][2]}};
   const float detM2{determinant(m2)};
 
-  const Mat m3{{H[0][0], H[0][1], d[0]},
-               {H[1][0], H[1][1], d[1]},
-               {H[2][0], H[1][1], d[2]}};
+  m3 = {{H[0][0], H[0][1], d[0]},
+        {H[1][0], H[1][1], d[1]},
+        {H[2][0], H[1][1], d[2]}};
   const float detM3{determinant(m3)};
 
   const float x{detM1 / detH};
@@ -313,88 +321,91 @@ constexpr auto SolveEq = [](const auto& H, const auto& d) {
   return std::vector<float>{x, y, z};
 };
 
-constexpr auto GetExtrema = [](std::vector<std::vector<int16_t>>& pyr, Size size) {
-  Points extrema;
-  // Check (close to) every pixel, this might take some time...
+Keypoints GetKeypoints(std::vector<Mat>& pyr, Size size, const double& offset)
+{
+  Keypoints keypoints;
+  const float img_scale = 1.0f / (255.0f);
+  const float sc_1st = img_scale * 0.5f;
+  const float sc_2nd = img_scale;
+  const float sc_xy = img_scale * 0.25f;
+  const float kScale = 255.0f;
+
+  std::vector<float> d_deriv(3, 0);
+  std::vector<float> solved;
+  Mat hessian;
+  float x1, x2, x3, v2, dxx, dyy, dss, dxy, dxs, dys;
+
   for (int x = 1; x < size.cols - 1; x++) {
     for (int y = 1; y < size.rows - 1; y++) {
-      for (auto it = pyr.begin(); it != (pyr.end() - 2); it++) {
-        // Get three layers from the pyramid.
-        const std::vector<int16_t>& prev{*it};
-        const std::vector<int16_t>& mid{*(it + 1)};
-        const std::vector<int16_t>& next{*(it + 2)};
+      for (int i = 0; i < pyr.size() - 2; i++) {
+        // Get three layers from the pyramid. pyr[i] = previous layer, pyr[i+1] current layer, pyr[i+2] next layer.
 
-        if (IsExtrema(prev, mid, next, size, x, y)) {
-          // Check, next step: interpolation of nearby data for accurate position.
+        if (IsExtrema(pyr[i], pyr[i + 1], pyr[i + 2], size, x, y)) {
+          // Interpolation of nearby data for accurate position.
           // In other words: Compute offset from dDoG(x,y,sigma), using Taylor expansion, if > 0.5 then discard this point.
           // https://en.wikipedia.org/wiki/Scale-invariant_feature_transform
+          d_deriv[0] = (pyr[i + 1][y][x + 1] - pyr[i + 1][y][x - 1]) * sc_1st / kScale;
+          d_deriv[1] = (pyr[i + 1][y + 1][x] - pyr[i + 1][y - 1][x]) * sc_1st / kScale;
+          d_deriv[2] = (pyr[i + 2][y][x] - pyr[i][y][x]) * sc_1st / kScale;
 
-          const float deriv_scale = 0.5f;
-          const float second_deriv_scale = 1.0f;
-          const float cross_deriv_scale = 0.25f;
-          int yy = y * size.cols;
-          int c = size.cols;
-          std::vector<float> dD{(float) (mid[yy + x + 1] - mid[yy + x - 1]) * deriv_scale,
-                                (float) (mid[(y + 1) * c + x] - mid[(y - 1) * c + x]) * deriv_scale,
-                                (float) (next[yy + x] - prev[yy + x]) * deriv_scale};
+          v2 = pyr[i + 1][y][x] * 2.0f / 255.0f;
+          dxx = (pyr[i + 1][y][x + 1] + pyr[i + 1][y][x - 1] - v2) * sc_2nd / kScale;
+          dyy = (pyr[i + 1][y + 1][x] + pyr[i + 1][y - 1][x] - v2) * sc_2nd / kScale;
+          dss = (pyr[i + 2][y][x] + pyr[i][y][x] - v2) * sc_2nd / kScale;
+          dxy = (pyr[i + 1][y + 1][x + 1] - pyr[i + 1][y + 1][x - 1] - pyr[i + 1][y - 1][x + 1] + pyr[i + 1][y - 1][x - 1]) * sc_xy / kScale;
+          dxs = (pyr[i + 2][y][x + 1] - pyr[i + 2][y][x - 1] - pyr[i][y][x + 1] - pyr[i][y][x - 1]) * sc_xy / kScale;
+          dys = (pyr[i + 2][y + 1][x] - pyr[i + 2][y - 1][x] - pyr[i][y + 1][x] + pyr[i][y - 1][x]) * sc_xy / kScale;
 
-          float v2 = (float) mid[yy + x] * 2.0;
+          hessian = {{dxx, dxy, dxs},
+                     {dxy, dyy, dys},
+                     {dxs, dys, dss}};
 
-          float dxx = (float) (mid[yy + x + 1] + mid.at(yy + x - 1) - v2) * second_deriv_scale;
-          float dyy = (float) (mid[(y + 1) * c + x] + mid[(y - 1) * c + x] - v2) * second_deriv_scale;
-          float dss = (float) (next[yy + x] + prev[yy + x] - v2) * second_deriv_scale;
-          float dxy = (float) (mid[(y + 1) * c + x + 1] - mid[(y + 1) * c + x - 1] - mid[(y - 1) * c + x + 1] + mid[(y - 1) * c + x - 1]) * cross_deriv_scale;
-          float dxs = (float) (next[yy + x + 1] - next[yy + x - 1] - prev[yy + x + 1] - prev[yy + x - 1]) * cross_deriv_scale;
-          float dys = (float) (next[(y + 1) * c + x] - next[(y - 1) * c + x] - prev[(y + 1) * c + x] + prev[(y - 1) * c + x]) * cross_deriv_scale;
+          solved = SolveEq(hessian, d_deriv);
 
-          const Mat H{{dxx, dxy, dxs},
-                      {dxy, dyy, dys},
-                      {dxs, dys, dss}};
+          // Discards low-contrast keypoints
 
-          std::vector<float> solved{SolveEq(H, dD)};
-
-          if (std::abs(solved[0] > 0.3f && std::abs(solved[1]) > 0.3f && std::abs(solved[2]) > 0.3f)) {
-            extrema.emplace_back(Point{x, y});
+          x1 = std::abs(solved[0]);
+          x2 = std::abs(solved[1]);
+          x3 = std::abs(solved[2]);
+          if (std::abs(x1) < offset && std::abs(x2) < offset && std::abs(x3) < offset) {
+            continue;
           }
+
+          // Eliminate edge response
+          double detH = dxx * dyy - dxy * dxy;
+          double trH = dxx + dyy;
+          double tr_thr = 10.0;
+
+          if (detH <= 0 || trH * trH * tr_thr >= (tr_thr + 1.0) * (tr_thr + 1.0) * detH) {
+            continue;
+          }
+
+          Mat& L = gaussians[i];
+          // Magnitude assignment
+          double mag = std::sqrt(std::pow(L[y][x + 1] - L[y][x - 1], 2) + std::pow(L[y + 1][x] - L[y - 1][x], 2));
+          // Angle assignment
+          double theta = std::atan2(L[y + 1][x] - L[y - 1][x], L[y][x + 1] - L[y][x - 1]) * 180.0 / M_PI;
+
+          keypoints.emplace_back(feature::Keypoint{x, y, mag, theta});
         }
       }
     }
   }
-  return extrema;
+  return keypoints;
 };
 
 }// namespace
 
-Points SiftKeypoints(const Img& img)
+Keypoints SiftKeypoints(const Img& img)
 {
-  Img imh{Convolve(img, filter::KernelType::HIGH_PASS)};
-  std::vector<std::vector<int16_t>> pyramid{DoGPyramid(imh)};
-  Points extrema{GetExtrema(pyramid, img.size)};
-  Points extrema_no_low_contrast;
+  // Constants used
+  const int kNbrGaussians{4}, kNbrOctaves{3};
+  const float kOffset{0.03};
 
-  //  for (const auto& pt : extrema) {
-  //    if ((img.At(pt.x, pt.y)) > 10) {
-  //      extrema_no_low_contrast.emplace_back(pt);
-  //    }
-  //  }
-  //
-  //  const Img Ix1{filter::Convolve(img, filter::KernelType::SOBEL_X)};
-  //  const ImgF Ix{algo::image::ToFloat(Ix1)};
-  //  const Img Iy1{filter::Convolve(img, filter::KernelType::SOBEL_Y)};
-  //  const ImgF Iy{algo::image::ToFloat(Iy1)};
-  //
-  //  Points points;
-  //  float eig_thr{.1};
-  //
-  //  for (const auto& pt : extrema_no_low_contrast) {
-  //    const double kEig1{Ix.At(pt.x, pt.y) * Ix.At(pt.x, pt.y)};// Eigenvalues
-  //    const double kEig2{Iy.At(pt.x, pt.y) * Iy.At(pt.x, pt.y)};// Eigenvalues
-  //
-  //    if (kEig1 > eig_thr && kEig2 > eig_thr) {
-  //      points.emplace_back(pt);
-  //    }
-  //  }
-  return extrema;
+  Img imh{Convolve(img, filter::KernelType::HIGH_PASS)};
+  std::vector<Mat> pyramid{DoGPyramid(imh, kNbrOctaves, kNbrGaussians)};
+  Keypoints keypoints{GetKeypoints(pyramid, img.size, kOffset)};
+  return keypoints;
 }
 
 }// namespace algo::image::feature

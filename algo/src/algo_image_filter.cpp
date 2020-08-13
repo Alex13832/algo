@@ -131,8 +131,8 @@ Img3 Convolve3(const Img3& im, KernelType filter_type)
 namespace {
 /// \brief Computes the 2D gauss value at x, y with standard deviation sigma.
 constexpr auto Gauss2D = [](auto x, auto y, auto sigma) {
-  //  float a = 1.0 / (2.0 * M_PI * sigma * sigma);
-  float a{1.0};
+  float a = 1.0 / (2.0 * M_PI * sigma * sigma);
+  //float a{1.0};
   float b = -(x * x + y * y) / (2.0 * sigma * sigma);
   return a * std::pow(M_E, b);
 };
@@ -183,15 +183,15 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   const size_t kSizeY = kRows >> 1U;
 
   // Filtering window
-  for (int x = 0; x < im.size.cols; x++) {
-    for (int y = 0; y < im.size.rows; y++) {
+  for (int x = kSizeX; x < im.size.cols - kSizeX; x++) {
+    for (int y = kSizeY; y < im.size.rows - kSizeY; y++) {
 
       double sum = 0;
       for (int m = 0; m < size.cols; m++) {
         for (int k = 0; k < size.rows; k++) {
           // Image value * kernel value
-          //sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
-          sum += static_cast<double>(im.data[(y + k - kSizeY) * im.size.cols + (x + m - kSizeX)]) * kernel.data[k * kernel.size.cols + m];
+          sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
+          //sum += static_cast<double>(im.data[(y + k - kSizeY) * im.size.cols + (x + m - kSizeX)]) * kernel.data[k * kernel.size.cols + m];
         }
       }
       res.data[y * res.size.cols + x] = static_cast<uint8_t>(sum);
