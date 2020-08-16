@@ -163,10 +163,17 @@ Img Subtract(const Img& im1, const Img& im2)
 
   for (int x = 0; x < im1.size.cols; x++) {
     for (int y = 0; y < im1.size.rows; y++) {
-      uint8_t val = im1.At(x, y) - im2.At(x, y);
-      if (val < 0) val = 0;
-      if (val > 255) val = 255;
-      img.Set(x, y, val);
+
+      int a{im1.At(x, y)};
+      int b{im2.At(x, y)};
+      int v{a - b};
+      if (v < 0) {
+        img.Set(x, y, 0);
+      } else if (v > 255) {
+        img.Set(x, y, 255);
+      } else {
+        img.Set(x, y, im1.At(x, y) - im2.At(x, y));
+      }
     }
   }
   return img;

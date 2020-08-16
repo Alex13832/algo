@@ -296,7 +296,7 @@ inline void SolveEq(const Mat& H, const std::vector<float>& d, float& x, float& 
   x = detm1 / detH;
   y = detm2 / detH;
   z = detm3 / detH;
-};
+}
 
 }// namespace
 
