@@ -183,8 +183,8 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
   const size_t kSizeY = kRows >> 1U;
 
   // Filtering window
-  for (int x = kSizeX; x < im.size.cols - kSizeX; x++) {
-    for (int y = kSizeY; y < im.size.rows - kSizeY; y++) {
+  for (size_t x = kSizeX; x < im.size.cols - kSizeX; x++) {
+    for (size_t y = kSizeY; y < im.size.rows - kSizeY; y++) {
 
       double sum = 0;
       for (int m = 0; m < size.cols; m++) {

@@ -10,7 +10,6 @@
 #include <algorithm>
 #include <array>
 #include <cmath>
-#include <iostream>
 
 #include "algo_image_basic.hpp"
 #include "algo_image_filter.hpp"
@@ -241,8 +240,8 @@ constexpr auto DoGPyramid = [](const Img& img, const auto& nbr_octaves, const au
 
       gaussian_next = algo::image::filter::GaussianBlur(gaussian_prev, kSize, k * sigma);
       //gaussian_next = algo::image::filter::Convolve(gaussian_prev, filter::KernelType::GAUSSIAN_BLUR);
-      for (size_t y = kSize.rows; y < (img.size.rows - kSize.rows); y++) {
-        for (size_t x = kSize.cols; x < (img.size.cols - kSize.cols); x++) {
+      for (int y = kSize.rows; y < (img.size.rows - kSize.rows); y++) {
+        for (int x = kSize.cols; x < (img.size.cols - kSize.cols); x++) {
           diff[y][x] = gaussian_prev.data[y * img.size.cols + x] - gaussian_next.data[y * img.size.cols + x];
           gaussian[y][x] = gaussian_prev.data[y * img.size.cols + x];
         }
@@ -257,7 +256,7 @@ constexpr auto DoGPyramid = [](const Img& img, const auto& nbr_octaves, const au
 };
 
 // b == below, m == middle, a == above
-constexpr auto IsExtrema = [](const Mat& b, const Mat& m, const Mat& a, const Size& size, const auto& xx, const auto& yy) {
+constexpr auto IsExtrema = [](const Mat& b, const Mat& m, const Mat& a, const auto& xx, const auto& yy) {
   const float cp{m[yy][xx]};
   const int xn{xx - 1}, xp{xx + 1}, yn{yy - 1}, yp{yy + 1};
   // Check that the centre pixel is smaller than all its 26 neighbors.
@@ -304,20 +303,20 @@ inline void SolveEq(const Mat& H, const std::vector<float>& d, float& x, float& 
 Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians, const int& nbr_octaves, const float& contrast_offset, const float& edge_threshold)
 {
   std::vector<Mat> pyr{DoGPyramid(img, nbr_octaves, nbr_gaussians)};
-  Keypoints keypoints;
-  const float kSc1St{0.5f}, kSc2Nd{1.0f}, kScXy{0.25f};
-  float x1, x2, x3, v2, dxx, dyy, dss, dxy, dxs, dys;
-
   std::vector<float> d_deriv(3, 0);
+  Keypoints keypoints;
   Mat hessian;
+
+  const float kSc1St{0.5f}, kSc2Nd{1.0f}, kScXy{0.25f};
   const int kFrameLimit{10};
+  float x1, x2, x3, v2, dxx, dyy, dss, dxy, dxs, dys;
 
   for (int x = kFrameLimit; x < img.size.cols - kFrameLimit; x++) {
     for (int y = kFrameLimit; y < img.size.rows - kFrameLimit; y++) {
-      for (int i = 0; i < pyr.size() - 2; i++) {
+      for (size_t i = 0; i < pyr.size() - 2; i++) {
         // Get three layers from the pyramid. pyr[i] = previous layer, pyr[i+1] current layer, pyr[i+2] next layer.
 
-        if (IsExtrema(pyr[i], pyr[i + 1], pyr[i + 2], img.size, x, y)) {
+        if (IsExtrema(pyr[i], pyr[i + 1], pyr[i + 2], x, y)) {
           // Interpolation of nearby data for accurate position.
           // In other words: Compute offset from dDoG(x,y,sigma), using Taylor expansion, if > 0.5 then discard this point.
           // https://en.wikipedia.org/wiki/Scale-invariant_feature_transform
