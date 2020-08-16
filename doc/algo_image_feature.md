@@ -116,7 +116,7 @@ Note that this algorithm **only detects the keypoints**, it does not output the 
 separate namespace.
 
 Previously this algorithm was protected by US patent US6711293B1 [[Google patent]](https://patents.google.com/patent/US6711293), the 
-patent expired 2020-03-06, so it should pe alright to use this code (on your own risk, as usual). 
+patent expired 2020-03-06, so it should be alright to use this code (at your own risk). 
 
 The algorithm consists of three main steps. 1. Scale-space extrema detection, 2. keypoint localization and 3. orientation assignment.
 In step 1. the keypoints are found by computing a difference of Gaussians (DoG) pyramid and store the keypoints that are either
