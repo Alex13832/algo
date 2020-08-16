@@ -102,3 +102,61 @@ Points points{algo::image::feature::FASTCorners(im, 20, 11)};
 `corner_threshold` 8 to 11 
 
 ![Fast Corners](images/fast_corners_8_11.png)
+
+## SIFT Keypoints
+:black_square_button: _**Needs some feedback to verify that the algorithm works properly.**_
+
+:black_square_button: Needs to be unit tested.
+
+>The scale-invariant feature transform (SIFT) is a feature detection algorithm in computer vision 
+>to detect and describe local features in images. It was published by [David Lowe](https://www.cs.ubc.ca/~lowe/papers/iccv99.pdf)
+> in 1999. [Wikipedia](https://en.wikipedia.org/wiki/Scale-invariant_feature_transform)
+
+Note that this algorithm **only detects the keypoints**, it does not output the SIFT descriptors, that will be added later in a
+separate namespace.
+
+Previously this algorithm was protected by US patent US6711293B1 [[Google patent]](https://patents.google.com/patent/US6711293), the 
+patent expired 2020-03-06, so it should pe alright to use this code (on your own risk, as usual). 
+
+The algorithm consists of three main steps. 1. Scale-space extrema detection, 2. keypoint localization and 3. orientation assignment.
+In step 1. the keypoints are found by computing a difference of Gaussians (DoG) pyramid and store the keypoints that are either
+local maximums or minimums when comparing with the 8 neighbors in the same layer, 9 neighbors in previous and next layer, in total 26 neighbors.
+Step 2. eliminates low-contrast keypoints and those with too much edge influence. Finally in step 3. the magnitude/radius and orientation 
+(angle) are assigned to the keypoints. The steps are described in more detail in the Wikipedia link above.
+
+There's no preprocessing of the input image, if you wish to apply pre-processing then it must be applied before the SIFT-keypoints
+algorithm is executed.
+
+```c++
+Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians = 5, const int& nbr_octaves = 5, const float& contrast_offset = 1.7, const float& edge_threshold = 20.0);
+```
+Returns the `Keypoints` detected in the input image `img`. To change to DoG-pyramid, change the `nbr_gaussians` and `nbr_octaves`. 
+`contrast_offset` and `edge_threshold` set the thresholds for emliminating keypoints at low-contrast locations and at 
+locations with too much edge influence respectively. `Keypoints` is a `std::vector<Keypoint>`:
+
+```c++
+struct Keypoint {
+  int x, y;
+  double radius, angle;
+};
+```
+
+### Usage
+```c++
+#include "algo.hpp"
+
+using namespace algo::image;
+
+...
+
+feature::Keypoints keyp = feature::SiftKeypoints(im, 5, 5, 1.7, 20.0);
+```
+
+### Examples
+The keypoints are drawn using the OpenCV function `drawKepoints` to visualize the radius and angle:
+
+```c++
+cv::drawKeypoints(mat, keypoints, mat, cv::Scalar{0, 255, 255}, cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
+```
+![sift volvo 240](images/sift_volvo240.png) ![sift notre dame2](images/sift_notre_dame2.png) 
+![sift notre dame](images/sift_notre_dame.png) ![sift skycrapers](images/sift_skyscrapers.png) 

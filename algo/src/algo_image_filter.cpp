@@ -190,11 +190,10 @@ Img GaussianBlur(const Img& im, const Size& size, const float& sigma)
       for (int m = 0; m < size.cols; m++) {
         for (int k = 0; k < size.rows; k++) {
           // Image value * kernel value
-          sum += static_cast<double>(im.At(x + m - kSizeX, y + k - kSizeY)) * kernel.At(m, k);
-          //sum += static_cast<double>(im.data[(y + k - kSizeY) * im.size.cols + (x + m - kSizeX)]) * kernel.data[k * kernel.size.cols + m];
+          sum += static_cast<double>(im.data[(y + k - kSizeY) * im.size.cols + (x + m - kSizeX)]) * kernel.data[k * kernel.size.cols + m];
         }
       }
-      res.data[y * res.size.cols + x] = static_cast<uint8_t>(sum);
+      res.data[y * res.size.cols + x] = sum;//static_cast<uint8_t>(std::max(std::min(255.0, sum), 0.0));
     }
   }
   return res;

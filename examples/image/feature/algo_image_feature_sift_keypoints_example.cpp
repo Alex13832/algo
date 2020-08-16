@@ -19,7 +19,7 @@ using namespace std;
 
 int main()
 {
-  const std::string kFileName{"../testfiles/mosque.png"};
+  const std::string kFileName{"../testfiles/skyscrapers.png"};
 
   cv::Mat imgc = cv::imread(kFileName);
   cv::Mat img;
@@ -35,7 +35,7 @@ int main()
 
   // This repo's SIFT output:
   Img im{MatToVec(img)};
-  feature::Keypoints keyp = feature::SiftKeypoints(im);
+  feature::Keypoints keyp = feature::SiftKeypoints(im, 5, 5, 1.7, 20.0);
   std::vector<cv::KeyPoint> my_keyp;
 
   std::cout << "Framework nbr points " << keyp.size() << std::endl;
@@ -43,12 +43,8 @@ int main()
 
   for (const auto& pt : keyp) {
     //cv::circle(imgc, cv::Point{pt.x, pt.y}, pt.mag, cv::Scalar{255, 255, 0}, 1);
-    my_keyp.emplace_back(cv::KeyPoint{cv::Point2f{(float) pt.x, (float) pt.y}, (float) pt.mag, (float) pt.theta});
+    my_keyp.emplace_back(cv::KeyPoint{cv::Point2f{(float) pt.x, (float) pt.y}, (float) pt.radius, (float) pt.angle});
   }
-
-  //  for (const auto& kp : keypoints) {
-  //    cv::circle(mat, cv::Point{(int) kp.pt.x, (int) kp.pt.y}, kp.size, cv::Scalar{0, 255, 255}, 1);
-  //  }
 
   cv::drawKeypoints(imgc, my_keyp, imgc, cv::Scalar{255, 255, 0}, cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
   cv::drawKeypoints(mat, keypoints, mat, cv::Scalar{0, 255, 255}, cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);

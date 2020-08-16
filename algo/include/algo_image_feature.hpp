@@ -68,12 +68,12 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 
 struct Keypoint {
   int x, y;
-  double mag, theta;
+  double radius, angle;
 };
 
 using Keypoints = std::vector<Keypoint>;
 
-Keypoints SiftKeypoints(const Img& img);
+Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians = 5, const int& nbr_octaves = 5, const float& contrast_offset = 1.7, const float& edge_threshold = 20.0);
 
 }// namespace algo::image::feature
 
