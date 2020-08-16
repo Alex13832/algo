@@ -149,7 +149,7 @@ using namespace algo::image;
 
 ...
 
-feature::Keypoints keyp = feature::SiftKeypoints(im, 5, 5, 1.7, 20.0);
+feature::Keypoints keypoints{feature::SiftKeypoints(im, 5, 5, 1.7, 20.0)};
 ```
 
 ### Examples
