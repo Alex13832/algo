@@ -71,7 +71,7 @@ struct Keypoint {
   int x;        /// < X-coordinate
   int y;        /// < Y-coordinate
   double radius;/// < Radius, sometimes called magnitude.
-  double angle; // < Angle in degrees.
+  double angle; /// < Angle in degrees.
 };
 
 /// \brief Used for storing keypoints.
