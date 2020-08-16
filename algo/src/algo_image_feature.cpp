@@ -305,16 +305,15 @@ Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians, const int& nbr
 {
   std::vector<Mat> pyr{DoGPyramid(img, nbr_octaves, nbr_gaussians)};
   Keypoints keypoints;
-  const float sc_1st = 0.5f;
-  const float sc_2nd = 1.0f;
-  const float sc_xy = 0.25f;
+  const float kSc1St{0.5f}, kSc2Nd{1.0f}, kScXy{0.25f};
+  float x1, x2, x3, v2, dxx, dyy, dss, dxy, dxs, dys;
 
   std::vector<float> d_deriv(3, 0);
   Mat hessian;
-  float x1, x2, x3, v2, dxx, dyy, dss, dxy, dxs, dys;
+  const int kFrameLimit{10};
 
-  for (int x = 10; x < img.size.cols - 10; x++) {
-    for (int y = 10; y < img.size.rows - 10; y++) {
+  for (int x = kFrameLimit; x < img.size.cols - kFrameLimit; x++) {
+    for (int y = kFrameLimit; y < img.size.rows - kFrameLimit; y++) {
       for (int i = 0; i < pyr.size() - 2; i++) {
         // Get three layers from the pyramid. pyr[i] = previous layer, pyr[i+1] current layer, pyr[i+2] next layer.
 
@@ -322,17 +321,17 @@ Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians, const int& nbr
           // Interpolation of nearby data for accurate position.
           // In other words: Compute offset from dDoG(x,y,sigma), using Taylor expansion, if > 0.5 then discard this point.
           // https://en.wikipedia.org/wiki/Scale-invariant_feature_transform
-          d_deriv[0] = (pyr[i + 1][y][x + 1] - pyr[i + 1][y][x - 1]) * sc_1st;
-          d_deriv[1] = (pyr[i + 1][y + 1][x] - pyr[i + 1][y - 1][x]) * sc_1st;
-          d_deriv[2] = (pyr[i + 2][y][x] - pyr[i][y][x]) * sc_1st;
+          d_deriv[0] = (pyr[i + 1][y][x + 1] - pyr[i + 1][y][x - 1]) * kSc1St;
+          d_deriv[1] = (pyr[i + 1][y + 1][x] - pyr[i + 1][y - 1][x]) * kSc1St;
+          d_deriv[2] = (pyr[i + 2][y][x] - pyr[i][y][x]) * kSc1St;
 
           v2 = pyr[i + 1][y][x] * 2.0f;
-          dxx = (pyr[i + 1][y][x + 1] + pyr[i + 1][y][x - 1] - v2) * sc_2nd;
-          dyy = (pyr[i + 1][y + 1][x] + pyr[i + 1][y - 1][x] - v2) * sc_2nd;
-          dss = (pyr[i + 2][y][x] + pyr[i][y][x] - v2) * sc_2nd;
-          dxy = (pyr[i + 1][y + 1][x + 1] - pyr[i + 1][y + 1][x - 1] - pyr[i + 1][y - 1][x + 1] + pyr[i + 1][y - 1][x - 1]) * sc_xy;
-          dxs = (pyr[i + 2][y][x + 1] - pyr[i + 2][y][x - 1] - pyr[i][y][x + 1] - pyr[i][y][x - 1]) * sc_xy;
-          dys = (pyr[i + 2][y + 1][x] - pyr[i + 2][y - 1][x] - pyr[i][y + 1][x] + pyr[i][y - 1][x]) * sc_xy;
+          dxx = (pyr[i + 1][y][x + 1] + pyr[i + 1][y][x - 1] - v2) * kSc2Nd;
+          dyy = (pyr[i + 1][y + 1][x] + pyr[i + 1][y - 1][x] - v2) * kSc2Nd;
+          dss = (pyr[i + 2][y][x] + pyr[i][y][x] - v2) * kSc2Nd;
+          dxy = (pyr[i + 1][y + 1][x + 1] - pyr[i + 1][y + 1][x - 1] - pyr[i + 1][y - 1][x + 1] + pyr[i + 1][y - 1][x - 1]) * kScXy;
+          dxs = (pyr[i + 2][y][x + 1] - pyr[i + 2][y][x - 1] - pyr[i][y][x + 1] - pyr[i][y][x - 1]) * kScXy;
+          dys = (pyr[i + 2][y + 1][x] - pyr[i + 2][y - 1][x] - pyr[i][y + 1][x] + pyr[i][y - 1][x]) * kScXy;
 
           hessian = {{dxx, dxy, dxs},
                      {dxy, dyy, dys},

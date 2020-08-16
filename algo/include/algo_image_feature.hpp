@@ -66,13 +66,30 @@ Points FASTCorners(const Img& im, const int& intensity_threshold, const int& cor
 //  SIFT Keypoints
 // //////////////////////////////////////////
 
+/// \brief Used to describe a SIFT keypoint.
 struct Keypoint {
-  int x, y;
-  double radius, angle;
+  int x;        /// < X-coordinate
+  int y;        /// < Y-coordinate
+  double radius;/// < Radius, sometimes called magnitude.
+  double angle; // < Angle in degrees.
 };
 
+/// \brief Used for storing keypoints.
 using Keypoints = std::vector<Keypoint>;
 
+/// \brief Retuns a list of SIFT keypoints, where each keypoint has a (x,y)-coordinate, radius and angle.
+/// \param img Input image.
+/// \param nbr_gaussians The number of gaussians in each octave-layer, 5 recommended.
+/// \param nbr_octaves The number of octaves in DoG-pyramid, |DoG| = nbr_octaves * nbr_gaussians - 1, 5 recommended.
+/// \param contrast_offset The contrast threshold that will discard keypoints at locations with lower value.
+/// \param edge_threshold The edge threshold that will discard keypoints at edges with lower value.
+/// \return The SIFT-keypoints [{x, y, radius, angle},...].
+/// \note This function does NOT return the descriptors.
+/// \note The input parameters may need to be changed depending on what kind of images is used and their size.
+/// \link <a href="https://en.wikipedia.org/wiki/Scale-invariant_feature_transform">SIFT, Wikipedia.</a>
+/// \link <a href="https://www.cs.ubc.ca/~lowe/papers/iccv99.pdf">Lowe 1999.</a>
+/// \todo Add code for computing the descriptors.
+/// \todo Unit test.
 Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians = 5, const int& nbr_octaves = 5, const float& contrast_offset = 1.7, const float& edge_threshold = 20.0);
 
 }// namespace algo::image::feature
