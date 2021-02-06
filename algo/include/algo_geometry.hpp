@@ -8,6 +8,7 @@
 /// 2015-06-04 Triangulation of 2D-points
 /// 2015-06-25 Quickhull, convex hull of 2D-points
 /// 2015-06-28 Closest pair of 2D-points
+/// 2021-02-06 Rotating calipers
 ///
 
 #ifndef ALGORITHM_GEOMETRY_GEOMETRY_ALGORITHMS_HPP_
@@ -44,6 +45,27 @@ struct Line {
 using Points = std::vector<Point>;
 using Lines = std::vector<Line>;
 
+struct Polygon {
+  Points pts;
+
+  /// \brief Makes a polygon of a set of points with convex hull.
+  /// \param points The points to extract a polygon from.
+  void MakePolygonWithConvexHull(const Points& points);
+
+  /// \brief Returns the number of edges in the polygon.
+  /// \return The number of edges in the polygon.
+  size_t NbrEdges();
+};
+
+struct Rectangle {
+  Points pts;
+
+  /// \brief Makes a bounding rectangle of the points in the input polygon.
+  /// \note This is not the minimum bounding box.
+  /// \param polygon The points in this to construct a polygon.
+  void BoundingRectangle(const Polygon& polygon);
+};
+
 // //////////////////////////////////////////
 //  Closest pair of points
 // //////////////////////////////////////////
@@ -65,6 +87,11 @@ Points ClosestPairOfPoints(const Points& points);
 /// \link <a href="https://en.wikipedia.org/wiki/Convex_hull">Convex hull, Wikipedia.</a>
 Points ConvexHull(Points points);
 
+// //////////////////////////////////////////
+//  Rotating calipers
+// //////////////////////////////////////////
+
+// TODO: Add functions for rotating calipers and minimum bounding box.
 
 // //////////////////////////////////////////
 //  Triangulation of points

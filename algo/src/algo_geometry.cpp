@@ -69,6 +69,52 @@ constexpr auto PDistance = [](const Point& p1, const Point& p2) {
 }// namespace
 
 /////////////////////////////////////////////
+/// Helpers
+/////////////////////////////////////////////
+
+void Polygon::MakePolygonWithConvexHull(const Points& points)
+{
+  if (points.size() == 3) {
+    pts = points;
+    return;
+  }
+  pts = ConvexHull(points);
+}
+
+size_t Polygon::NbrEdges()
+{
+  if (pts.size() <= 2) {
+    return pts.size() - 1;
+  }
+  return pts.size();
+}
+
+void Rectangle::BoundingRectangle(const Polygon& polygon)
+{
+  double x_min{kDblMax}, y_min{kDblMax};
+  double x_max{kDblMin}, y_max{kDblMin};
+
+  for (const Point& pt : polygon.pts) {
+    if (pt.x > x_max) {
+      x_min = pt.x;
+    }
+    if (pt.y > y_max) {
+      x_min = pt.y;
+    }
+    if (pt.x <= x_min) {
+      x_min = pt.x;
+    }
+    if (pt.y <= y_min) {
+      y_min = pt.y;
+    }
+  }
+  // 4---------3 Order of the points in the rectangle.
+  // |         |
+  // 1---------2
+  pts = {{x_min, y_min}, {x_max, y_min}, {x_max, y_max}, {x_min, y_max}};
+}
+
+/////////////////////////////////////////////
 /// Quickhull
 /////////////////////////////////////////////
 
@@ -246,6 +292,13 @@ Points ClosestPairOfPoints(const Points& points)
   std::pair<double, Points> closest{ClosestPair(ptsx, ptsy)};
   return closest.second;
 }
+
+/////////////////////////////////////////////
+/// Rotating calipers
+/////////////////////////////////////////////
+
+// TODO: Implement rotating calipers.
+// TODO: Implement minimum bounding box using rotating calipers.
 
 /////////////////////////////////////////////
 /// Triangulation of points
