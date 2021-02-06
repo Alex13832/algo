@@ -32,14 +32,15 @@ algo::sort::Merge(numbers);
 
 ### Experiment
 
-Sort 50 000 integers and measure the execution time. Sorted from fastest to slowest. 
+Sort 50 000 integers and measure the execution time.
 
-|Algorithm| Execution time [ms] (MacBook pro 2016)|
-|---|---|
-|`Heap       `    |`34.673` |
-|`Quick      `    |`365.411` |
-|`Merge      `    |`1013.26` |
-|`Bucket     `    |`2539.16` |
-|`Insertion  `    |`19924.5` |
-|`Gnome      `    |`28286.9` |
-|`Bubble     `    |`49086.7`|
+|Algorithm|Execution time [ms]||
+|---|---|---|
+|| MacBook pro 2016| MacBook Air M1 2020 |
+|`Heap       `    |`34.7` | `1.8` |
+|`Quick      `    |`365.4` | `3.3` |
+|`Merge      `    |`1013.3` | `55.3` |
+|`Bucket     `    |`2539.2` | `16.5` |
+|`Insertion  `    |`19924.5` | `133.1` |
+|`Gnome      `    |`28286.9` | `181.9` |
+|`Bubble     `    |`49086.7`| `303.7` |
