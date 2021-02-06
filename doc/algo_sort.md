@@ -34,13 +34,13 @@ algo::sort::Merge(numbers);
 
 Sort 50 000 integers and measure the execution time.
 
-|Algorithm|Execution time [ms]||
-|---|---|---|
-|| MacBook pro 2016| MacBook Air M1 2020 |
-|`Heap       `    |`34.7` | `1.8` |
-|`Quick      `    |`365.4` | `3.3` |
-|`Merge      `    |`1013.3` | `55.3` |
-|`Bucket     `    |`2539.2` | `16.5` |
-|`Insertion  `    |`19924.5` | `133.1` |
-|`Gnome      `    |`28286.9` | `181.9` |
-|`Bubble     `    |`49086.7`| `303.7` |
+|Algorithm|Execution time [ms]|||
+|---|---|---|---|
+|                   | MacBook pro 2016  | MacBook Air M1 2020   | Raspberry Pi 3    |
+|`Heap       `      |`34.7`             | `1.8`                 | `23.0`            |
+|`Quick      `      |`365.4`            | `3.3`                 | `49.8`            |
+|`Bucket     `      |`2539.2`           | `16.5`                | `287.5`           |
+|`Merge      `      |`1013.3`           | `55.3`                | `427.4`           |
+|`Insertion  `      |`19924.5`          | `133.1`               | `2181.7`          |
+|`Gnome      `      |`28286.9`          | `181.9`               | `2887.5`          |
+|`Bubble     `      |`49086.7`          | `303.7`               | `4166.5`          |
