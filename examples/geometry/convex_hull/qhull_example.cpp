@@ -69,9 +69,9 @@ int main()
 {
   Points points{ReadFile("../testfiles/convex_hull_in2.csv")};
 
-  Points qh{ConvexHull(points)};
+  Polygon qh{ConvexHull(points)};
 
-  WriteToFile(qh, points, "../testfiles/convex_hull_out2.csv");
+  WriteToFile(qh.GetPoints(), points, "../testfiles/convex_hull_out2.csv");
 
   return 0;
 }

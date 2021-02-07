@@ -9,6 +9,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <utility>
 
 namespace algo::geometry {
 
@@ -36,7 +37,7 @@ struct y_comp {
 /// \param ln The line.
 /// \param p The point.
 /// \return 1 if above/right, -1 below/left.
-constexpr auto Location = [](const Line& ln, const Point& pt) {
+constexpr auto Location = [](const Edge& ln, const Point& pt) {
   double temp{(ln.b.x - ln.a.x) * (pt.y - ln.a.y) - (ln.b.y - ln.a.y) * (pt.x - ln.a.x)};
   if (temp > 0) {
     return 1;
@@ -48,7 +49,7 @@ constexpr auto Location = [](const Line& ln, const Point& pt) {
 /// \param ln The line.
 /// \param p The point.
 /// \return Distance.
-constexpr auto LDistance = [](const Line& ln, const Point& p) {
+constexpr auto LDistance = [](const Edge& ln, const Point& p) {
   double abx{ln.b.x - ln.a.x};
   double aby{ln.b.y - ln.a.y};
   double dist{abx * (ln.a.y - p.y) - aby * (ln.a.x - p.x)};
@@ -66,53 +67,17 @@ constexpr auto PDistance = [](const Point& p1, const Point& p2) {
   return sqrt((double) pow(p1.x - p2.x, 2) + (double) pow(p1.y - p2.y, 2));
 };
 
+constexpr auto AreaPolyRect = [](const Points& pts) {
+  Point p1 = pts.at(0);
+  Point p2 = pts.at(1);
+  Point p3 = pts.at(2);
+  Point p4 = pts.at(3);
+
+  double sum = p1.x * p2.y - p1.y * p2.x + p2.x * p3.y - p2.y * p3.x + p3.x * p4.y - p4.y * p3.x + p4.x * p1.y - p4.x * p1.x;
+  return std::abs(sum / 2.0);
+};
+
 }// namespace
-
-/////////////////////////////////////////////
-/// Helpers
-/////////////////////////////////////////////
-
-void Polygon::MakePolygonWithConvexHull(const Points& points)
-{
-  if (points.size() == 3) {
-    pts = points;
-    return;
-  }
-  pts = ConvexHull(points);
-}
-
-size_t Polygon::NbrEdges()
-{
-  if (pts.size() <= 2) {
-    return pts.size() - 1;
-  }
-  return pts.size();
-}
-
-void Rectangle::BoundingRectangle(const Polygon& polygon)
-{
-  double x_min{kDblMax}, y_min{kDblMax};
-  double x_max{kDblMin}, y_max{kDblMin};
-
-  for (const Point& pt : polygon.pts) {
-    if (pt.x > x_max) {
-      x_min = pt.x;
-    }
-    if (pt.y > y_max) {
-      x_min = pt.y;
-    }
-    if (pt.x <= x_min) {
-      x_min = pt.x;
-    }
-    if (pt.y <= y_min) {
-      y_min = pt.y;
-    }
-  }
-  // 4---------3 Order of the points in the rectangle.
-  // |         |
-  // 1---------2
-  pts = {{x_min, y_min}, {x_max, y_min}, {x_max, y_max}, {x_min, y_max}};
-}
 
 /////////////////////////////////////////////
 /// Quickhull
@@ -140,7 +105,7 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
     double max_dist{kDblMin};
 
     for (auto p : pts) {
-      double curr_dist{LDistance(Line{a, b}, p)};
+      double curr_dist{LDistance(Edge{a, b}, p)};
       if (curr_dist > max_dist) {
         max_dist = curr_dist;
         c = p;
@@ -154,8 +119,8 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
 
     Points A, B;
     std::for_each(pts.begin(), pts.end(), [&](Point p) {
-      if (Location(Line{a, c}, p) == 1) A.emplace_back(p);
-      if (Location(Line{c, b}, p) == 1) B.emplace_back(p);
+      if (Location(Edge{a, c}, p) == 1) A.emplace_back(p);
+      if (Location(Edge{c, b}, p) == 1) B.emplace_back(p);
     });
 
     // Recursive calls
@@ -164,14 +129,14 @@ void QuickHull(Point a, Point b, Points& pts, Points& pts_ch)
   }
 }
 
-Points ConvexHull(Points points)
+Polygon ConvexHull(Points points)
 {
   if (points.empty()) {
-    return points;
+    return Polygon{points};
   }
   if (points.size() < 3) {
     // Too few points.
-    return Points{};
+    return Polygon{Points{}};
   }
   std::sort(points.begin(), points.end(), x_comp());
   // b and a with min and max x-coordinates respectively
@@ -187,7 +152,7 @@ Points ConvexHull(Points points)
 
   // Determine which side of line (a,b)
   std::for_each(points.begin(), points.end(), [&](Point p) {
-    Location(Line{a, b}, p) == -1 ? left.emplace_back(p) : right.emplace_back(p);
+    Location(Edge{a, b}, p) == -1 ? left.emplace_back(p) : right.emplace_back(p);
   });
 
   // Call qhull with two sets
@@ -195,7 +160,7 @@ Points ConvexHull(Points points)
   QuickHull(b, a, left, pts_ch);
 
   std::sort(pts_ch.begin(), pts_ch.end(), x_comp());
-  return pts_ch;
+  return Polygon{pts_ch};
 }
 
 /////////////////////////////////////////////
@@ -294,11 +259,42 @@ Points ClosestPairOfPoints(const Points& points)
 }
 
 /////////////////////////////////////////////
-/// Rotating calipers
+/// Minimum bounding box, rotating calipers
+/// https://github.com/Glissando/Rotating-Calipers
 /////////////////////////////////////////////
 
-// TODO: Implement rotating calipers.
-// TODO: Implement minimum bounding box using rotating calipers.
+Polygon MinimumBoundingBox(const Points& points)
+{
+  if (points.size() < 3) {
+    // The only other constraint is if all points are on the same line.
+    return Polygon{Points{}};
+  }
+
+  Polygon polygon{ConvexHull(points)};
+  std::vector<Polygon> polygons;
+
+  // Rotating calipers step
+  for (size_t i = 0; i < polygon.EdgeCount(); i++) {
+    Point edge{polygon.GetEdge(i)};
+    const double angle{std::acos(edge.Normalize().y)};
+    Polygon polygon1{polygon.Rotate(angle)};
+    Rectangle box{polygon1.BoundingRectangle()};
+    polygon1 = polygon1.Rotate(-angle);
+    Point center{polygon1.GetCenter()};
+    polygons.emplace_back(box.GetPolygon().Rotate(-angle, center));
+  }
+  double min_area{kDblMax};
+  Polygon min_bbox{{}};
+
+  // Get minimal enclosing rectangle
+  for (Polygon poly : polygons) {
+    if (AreaPolyRect(poly.GetPoints()) < min_area) {
+      min_area = AreaPolyRect(poly.GetPoints());
+      min_bbox = poly;
+    }
+  }
+  return min_bbox;
+}
 
 /////////////////////////////////////////////
 /// Triangulation of points
@@ -359,7 +355,7 @@ void LexSortPoints(Points& pts)
 
 }//namespace
 
-Lines Triangulate(Points& pts)
+Edges Triangulate(Points& pts)
 {
   LexSortPoints(pts);
 
@@ -367,10 +363,10 @@ Lines Triangulate(Points& pts)
   bool intersection{false};
 
   // The three first points constructs a triangle.
-  Line l0{pts[0], pts[1]};
-  Line l1{pts[0], pts[2]};
-  Line l2{pts[1], pts[2]};
-  Lines lines{l0, l1, l2};
+  Edge l0{pts[0], pts[1]};
+  Edge l1{pts[0], pts[2]};
+  Edge l2{pts[1], pts[2]};
+  Edges lines{l0, l1, l2};
 
   // From this point add points to the only triangulate incrementally.
   for (size_t i = 3; i < pts.size(); ++i) {
@@ -391,7 +387,7 @@ Lines Triangulate(Points& pts)
       }
 
       if (!intersection) {
-        Line line{p0, *pi};
+        Edge line{p0, *pi};
         lines.emplace_back(line);
       }
       intersection = false;

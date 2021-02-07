@@ -28,8 +28,8 @@ struct x_comp_ {
 TEST(test_algo_geometry, qhull_test_empty)
 {
   Points points{};
-  Points qh{ConvexHull(points)};
-  EXPECT_TRUE(qh.empty());
+  Polygon qh{ConvexHull(points)};
+  EXPECT_TRUE(qh.GetPoints().empty());
 }
 
 TEST(test_algo_geometry, qhull_test_too_few_points)
@@ -37,9 +37,9 @@ TEST(test_algo_geometry, qhull_test_too_few_points)
   Points points{
       {0.174069, 0.526348},
       {0.502471, 0.523942}};
-  Points qh{ConvexHull(points)};
+  Polygon qh{ConvexHull(points)};
   // There's no convex hull of two points.
-  EXPECT_TRUE(qh.empty());
+  EXPECT_TRUE(qh.GetPoints().empty());
 }
 
 TEST(test_algo_geometry, qhull_test_same_in_out)
@@ -49,10 +49,10 @@ TEST(test_algo_geometry, qhull_test_same_in_out)
       {0.502471, 0.523942},
       {0.339814, 0.297757},
   };
-  Points qh{ConvexHull(points)};
+  Polygon qh{ConvexHull(points)};
   sort(points.begin(), points.end(), x_comp_());
-  EXPECT_EQ(points.size(), qh.size());
-  EXPECT_TRUE(equal(points.begin(), points.end(), qh.begin()));
+  EXPECT_EQ(points.size(), qh.GetPoints().size());
+  EXPECT_TRUE(equal(points.begin(), points.end(), qh.GetPoints().begin()));
 }
 
 TEST(test_algo_geometry, qhull_simple_1)
@@ -70,10 +70,11 @@ TEST(test_algo_geometry, qhull_simple_1)
 
   sort(correct.begin(), correct.end(), x_comp_());
 
-  Points qh{ConvexHull(points)};
+  Polygon qh{ConvexHull(points)};
 
-  EXPECT_EQ(qh.size(), correct.size());
-  EXPECT_TRUE(equal(qh.begin(), qh.end(), correct.begin()));
+  const Points& pts{qh.GetPoints()};
+  EXPECT_EQ(pts.size(), correct.size());
+  EXPECT_TRUE(equal(pts.begin(), pts.end(), correct.begin()));
 }
 
 TEST(test_algo_geometry, qhull_simple_2)
@@ -124,10 +125,11 @@ TEST(test_algo_geometry, qhull_simple_2)
 
   sort(correct.begin(), correct.end(), x_comp_());
 
-  Points qh{ConvexHull(points)};
+  Polygon qh{ConvexHull(points)};
 
-  EXPECT_EQ(qh.size(), correct.size());
-  EXPECT_TRUE(equal(qh.begin(), qh.end(), correct.begin()));
+  const Points& pts{qh.GetPoints()};
+  EXPECT_EQ(pts.size(), correct.size());
+  EXPECT_TRUE(equal(pts.begin(), pts.end(), correct.begin()));
 }
 
 /////////////////////////////////////////////
@@ -214,16 +216,69 @@ TEST(test_algo_geometry, closest_pair_pts_simple_2)
 }
 
 /////////////////////////////////////////////
+/// Minimum bounding box
+/////////////////////////////////////////////
+
+TEST(test_algo_geometry, minimum_bbox_constraints)
+{
+  const Points pts{{0, 0}, {1, 1}};
+  Polygon polygon{MinimumBoundingBox(pts)};
+  EXPECT_EQ(polygon.GetPoints().size(), 0);
+}
+
+TEST(test_algo_geometry, minimum_bbox_size)
+{
+  const Points pts{{1, 1}, {-1, 1}, {-1, -1}, {1, -1}, {0.5, 0.5}};
+  Polygon polygon{MinimumBoundingBox(pts)};
+  EXPECT_EQ(polygon.GetPoints().size(), 4);
+}
+
+TEST(test_algo_geometry, minimum_bbox_small)
+{
+  const Points pts{
+      {3, 2},
+      {5, 3},
+      {7, 3},
+      {4, 4},
+      {2, 5},
+      {6, 6},
+  };
+
+  const Points correct{
+      {3, 2},
+      {7, 3},
+      {2, 5},
+      {6, 6},
+  };
+
+  Polygon min_box{MinimumBoundingBox(pts)};
+  Points result{min_box.GetPoints()};
+  EXPECT_EQ(result.size(), 4);
+
+  int found{0};
+
+  for (const Point& c : correct) {
+    for (const Point& r : correct) {
+      if (c.x == r.x && c.y == r.y) {
+        found++;
+        break;
+      }
+    }
+  }
+  EXPECT_EQ(found, 4);
+}
+
+/////////////////////////////////////////////
 /// Triangulation of points
 /////////////////////////////////////////////
 
-TEST(test_algo_geometry, triangulate_timple)
+TEST(test_algo_geometry, triangulate_simple)
 {
   Points points{{0.112301, 0.440927},
                 {0.339814, .723659},
                 {0.614683, .516723},
                 {0.414966, .294147}};
 
-  Lines lines{Triangulate(points)};
+  Edges lines{Triangulate(points)};
   EXPECT_EQ(lines.size(), 5);
 }

@@ -4,7 +4,7 @@
 # //////////////////////////////////////////////////////////
 project(${CMAKE_PROJECT_NAME})
 
-if (OPENCV_INSTALLED==TRUE)
+if (OPENCV_INSTALLED=1)
     find_package(OpenCV REQUIRED)
 
     add_library(image_helpers STATIC image_helpers.cpp)

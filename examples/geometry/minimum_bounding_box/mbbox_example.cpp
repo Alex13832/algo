@@ -1,7 +1,7 @@
 ///
-/// \brief Example source code for triangulate.
+/// \brief Example source code for minimum bounding box.
 /// \author alex011235
-/// \date 2020-04-29
+/// \date 2020-02-14
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
@@ -41,36 +41,38 @@ Points ReadFile(const string& file)
 }
 
 /// \brief Writes points to a csv-file.
-/// \param points The convex hull points.
+/// \param points The bounding box.
 /// \param all All points.
 /// \param filename
-void WriteToFile(const Edges& lines, const string& filename)
+void WriteToFile(const Points& points, const Points& all, const string& filename)
 {
   ofstream file;
   file.open(filename);
 
-  file << "x1"
+  file << "x"
        << ","
-       << "y1"
+       << "y"
        << ","
-       << "x2"
-       << ","
-       << "y2"
-       << '\n';
+       << "Label" << '\n';
 
-  for (auto line : lines) {
-    file << line.a.x << ", " << line.a.y << ", " << line.b.x << ", " << line.b.y << '\n';
+  for (auto p : all) {
+    file << p.x << ", " << p.y << ",1" << '\n';
   }
+  for (auto p : points) {
+    file << p.x << ", " << p.y << ",2" << '\n';
+  }
+  file << points.at(0).x << ", " << points.at(0).y << ",2" << '\n';
 
   file.close();
 }
 
 int main()
 {
-  Points points{ReadFile("testfiles/triangulate_in.csv")};
+  Points points{ReadFile("../testfiles/mbbox_in2.csv")};
 
-  Edges lines{Triangulate(points)};
+  Polygon mbbox{MinimumBoundingBox(points)};
 
-  WriteToFile(lines, "testfiles/triangulate_out.csv");
+  WriteToFile(mbbox.GetPoints(), points, "../testfiles/mbbox_out2.csv");
+
   return 0;
 }

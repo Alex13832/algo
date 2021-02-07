@@ -14,6 +14,7 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_data_mining.cpp
         ${PROJECT_SOURCE_DIR}/algo_geometry.cpp
+        ${PROJECT_SOURCE_DIR}/algo_geometry_ds.cpp
         ${PROJECT_SOURCE_DIR}/algo_graph.cpp
         ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
         ${PROJECT_SOURCE_DIR}/algo_image_basic.cpp
