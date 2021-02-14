@@ -110,14 +110,14 @@ using namespace algo::geometry;
 
 ...
 
-Points pts{
+Points pts_{
   {0.0428843, 0.967891},
   {0.0418432, 0.943829},
   ...,
   {0.0907716, 0.0980396},
   {0.917348, 0.972703}};
 
-LabeledPoints lpts{DBSCAN(pts, DistFunc::Euclidean, 0.2, 3)};
+LabeledPoints lpts{DBSCAN(pts_, DistFunc::Euclidean, 0.2, 3)};
 ```
 
 ### Examples

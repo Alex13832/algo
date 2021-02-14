@@ -30,7 +30,7 @@ Namespace `algo::image`
 |`Data8_3`          |Internal data structure in `Img3`, color.      | `Data8_3 d{{1,1,1,1}, {2,2,2,2}, {3,3,3,3}};`     |
 |`Dataf`            |Internal data structure in `ImgF`.             | `Dataf d{0.5, 0.1, 0.2, 0.4};`|
 |`Lines`            |Stores `Line` objects.                         |`Lines lines{Line{.},...,Line{.};`             |
-|`Points`           |Stores `Point` objecs.                         |`Points pts{Point{1,2}, Point{3,4}};`|
+|`Points`           |Stores `Point` objecs.                         |`Points pts_{Point{1,2}, Point{3,4}};`|
 |`Img3`             |Three channel, color image.                    ||
 |`Img`              |The ordinary image data structure.             |`Img img{NewImgGray{5,5}};`|
 |`ImgF`             |Image that uses floating point numbers.        ||
