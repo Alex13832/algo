@@ -13,6 +13,7 @@ This repository contains C++ implementations of various known algorithms from se
     * [Feature detection](https://github.com/alex011235/algo/blob/master/doc/algo_image_feature.md)
     * [Filters](https://github.com/alex011235/algo/blob/master/doc/algo_image_filter.md)
     * [Object detection](https://github.com/alex011235/algo/blob/master/doc/algo_image_object.md)
+* [Math](https://github.com/alex011235/algo/blob/master/doc/algo_math.md)
 * [Network algorithms](https://github.com/alex011235/algo/blob/master/doc/algo_network.md)
 * [Puzzle solving](https://github.com/alex011235/algo/blob/master/doc/algo_puzzle.md)
 * [Searching](https://github.com/alex011235/algo/blob/master/doc/algo_search.md)
