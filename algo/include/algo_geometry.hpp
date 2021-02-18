@@ -8,7 +8,8 @@
 /// 2015-06-04 Triangulation of 2D-points
 /// 2015-06-25 Quickhull, convex hull of 2D-points
 /// 2015-06-28 Closest pair of 2D-points
-/// 2021-02-06 Rotating calipers, minimum bounding box.
+/// 2021-02-06 Rotating calipers, minimum bounding box
+/// 2021-01-18 Minimum enclosing circle
 ///
 
 #ifndef ALGORITHM_GEOMETRY_GEOMETRY_ALGORITHMS_HPP_
@@ -42,6 +43,12 @@ Polygon ConvexHull(Points points);
 /// \link <a href="https://en.wikipedia.org/wiki/Rotating_calipers">Rotating calipers, Wikipedia.</a>
 /// \link <a href="https://en.wikipedia.org/wiki/Minimum_bounding_box">Minimum bounding box, Wikipedia.</a>
 Polygon MinimumBoundingBox(const Points& points);
+
+/// \brief Returns a circle around the points in pts.
+/// \param pts The input points.
+/// \return A circle around the points in pts.
+/// \link <a href="https://en.wikipedia.org/wiki/Smallest-circle_problem">Smallest-circle problem, Wikipedia.</a>
+Circle MinimumEnclosingCircle(Points& pts);
 
 /// \brief Computes the triangulation of a set of input 2D-points.
 /// \param pts The input points.

@@ -116,6 +116,40 @@ Note that the axis should be adjusted when plotting, otherwise the resulting rec
 
 ![mbbox1](images/mbbox1.png) ![mbbox1](images/mbbox2.png) ![mbbox1](images/mbbox3.png)
 
+## Minimum enclosing circle
+
+```cpp
+Circle MinimumEnclosingCircle(Points& pts);
+```
+
+Returns the smallest circle around the points in `pts`.
+
+[Smallest-circle problem](https://en.wikipedia.org/wiki/Smallest-circle_problem)
+
+### Usage
+
+```cpp
+#include "algo.hpp"
+
+using namespace algo::geometry;
+
+...
+
+Points pts{{5, -2},
+           {-3, -2},
+           {-2, 5},
+           {1, 6},
+           {0, 2}};
+
+Circle circle{MinimumEnclosingCircle(pts)};
+```
+
+### Examples
+
+![Mec1](images/mec1.png) ![Mec2](images/mec2.png)
+
+![Mec3](images/mec3.png) ![Mec1](images/mec4.png)
+
 ## Triangulation of 2D-points
 
 ```cpp

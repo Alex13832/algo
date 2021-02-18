@@ -13,6 +13,9 @@ include_directories(convex_hull)
 add_subdirectory(minimum_bounding_box)
 include_directories(minimum_bounding_box)
 
+add_subdirectory(minimum_enclosing_circle)
+include_directories(minimum_enclosing_circle)
+
 add_subdirectory(triangulate)
 include_directories(triangulate)
 
