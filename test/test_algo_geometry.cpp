@@ -269,6 +269,56 @@ TEST(test_algo_geometry, minimum_bbox_small)
 }
 
 /////////////////////////////////////////////
+/// Minimum bounding circle
+/////////////////////////////////////////////
+
+TEST(test_algo_geometry, minimum_bounding_circle_empty)
+{
+  Points pts{};
+
+  Circle circle{MinimumEnclosingCircle(pts)};
+  EXPECT_EQ(circle.radius, 0.0);
+  EXPECT_EQ(circle.center.x, 0.0);
+  EXPECT_EQ(circle.center.y, 0.0);
+}
+
+TEST(test_algo_geometry, minimum_bounding_circle_one_points)
+{
+  Points pts{{1, 1}};
+
+  Circle circle{MinimumEnclosingCircle(pts)};
+  EXPECT_EQ(circle.radius, 0.0);
+  EXPECT_EQ(circle.center.x, 1.0);
+  EXPECT_EQ(circle.center.y, 1.0);
+}
+
+TEST(test_algo_geometry, minimum_bounding_circle_three_points)
+{
+  Points pts{{0, 0},
+             {0, 1},
+             {1, 0}};
+
+  Circle circle{MinimumEnclosingCircle(pts)};
+  EXPECT_EQ(circle.radius, std::sqrt(0.5));
+  EXPECT_EQ(circle.center.x, 0.5);
+  EXPECT_EQ(circle.center.y, 0.5);
+}
+
+TEST(test_algo_geometry, minimum_bounding_circle_five_points)
+{
+  Points pts{{5, -2},
+             {-3, -2},
+             {-2, 5},
+             {1, 6},
+             {0, 2}};
+
+  Circle circle{MinimumEnclosingCircle(pts)};
+  EXPECT_EQ(circle.radius, 5);
+  EXPECT_EQ(circle.center.x, 1);
+  EXPECT_EQ(circle.center.y, 1);
+}
+
+/////////////////////////////////////////////
 /// Triangulation of points
 /////////////////////////////////////////////
 

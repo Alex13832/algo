@@ -6,6 +6,7 @@ Namespaces omitted
 
 |Data structure| Description | Example |
 |:---|:---|:---|
+|`Circle`       | A circle with center point and radius.| `Circle c{{1,1}, 2};`
 |`Point`        | 2D cartesian point.                   | `Point pt{1,2};` |
 |`Points`       | For storing multiple points.          | `Points pts_{{1,1},...,{n,n}};` |
 |`Edge`         | For connecting two points.            | `Edge line{Point{1,1}, Point{2,2}};`|
@@ -115,6 +116,40 @@ Polygon mbbox{MinimumBoundingBox(pts)};
 Note that the axis should be adjusted when plotting, otherwise the resulting rectangle might look skew.
 
 ![mbbox1](images/mbbox1.png) ![mbbox1](images/mbbox2.png) ![mbbox1](images/mbbox3.png)
+
+## Minimum enclosing circle
+
+```cpp
+Circle MinimumEnclosingCircle(Points& pts);
+```
+
+Returns the smallest circle around the points in `pts`.
+
+[Smallest-circle problem](https://en.wikipedia.org/wiki/Smallest-circle_problem)
+
+### Usage
+
+```cpp
+#include "algo.hpp"
+
+using namespace algo::geometry;
+
+...
+
+Points pts{{5, -2},
+           {-3, -2},
+           {-2, 5},
+           {1, 6},
+           {0, 2}};
+
+Circle circle{MinimumEnclosingCircle(pts)};
+```
+
+### Examples
+
+![Mec1](images/mec1.png) ![Mec2](images/mec2.png)
+
+![Mec3](images/mec3.png) ![Mec1](images/mec4.png)
 
 ## Triangulation of 2D-points
 
