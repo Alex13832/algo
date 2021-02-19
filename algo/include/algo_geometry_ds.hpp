@@ -129,6 +129,15 @@ class Polygon {
   Point center_{};///< The center of the polygon.
 };
 
+// //////////////////////////////////////////
+//  Circle data structure
+// //////////////////////////////////////////
+
+struct Circle {
+  Point center;
+  double radius;
+};
+
 }// namespace algo::geometry
 
 #endif//ALGO_ALGO_INCLUDE_ALGO_GEOMETRY_DS_HPP_

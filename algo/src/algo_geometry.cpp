@@ -64,9 +64,15 @@ constexpr auto LDistance = [](const Edge& ln, const Point& p) {
 /// \param p2 Point 2.
 /// \return The distance between p1 and p2.
 constexpr auto PDistance = [](const Point& p1, const Point& p2) {
-  return sqrt((double) pow(p1.x - p2.x, 2) + (double) pow(p1.y - p2.y, 2));
+  return sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2));
 };
 
+///\brief Checks if the given point p is inside the circle.
+constexpr auto InsideCircle = [](const Circle& circle, const Point& p) {
+  return PDistance(circle.center, p) <= circle.radius;
+};
+
+///\brief Computes the area of the four points in pts.
 constexpr auto AreaPolyRect = [](const Points& pts) {
   Point p1 = pts.at(0);
   Point p2 = pts.at(1);
@@ -294,6 +300,83 @@ Polygon MinimumBoundingBox(const Points& points)
     }
   }
   return min_bbox;
+}
+
+/////////////////////////////////////////////
+/// Minimum bounding circle
+/////////////////////////////////////////////
+
+/// \brief Makes a circle out of the the given points located on the radius.
+/// \param p1 Point 1.
+/// \param p2 Point 2.
+/// \param p3 Point 3.
+/// \return A circle of p1, p2, p3.
+Circle CircleOf3(Point p1, Point p2, Point p3)
+{
+  const double bx{p2.x - p1.x};
+  const double by{p2.y - p1.y};
+  const double cx{p3.x - p1.x};
+  const double cy{p3.y - p1.y};
+  const double b{bx * bx + by * by};
+  const double c{cx * cx + cy * cy};
+  const double d{bx * cy - by * cx};
+
+  Point center{Point{(cy * b - by * c) / (2.0 * d), (bx * c - cx * b) / (2.0 * d)}};
+  center.x += p1.x;
+  center.y += p1.y;
+  const double radius{PDistance(center, p1)};
+  return {center, radius};
+}
+
+/// \brief Returns a circle out of either 1, 2 or 3 points.
+/// \param pts Given points, |points| ≤ 3.
+/// \return A circle.
+Circle TrivialCircumcircle(Points pts)
+{
+  if (pts.empty() || pts.size() > 3) {
+    return Circle{{0, 0}, 0};
+  }
+  // Single point given
+  if (pts.size() == 1) {
+    return Circle{pts.front(), 0};
+  }
+  // Two points on the circle
+  if (pts.size() == 2) {
+    Point p1 = pts.at(0);
+    Point p2 = pts.at(1);
+    const Point mid{(p1.x + p2.x) / 2.0, (p1.y + p2.y) / 2.0};
+    const double diameter{PDistance(p1, p2)};
+    return Circle{mid, diameter / 2.0};
+  }
+  // Last case, three points are on the circle
+  return CircleOf3(pts.at(0), pts.at(1), pts.at(2));
+}
+
+/// \brief Runs the Welzl step of the minimum enclosing circle step.
+/// \param pts Points to construct a circle around.
+/// \param r Input plane.
+/// \return A circle around the points in pts.
+Circle Welzl(Points pts, Points r)
+{
+  if (pts.empty() || r.size() == 3) {
+    return TrivialCircumcircle(r);
+  }
+  size_t index = std::rand() % pts.size();
+  Point p{pts.at(index)};
+  pts.erase(pts.begin() + index);
+  Circle circle{Welzl(pts, r)};
+
+  if (InsideCircle(circle, p)) {
+    return circle;
+  }
+  r.emplace_back(p);
+  return Welzl(pts, r);
+}
+
+Circle MinimumEnclosingCircle(Points& pts)
+{
+  Points r;
+  return Welzl(pts, r);
 }
 
 /////////////////////////////////////////////

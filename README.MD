@@ -50,13 +50,8 @@ Test project /Users/alex011235/code/algo/build
 
 Total Test time (real) =   4.10 sec
 ```
-Note that this is a collection of (>200) test cases. If you wish to execute each test case one by
-one, navigate to `<algo-root>/build/test` and execute
+Note that this is a collection of (>200) test cases. If you wish to execute each test case one by one, navigate to `<algo-root>/build/test` and run
 
-```shell script
-./algo_tests
-```
-and expect:
 ```shell script
 ❯ ./algo_tests
 Running main() from /Users/alex011235/code/algo/test/gtest/googletest/src/gtest_main.cc
