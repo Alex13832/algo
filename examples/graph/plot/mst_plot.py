@@ -13,7 +13,7 @@ edge_y_in = []
 node_x_in = []
 node_y_in = []
 
-for x0, y0, x1, y1 in zip(df_in['x0'], df_in['y0'], df_in['x1'], df_in['y1']):
+for x0, y0, x1, y1 in zip(df_in['X0'], df_in['Y0'], df_in['X1'], df_in['Y1']):
     edge_x_in.append(x0)
     edge_x_in.append(x1)
     edge_x_in.append(None)
@@ -30,7 +30,7 @@ edge_y_res = []
 node_x_res = []
 node_y_res = []
 
-for x0, y0, x1, y1 in zip(df_res['x0'], df_res['y0'], df_res['x1'], df_res['y1']):
+for x0, y0, x1, y1 in zip(df_res['X0'], df_res['Y0'], df_res['X1'], df_res['Y1']):
     edge_x_res.append(x0)
     edge_x_res.append(x1)
     edge_x_res.append(None)

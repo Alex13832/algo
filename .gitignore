@@ -1,6 +1,4 @@
 # Folders to exclude
-/test/gtest/
-/test/gtest
 /build
 /html
 /cmake-build-debug

@@ -6,15 +6,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_in = pd.read_csv('testfiles/shortest_path_data_in.csv')
-df_res = pd.read_csv('testfiles/shortest_path_data_out.csv');
-
-edges_x0 = df_in['X0']
-edges_y0 = df_in['Y0']
-edges_x1 = df_in['X1']
-edges_y1 = df_in['Y1']
-res_x = df_res['x']
-res_y = df_res['y']
+df_in = pd.read_csv('testfiles/nn_data_in.csv')
+df_res = pd.read_csv('testfiles/nn_data_out.csv');
 
 edge_x = []
 edge_y = []
@@ -26,7 +19,7 @@ edge_res_y = []
 node_res_x = []
 node_res_y = []
 
-for x0, y0, x1, y1 in zip(edges_x0, edges_y0, edges_x1, edges_y1):
+for x0, y0, x1, y1 in zip(df_in['X0'], df_in['Y0'], df_in['X1'], df_in['Y1']):
     edge_x.append(x0)
     edge_x.append(x1)
     edge_x.append(None)
@@ -38,32 +31,35 @@ for x0, y0, x1, y1 in zip(edges_x0, edges_y0, edges_x1, edges_y1):
     node_y.append(y0)
     node_y.append(y1)
 
-for x, y in zip(res_x, res_y):
+for x, y in zip(df_res['X'], df_res['Y']):
     edge_res_x.append(x)
     edge_res_y.append(y)
     node_res_x.append(x)
     node_res_y.append(y)
 
 # The edges in the plot
-edge_trace_in = go.Scatter(x=edge_x, y=edge_y, line=dict(width=0.5, color='#888'), hoverinfo='none', mode='lines')
+edge_trace = go.Scatter(
+    x=edge_x, y=edge_y,
+    line=dict(width=0.5, color='#888'),
+    hoverinfo='none',
+    mode='lines')
 
 # THe nodes in the plot
-node_trace_in = go.Scatter(x=node_x, y=node_y, mode='markers', hoverinfo='text',
-                           marker=dict(showscale=False, colorscale='Picnic', reversescale=True, color=[], size=10,
-                                       colorbar=dict(thickness=15, xanchor='left', titleside='right'),
-                                       line_width=2))
+node_trace = go.Scatter(x=node_x, y=node_y, mode='markers', hoverinfo='text',
+                        marker=dict(showscale=False, colorscale='Picnic', reversescale=True, color=[], size=10,
+                                    colorbar=dict(thickness=15, xanchor='left', titleside='right'), line_width=2))
 
-edge_trace_res = go.Scatter(x=edge_res_x, y=edge_res_y, line=dict(width=3.5, color='#FF4969'), hoverinfo='none',
+edge_res_trace = go.Scatter(x=edge_res_x, y=edge_res_y, line=dict(width=3.5, color='#FF4969'), hoverinfo='none',
                             mode='lines')
 
-node_trace_res = go.Scatter(x=node_res_x, y=node_res_y, mode='markers', hoverinfo='text',
+node_res_trace = go.Scatter(x=node_res_x, y=node_res_y, mode='markers', hoverinfo='text',
                             marker=dict(showscale=False, colorscale='Picnic', reversescale=True, color="#FF4969",
                                         size=12, colorbar=dict(thickness=15, xanchor='left', titleside='right'),
                                         line_width=1))
 
 # Create network graph
 
-fig = go.Figure(data=[edge_trace_in, node_trace_in, edge_trace_res, node_trace_res],
+fig = go.Figure(data=[edge_trace, node_trace, edge_res_trace, node_res_trace],
                 layout=go.Layout(
                     title='',
                     titlefont_size=16,

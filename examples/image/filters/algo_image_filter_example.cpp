@@ -17,7 +17,8 @@ using namespace algo::image::filter;
 using namespace std;
 
 namespace {
-string testfile_path() { return "../testfiles/"; };
+string testfile_path()
+{ return "../testfiles/"; };
 }// namespace
 
 void RunKernelConvolutions()

@@ -4,20 +4,12 @@
 # //////////////////////////////////////////////////////////
 project(Algorithm)
 
-add_subdirectory(closest_pair)
-include_directories(closest_pair)
+set(libs
+        ${CMAKE_PROJECT_NAME}
+        common)
 
-add_subdirectory(convex_hull)
-include_directories(convex_hull)
-
-add_subdirectory(minimum_bounding_box)
-include_directories(minimum_bounding_box)
-
-add_subdirectory(minimum_enclosing_circle)
-include_directories(minimum_enclosing_circle)
-
-add_subdirectory(triangulate)
-include_directories(triangulate)
+add_executable(algo_geometry_examples_run geometry_examples.cpp)
+target_link_libraries(algo_geometry_examples_run ${libs})
 
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/testfiles
         DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
