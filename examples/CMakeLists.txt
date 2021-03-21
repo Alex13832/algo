@@ -4,6 +4,9 @@
 # //////////////////////////////////////////////////////////
 project(${CMAKE_PROJECT_NAME})
 
+include_directories(common)
+add_subdirectory(common)
+
 include_directories(data_mining)
 add_subdirectory(data_mining)
 

@@ -6,7 +6,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('../../../cmake-build-debug/examples/data_mining/testfiles/dbscan_out1.csv')
+df_res = pd.read_csv('../testfiles/dbscan_out1.csv')
 
 x_in = df_res['x']
 y_in = df_res['y']

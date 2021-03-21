@@ -4,14 +4,9 @@
 # //////////////////////////////////////////////////////////
 project(${CMAKE_PROJECT_NAME})
 
-include_directories(minimum_spanning_tree)
-add_subdirectory(minimum_spanning_tree)
+set(LIBS
+        ${CMAKE_PROJECT_NAME}
+        common)
 
-include_directories(shortest_path)
-add_subdirectory(shortest_path)
-
-include_directories(nearest_neighbor)
-add_subdirectory(nearest_neighbor)
-
-include_directories(strongly_connected_components)
-add_subdirectory(strongly_connected_components)
+add_executable(algo_graph_examples_run graph_examples.cpp)
+target_link_libraries(algo_graph_examples_run ${LIBS})
