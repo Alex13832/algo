@@ -51,7 +51,7 @@ std::vector<Match> StableMatching(Prefs men_pref, Prefs women_pref)
   // Copy pairs of matched men and women.
   std::vector<Match> out;
   int man{1};
-  for (const auto &woman : engaged_men) {
+  for (const auto& woman : engaged_men) {
     out.emplace_back(std::make_pair(man, woman));
     man++;
   }

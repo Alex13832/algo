@@ -16,7 +16,7 @@ namespace algo::sort {
 /////////////////////////////////////////////
 
 template<typename T>
-void Bubble(std::vector<T> &vec)
+void Bubble(std::vector<T>& vec)
 {
   if (vec.empty()) {
     return;
@@ -33,17 +33,17 @@ void Bubble(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Bubble-sort.
-template void Bubble<unsigned>(std::vector<unsigned> &vec);
-template void Bubble<signed>(std::vector<signed> &vec);
-template void Bubble<double>(std::vector<double> &vec);
-template void Bubble<std::string>(std::vector<std::string> &vec);
+template void Bubble<unsigned>(std::vector<unsigned>& vec);
+template void Bubble<signed>(std::vector<signed>& vec);
+template void Bubble<double>(std::vector<double>& vec);
+template void Bubble<std::string>(std::vector<std::string>& vec);
 
 /////////////////////////////////////////////
 /// Bucket-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void Bucket(std::vector<T> &vec)
+void Bucket(std::vector<T>& vec)
 {
   if (vec.empty()) {
     return;
@@ -58,13 +58,13 @@ void Bucket(std::vector<T> &vec)
   std::vector<std::vector<T>> buckets(nbrOfBuckets + 1);
 
   // Put in buckets
-  for (const T &x : vec) {
+  for (const T& x : vec) {
     buckets[static_cast<T>(sqrt(x))].push_back(x);
   }
 
   // Put back elements
   int count{0};
-  for (const std::vector<T> &bucket : buckets) {
+  for (const std::vector<T>& bucket : buckets) {
     for (T e : bucket) {
       vec[count++] = e;
     }
@@ -78,16 +78,16 @@ void Bucket(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Bucket-sort.
-template void Bucket<unsigned>(std::vector<unsigned> &vec);
-template void Bucket<int>(std::vector<int> &vec);
-template void Bucket<double>(std::vector<double> &vec);
+template void Bucket<unsigned>(std::vector<unsigned>& vec);
+template void Bucket<int>(std::vector<int>& vec);
+template void Bucket<double>(std::vector<double>& vec);
 
 /////////////////////////////////////////////
 /// Gnome-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void Gnome(std::vector<T> &vec)
+void Gnome(std::vector<T>& vec)
 {
   int i{0};
   size_t n{vec.size()};
@@ -106,10 +106,10 @@ void Gnome(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Gnome-sort.
-template void Gnome<unsigned>(std::vector<unsigned> &vec);
-template void Gnome<int>(std::vector<int> &vec);
-template void Gnome<double>(std::vector<double> &vec);
-template void Gnome<std::string>(std::vector<std::string> &vec);
+template void Gnome<unsigned>(std::vector<unsigned>& vec);
+template void Gnome<int>(std::vector<int>& vec);
+template void Gnome<double>(std::vector<double>& vec);
+template void Gnome<std::string>(std::vector<std::string>& vec);
 
 /////////////////////////////////////////////
 /// Heap-sort
@@ -122,7 +122,7 @@ template void Gnome<std::string>(std::vector<std::string> &vec);
 /// \param len The length.
 /// \link <a href=https://en.wikipedia.org/wiki/Binary_heap#Extract>SiftDown, Wikipedia.</>
 template<typename T>
-void Siftdown(std::vector<T> &vec, int start, int len)
+void Siftdown(std::vector<T>& vec, int start, int len)
 {
   int root{start};
   while (root * 2 + 1 <= len) {
@@ -153,7 +153,7 @@ void Siftdown(std::vector<T> &vec, int start, int len)
 /// \param vec The vector to heapify.
 /// \param len Number of elements.
 template<typename T>
-void Heapify(std::vector<T> &vec, size_t len)
+void Heapify(std::vector<T>& vec, size_t len)
 {
   int start = floor((len - 2.0) / 2.0);
 
@@ -168,7 +168,7 @@ void Heapify(std::vector<T> &vec, size_t len)
 /// \param vec The vector to be sorted.
 /// \param len Number of elements.
 template<typename T>
-void HeapSortPriv(std::vector<T> &vec, size_t len)
+void HeapSortPriv(std::vector<T>& vec, size_t len)
 {
   Heapify(vec, len);
 
@@ -181,7 +181,7 @@ void HeapSortPriv(std::vector<T> &vec, size_t len)
 }
 
 template<typename T>
-void Heap(std::vector<T> &vec)
+void Heap(std::vector<T>& vec)
 {
   if (vec.empty()) {
     return;
@@ -190,17 +190,17 @@ void Heap(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Heap-sort.
-template void Heap<unsigned>(std::vector<unsigned> &vec);
-template void Heap<int>(std::vector<int> &vec);
-template void Heap<double>(std::vector<double> &vec);
-template void Heap<std::string>(std::vector<std::string> &vec);
+template void Heap<unsigned>(std::vector<unsigned>& vec);
+template void Heap<int>(std::vector<int>& vec);
+template void Heap<double>(std::vector<double>& vec);
+template void Heap<std::string>(std::vector<std::string>& vec);
 
 /////////////////////////////////////////////
 /// Insertion-sort
 /////////////////////////////////////////////
 
 template<typename T>
-void Insertion(std::vector<T> &vec)
+void Insertion(std::vector<T>& vec)
 {
   if (vec.empty()) {
     return;
@@ -214,10 +214,10 @@ void Insertion(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Insertion-sort.
-template void Insertion<unsigned>(std::vector<unsigned> &vec);
-template void Insertion<int>(std::vector<int> &vec);
-template void Insertion<double>(std::vector<double> &vec);
-template void Insertion<std::string>(std::vector<std::string> &vec);
+template void Insertion<unsigned>(std::vector<unsigned>& vec);
+template void Insertion<int>(std::vector<int>& vec);
+template void Insertion<double>(std::vector<double>& vec);
+template void Insertion<std::string>(std::vector<std::string>& vec);
 
 /////////////////////////////////////////////
 /// Merge-sort
@@ -229,7 +229,7 @@ template void Insertion<std::string>(std::vector<std::string> &vec);
 /// \param B Second list.
 /// \return A sorted and merged vector.
 template<typename T>
-std::vector<T> merge(std::list<T> &A, std::list<T> &B)
+std::vector<T> merge(std::list<T>& A, std::list<T>& B)
 {
   std::vector<T> C;
 
@@ -256,7 +256,7 @@ std::vector<T> merge(std::list<T> &A, std::list<T> &B)
 }
 
 template<typename T>
-std::vector<T> MergeSortPriv(const std::vector<T> &lst)
+std::vector<T> MergeSortPriv(const std::vector<T>& lst)
 {
 
   if (lst.empty()) {
@@ -290,23 +290,23 @@ std::vector<T> MergeSortPriv(const std::vector<T> &lst)
 }
 
 template<typename T>
-void Merge(std::vector<T> &lst)
+void Merge(std::vector<T>& lst)
 {
   lst = MergeSortPriv(lst);
 }
 
 // Defines what types may be used for Merge-sort.
-template void Merge<unsigned>(std::vector<unsigned> &vec);
-template void Merge<int>(std::vector<int> &vec);
-template void Merge<double>(std::vector<double> &vec);
-template void Merge<std::string>(std::vector<std::string> &vec);
+template void Merge<unsigned>(std::vector<unsigned>& vec);
+template void Merge<int>(std::vector<int>& vec);
+template void Merge<double>(std::vector<double>& vec);
+template void Merge<std::string>(std::vector<std::string>& vec);
 
 /////////////////////////////////////////////
 /// Quick-sort
 /////////////////////////////////////////////
 
 template<typename T>
-int Partition(std::vector<T> &vec, int low, int high)
+int Partition(std::vector<T>& vec, int low, int high)
 {
   T x{vec[high]};
   int i{low - 1};
@@ -324,7 +324,7 @@ int Partition(std::vector<T> &vec, int low, int high)
 
 // Start of the Quicksort algorithm
 template<typename T>
-void QuickSort(std::vector<T> &vec, int low, int high)
+void QuickSort(std::vector<T>& vec, int low, int high)
 {
   if (low < high) {
     int pivot{Partition(vec, low, high)};
@@ -334,7 +334,7 @@ void QuickSort(std::vector<T> &vec, int low, int high)
 }
 
 template<typename T>
-void Quick(std::vector<T> &vec)
+void Quick(std::vector<T>& vec)
 {
   if (vec.empty()) {
     return;
@@ -343,8 +343,8 @@ void Quick(std::vector<T> &vec)
 }
 
 // Defines what types may be used for Quick-sort.
-template void Quick<unsigned>(std::vector<unsigned> &vec);
-template void Quick<int>(std::vector<int> &vec);
-template void Quick<double>(std::vector<double> &vec);
-template void Quick<std::string>(std::vector<std::string> &vec);
+template void Quick<unsigned>(std::vector<unsigned>& vec);
+template void Quick<int>(std::vector<int>& vec);
+template void Quick<double>(std::vector<double>& vec);
+template void Quick<std::string>(std::vector<std::string>& vec);
 }// namespace algo::sort

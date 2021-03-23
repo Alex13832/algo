@@ -19,7 +19,7 @@ namespace algo::image::object {
 /// Canny
 /////////////////////////////////////////////
 
-Img ExtractCannyEdges(const Img& im, const int& threshold_min, const int& threshold_max)
+Img ExtractCannyEdges(const Img& im, int threshold_min, int threshold_max)
 {
   const int kNPixels{im.size.rows * im.size.cols};
   // Smooth with Gaussian kernel
@@ -131,7 +131,7 @@ constexpr auto DistComp = [](HLine l1, HLine l2) {
 };
 }// namespace
 
-Lines ExtractLines(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep)
+Lines ExtractLines(const Img& im, int n, int min_line_dist, int min_line_sep)
 {
   // Simple improvement.
   Img imh{Convolve(im, filter::KernelType::EMBOSS)};// WEIGHTED_AVERAGE is ok.

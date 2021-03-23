@@ -27,7 +27,7 @@ Graph NewGraph(size_t size)
   return Graph(size);
 }
 
-bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
+bool MakeEdge(Graph& graph, int u, int v, double w)
 {
   if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size() || u == v) {
     return false;
@@ -38,7 +38,7 @@ bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w)
   return true;
 }
 
-bool MakeEdge(Graph &graph, const int &u, const int &v)
+bool MakeEdge(Graph& graph, int u, int v)
 {
   if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
@@ -48,7 +48,7 @@ bool MakeEdge(Graph &graph, const int &u, const int &v)
   return true;
 }
 
-bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w)
+bool MakeDirEdge(Graph& graph, int u, int v, double w)
 {
   if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
@@ -57,7 +57,7 @@ bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w)
   return true;
 }
 
-bool MakeDirEdge(Graph &graph, const int &u, const int &v)
+bool MakeDirEdge(Graph& graph, int u, int v)
 {
   if (static_cast<size_t>(u) >= graph.size() || static_cast<size_t>(v) >= graph.size()) {
     return false;
@@ -66,9 +66,9 @@ bool MakeDirEdge(Graph &graph, const int &u, const int &v)
   return true;
 }
 
-void SetWeight(Graph &graph, const int &u, const int &v, double weight)
+void SetWeight(Graph& graph, const int& u, const int& v, double weight)
 {
-  for (auto &conn : graph[u]) {
+  for (auto& conn : graph[u]) {
     if (conn.node == v) {
       conn.weight = weight;
       return;
@@ -76,13 +76,13 @@ void SetWeight(Graph &graph, const int &u, const int &v, double weight)
   }
 }
 
-double GetWeight(Graph &graph, const int &u, const int &v)
+double GetWeight(Graph& graph, const int& u, const int& v)
 {
   if (u < 0 || static_cast<size_t>(u) >= graph.size()) {
     return 0.0;
   }
 
-  for (const auto &conn : graph[u]) {
+  for (const auto& conn : graph[u]) {
     if (conn.node == v) {
       return conn.weight;
     }
@@ -90,11 +90,11 @@ double GetWeight(Graph &graph, const int &u, const int &v)
   return 0.0;
 }
 
-void RemoveEdge(Graph &graph, const int &s, const int &t)
+void RemoveEdge(Graph& graph, int s, int t)
 {
   size_t pos{0};
 
-  for (const auto &conn : graph[s]) {
+  for (const auto& conn : graph[s]) {
     if (conn.node == t) {
       break;
     }
@@ -104,13 +104,13 @@ void RemoveEdge(Graph &graph, const int &s, const int &t)
   graph[s].erase(graph[s].begin() + pos);
 }
 
-Edges GetEdges(const Graph &graph)
+Edges GetEdges(const Graph& graph)
 {
   Edges edges;
 
   // Construct a list of edges
   for (size_t i = 0; i < graph.size(); ++i) {
-    for (const auto &c : graph[i]) {
+    for (const auto& c : graph[i]) {
       edges.emplace_back(Edge{static_cast<int>(i), c.node, c.weight});
     }
   }
@@ -119,7 +119,7 @@ Edges GetEdges(const Graph &graph)
 
 namespace {
 struct comp {
-  bool operator()(const Connection &lhs, Connection &rhs) const
+  bool operator()(const Connection& lhs, Connection& rhs) const
   {
     return lhs.weight > rhs.weight;
   }
@@ -130,7 +130,7 @@ struct comp {
 //  Breadth-First-Search (BFS)
 // //////////////////////////////////////////
 
-Nodes BFS(const Graph &graph, const int &source)
+Nodes BFS(const Graph& graph, const int& source)
 {
   // Forbidden input.
   if (graph.empty() || source < 0 || static_cast<size_t>(source) >= graph.size()) {
@@ -148,7 +148,7 @@ Nodes BFS(const Graph &graph, const int &source)
     int curr{q.front()};
     q.pop();
 
-    for (const auto &n : graph[curr]) {
+    for (const auto& n : graph[curr]) {
       if (distance[n.node] == INT_MAX) {
         distance[n.node] = distance[curr] + 1;
         parent[n.node] = curr;
@@ -160,7 +160,7 @@ Nodes BFS(const Graph &graph, const int &source)
   return parent;
 }
 
-Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
+Path ShortestPathBFS(const Graph& graph, int source, int dest)
 {
   // Forbidden input:
   int N = graph.size();
@@ -185,7 +185,7 @@ Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest)
   return Path{path, true};
 }
 
-bool IsBipartite(const Graph &graph)
+bool IsBipartite(const Graph& graph)
 {
   // Forbidden input.
   if (graph.size() < 2) {
@@ -221,7 +221,7 @@ bool IsBipartite(const Graph &graph)
 //  Nearest neighbor algorithm, TSP.
 // //////////////////////////////////////////
 
-Nodes AllNodesPath(const Graph &graph, const int &source)
+Nodes AllNodesPath(const Graph& graph, int source)
 {
   // Forbidden input.
   if (graph.size() < 3 || source < 0 || static_cast<size_t>(source) >= graph.size()) {
@@ -239,7 +239,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source)
     int next_node;
     double min_weight{kDblMax};
 
-    for (const auto &node : graph[current_node]) {
+    for (const auto& node : graph[current_node]) {
       // Find closest neighbor
       if (node.weight < min_weight && !visited[node.node]) {
         next_node = node.node;
@@ -274,7 +274,7 @@ namespace {
 /// \param graph The input graph.
 /// \param source The source node.
 /// \return The nodes constructing all the shortest path from any node to source.
-Nodes ShortestPathPriv(const Graph &graph, const int &source)
+Nodes ShortestPathPriv(const Graph& graph, int source)
 {
   std::priority_queue<Connection, std::vector<Connection>, comp> pq;
 
@@ -290,7 +290,7 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
     pq.pop();
     int u{U.node};
 
-    for (const auto &v : graph[u]) {
+    for (const auto& v : graph[u]) {
       double alt = dist[u] + v.weight;
       if (alt < dist[v.node]) {
         dist[v.node] = alt;
@@ -304,7 +304,7 @@ Nodes ShortestPathPriv(const Graph &graph, const int &source)
 }
 }// namespace
 
-Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest)
+Nodes ShortestPathDijkstra(const Graph& graph, int source, int dest)
 {
   // Forbidden input.
   if (static_cast<size_t>(dest) > graph.size() || static_cast<size_t>(source) > graph.size()
@@ -330,7 +330,7 @@ Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &des
 //  Bellman-Ford, shortest path
 // //////////////////////////////////////////
 
-std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
+std::pair<Weights, Nodes> ShortestPathBF(const Graph& graph, int source)
 {
   // Forbidden input.
   if (source < 0 || graph.size() < 3 || static_cast<size_t>(source) >= graph.size()) {
@@ -345,7 +345,7 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
 
   for (size_t i = 1; i < dist.size(); i++) {
     Weights pre{dist};
-    for (const auto &edge : edges) {
+    for (const auto& edge : edges) {
       if (dist[edge.u] + edge.w < dist[edge.v]) {
         dist[edge.v] = dist[edge.u] + edge.w;
         prev[edge.v] = edge.u;
@@ -367,10 +367,11 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source)
   return std::make_pair(dist, prev);
 }
 
-std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest)
+std::pair<Nodes, double> ShortestPathBF(const Graph& graph, int source, int dest)
 {
   // Forbidden input.
-  if (source < 0 || static_cast<size_t>(source) >= graph.size() || dest < 0 || static_cast<size_t>(dest) >= graph.size() || graph.size() < 3) {
+  if (source < 0 || static_cast<size_t>(source) >= graph.size() || dest < 0 || static_cast<size_t>(dest) >= graph.size()
+      || graph.size() < 3) {
     return std::make_pair(Nodes{}, 0.0);
   }
 
@@ -394,7 +395,7 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 // //////////////////////////////////////////
 
 namespace {
-void ShortestDistAllPairsPriv(const Graph &graph, WeightMat &dist, NodeMat &next)
+void ShortestDistAllPairsPriv(const Graph& graph, WeightMat& dist, NodeMat& next)
 {
   size_t V{graph.size()};
   Edges edges{GetEdges(graph)};
@@ -422,7 +423,7 @@ void ShortestDistAllPairsPriv(const Graph &graph, WeightMat &dist, NodeMat &next
 }
 }//namespace
 
-NodeMat ShortestDistAllPairs(const Graph &graph)
+NodeMat ShortestDistAllPairs(const Graph& graph)
 {
   size_t N{graph.size()};
   WeightMat dist(N, Weights(N, kDblMax));
@@ -432,7 +433,7 @@ NodeMat ShortestDistAllPairs(const Graph &graph)
   return next;
 }
 
-Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest)
+Nodes ShortestDistAllPairsPath(const Graph& graph, int source, int dest)
 {
   if (graph.size() < 3 || source < 0 || dest < 0 || static_cast<size_t>(source) >= graph.size()
       || static_cast<size_t>(dest) >= graph.size() || source == dest) {
@@ -460,7 +461,7 @@ Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int 
 //  Prim's, minimum spanning tree.
 // //////////////////////////////////////////
 
-Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight)
+Graph MinSpanningTree(const Graph& graph, int source, double& total_weight)
 {
   // Forbidden input.
   if (static_cast<size_t>(source) >= graph.size() || source < 0 || graph.empty()) {
@@ -509,12 +510,12 @@ Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weigh
 // //////////////////////////////////////////
 
 namespace {
-constexpr auto FindMinOfResiduals = [](const Graph &graph, const Nodes &path) {
+constexpr auto FindMinOfResiduals = [](const Graph& graph, const Nodes& path) {
   double min{kDblMax};
   Edges edges{GetEdges(graph)};
 
   for (size_t i = 0; i < path.size() - 1; ++i) {
-    for (const auto &edge : edges) {
+    for (const auto& edge : edges) {
       if (edge.u == path[i] && edge.v == path[i + 1] && edge.w < min) {
         min = edge.w;
       }
@@ -524,10 +525,11 @@ constexpr auto FindMinOfResiduals = [](const Graph &graph, const Nodes &path) {
 };
 }//namespace
 
-double MaxFlow(Graph graph, const int &source, const int &dest)
+double MaxFlow(Graph graph, int source, int dest)
 {
   // Forbidden input.
-  if (source < 0 || dest < 0 || static_cast<size_t>(source) >= graph.size() || static_cast<size_t>(dest) >= graph.size() || source == dest) {
+  if (source < 0 || dest < 0 || static_cast<size_t>(source) >= graph.size() || static_cast<size_t>(dest) >= graph.size()
+      || source == dest) {
     return 0.0;
   }
 
@@ -543,7 +545,7 @@ double MaxFlow(Graph graph, const int &source, const int &dest)
   while (is_path) {
     Edges edges{GetEdges(graph)};
 
-    for (const auto &edge : edges) {
+    for (const auto& edge : edges) {
       if (edge.w <= 0) {
         RemoveEdge(graph, edge.u, edge.v);
       }
@@ -580,7 +582,7 @@ double MaxFlow(Graph graph, const int &source, const int &dest)
 
 namespace {
 // DFS
-void Explore(const Graph &graph, int n, Visited &explored, Nodes &res)
+void Explore(const Graph& graph, int n, Visited& explored, Nodes& res)
 {
   explored[n] = true;
 
@@ -592,13 +594,13 @@ void Explore(const Graph &graph, int n, Visited &explored, Nodes &res)
   res.push_back(n);
 }
 
-Graph Reverse(const Graph &graph)
+Graph Reverse(const Graph& graph)
 {
   Graph graph1(graph.size());
   size_t N = graph.size();
 
   for (size_t i = 0; i < N; i++) {
-    for (const auto &connection : graph[i]) {
+    for (const auto& connection : graph[i]) {
       MakeDirEdge(graph1, connection.node, i);
     }
   }
@@ -606,7 +608,7 @@ Graph Reverse(const Graph &graph)
 }
 }//namespace
 
-NodeMat StrConnComponents(const Graph &graph)
+NodeMat StrConnComponents(const Graph& graph)
 {
   // Forbidden input
   if (graph.size() < 2) {
@@ -638,7 +640,7 @@ NodeMat StrConnComponents(const Graph &graph)
     // Add SCC-part in result
     result.push_back(visited);
 
-    for (const auto &node : visited) {
+    for (const auto& node : visited) {
       if (std::find(nodes.begin(), nodes.end(), node) != nodes.end()) {
         nodes.erase(remove(nodes.begin(), nodes.end(), node), nodes.end());
       }
@@ -647,7 +649,7 @@ NodeMat StrConnComponents(const Graph &graph)
   }
 
   // Revers to right order
-  for (auto &res : result) {
+  for (auto& res : result) {
     std::reverse(res.begin(), res.end());
   }
 

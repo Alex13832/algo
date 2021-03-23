@@ -17,7 +17,7 @@ constexpr auto IsPowOf2 = [](auto x) {
 };
 }//namespace
 
-FftTransf FFT(const FftTransf &A)
+FftTransf FFT(const FftTransf& A)
 {
   size_t N{A.size()};
   if (N <= 1) { return A; }
@@ -38,18 +38,18 @@ FftTransf FFT(const FftTransf &A)
   return B;
 }
 
-FftTransf IFFT(const FftTransf &B)
+FftTransf IFFT(const FftTransf& B)
 {
   size_t N{B.size()};
   if (N == 0) { return B; }
   if (!IsPowOf2(N)) { return FftTransf{}; }
 
   FftTransf T{B};
-  std::transform(begin(T), end(T), begin(T), [&](std::complex<double> &c) { return conj(c); });
+  std::transform(begin(T), end(T), begin(T), [&](std::complex<double>& c) { return conj(c); });
   FftTransf A{FFT(T)};
-  std::transform(begin(A), end(A), begin(A), [&](std::complex<double> &c) { return conj(c); });
+  std::transform(begin(A), end(A), begin(A), [&](std::complex<double>& c) { return conj(c); });
 
-  std::for_each(begin(A), end(A), [&](std::complex<double> &comp) {
+  std::for_each(begin(A), end(A), [&](std::complex<double>& comp) {
     std::complex<double> c(real(comp) / N, imag(comp) / N);
     comp = c;
   });

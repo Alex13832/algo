@@ -37,7 +37,7 @@ using Clusters = std::vector<geometry::Points>;
 /// \param k Number of clusters.
 /// \return Clusters. If k is greater than the points.size() it will return an empty object.
 /// \link <a href="https://en.wikipedia.org/wiki/K-means_clustering">K-means, Wikipedia.</a>
-Clusters KMeans(geometry::Points points, const std::int8_t& k);
+Clusters KMeans(geometry::Points points, int8_t k);
 
 // ///////////////////////////////////////////
 // KNN
@@ -57,14 +57,15 @@ using LabeledPoints = std::vector<LabeledPoint>;
 /// \param labeled_data Data with known labels in a 2D-space.
 /// \return Labeled data based on the rules of KNN.
 /// \link <a href="https://en.wikipedia.org/wiki/K-nearest_neighbors_algorithm">KNN, Wikipedia.</a>
-LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k);
+LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, uint8_t k);
 
 // ///////////////////////////////////////////
 // DBSCAN
 // ///////////////////////////////////////////
 
-enum class DistFunc { Manhattan,///< L1, "Manhattan" distance.
-                      Euclidean ///< L2, Euclidean distance.
+enum class DistFunc {
+  Manhattan,///< L1, "Manhattan" distance.
+  Euclidean ///< L2, Euclidean distance.
 };
 
 /// \brief Finds the clusters of DBSCAN algorithm. Depending on chosen max-distance eps and minimum amount of points in a cluster,
@@ -76,7 +77,7 @@ enum class DistFunc { Manhattan,///< L1, "Manhattan" distance.
 /// \param min_pts The minimum number of neighbors within the distance eps that a point must have.
 /// \return A list of points with label. Label == "0" means noise. Label > "1" means cluster number.
 /// \link <a href="https://en.wikipedia.org/wiki/DBSCAN">DBSCAN, Wikipedia.</a>
-LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const double& eps, const int& min_pts);
+LabeledPoints DBSCAN(const geometry::Points& points, DistFunc dist_func, double eps, int min_pts);
 
 }// namespace algo::data_mining
 

@@ -25,7 +25,7 @@ namespace algo::image::object {
 /// \param im The input image.
 /// \return Detected edges in a new image.
 /// \link <a href="https://en.wikipedia.org/wiki/Canny_edge_detector">Canny edge detector, Wikipedia.</a>
-Img ExtractCannyEdges(const Img& im, const int& threshold_min = 31, const int& threshold_max = 91);
+Img ExtractCannyEdges(const Img& im, int threshold_min = 31, int threshold_max = 91);
 
 // //////////////////////////////////////////
 //  Hough lines
@@ -46,7 +46,7 @@ using Hlines = std::vector<HLine>;
 /// \param min_line_sep Minimum distance between detected lines, good for remove lines too close to each other.
 /// \return A list of lines.
 /// \link <a href="https://en.wikipedia.org/wiki/Hough_transform">Hough transform, Wikipedia.</a>
-Lines ExtractLines(const Img& im, const int& n, const int& min_line_dist, const int& min_line_sep = 10);
+Lines ExtractLines(const Img& im, int n, int min_line_dist, int min_line_sep = 10);
 
 }// namespace algo::image::object
 

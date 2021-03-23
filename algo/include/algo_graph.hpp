@@ -69,14 +69,14 @@ Graph NewGraph(size_t size);
 /// \param v Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w);
+bool MakeEdge(Graph& graph, int u, int v, double w);
 
 /// \brief Adds a new edge from u to v.
 /// \param graph The graph to change.
 /// \param u Source.
 /// \param v Destination.
 /// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &u, const int &v);
+bool MakeEdge(Graph& graph, int u, int v);
 
 /// \brief Adds a new directed edge from u to v with weight w.
 /// \param graph The graph to change.
@@ -84,33 +84,33 @@ bool MakeEdge(Graph &graph, const int &u, const int &v);
 /// \param v Destination.
 /// \param w Weight.
 /// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w);
+bool MakeDirEdge(Graph& graph, int u, int v, double w);
 
 /// \brief Adds a new directed edge from u to v.
 /// \param graph The graph to change.
 /// \param u Source.
 /// \param v Destination.
 /// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &u, const int &v);
+bool MakeDirEdge(Graph& graph, int u, int v);
 
 /// \brief Updates the weight for the edge(u, v) = weight.
 /// \param graph The input graph.
 /// \param u Source node.
 /// \param v Destination node.
 /// \param weight New weight.
-void SetWeight(Graph &graph, const int &u, const int &v, double weight);
+void SetWeight(Graph& graph, const int& u, const int& v, double weight);
 
 /// \brief Gets the weight at edge(u, v).
 /// \param graph The input graph.
 /// \param u Source node.
 /// \param v Destination node.
 /// \return The weight at edge(u, v).
-double GetWeight(Graph &graph, const int &u, const int &v);
+double GetWeight(Graph& graph, const int& u, const int& v);
 
 /// \brief Returns the edges as a vector of the input graph.
 /// \param graph The input graph.
 /// \return A list of edges.
-Edges GetEdges(const Graph &graph);
+Edges GetEdges(const Graph& graph);
 
 // //////////////////////////////////////////
 //  Breadth-First-Search (BFS)
@@ -120,21 +120,21 @@ Edges GetEdges(const Graph &graph);
 /// \param graph Input graph.
 /// \param source Source node.
 /// \returnﬁ
-Nodes BFS(const Graph &graph, const int &source);
+Nodes BFS(const Graph& graph, const int& source);
 
 /// \brief Returns the shortest path from source to dest in graph. The path length is measured by number of edges.
 /// \param graph The input graph.
 /// \param source The source node.
 /// \param dest The destination node.
 /// \return The path from source to dest, and if it is a path.
-Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest);
+Path ShortestPathBFS(const Graph& graph, int source, int dest);
 
 /// \brief Checs if the input graph is bipartite.
 /// \param graph The input grpah.
 /// \param src Source node.
 /// \return True if bipartite, otherwise false.
 /// \link <a href="https://en.wikipedia.org/wiki/Bipartite_graph#Testing_bipartiteness">Bipartite graph, Wikipedia.</a>
-bool IsBipartite(const Graph &graph);
+bool IsBipartite(const Graph& graph);
 
 // //////////////////////////////////////////
 //  Nearest neighbor, TSP
@@ -147,7 +147,7 @@ bool IsBipartite(const Graph &graph);
 /// \param source Starting node.
 /// \return A path through all nodes.
 /// \link <a href="https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm">Nearest neighbor, Wikipedia.</a>
-Nodes AllNodesPath(const Graph &graph, const int &source);
+Nodes AllNodesPath(const Graph& graph, int source);
 
 // //////////////////////////////////////////
 //  Dijkstra's, shortest path
@@ -160,7 +160,7 @@ Nodes AllNodesPath(const Graph &graph, const int &source);
 /// \param dest The destination node.
 /// \return The nodes constructing the shortest path.
 /// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
-Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest);
+Nodes ShortestPathDijkstra(const Graph& graph, int source, int dest);
 
 // //////////////////////////////////////////
 //  Bellman-Ford, shortest path
@@ -172,7 +172,7 @@ Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &des
 /// \param source Source node.
 /// \return A list of nodes prev = nodes[prev], for tracking each path to source. And weights.
 /// \link <a href="https://en.wikipedia.org/wiki/Bellman–Ford_algorithm">Bellman-Ford, Wikipedia.</a>
-std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
+std::pair<Weights, Nodes> ShortestPathBF(const Graph& graph, int source);
 
 /// \brief Returns the shortest oath between the source and destination (dest) in the input graph.
 /// \details This algorithm uses the Bellman-Ford algorithm which allows negative edge weights. Use ShortestPathDijkstra
@@ -181,7 +181,7 @@ std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
 /// \param source Source node.
 /// \param dest Destination node.
 /// \return The nodes constructing the path from source to dest.
-std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
+std::pair<Nodes, double> ShortestPathBF(const Graph& graph, int source, int dest);
 
 // //////////////////////////////////////////
 //  Floyd-Warshall, all-pair shortest dist
@@ -192,14 +192,14 @@ std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, c
 /// \param graph The input graph.
 /// \return A matrix, where each entry (for each node) is the path to all other nodes.
 /// \link <a href="https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm">Floyd-Warshall, Wikipedia.</a>
-NodeMat ShortestDistAllPairs(const Graph &graph);
+NodeMat ShortestDistAllPairs(const Graph& graph);
 
 /// \brief Returns the shortest path from source to dest in graph.
 /// \param graph The input graph.
 /// \param source Source node.
 /// \param dest Destination node.
 /// \return Shortest path from source to dest.
-Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
+Nodes ShortestDistAllPairsPath(const Graph& graph, int source, int dest);
 
 // //////////////////////////////////////////
 //  Prim's, minimum spanning tree
@@ -211,7 +211,7 @@ Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int 
 /// \param source The source.
 /// \return The nodes that constructs the MST.
 /// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
-Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight);
+Graph MinSpanningTree(const Graph& graph, int source, double& total_weight);
 
 // //////////////////////////////////////////
 //  Ford-Fulkerson, maximum flow
@@ -224,7 +224,7 @@ Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weigh
 /// \param dest The destination node.
 /// \return Maximum flow.
 /// \link <a href="https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm">Ford-Fulkerson, Wikipedia.</a>
-double MaxFlow(Graph graph, const int &source, const int &dest);
+double MaxFlow(Graph graph, int source, int dest);
 
 // //////////////////////////////////////////
 //  Kosaraju, strongly connected components
@@ -236,7 +236,7 @@ double MaxFlow(Graph graph, const int &source, const int &dest);
 /// \return A list of connected components, each item is a list of nodes.
 /// \link <a href="https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm">Kosaraju's algorithm, Wikipedia.</a>
 /// \link <a href="https://en.wikipedia.org/wiki/Strongly_connected_component">Strongly connected component, Wikipedia.<a/>
-NodeMat StrConnComponents(const Graph &graph);
+NodeMat StrConnComponents(const Graph& graph);
 
 }// namespace algo::graph
 

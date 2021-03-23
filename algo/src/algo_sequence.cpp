@@ -22,7 +22,7 @@ namespace algo::sequence {
 /// \return The longest increasing subsequence.
 /// \link <a href="https://en.wikipedia.org/wiki/Longest_increasing_subsequence">Longest increasing subsequence, Wikipedia.</a>
 template<typename T>
-std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
+std::vector<T> LongestIncreasingSub(const std::vector<T>& seq)
 {
   if (seq.empty()) {
     return std::vector<T>{};
@@ -72,26 +72,26 @@ std::vector<T> LongestIncreasingSub(const std::vector<T> &seq)
   return out;
 }
 
-template std::vector<int> LongestIncreasingSub<int>(const std::vector<int> &seq);
-template std::vector<float> LongestIncreasingSub<float>(const std::vector<float> &seq);
+template std::vector<int> LongestIncreasingSub<int>(const std::vector<int>& seq);
+template std::vector<float> LongestIncreasingSub<float>(const std::vector<float>& seq);
 
 /////////////////////////////////////////////
 /// Max sub array
 /////////////////////////////////////////////
 
 template<typename T>
-T MaxSubarray(const std::vector<T> &vec)
+T MaxSubarray(const std::vector<T>& vec)
 {
   int best_sum{0};
   int current{0};
 
-  for (const auto &s : vec) {
+  for (const auto& s : vec) {
     current = std::max(0, current + s);
     best_sum = std::max(best_sum, current);
   }
   return best_sum;
 }
 
-template int MaxSubarray(const std::vector<int> &vec);
+template int MaxSubarray(const std::vector<int>& vec);
 
 }// namespace algo::sequence

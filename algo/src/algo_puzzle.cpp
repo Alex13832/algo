@@ -19,7 +19,7 @@ namespace {
 /// \param row The row number.
 /// \param num The number to compare.
 /// \return True if valid, otherwise false.
-constexpr auto RowValid = [](const Grid& grid, const int& row, const int& num) {
+constexpr auto RowValid = [](const Grid& grid, int row, int num) {
   for (size_t i = 0; i < grid_size; ++i) {
     if (grid[row][i] == num) {
       return false;
@@ -33,7 +33,7 @@ constexpr auto RowValid = [](const Grid& grid, const int& row, const int& num) {
 /// \param col The column number.
 /// \param num The number to compare.
 /// \return True if valid, otherwise false.
-constexpr auto ColValid = [](const Grid& grid, const int& col, const int& num) {
+constexpr auto ColValid = [](const Grid& grid, int col, int num) {
   for (size_t i = 0; i < grid_size; ++i) {
     if (grid[i][col] == num) {
       return false;

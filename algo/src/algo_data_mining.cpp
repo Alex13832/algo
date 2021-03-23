@@ -30,7 +30,7 @@ constexpr auto Dist2 = [](const geometry::Point& p1, const geometry::Point& p2) 
 /// K-means
 /////////////////////////////////////////////
 
-Clusters KMeans(geometry::Points points, const std::int8_t& k)
+Clusters KMeans(geometry::Points points, int8_t k)
 {
   if (k > static_cast<int>(points.size()) || k == 0 || points.empty()) {
     return Clusters{};
@@ -116,7 +116,7 @@ struct LPointDistComp {
 };
 }//namespace
 
-LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k)
+LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, uint8_t k)
 {
   if (k > unlabeled_data.size() || k == 0 || unlabeled_data.empty() || labeled_data.empty()) {
     return LabeledPoints{};
@@ -182,7 +182,7 @@ using Neighbors = std::queue<Neighbor>;
 /// \param eps The maximum distance between two neighbors.
 /// \param skip_idx The index of pt in lpts, so it can be skipped.
 /// \return All the quialified neighbors of pt in lpts.
-Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const LabeledPoint& pt, const double& eps)
+Neighbors RangeQuery(const LabeledPoints& lpts, DistFunc dist_func, const LabeledPoint& pt, double eps)
 {
   Neighbors neighbors;
   for (size_t idx = 0; idx < lpts.size(); idx++) {
@@ -195,7 +195,7 @@ Neighbors RangeQuery(const LabeledPoints& lpts, const DistFunc& dist_func, const
 }
 }//namespace
 
-LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const double& eps, const int& min_pts)
+LabeledPoints DBSCAN(const geometry::Points& points, DistFunc dist_func, double eps, int min_pts)
 {
   LabeledPoints lpts;
   if (static_cast<size_t>(min_pts) >= points.size() || min_pts == 0 || points.empty() || eps <= 0.0) {
