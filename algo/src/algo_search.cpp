@@ -18,7 +18,7 @@ namespace algo::search {
 /////////////////////////////////////////////
 
 template<typename T>
-int Binary(const std::vector<T> &vec, const T &value)
+int Binary(const std::vector<T>& vec, T value)
 {
   if (!std::is_sorted(vec.begin(), vec.end())) {
     return -1;
@@ -43,15 +43,15 @@ int Binary(const std::vector<T> &vec, const T &value)
   return l;
 }
 
-template int Binary<int>(const std::vector<int> &vec, const int &value);
-template int Binary<std::string>(const std::vector<std::string> &vec, const std::string &value);
+template int Binary<int>(const std::vector<int>& vec, int value);
+template int Binary<std::string>(const std::vector<std::string>& vec, std::string value);
 
 /////////////////////////////////////////////
 /// Selection search
 /////////////////////////////////////////////
 
 template<typename T>
-void SelectionMinPriv(std::vector<T> &vec, const T &k)
+void SelectionMinPriv(std::vector<T>& vec, const T& k)
 {
   for (T i = 0; i <= k; ++i) {
     size_t min_index{static_cast<size_t>(i)};
@@ -71,7 +71,7 @@ void SelectionMinPriv(std::vector<T> &vec, const T &k)
 }
 
 template<typename T>
-std::vector<T> SelectionMin(std::vector<T> vec, const T &k)
+std::vector<T> SelectionMin(std::vector<T> vec, T k)
 {
   if (vec.empty()) {
     return vec;
@@ -88,10 +88,10 @@ std::vector<T> SelectionMin(std::vector<T> vec, const T &k)
   return temp;
 }
 
-template std::vector<int> SelectionMin<int>(std::vector<int> vec, const int &value);
+template std::vector<int> SelectionMin<int>(std::vector<int> vec, int value);
 
 template<typename T>
-void SelectionMaxPriv(std::vector<T> &vec, const T &k)
+void SelectionMaxPriv(std::vector<T>& vec, const T& k)
 {
   for (int i = 0; i <= k; ++i) {
     size_t max_index{static_cast<size_t>(i)};
@@ -111,7 +111,7 @@ void SelectionMaxPriv(std::vector<T> &vec, const T &k)
 }
 
 template<typename T>
-std::vector<T> SelectionMax(std::vector<T> vec, const T &k)
+std::vector<T> SelectionMax(std::vector<T> vec, T k)
 {
 
   if (vec.empty()) {
@@ -129,6 +129,6 @@ std::vector<T> SelectionMax(std::vector<T> vec, const T &k)
   return temp;
 }
 
-template std::vector<int> SelectionMax<int>(std::vector<int> vec, const int &value);
+template std::vector<int> SelectionMax<int>(std::vector<int> vec, int value);
 
 }// namespace algo::search

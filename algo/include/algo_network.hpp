@@ -27,7 +27,7 @@ using Mat = std::vector<Arr>;
 /// \param error Convergence threshold.
 /// \return The probabilities of a user visiting page i.
 /// \link <a href="https://en.wikipedia.org/wiki/PageRank">PageRank, Wikipedia.</a>
-Arr PageRank(const Mat& W, const double& error, const double& damping = 0.85);
+Arr PageRank(const Mat& W, double error, double damping = 0.85);
 
 /// \brief Converts a matrix with link counts to a transition matrix with probabilities.
 /// \param M Link count matrix.

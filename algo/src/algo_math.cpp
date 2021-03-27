@@ -16,7 +16,7 @@
 
 namespace algo::math::discrete {
 
-PTriangle PascalsTriangle(const int &depth)
+PTriangle PascalsTriangle(int depth)
 {
   PTriangle rows{};
 
@@ -34,7 +34,7 @@ PTriangle PascalsTriangle(const int &depth)
   return rows;
 }
 
-int ClockAngle(const int &h, const int &m)
+int ClockAngle(int h, int m)
 {
   if (h < 0 || m < 0 || h > 23 || m > 59) {
     return -1;
@@ -46,7 +46,7 @@ int ClockAngle(const int &h, const int &m)
   return angle;
 }
 
-int Knapsack(const Items &items, unsigned capacity)
+int Knapsack(const Items& items, unsigned capacity)
 {
   size_t n{items.size()};
   std::vector<std::vector<int>> m(n + 1, std::vector<int>(capacity + 1, 0));
@@ -72,7 +72,7 @@ namespace algo::math::random_num {
 
 namespace cont {
 
-double Uniform(const double &a, const double &b)
+double Uniform(double a, double b)
 {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::mt19937 generator(seed);//Mersenne twister
@@ -85,7 +85,7 @@ double Random()
   return Uniform(0.0, 1.0);
 }
 
-double Exp(const double &lambda)
+double Exp(double lambda)
 {
   if (lambda == 0.0) {
     return NAN;
@@ -94,14 +94,14 @@ double Exp(const double &lambda)
   return -std::log(1.0 - x) / lambda;
 }
 
-double Normal(const double &mu, const double &sigma)
+double Normal(double mu, double sigma)
 {
   double r1{Random()};
   double r2{Random()};
   return mu + sigma * cos(2 * M_PI * r1) * sqrt(-2.0 * log(r2));
 }
 
-double Weibull(const double &lambda, const double &k)
+double Weibull(double lambda, double k)
 {
   if (lambda == 0.0) {
     return NAN;
@@ -114,7 +114,7 @@ double Weibull(const double &lambda, const double &k)
 
 namespace discr {
 
-int Binomial(const int &n, const double &p)
+int Binomial(int n, double p)
 {
   if (p < 0 || p > 1.0) {
     return -1;
@@ -127,7 +127,7 @@ int Binomial(const int &n, const double &p)
   return std::accumulate(V.begin(), V.end(), 0);
 }
 
-int Poisson(const double &lambda)
+int Poisson(double lambda)
 {
   if (lambda < 0.0) {
     return -1;
@@ -144,7 +144,7 @@ int Poisson(const double &lambda)
   return k - 1;
 }
 
-int Geometric(const double &p)
+int Geometric(double p)
 {
   if (p <= 0 || p > 1.0) {
     return -1;

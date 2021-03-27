@@ -19,7 +19,7 @@ namespace {
 /// \brief Returns an array with uniformly distributed numbers between 0 and 1.
 /// \param N The number of elements in the returned array.
 /// \return Random numbers.
-Arr RandArr(const int& N)
+Arr RandArr(int N)
 {
   unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine generator(seed);
@@ -51,7 +51,7 @@ constexpr auto L1Norm = [](const Arr& arr) {
 /// \brief Element-wise division of vec with d.
 /// \param vec Input array.
 /// \param d Denominator.
-constexpr auto MatElemDiv = [](Arr& vec, const double& d) {
+constexpr auto MatElemDiv = [](Arr& vec, double d) {
   std::transform(vec.begin(), vec.end(), vec.begin(), [&d](double x) { return x / d; });
   return true;
 };
@@ -59,7 +59,7 @@ constexpr auto MatElemDiv = [](Arr& vec, const double& d) {
 /// \brief Element-wise multiplication of mat with d.
 /// \param mat Input matrix.
 /// \param d Value for multiplication.
-constexpr auto MatElemMult = [](Mat& mat, const double& d) {
+constexpr auto MatElemMult = [](Mat& mat, double d) {
   for (auto& arr : mat) {
     std::transform(arr.begin(), arr.end(), arr.begin(), [&d](double x) { return x * d; });
   }
@@ -112,7 +112,7 @@ Mat MatTransition(const Mat& M, const std::vector<int>& deg)
   return p;
 }
 
-Arr PageRank(const Mat& W, const double& error, const double& damping)
+Arr PageRank(const Mat& W, double error, double damping)
 {
   Mat M{W};
   size_t sz{M.size()};

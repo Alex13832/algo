@@ -31,7 +31,7 @@ constexpr auto CalcCenter = [](const Points& pts) {
 /// Rectangle
 /////////////////////////////////////////////
 
-Rectangle::Rectangle(const double& x, const double& y, const double& width, const double& height)
+Rectangle::Rectangle(double x, double y, double width, double height)
     : width_{width},
       height_{height}
 {
@@ -52,7 +52,7 @@ Polygon::Polygon(const Points& points) : pts_{points},
 {
 }
 
-Point Polygon::GetEdge(const size_t& i)
+Point Polygon::GetEdge(size_t i)
 {
   const size_t index_next{(i + 1) % pts_.size()};
   const Point pt1{pts_.at(i)};
@@ -68,12 +68,12 @@ size_t Polygon::EdgeCount()
   return pts_.size();
 }
 
-Polygon Polygon::Rotate(const double& angle)
+Polygon Polygon::Rotate(double angle)
 {
   return Rotate(angle, center_);
 }
 
-Polygon Polygon::Rotate(const double& angle, const Point& center)
+Polygon Polygon::Rotate(double angle, Point center)
 {
   Points points{pts_};
   for (Point& pt : points) {

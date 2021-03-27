@@ -79,7 +79,8 @@ constexpr auto AreaPolyRect = [](const Points& pts) {
   Point p3 = pts.at(2);
   Point p4 = pts.at(3);
 
-  double sum = p1.x * p2.y - p1.y * p2.x + p2.x * p3.y - p2.y * p3.x + p3.x * p4.y - p4.y * p3.x + p4.x * p1.y - p4.x * p1.x;
+  double sum =
+      p1.x * p2.y - p1.y * p2.x + p2.x * p3.y - p2.y * p3.x + p3.x * p4.y - p4.y * p3.x + p4.x * p1.y - p4.x * p1.x;
   return std::abs(sum / 2.0);
 };
 

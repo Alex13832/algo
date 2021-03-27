@@ -71,7 +71,7 @@ class Polygon;
 
 class Rectangle {
  public:
-  Rectangle(const double& x, const double& y, const double& width, const double& height);
+  Rectangle(double x, double y, double width, double height);
 
   /// \brief Returns the Polygon of this rectangle.
   /// \return A rectangle.
@@ -79,7 +79,8 @@ class Rectangle {
 
   /// \brief Returns the area of this rectangle.
   /// \return The area.
-  double Area() const { return width_ * height_; };
+  double Area() const
+  { return width_ * height_; };
 
  private:
   double width_{}; ///< Width of rectangle.
@@ -95,11 +96,12 @@ class Polygon {
  public:
   explicit Polygon(const Points& points);
 
-  Point GetEdge(const size_t& i);
+  Point GetEdge(size_t i);
 
   /// \brief Returns the points (coordinates) in this polygon.
   /// \return The points.
-  Points GetPoints() { return pts_; };
+  Points GetPoints()
+  { return pts_; };
 
   /// \brief Returns the number of edges in the polygon.
   /// \return The number of edges in the polygon.
@@ -108,13 +110,13 @@ class Polygon {
   /// \brief Rotates the polygon with the input angle.
   /// \param angle The angle to rotate the polygon with.
   /// \return A rotated polygon.
-  Polygon Rotate(const double& angle);
+  Polygon Rotate(double angle);
 
   /// \brief Rotates the polygon with the input angle.
   /// \param angle The angle to rotate the polygon with.
   /// \param center Center of polygon.
   /// \return
-  Polygon Rotate(const double& angle, const Point& center);
+  Polygon Rotate(double angle, Point center);
 
   /// \brief Returns a bounding rectangle, oriented to the x-y-axis, enclosing the points in this polygon.
   /// \return Bounding rectangle.

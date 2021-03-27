@@ -46,8 +46,8 @@ struct GaussWindowSettings {
 /// \param det_type Corner detection measure type, Harris or Shi-Tomasi.
 /// \return Corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Corner_detection">Corner detection, Wikipedia.</a>
-Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type = CornerDetType::kHarris,
-               const int& n_best = 0, const int& min_dist = 0,
+Points Corners(const Img& im, int threshold, const CornerDetType& det_type = CornerDetType::kHarris,
+               int n_best = 0, int min_dist = 0,
                const GaussWindowSettings& g_win_set = {Size{7, 7}, 1.0});
 
 // //////////////////////////////////////////
@@ -60,7 +60,7 @@ Points Corners(const Img& im, const int& threshold, const CornerDetType& det_typ
 /// \param corner_threshold Number of pixels that must be darker/brighter than the center pixel.
 /// \return The FAST corners.
 /// \link <a href="https://en.wikipedia.org/wiki/Features_from_accelerated_segment_test">FAST, Wikipedia.</a>
-Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold = 11);
+Points FASTCorners(const Img& im, int intensity_threshold, int corner_threshold = 11);
 
 // //////////////////////////////////////////
 //  SIFT Keypoints
@@ -90,7 +90,11 @@ using Keypoints = std::vector<Keypoint>;
 /// \link <a href="https://www.cs.ubc.ca/~lowe/papers/iccv99.pdf">Lowe 1999.</a>
 /// \todo Add code for computing the descriptors.
 /// \todo Unit test.
-Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians = 5, const int& nbr_octaves = 5, const float& contrast_offset = 1.7, const float& edge_threshold = 20.0);
+Keypoints SiftKeypoints(const Img& img,
+                        int nbr_gaussians = 5,
+                        int nbr_octaves = 5,
+                        float contrast_offset = 1.7,
+                        float edge_threshold = 20.0);
 
 }// namespace algo::image::feature
 

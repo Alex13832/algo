@@ -36,7 +36,8 @@ struct Line {
 struct Size {
   int rows, cols;
 
-  bool operator==(Size other) const { return rows == other.rows && cols == other.cols; }
+  bool operator==(Size other) const
+  { return rows == other.rows && cols == other.cols; }
 };
 
 struct Rectangle {
@@ -76,13 +77,13 @@ struct Img {
   /// \param x Coordinate x-value.
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
-  [[nodiscard]] uint8_t At(const int& x, const int& y) const;
+  [[nodiscard]] uint8_t At(int x, int y) const;
 
   /// \brief Sets the value at x, y to value.
   /// \param x X-coordinate.
   /// \param y Y-coordinate.
   /// \param value New value at coordinate.
-  void Set(const int& x, const int& y, const uint8_t& value);
+  void Set(int x, int y, uint8_t value);
 
   /// \brief Operator overloading for quick access of data element.
   /// \param i Index.
@@ -102,7 +103,7 @@ struct ImgF {
   /// \param x Coordinate x-value.
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
-  [[nodiscard]] float At(const int& x, const int& y) const;
+  [[nodiscard]] float At(int x, int y) const;
 
   /// \brief Sets the value at x, y to value.
   /// \param x X-coordinate.
@@ -128,9 +129,9 @@ struct IntegralImage {
   /// \param x Coordinate x-value.
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
-  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
+  [[nodiscard]] uint32_t At(int x, int y) const;
 
-  void Set(const int& x, const int& y, const uint32_t& value);
+  void Set(int x, int y, uint32_t value);
 };
 
 // //////////////////////////////////////////
@@ -141,7 +142,7 @@ struct IntegralImage {
 /// \param rows Number of rows.
 /// \param cols Number of columns.
 /// \return A new grayscale image.
-Img NewImgGray(const int& rows, const int& cols);
+Img NewImgGray(int rows, int cols);
 
 /// \brief Converts a color image to a gray scale image.
 /// \details `gray = 0.3 * red + 0.59 * green + 0.11 * blue`.

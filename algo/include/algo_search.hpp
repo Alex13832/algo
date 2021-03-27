@@ -27,7 +27,7 @@ namespace algo::search {
 /// \link <a href="https://en.wikipedia.org/wiki/Binary_search_algorithm">Binary search, Wikipedia.</a>
 /// \todo{alex011235} Unit test.
 template<typename T>
-int Binary(const std::vector<T> &vec, const T &value);
+int Binary(const std::vector<T>& vec, T value);
 
 /////////////////////////////////////////////
 /// Selection search
@@ -41,7 +41,7 @@ int Binary(const std::vector<T> &vec, const T &value);
 /// \link <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection search, Wikipedia.</a>
 /// \todo{alex011235} Unit test.
 template<typename T>
-std::vector<T> SelectionMin(std::vector<T> vec, const T &k);
+std::vector<T> SelectionMin(std::vector<T> vec, T k);
 
 /// \brief Finds the k largest items in vec.
 /// \tparam T Type used.
@@ -51,7 +51,7 @@ std::vector<T> SelectionMin(std::vector<T> vec, const T &k);
 /// \link <a href="https://en.wikipedia.org/wiki/Selection_algorithm">Selection search, Wikipedia.</a>
 /// \todo{alex011235} Unit test.
 template<typename T>
-std::vector<T> SelectionMax(std::vector<T> vec, const T &k);
+std::vector<T> SelectionMax(std::vector<T> vec, T k);
 }// namespace algo::search
 
 #endif//ALGORITHM_SEARCH_SEARCH_ALGORITHMS_HPP_
