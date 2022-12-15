@@ -5,7 +5,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df = pd.read_csv('testfiles/triangulate_out.csv')
+df = pd.read_csv('triangulate_out.csv')
 x1 = df['x1']
 y1 = df['y1']
 x2 = df['x2']

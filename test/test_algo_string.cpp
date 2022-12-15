@@ -179,7 +179,7 @@ TEST(test_algo_string, heaps_generate)
 {
   std::string sample{"METAL"};
   vector<std::string> perms{algo::string::GenerateAllPermutations(sample)};
-  EXPECT_EQ(perms.size(), 120);
+  EXPECT_EQ(perms.size(), 120); // 5!
   EXPECT_TRUE(find(perms.begin(), perms.end(), "LATEM") != perms.end());
   EXPECT_TRUE(find(perms.begin(), perms.end(), "MEALT") != perms.end());
 }

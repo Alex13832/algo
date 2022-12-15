@@ -102,7 +102,7 @@ struct ImgF {
   /// \param x Coordinate x-value.
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
-  [[nodiscard]] float At(const int& x, const int& y) const;
+  float At(const int& x, const int& y) const;
 
   /// \brief Sets the value at x, y to value.
   /// \param x X-coordinate.
@@ -128,7 +128,7 @@ struct IntegralImage {
   /// \param x Coordinate x-value.
   /// \param y Coordinate y-value.
   /// \return The value at x, y.
-  [[nodiscard]] uint32_t At(const int& x, const int& y) const;
+  uint32_t At(const int& x, const int& y) const;
 
   void Set(const int& x, const int& y, const uint32_t& value);
 };

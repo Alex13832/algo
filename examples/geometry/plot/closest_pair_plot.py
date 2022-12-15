@@ -6,7 +6,7 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('../testfiles/closest_pair_out2.csv');
+df_res = pd.read_csv('closest_pair_out1.csv')
 
 x_in = df_res['x']
 y_in = df_res['y']

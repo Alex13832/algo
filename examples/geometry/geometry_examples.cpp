@@ -16,18 +16,23 @@ using namespace algo::geometry;
 void WriteToFile(const Circle& circle, const string& file_name)
 {
   string header{"x,y,radius"};
-  string row{to_string(circle.center.x) + "," + to_string(circle.center.y) + "," + to_string(circle.radius) + '\n'};
+  string row{to_string(circle.Origin().X()) + ","
+             + to_string(circle.Origin().Y()) + "," + to_string(circle.Radius())
+             + '\n'};
   vector<string> rows{header, row};
   io::ToCsv(rows, file_name);
 }
 
-void WriteToFile(const Edges& lines, const string& file_name)
+void WriteToFile(const std::vector<Edge>& lines, const string& file_name)
 {
   string header{"x1,y1,x2,y2"};
   vector<string> rows{header};
 
-  for (auto line : lines) {
-    string row{to_string(line.a.x) + "," + to_string(line.a.y) + "," + to_string(line.b.x) + "," + to_string(line.b.y)};
+  for (const auto& line : lines) {
+    string row{to_string(line.GetStart().X()) + ","
+               + to_string(line.GetStart().Y()) + ","
+               + to_string(line.GetEnd().X()) + ","
+               + to_string(line.GetEnd().Y())};
     rows.emplace_back(row);
   }
   io::ToCsv(rows, file_name);
@@ -35,12 +40,13 @@ void WriteToFile(const Edges& lines, const string& file_name)
 
 void PrintHelp()
 {
-  cout << "Algorithms: Closest pair of points <cpp>, Convex hull <ch>, Minimum bounding box <mbbox>, "
+  cout << "Algorithms: Closest pair of points <cpp>, Convex hull <ch>, Minimum "
+          "bounding box <mbbox>, "
           "Minimum enclosing circle <mec>, <triangulate>."
        << endl;
 }
 
-int main(int argc, char *argv[])
+int main(int argc, char* argv[])
 {
   if (argc < 2) {
     PrintHelp();
@@ -57,17 +63,20 @@ int main(int argc, char *argv[])
   if (arg1 == "cpp") {
     const string kFileNameIn{"./testfiles/closest_pair_in1.csv"};
     const string kFileNameOut{"./testfiles/closest_pair_out1.csv"};
-    Points points{io::ReadPointsFile(kFileNameIn)};
-    Points cp{ClosestPairOfPoints(points)};
-    io::ToCsv(cp, points, kFileNameOut);
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto cp = grid.ClosestPairOfPoints();
+    std::vector<Point> ch_pts{cp.first, cp.second};
+    io::ToCsv(ch_pts, points, kFileNameOut);
   }
 
   // Convex hull
   if (arg1 == "ch") {
     const string kFileNameIn{"./testfiles/convex_hull_in1.csv"};
-    const string kFileNameOut{"./testfiles/convex_hull_out2.csv"};
-    Points points{io::ReadPointsFile(kFileNameIn)};
-    Polygon qh{ConvexHull(points)};
+    const string kFileNameOut{"./testfiles/convex_hull_out11.csv"};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto qh = grid.ConvexHull();
     io::ToCsv(qh.GetPoints(), points, kFileNameOut);
   }
 
@@ -75,26 +84,29 @@ int main(int argc, char *argv[])
   if (arg1 == "mbbox") {
     const string kFileNameIn{"./testfiles/mbbox_in1.csv"};
     const string kFileNameOut{"./testfiles/mbbox_out1.csv"};
-    Points points{io::ReadPointsFile(kFileNameIn)};
-    Polygon mbbox{MinimumBoundingBox(points)};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto mbbox = grid.MinBoundingBox();
     io::ToCsv(mbbox.GetPoints(), points, kFileNameOut);
   }
 
-  // Minimum eclosing circle
+  // Minimum enclosing circle
   if (arg1 == "mec") {
     const string kFileNameIn{"./testfiles/mbbox_in1.csv"};
     const string kFileNameOut{"./testfiles/mec_out1.csv"};
-    Points points{io::ReadPointsFile(kFileNameIn)};
-    Circle mec{MinimumEnclosingCircle(points)};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto mec = grid.MinEnclosingCircle();
     WriteToFile(mec, kFileNameOut);
   }
 
   // Triangulate
-  if (arg1 == "triangulate") {
-    const string kFileNameIn{"./testfiles/triangulate_in.csv"};
+  if (arg1 == "tri") {
+    const string kFileNameIn{"./testfiles/closest_pair_in1.csv"};
     const string kFileNameOut{"./testfiles/triangulate_out.csv"};
-    Points points{io::ReadPointsFile(kFileNameIn)};
-    Edges lines{Triangulate(points)};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto lines = grid.Triangulate();
     WriteToFile(lines, kFileNameOut);
   }
 

@@ -5,8 +5,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_in = pd.read_csv("testfiles/mst_network_in.csv")
-df_res = pd.read_csv("testfiles/mst_network_out.csv")
+df_in = pd.read_csv("mst_network_in.csv")
+df_res = pd.read_csv("mst_network_out.csv")
 
 edge_x_in = []
 edge_y_in = []
@@ -48,7 +48,7 @@ node_trace_in = go.Scatter(x=node_x_in, y=node_y_in, mode='markers', hoverinfo='
                            marker=dict(showscale=False, color="#FF4969", size=10,
                                        colorbar=dict(thickness=15, xanchor='left', titleside='right'), line_width=2))
 
-edge_trace_res = go.Scatter(x=edge_x_res, y=edge_y_res, line=dict(width=3.5, color='#'), hoverinfo='none',
+edge_trace_res = go.Scatter(x=edge_x_res, y=edge_y_res, line=dict(width=3.5, color='#A0F'), hoverinfo='none',
                             mode='lines')
 
 node_trace_res = go.Scatter(x=node_x_res, y=node_y_res, mode='markers', hoverinfo='text',

@@ -144,12 +144,12 @@ def generate_general_purpose_graph_data(nbr_nodes, radius, file_name, plot=0):
 def main(argv):
     # nn = nearest neighbor, radius 0.45
     # scc = strongly connected_components, radius -> 0.125
-    # mst = minimum spanning tree, radius -> 0.125
+    # mst = minimum spanning tree, radius -> 0.3
     # sp = shortest path, radius -> 0.125
 
     nbr_nodes = int(argv[0])
-    radius = 0.45
-    file_name = "graph_data_in.csv"
+    radius = 0.3
+    file_name = "../plot/nn_network_in.csv"
     plot = 0
 
     if len(argv) > 1:

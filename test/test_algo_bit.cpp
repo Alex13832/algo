@@ -12,7 +12,7 @@
 
 using namespace std;
 
-TEST(test_algo_bit, test_sign_of)
+TEST(TestAlgoBit, TestSignof)
 {
   EXPECT_EQ(algo::bit::Sign(-1), -1);
   EXPECT_EQ(algo::bit::Sign(0), 0);
@@ -25,7 +25,7 @@ TEST(test_algo_bit, test_sign_of)
   EXPECT_EQ(algo::bit::Sign(LONG_LONG_MAX), 0);
 }
 
-TEST(test_algo_bit, test_is_even)
+TEST(TestAlgoBit, TestIsEven)
 {
   EXPECT_EQ(algo::bit::IsEven(0), true);
   EXPECT_EQ(algo::bit::IsEven(1), false);
@@ -37,17 +37,17 @@ TEST(test_algo_bit, test_is_even)
   EXPECT_EQ(algo::bit::IsEven(LONG_MAX - 1), true);
 }
 
-TEST(test_algo_bit, test_set_bit)
+TEST(TestAlgoBit, TestSetBit)
 {
-  EXPECT_EQ(algo::bit::SetBit(0, 3, algo::bit::Bit::True), 8);
-  EXPECT_EQ(algo::bit::SetBit(0, 30, algo::bit::Bit::True), 1073741824);
-  EXPECT_EQ(algo::bit::SetBit(0, 0, algo::bit::Bit::True), 1);
-  EXPECT_EQ(algo::bit::SetBit(1, 0, algo::bit::Bit::False), 0);
-  EXPECT_EQ(algo::bit::SetBit(0xFFFFF, 15, algo::bit::Bit::False), 0xF7FFF);
-  EXPECT_EQ(algo::bit::SetBit(0xF7FFF, 3, algo::bit::Bit::False), 0xF7FF7);
+  EXPECT_EQ(algo::bit::SetBit(0, 3, true), 8);
+  EXPECT_EQ(algo::bit::SetBit(0, 30, true), 1073741824);
+  EXPECT_EQ(algo::bit::SetBit(0, 0, true), 1);
+  EXPECT_EQ(algo::bit::SetBit(1, 0, false), 0);
+  EXPECT_EQ(algo::bit::SetBit(0xFFFFF, 15, false), 0xF7FFF);
+  EXPECT_EQ(algo::bit::SetBit(0xF7FFF, 3, false), 0xF7FF7);
 }
 
-TEST(test_algo_bit, test_is_bit)
+TEST(TestAlgoBit, TestIsBit)
 {
   EXPECT_EQ(algo::bit::IsBit(0xAAAA, 15), true);
   EXPECT_EQ(algo::bit::IsBit(0xAAAA, 14), false);
@@ -67,20 +67,20 @@ TEST(test_algo_bit, test_is_bit)
   EXPECT_EQ(algo::bit::IsBit(0xAAAA, 0), false);
 }
 
-TEST(test_algo_bit, test_toggle_bit)
+TEST(TestAlgoBit, TestToggleBit)
 {
   EXPECT_EQ(algo::bit::ToggleBit(0xBBBB, 14), 0xFBBB);
   EXPECT_EQ(algo::bit::ToggleBit(0xFBBB, 14), 0xBBBB);
 }
 
-TEST(test_algo_bit, test_is_pow_2)
+TEST(TestAlgoBit, TestIsPow2)
 {
   EXPECT_EQ(algo::bit::IsPow2(2 << 10), true);
   EXPECT_EQ(algo::bit::IsPow2(256), true);
   EXPECT_EQ(algo::bit::IsPow2((2 << 12) - 1), false);
 }
 
-TEST(test_algo_bit, test_next_pow_2)
+TEST(TestAlgoBit, TestNextPow2)
 {
   EXPECT_EQ(algo::bit::NextPow2(1), 1);
   EXPECT_EQ(algo::bit::NextPow2(3), 4);
@@ -90,14 +90,14 @@ TEST(test_algo_bit, test_next_pow_2)
   EXPECT_EQ(algo::bit::NextPow2((1 << 12) + 1), 1 << 13);
 }
 
-TEST(test_algo_bit, test_count_set_bits)
+TEST(TestAlgoBit, TestCountSetBits)
 {
   EXPECT_EQ(algo::bit::CountSetBits(0b1010101), 4);
   EXPECT_EQ(algo::bit::CountSetBits(0xFF), 8);
   EXPECT_EQ(algo::bit::CountSetBits(0), 0);
 }
 
-TEST(test_algo_bit, test_swap_bits)
+TEST(TestAlgoBit, TestSwapBits)
 {
   EXPECT_EQ(algo::bit::SwapBits(0b101010), 0b010101);
   EXPECT_EQ(algo::bit::SwapBits(0b111000), 0b000111);

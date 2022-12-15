@@ -6,8 +6,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_in = pd.read_csv('testfiles/shortest_path_data_in.csv')
-df_res = pd.read_csv('testfiles/shortest_path_data_out.csv');
+df_in = pd.read_csv('sp_network_in.csv')
+df_res = pd.read_csv('sp_network_out.csv');
 
 edges_x0 = df_in['X0']
 edges_y0 = df_in['Y0']

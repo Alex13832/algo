@@ -15,6 +15,8 @@
 /// 2016-10-02 Bellman-Ford shortest path.
 /// 2020-05-12 BFS shortest path.
 /// 2020-05-13 IsBipartite
+/// 2022-12-17 Refactor to classes.
+/// 2022-12-22 Remove nearest neighbour.
 ///
 
 #include <cstddef>
@@ -25,218 +27,283 @@
 
 namespace algo::graph {
 
-// https://github.com/isocpp/CppCoreGuidelines/blob/master/CppCoreGuidelines.md#p3-express-intent
-
-using Nodes = std::vector<int>;
-using Weights = std::vector<double>;
-using Visited = std::vector<bool>;
+// - MARK: Structs, namespaces -
 
 struct Edge {
   int u, v;
   double w;
 };
 
-using Edges = std::vector<Edge>;
-
 struct Connection {
   int node;
   double weight;
 };
+
+using Nodes = std::vector<int>;
 
 struct Path {
   Nodes nodes;
   bool is_path;
 };
 
-// Multi-dimensional
-using Graph = std::vector<std::vector<Connection>>;
+using Weights = std::vector<double>;
+using Visited = std::vector<bool>;
+using Edges = std::vector<Edge>;
+using RawGraph = std::vector<std::vector<Connection>>;
 using NodeMat = std::vector<Nodes>;
 using WeightMat = std::vector<Weights>;
 
-// //////////////////////////////////////////
-//  Graph functions
-// //////////////////////////////////////////
+// - MARK: Classes -
 
-/// \brief Returns a new graph.
-/// \param size The number of nodes in the graph, zero-indexed!
-/// \note The graph is zero-indexed, that is to keep to internal indices (in vectors) the same.
-/// \return A new graph.
-Graph NewGraph(size_t size);
+class Graph {
 
-/// \brief Adds a new edge from u to v with weight w.
-/// \param graph The graph to change.
-/// \param u Source.
-/// \param v Destination.
-/// \param w Weight.
-/// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &u, const int &v, const double &w);
+ public:
+  /// \brief Removes the edge between node u and node v.
+  /// \param u Node.
+  /// \param v Node.
+  void RemoveEdge(size_t u, size_t v);
 
-/// \brief Adds a new edge from u to v.
-/// \param graph The graph to change.
-/// \param u Source.
-/// \param v Destination.
-/// \return Returns true if added, otherwise false.
-bool MakeEdge(Graph &graph, const int &u, const int &v);
+  /// \brief Returns all edges in the graph.
+  /// \return Edges.
+  Edges GetEdges() const;
 
-/// \brief Adds a new directed edge from u to v with weight w.
-/// \param graph The graph to change.
-/// \param u Source.
-/// \param v Destination.
-/// \param w Weight.
-/// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &u, const int &v, const double &w);
+  /// \brief Returns the size of graph..
+  /// \return Size of graph.
+  size_t Size() const;
 
-/// \brief Adds a new directed edge from u to v.
-/// \param graph The graph to change.
-/// \param u Source.
-/// \param v Destination.
-/// \return Returns true if added, otherwise false.
-bool MakeDirEdge(Graph &graph, const int &u, const int &v);
+  /// \brief Returns the raw data structure.
+  /// \return A vector<vector<Connection>>.
+  RawGraph GetRaw() const;
 
-/// \brief Updates the weight for the edge(u, v) = weight.
-/// \param graph The input graph.
-/// \param u Source node.
-/// \param v Destination node.
-/// \param weight New weight.
-void SetWeight(Graph &graph, const int &u, const int &v, double weight);
+ protected:
+  explicit Graph(size_t size);
 
-/// \brief Gets the weight at edge(u, v).
-/// \param graph The input graph.
-/// \param u Source node.
-/// \param v Destination node.
-/// \return The weight at edge(u, v).
-double GetWeight(Graph &graph, const int &u, const int &v);
+  const std::vector<Connection> &At(size_t n) const;
 
-/// \brief Returns the edges as a vector of the input graph.
-/// \param graph The input graph.
-/// \return A list of edges.
-Edges GetEdges(const Graph &graph);
+  /// \brief Checks that u and v are not outside any size.
+  /// \param u Node.
+  /// \param v Node.
+  /// \return true if valid.
+  bool ValidBounds(size_t u, size_t v) const;
 
-// //////////////////////////////////////////
-//  Breadth-First-Search (BFS)
-// //////////////////////////////////////////
+  /// \brief Connects an edge between node u and v.
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight Weight, use 0.0 if unweighted.
+  void ConnectNodes(size_t u, size_t v, double weight);
 
-/// \brief Runs Breadth-First-Search on the input graph from the source node.
-/// \param graph Input graph.
-/// \param source Source node.
-/// \returnﬁ
-Nodes BFS(const Graph &graph, const int &source);
+  /// \brief Updates the weight for the edge(u,v).
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight New weight.
+  void UpdateWeight(size_t u, size_t v, double weight);
 
-/// \brief Returns the shortest path from source to dest in graph. The path length is measured by number of edges.
-/// \param graph The input graph.
-/// \param source The source node.
-/// \param dest The destination node.
-/// \return The path from source to dest, and if it is a path.
-Path ShortestPathBFS(const Graph &graph, const int &source, const int &dest);
+  /// \brief Runs Breadth-First-Search on the input graph from the source node.
+  /// \param graph Input graph.
+  /// \param source Source node.
+  /// \return The nodes in the BFS result from source.
+  virtual Nodes BFS(size_t source) const;
 
-/// \brief Checs if the input graph is bipartite.
-/// \param graph The input grpah.
-/// \param src Source node.
-/// \return True if bipartite, otherwise false.
-/// \link <a href="https://en.wikipedia.org/wiki/Bipartite_graph#Testing_bipartiteness">Bipartite graph, Wikipedia.</a>
-bool IsBipartite(const Graph &graph);
+  /// \brief Returns the shortest path from source to dest. The path length
+  /// is measured by number of edges.
+  /// \param source The source node.
+  /// \param dest The destination node.
+  /// \return The path from source to dest, and if it is a path.
+  virtual Path ShortestPathBFS(size_t source, size_t dest) const;
 
-// //////////////////////////////////////////
-//  Nearest neighbor, TSP
-// //////////////////////////////////////////
+  /// \brief Returns the shortest path from source to dest, only allowing
+  /// positive edge weights. If there are negative edge weights, then use
+  /// ShortestPathBellmanFord.
+  /// \param source Source node.
+  /// \param dest Destination node.
+  /// \return Shortest path from source to dest.
+  virtual Nodes ShortestPathDijkstra(size_t source, size_t dest) const;
 
-/// \brief Returns a path through all nodes.
-/// \details This is an approximation of the travelling salesman problem.
-/// \note There's no guarantee that the returned path is the optimal. Also, small change to find a path at all.
-/// \param graph The input graph.
-/// \param source Starting node.
-/// \return A path through all nodes.
-/// \link <a href="https://en.wikipedia.org/wiki/Nearest_neighbour_algorithm">Nearest neighbor, Wikipedia.</a>
-Nodes AllNodesPath(const Graph &graph, const int &source);
+  bool directed_{false};
 
-// //////////////////////////////////////////
-//  Dijkstra's, shortest path
-// //////////////////////////////////////////
+ private:
+  /// \brief Pops (removes) an edge. Helper function with access to graph_.
+  /// \param u Node.
+  /// \param v Node.
+  void PopEdge(size_t u, size_t v);
+  /// \brief Computes the shortest path from all nodes back to source.
+  /// \param source The source node.
+  /// \return The nodes  for all the shortest path from any node to source.
+  Nodes ShortestPathDijkstra(size_t source) const;
 
-/// \brief Returns the shortest path between the source and destination in the input graph.
-/// \details This implementation is based on Dijkstra's algorithm for shortest path.
-/// \param graph The input graph.
-/// \param source The source node.
-/// \param dest The destination node.
-/// \return The nodes constructing the shortest path.
-/// \link <a href="https://en.wikipedia.org/wiki/Dijkstra%27s_algorithm">Dijkstra's algorithm, Wikipedia.</a>
-Nodes ShortestPathDijkstra(const Graph &graph, const int &source, const int &dest);
+  std::vector<std::vector<Connection>> graph_;
+  size_t size_;
+};
 
-// //////////////////////////////////////////
-//  Bellman-Ford, shortest path
-// //////////////////////////////////////////
+class UndirectedGraph : public Graph {
 
-/// \brief Returns the shortest path between source and all other nodes in the input graph.
-/// \note Use ShortestPathDijkstra if all edge weights are positive, since (Dijkstra's) algorithm is faster.
-/// \param graph The input graph.
-/// \param source Source node.
-/// \return A list of nodes prev = nodes[prev], for tracking each path to source. And weights.
-/// \link <a href="https://en.wikipedia.org/wiki/Bellman–Ford_algorithm">Bellman-Ford, Wikipedia.</a>
-std::pair<Weights, Nodes> ShortestPathBF(const Graph &graph, const int &source);
+ public:
+  explicit UndirectedGraph(size_t size) : Graph(size)
+  {
+    directed_ = false;
+  };
 
-/// \brief Returns the shortest oath between the source and destination (dest) in the input graph.
-/// \details This algorithm uses the Bellman-Ford algorithm which allows negative edge weights. Use ShortestPathDijkstra
-/// if all edge weights are positive (faster).
-/// \param graph The input graph.
-/// \param source Source node.
-/// \param dest Destination node.
-/// \return The nodes constructing the path from source to dest.
-std::pair<Nodes, double> ShortestPathBF(const Graph &graph, const int &source, const int &dest);
+  /// \brief Inserts two edges (undirected) to the graph between nodes u and v.
+  /// \param u Node.
+  /// \param v Node.
+  void InsertEdge(size_t u, size_t v);
 
-// //////////////////////////////////////////
-//  Floyd-Warshall, all-pair shortest dist
-// //////////////////////////////////////////
+  Nodes BFS(size_t source) const override;
 
-/// \brief Finds the shortest path between all the nodes in the input graph.
-/// \details Implementation follows the Floyd-Warshall algorithm.
-/// \param graph The input graph.
-/// \return A matrix, where each entry (for each node) is the path to all other nodes.
-/// \link <a href="https://en.wikipedia.org/wiki/Floyd–Warshall_algorithm">Floyd-Warshall, Wikipedia.</a>
-NodeMat ShortestDistAllPairs(const Graph &graph);
+  Path ShortestPathBFS(size_t source, size_t dest) const override;
 
-/// \brief Returns the shortest path from source to dest in graph.
-/// \param graph The input graph.
-/// \param source Source node.
-/// \param dest Destination node.
-/// \return Shortest path from source to dest.
-Nodes ShortestDistAllPairsPath(const Graph &graph, const int &source, const int &dest);
+  /// \brief Checks if the graph is bipartite.
+  /// \details A graph is bipartite if the nodes can be divided in two sets
+  /// where no edge is connected to a node in the same set.
+  /// \return true if bipartite.
+  bool IsBipartite() const;
+};
 
-// //////////////////////////////////////////
-//  Prim's, minimum spanning tree
-// //////////////////////////////////////////
+class DirectedGraph : public Graph {
 
-/// \brief Returns the minimum spanning tree (MST) in the input graph from the node source.
-/// \details This implementation is based on Prim's algorithm.
-/// \param graph The graph.
-/// \param source The source.
-/// \return The nodes that constructs the MST.
-/// \link <a href="https://en.wikipedia.org/wiki/Prim%27s_algorithm">Prim's algorithm, Wikipedia.</a>
-Graph MinSpanningTree(const Graph &graph, const int &source, double &total_weight);
+ public:
+  explicit DirectedGraph(size_t size) : Graph(size)
+  {
+    directed_ = true;
+  };
 
-// //////////////////////////////////////////
-//  Ford-Fulkerson, maximum flow
-// //////////////////////////////////////////
+  /// \brief Inserts one edge (directed) between nodes u and v.
+  /// \param u Node.
+  /// \param v Node.
+  void InsertEdge(size_t u, size_t v);
 
-/// \brief Computes the maximum flow in the input graph from source to destination.
-/// \details This implementation uses BFS for finding paths, which means that it's a Edmonds-Karp implementation.
-/// \param graph The input graph.
-/// \param source Then source node.
-/// \param dest The destination node.
-/// \return Maximum flow.
-/// \link <a href="https://en.wikipedia.org/wiki/Ford–Fulkerson_algorithm">Ford-Fulkerson, Wikipedia.</a>
-double MaxFlow(Graph graph, const int &source, const int &dest);
+  Nodes BFS(size_t source) const override;
 
-// //////////////////////////////////////////
-//  Kosaraju, strongly connected components
-// //////////////////////////////////////////
+  Path ShortestPathBFS(size_t source, size_t dest) const override;
 
-/// \brief Returns a list of the strongly connected components in graph.
-/// \details This function follows the Kosaraju algorithm.
-/// \param graph The input graph.
-/// \return A list of connected components, each item is a list of nodes.
-/// \link <a href="https://en.wikipedia.org/wiki/Kosaraju%27s_algorithm">Kosaraju's algorithm, Wikipedia.</a>
-/// \link <a href="https://en.wikipedia.org/wiki/Strongly_connected_component">Strongly connected component, Wikipedia.<a/>
-NodeMat StrConnComponents(const Graph &graph);
+  /// \brief Returns a list of the strongly connected components.
+  /// \details This function follows the Kosaraju algorithm.
+  /// \return A list of connected components, each item is a list of nodes.
+  NodeMat StronglyConnectedComponentsKosaraju() const;
+
+ private:
+  /// \brief Returns a new graph with all edges pointing in the opposite
+  // direction.
+  /// \return Reversed graph.
+  DirectedGraph Reverse() const;
+
+  /// \brief Visits each node in each node for all connections at n.
+  /// \param n Node n.
+  /// \param visited Reference to nodes marked as visited.
+  /// \param res Visited nodes.
+  void Visit(size_t n, Visited &visited, Nodes &res) const;
+
+  /// \brief Visits all nodes.
+  /// \return Nodes and visited.
+  std::pair<Nodes, Visited> VisitAll() const;
+};
+
+class UndirectedWeightedGraph : public Graph {
+
+ public:
+  explicit UndirectedWeightedGraph(size_t size) : Graph(size)
+  {
+    directed_ = false;
+  };
+
+  /// \brief Inserts an undirected edge with weight between u and v.
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight Edge weight.
+  void InsertEdge(size_t u, size_t v, double weight);
+
+  /// \brief Sets the weight for edge(u,v).
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight Weight.
+  void SetWeight(size_t u, size_t v, double weight);
+
+  /// \brief Returns the edge weight for edge(u,v).
+  /// \param u Node.
+  /// \param v Node.
+  /// \return Weight.
+  double GetWeight(size_t u, size_t v) const;
+
+  /// \brief Checks if all edge weights are positive.
+  /// \return True if all edge weights are positive.
+  bool AllWeightsPositive() const;
+
+  /// \brief Returns minimum spanning tree (MST) from source.
+  /// \details This implementation is based on Prim's algorithm.
+  /// \param total_weight Resulting total weight of the MST.
+  /// \return The MST:
+  UndirectedWeightedGraph MinSpanningTreePrim(double &total_weight) const;
+
+  Nodes ShortestPathDijkstra(size_t source, size_t dest) const override;
+};
+
+class DirectedWeightedGraph : public Graph {
+ public:
+  explicit DirectedWeightedGraph(size_t size) : Graph(size)
+  {
+    directed_ = true;
+  };
+
+  /// \brief Inserts and edge between u and v with weight.
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight Weight.
+  void InsertEdge(size_t u, size_t v, double weight);
+
+  /// \brief Sets the weight for edge(u,v).
+  /// \param u Node.
+  /// \param v Node.
+  /// \param weight Weight.
+  void SetWeight(size_t u, size_t v, double weight);
+
+  /// \brief Returns the weight for edge(e,v).
+  /// \param u Node.
+  /// \param v Node.
+  /// \return Weight.
+  double GetWeight(size_t u, size_t v) const;
+
+  /// \brief Checks if all edge weights are positive.
+  /// \return True if all edge weights are positive.
+  bool AllWeightsPositive() const;
+
+  Nodes ShortestPathDijkstra(size_t source, size_t dest) const override;
+
+  /// \brief Returns the shortest path between the source and all other nodes
+  /// in the graph. Negative weights are allowed. If only positive, use
+  /// ShortestPathDijkstra, which is faster.
+  /// \param source The source node.
+  /// \return Shortest path from source to all other nodes.
+  std::pair<Weights, Nodes> ShortestPathBellmanFord(size_t source) const;
+
+  /// \brief Returns the shortest path from source to dest in the graph.
+  /// Negative weights are allowed. If only positive weights, use
+  /// ShortestPathDijkstra, which is faster.
+  /// \param source Source node.
+  /// \param dest Destination node.
+  /// \return The path and the total weight.
+  std::pair<Nodes, double> ShortestPathSinglePathBellmanFord(size_t source,
+                                                             size_t dest) const;
+
+  /// \brief Finds the shortest path between all the nodes in graph. Negative
+  /// and positive weights are allowed. No negative cycles.
+  /// \return A matrix, where each entry (for each node) is the path to all other nodes.
+  NodeMat ShortestDistAllPairsFloydWarshall() const;
+
+  /// \brief Returns the shortest path from source to dest.
+  /// \param source Source node.
+  /// \param dest Destination node.
+  /// \return Shortest path from source to dest.
+  Nodes ShortestDistAllPairsPathFloydWarshall(size_t source, size_t dest) const;
+
+  /// \brief Computes the maximum flow from source to destination.
+  /// \details This algorithm is also called Ford-Fulkerson, but since this
+  /// implementation uses BFS for finding paths, it's an Edmonds-Karp
+  /// implementation.
+  /// \param source Then source node.
+  /// \param dest The destination node.
+  /// \return Maximum flow.
+  double MaxFlowEdmondsKarp(size_t source, size_t dest);
+};
 
 }// namespace algo::graph
 
