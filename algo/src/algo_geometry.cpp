@@ -22,9 +22,7 @@ namespace algo::geometry {
 // /////////////////////////////
 // MARK: Point
 
-Point::Point(double x, double y) : x_{x},
-                                   y_{y}
-{}
+Point::Point(double x, double y) : x_{x}, y_{y} {}
 
 void Point::Set(double x, double y)
 {
@@ -75,18 +73,15 @@ double Point::Y() const
 // /////////////////////////////
 // MARK: Edge
 
-Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1},
-                                                 pt2_{pt2}
+Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1}, pt2_{pt2}
 {
-  if (pt1 == pt2) {
-    throw std::invalid_argument("Points cannot be equal.");
-  }
+  if (pt1 == pt2) { throw std::invalid_argument("Points cannot be equal."); }
 }
 
 bool Edge::operator==(const Edge& e) const
 {
   return ((pt1_ == e.pt1_) && (pt2_ == e.pt2_))
-      || ((pt2_ == e.pt1_) && (pt1_ == e.pt2_));
+      or ((pt2_ == e.pt1_) && (pt1_ == e.pt2_));
 }
 
 namespace {
@@ -131,14 +126,10 @@ double Edge::Dist(const Point& pt) const
 
   // The x value of pt is larger than largest x, then the distance to the
   // line is the same as the distance to the right most coordinate.
-  if (pt.X() > pt_max.X()) {
-    return pt.Dist(pt_max);
-  }
+  if (pt.X() > pt_max.X()) { return pt.Dist(pt_max); }
   // The x value of pt is smaller than smallest x, then the distance to the
   // line is the same as the distance to the left most coordinate.
-  if (pt.X() < pt_min.X()) {
-    return pt.Dist(pt_min);
-  }
+  if (pt.X() < pt_min.X()) { return pt.Dist(pt_min); }
 
   // pt.x is withing bounds.
   const auto x1 = pt1_.X();
@@ -184,6 +175,22 @@ double Circle::Area() const
 bool Circle::IsInside(const Point& pt) const
 {
   return origin_.Dist(pt) <= radius_;
+}
+
+Triangle Circle::EnclosingTriangle() const
+{
+  // The distance from each corner point of the triangle to the point on
+  // the triangle's base perpendicular to the origin.
+  const auto phi = radius_ / tan(30.0 * M_PI / 180.0);
+  // The distance from the origin to each corner point.
+  const auto sigma = std::sqrt(std::pow(radius_, 2) + std::pow(phi, 2));
+
+  // An equal sided triangle of these points.
+  const Point p1{origin_.X() - phi, origin_.Y() - radius_};
+  const Point p2{origin_.X() + phi, origin_.Y() - radius_};
+  const Point p3{origin_.X(), origin_.Y() + sigma};
+
+  return Triangle{p1, p2, p3};
 }
 
 Point Circle::Origin() const
@@ -312,6 +319,15 @@ double Triangle::Area() const
                   / 2.0);
 }
 
+std::vector<Edge> Triangle::GetEdges() const
+{
+  std::vector<Edge> edges;
+  edges.emplace_back(pt1_, pt2_);
+  edges.emplace_back(pt2_, pt3_);
+  edges.emplace_back(pt3_, pt1_);
+  return edges;
+}
+
 bool Triangle::IsInside(const Point& pt) const
 {
   if ((pt == pt1_) || (pt == pt2_) || (pt == pt3_)) {
@@ -323,6 +339,17 @@ bool Triangle::IsInside(const Point& pt) const
   const auto area2 = Triangle(pt1_, pt, pt3_).Area();
   const auto area3 = Triangle(pt1_, pt2_, pt).Area();
   return area == (area1 + area2 + area3);
+}
+
+bool Triangle::HasEdge(const Edge& edge) const
+{
+  if (edge.GetStart() == pt1_ and edge.GetEnd() == pt2_) return true;
+  if (edge.GetStart() == pt1_ and edge.GetEnd() == pt3_) return true;
+  if (edge.GetStart() == pt2_ and edge.GetEnd() == pt3_) return true;
+  if (edge.GetStart() == pt2_ and edge.GetEnd() == pt1_) return true;
+  if (edge.GetStart() == pt3_ and edge.GetEnd() == pt2_) return true;
+  if (edge.GetStart() == pt3_ and edge.GetEnd() == pt1_) return true;
+  return false;
 }
 
 namespace {
@@ -356,6 +383,14 @@ Circle Triangle::CircumCircle() const
   const auto radius = cc.Dist(pt1_);
 
   return Circle{cc, radius};
+}
+
+bool Triangle::operator==(const Triangle& tr) const
+{
+  if (pt1_ == tr.pt1_ and pt2_ == tr.pt2_ and pt3_ == tr.pt3_) return true;
+  if (pt1_ == tr.pt3_ and pt2_ == tr.pt1_ and pt3_ == tr.pt2_) return true;
+  if (pt1_ == tr.pt2_ and pt2_ == tr.pt3_ and pt3_ == tr.pt1_) return true;
+  return false;
 }
 
 // /////////////////////////////
@@ -424,8 +459,7 @@ double Rectangle::GetHeight() const
 // /////////////////////////////
 // MARK: Grid
 
-Grid::Grid(const std::vector<Point>& points) : points_{points}
-{}
+Grid::Grid(const std::vector<Point>& points) : points_{points} {}
 
 // /////////////////////////////
 // MARK: Closest pair of points
@@ -722,13 +756,9 @@ Circle CircleOf3(const Point& p1, const Point& p2, const Point& p3)
 /// \return A circle.
 Circle TrivialCircumcircle(std::vector<Point> pts)
 {
-  if (pts.empty() || pts.size() > 3) {
-    return Circle{{0, 0}, 0};
-  }
+  if (pts.empty() || pts.size() > 3) { return Circle{{0, 0}, 0}; }
   // Single point given
-  if (pts.size() == 1) {
-    return Circle{pts.front(), 0};
-  }
+  if (pts.size() == 1) { return Circle{pts.front(), 0}; }
   // Two points on the circle
   if (pts.size() == 2) {
     const Point p1 = pts.at(0);
@@ -747,17 +777,13 @@ Circle TrivialCircumcircle(std::vector<Point> pts)
 /// \return A circle around the points in pts.
 Circle Welzl(std::vector<Point> pts, std::vector<Point> r)
 {
-  if (pts.empty() || r.size() == 3) {
-    return TrivialCircumcircle(r);
-  }
+  if (pts.empty() || r.size() == 3) { return TrivialCircumcircle(r); }
   auto index = std::rand() % pts.size();
   auto p = pts.at(index);
   pts.erase(pts.begin() + static_cast<long>(index));
   auto circle = Welzl(pts, r);
 
-  if (circle.IsInside(p)) {
-    return circle;
-  }
+  if (circle.IsInside(p)) { return circle; }
 
   r.emplace_back(p);
   return Welzl(pts, r);
@@ -804,7 +830,7 @@ void LexSortPoints(std::vector<Point>& pts)
 
 }//namespace
 
-std::vector<Edge> Grid::Triangulate() const
+std::vector<Edge> Grid::Triangulation() const
 {
   auto pts = points_;
   LexSortPoints(pts);
@@ -844,6 +870,136 @@ std::vector<Edge> Grid::Triangulate() const
   }
 
   return lines;
+}
+
+// /////////////////////////////
+// MARK: DelaunayTriangulation
+
+namespace {
+
+/// \brief Returns all the edges from the triangles.
+/// \param triangles Triangles.
+/// \return All edges.
+std::vector<Edge> TrianglesToEdges(const std::vector<Triangle>& triangles)
+{
+  std::vector<Edge> all_edges;
+  for (const auto& triangle : triangles) {
+    auto edges = triangle.GetEdges();
+    all_edges.emplace_back(edges.at(0));
+    all_edges.emplace_back(edges.at(1));
+    all_edges.emplace_back(edges.at(2));
+  }
+  return all_edges;
+}
+
+/// \brief Returns all edges that are not shared with no other triangle.
+/// \param[in] triangles Triangles.
+/// \return Edges.
+std::vector<Edge> GetNonSharingEdges(const std::vector<Triangle>& triangles)
+{
+  std::vector<Edge> polygon;
+  for (const auto& triangle_i : triangles) {
+    for (const auto& edge : triangle_i.GetEdges()) {
+      bool sharing_edge{false};
+      for (const auto& triangle_j : triangles) {
+        if (triangle_i == triangle_j) continue;
+        if (triangle_j.HasEdge(edge)) {
+          sharing_edge = true;
+          break;
+        }
+      }
+      if (not sharing_edge) polygon.emplace_back(edge);
+    }
+  }
+  return polygon;
+}
+
+/// \brief Removes triangles that are equal in triangulation and bad_triangles.
+/// \param[in,out] triangulation Triangles.
+/// \param[in] bad_triangles Triangles.
+void RemoveEqualTriangles(std::vector<Triangle>& triangulation,
+                          const std::vector<Triangle>& bad_triangles)
+{
+  auto iter = triangulation.begin();
+
+  while (iter != triangulation.end()) {
+    for (const auto& bt : bad_triangles) {
+      iter = std::find_if(triangulation.begin(), triangulation.end(),
+                          [bt](const Triangle& tri) { return tri == bt; });
+
+      if (iter != triangulation.end()) triangulation.erase(iter);
+    }
+  }
+}
+
+/// \brief Removes the edges in the Delaunay triangulation that share a point
+/// with the super triangle.
+/// \param[in] del_edges Delaunay triangulation with super triangle around it.
+/// \param[in] super_triangle Known super triangle.
+void RemoveSuperVertices(std::vector<Edge>& del_edges,
+                         const Triangle& super_triangle)
+{
+  const auto st_vertices = super_triangle.GetPoints();
+  auto iter = del_edges.begin();
+  while (iter != del_edges.end()) {
+    iter = std::find_if(
+        del_edges.begin(), del_edges.end(), [st_vertices](const Edge& edge) {
+          const auto get_start = edge.GetStart();
+          const auto get_end = edge.GetEnd();
+          return get_start == st_vertices.at(0) or get_end == st_vertices.at(0)
+              or get_start == st_vertices.at(1) or get_end == st_vertices.at(1)
+              or get_start == st_vertices.at(2) or get_end == st_vertices.at(2);
+        });
+    if (iter != del_edges.end()) del_edges.erase(iter);
+  }
+}
+
+/// \brief Removes the duplicated edges.
+/// \param edges Edges.
+/// \return What's left.
+std::vector<Edge> GetNonDuplicates(const std::vector<Edge>& edges)
+{
+  std::vector<Edge> non_duplicates;
+
+  for (const auto& e1 : edges) {
+    auto iter = std::find_if(non_duplicates.begin(), non_duplicates.end(),
+                             [e1](const Edge& e2) { return e1 == e2; });
+    if (iter == non_duplicates.end()) non_duplicates.emplace_back(e1);
+  }
+  return non_duplicates;
+}
+
+}// namespace
+
+// Delaunay triangulation using the Bowyer–Watson algorithm
+// https://en.wikipedia.org/wiki/Bowyer–Watson_algorithm
+
+std::vector<Edge> Grid::DelaunayTriangulation() const
+{
+  if (points_.size() < 3) return {};
+  const auto super_triangle = MinEnclosingCircle().EnclosingTriangle();
+  std::vector<Triangle> triangulation{super_triangle};
+
+  for (const auto& pt : points_) {
+    std::vector<Triangle> bad_triangles;
+
+    for (const auto& triangle : triangulation) {
+      if (triangle.CircumCircle().IsInside(pt)) {
+        bad_triangles.emplace_back(triangle);
+      }
+    }
+    // Get only edges that are not shared with any other bad triangle.
+    const auto polygon = GetNonSharingEdges(bad_triangles);
+    // Remove triangles in bad_triangles from triangulation
+    RemoveEqualTriangles(triangulation, bad_triangles);
+    // Make an ew triangle of edge and pt and put in triangulation.
+    for (const auto& edge : polygon) {
+      triangulation.emplace_back(pt, edge.GetStart(), edge.GetEnd());
+    }
+  }
+  auto del_edges = TrianglesToEdges(triangulation);
+  RemoveSuperVertices(del_edges, super_triangle);
+  return GetNonDuplicates(del_edges);
 }
 
 }// namespace algo::geometry

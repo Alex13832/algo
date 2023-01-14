@@ -79,11 +79,24 @@ Returns the smallest circle around the points in `pts`.
 ```cpp
 std::vector<algo::geometry::Point> points{...};
 Grid grid{points};
-auto lines = grid.Triangulate();
+auto lines = grid.Triangulation();
 ```
 
 Triangulates the input points `pts_` and returns a set of pair of points in `Edges` where each pair connects two points with an edge.
 
 ### Examples
 
-![Triangulate in2](images/triangulate_out1.png) ![Triangulate in2](images/triangulate_out3.png)
+![Triangulation in2](images/triangulate_out1.png) ![Triangulation in2](images/triangulate_out3.png)
+
+## Delaunay triangulation
+
+```cpp
+  Points points{...};
+  Grid grid{points};
+  auto de_tri = grid.DelaunayTriangulation();
+```
+Makes a Delaunay triangulation of the input points.
+
+### Examples
+
+![Mec1](images/del_tri2.png) ![Mec1](images/del_tri3.png)

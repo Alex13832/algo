@@ -6,11 +6,17 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('convex_hull_in1.csv')
+df_res = pd.read_csv('etri_out1.csv')
 def_circle = pd.read_csv('mec_out1.csv')
 
 x_in = df_res['x']
 y_in = df_res['y']
+label = df_res['Label']
+
+x1 = x_in[label == 1]  # Raw points
+y1 = y_in[label == 1]
+x2 = x_in[label == 2]  # Triangle
+y2 = y_in[label == 2]
 
 x = def_circle['x']
 y = def_circle['y']
@@ -21,16 +27,24 @@ yc1 = y - r
 xc2 = x + r
 yc2 = y + r
 
-points = go.Scatter(x=x_in, y=y_in, mode='markers', hoverinfo='text',
+points = go.Scatter(x=x1, y=y1, mode='markers', hoverinfo='text',
                     marker=dict(showscale=False,
                                 colorscale='sunset',
-                                reversescale=True,
+                                reversescale=True, color=label,
                                 size=12, colorbar=dict(thickness=15, xanchor='left', titleside='right'),
                                 line_width=1))
 
+triangle = go.Scatter(x=x2, y=y2,
+                      marker=dict(showscale=False,
+                                  colorscale='aggrnyl',
+                                  reversescale=True, color=label,
+                                  size=8, colorbar=dict(thickness=15, xanchor='left', titleside='right'),
+                                  line_width=1),
+                      line=dict(color="#ff5500", width=2))
+
 # Create figure
 
-fig = go.Figure(data=[points],
+fig = go.Figure(data=[points, triangle],
                 layout=go.Layout(
                     title='',
                     titlefont_size=16,
