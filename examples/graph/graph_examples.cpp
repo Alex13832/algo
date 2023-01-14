@@ -5,6 +5,7 @@
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
+#include <iostream>
 #include <string>
 
 #include "algo.hpp"
@@ -12,14 +13,14 @@
 
 void PrintHelp()
 {
-  std::cout
-      << "Algorithms: Minimum spanning tree <mst>. Nearest neighbor <nn>. Shortest path <sp>. Strongly connected components <scc>"
-      << std::endl;
+  std::cout << "Algorithms: Minimum spanning tree <mst>. Shortest path <sp>. "
+               "Strongly connected components <scc>"
+            << std::endl;
 }
 
 int main(int argc, char *argv[])
 {
-  if (argc < 3) {
+  if (argc < 1) {
     PrintHelp();
     return -1;
   }
@@ -31,65 +32,47 @@ int main(int argc, char *argv[])
     return 0;
   }
 
+  std::cout << arg1 << std::endl;
+
   // TODO: Find out by parsing file
-  const int kNbrNodes{std::stoi(argv[2])};
-  const std::string kFileIn{"./testfiles/graph_data_in.csv"};
+  std::string file_in;
+  std::string file_out;
 
   // Minimum spanning tree
   if (arg1 == "mst") {
-    const std::string kFileOut{"./testfiles/mst_network_out.csv"};
-
-    std::pair<algo::graph::Graph, std::vector<io::DataLine>> graph_lines{io::ReadGraph(kFileIn, kNbrNodes)};
-    algo::graph::Graph graph_in = graph_lines.first;
-
+    file_in = "./plot/mst_network_in.csv";
+    auto lines = io::ReadLines(file_in);
+    auto graph = io::ReadUWG(lines);
     double minimum_weight{0.0};// out
-    algo::graph::Graph mst{MinSpanningTree(graph_in, 0, minimum_weight)};
+    auto mst = graph.MinSpanningTreePrim(minimum_weight);
+    auto nodes = mst.GetRaw();
 
-    io::ToCsv(mst, graph_lines.second, kFileOut);
-  }
-
-  // Nearest neighbor
-  if (arg1 == "nn") {
-    const std::string kFileOut{"testfiles/nn_data_out.csv"};
-
-    std::pair<algo::graph::Graph, std::vector<io::DataLine>> graph_lines{io::ReadGraph(kFileIn, kNbrNodes)};
-    algo::graph::Graph graph_in{graph_lines.first};
-
-    algo::graph::Nodes nodes{AllNodesPath(graph_in, 0)};// Nearest neighbor
-
-    io::ToCsv(nodes, graph_lines.second, kFileOut);
+    file_out = "./plot/mst_network_out.csv";
+    io::ToCsv(nodes, lines, file_out);
   }
 
   // Shortest path
   if (arg1 == "sp") {
-    const std::string kFileOut{"./testfiles/shortest_path_data_out.csv"};
+    file_in = "./plot/sp_network_in.csv";
+    auto lines = io::ReadLines(file_in);
+    auto graph = io::ReadUWG(lines);
+    // Trial and error until you find something nice.
+    auto nodes = graph.ShortestPathDijkstra(2, 99);
 
-    std::pair<algo::graph::Graph, std::vector<io::DataLine>> graph_lines{io::ReadGraph(kFileIn, kNbrNodes)};
-    algo::graph::Graph graph_in{graph_lines.first};
-
-    size_t a{rand() % graph_lines.second.size()};
-    size_t b{rand() % graph_lines.second.size()};
-
-    const size_t kSource{a < b ? a : b};
-    const size_t kSize{a < b ? b : a};
-
-    // Dijkstra
-    algo::graph::Nodes nodes{ShortestPathDijkstra(graph_in, kSource, kSize)};
-
-    io::ToCsv(nodes, graph_lines.second, kFileOut);
+    file_out = "./plot/sp_network_out.csv";
+    io::ToCsv(nodes, lines, file_out);
   }
 
   // Strongly connected components
   if (arg1 == "scc") {
-    const std::string kFileOut{"./testfiles/scc_data_out.csv"};
+    file_in = "./plot/scc_network_in.csv";
+    auto lines = io::ReadLines(file_in);
+    auto graph = io::ReadDG(lines);
+    auto nodes = graph.StronglyConnectedComponentsKosaraju();
 
-    std::pair<algo::graph::Graph, std::vector<io::DataLine>> graph_lines{io::ReadGraph(kFileIn, kNbrNodes, true, 0.2)};
-    algo::graph::Graph graph_in{graph_lines.first};
-
-    // Kosaraju
-    algo::graph::NodeMat nodes{StrConnComponents(graph_in)};
-
-    io::ToCsv(nodes, graph_lines.second, kFileOut);
+    file_out = "./plot/scc_network_out.csv";
+    io::ToCsv(nodes, lines, file_out);
   }
+
   return 0;
 }

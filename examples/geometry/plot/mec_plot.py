@@ -6,7 +6,8 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('../testfiles/mbbox_out4.csv')
+df_res = pd.read_csv('mbbox_out1.csv')
+def_circle = pd.read_csv('mec_out1.csv')
 
 x_in = df_res['x']
 y_in = df_res['y']
@@ -16,8 +17,6 @@ x1 = x_in[label == 1]
 y1 = y_in[label == 1]
 x2 = x_in[label == 2]
 y2 = y_in[label == 2]
-
-def_circle = pd.read_csv('../testfiles/mec_out4.csv')
 
 x = def_circle['x']
 y = def_circle['y']

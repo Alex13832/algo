@@ -14,45 +14,21 @@ namespace algo::puzzle::sudoku {
 
 namespace {
 
-/// \brief Checks if a row is valid.
-/// \param grid The grid to check.
-/// \param row The row number.
-/// \param num The number to compare.
-/// \return True if valid, otherwise false.
 constexpr auto RowValid = [](const Grid& grid, int row, int num) {
-  for (size_t i = 0; i < grid_size; ++i) {
-    if (grid[row][i] == num) {
-      return false;
-    }
-  }
-  return true;
+  return std::none_of(grid[row].begin(), grid[row].end(),
+                      [num](auto col) { return col == num; });
 };
 
-/// \brief Checks if a column is valid.
-/// \param grid The grid to check.
-/// \param col The column number.
-/// \param num The number to compare.
-/// \return True if valid, otherwise false.
 constexpr auto ColValid = [](const Grid& grid, int col, int num) {
-  for (size_t i = 0; i < grid_size; ++i) {
-    if (grid[i][col] == num) {
-      return false;
-    }
-  }
-  return true;
+  return std::none_of(grid.begin(), grid.end(),
+                      [col, num](auto row) { return row[col] == num; });
 };
 
-/// \brief Checks if a 3x3 cell is valid.
-/// \param grid The grid to check.
-/// \param row The column number.
-/// \param col The row number.
-/// \param num The number to compare.
-/// \return True if valid, otherwise false.
-constexpr auto CellValid = [](Grid grid, int row, int col, int num) {
-  int r1{row - row % 3};
-  int r2{r1 + 3};
-  int c1{col - col % 3};
-  int c2{c1 + 3};
+constexpr auto CellValid = [](const Grid& grid, int row, int col, int num) {
+  auto r1 = row - row % 3;
+  auto r2 = r1 + 3;
+  auto c1 = col - col % 3;
+  auto c2 = c1 + 3;
 
   for (int i = r1; i < r2; ++i) {
     for (int j = c1; j < c2; ++j) {
@@ -78,17 +54,14 @@ bool SolvePriv(Grid& grid, int x, int y)
       y = 0;
     }
   }
-  if (x == grid_size) {
-    return true;
-  }
+  if (x == grid_size) return true;
 
-  for (size_t i = 1; i < grid_size + 1; i++) {
-    if (RowValid(grid, x, i) && ColValid(grid, y, i) && CellValid(grid, x, y, i)) {
+  for (int i = 1; i < grid_size + 1; i++) {
+    if (RowValid(grid, x, i) && ColValid(grid, y, i)
+        && CellValid(grid, x, y, i)) {
       grid[x][y] = i;
 
-      if (SolvePriv(grid, x, y)) {
-        return true;
-      }
+      if (SolvePriv(grid, x, y)) return true;
     }
   }
 
@@ -101,12 +74,7 @@ bool SolvePriv(Grid& grid, int x, int y)
 Grid Solve(const Grid& grid)
 {
   Grid ret{grid};
-  bool solved{SolvePriv(ret, 0, 0)};
-
-  if (solved) {
-    return ret;
-  }
-  return grid;
+  return SolvePriv(ret, 0, 0) ? ret : grid;
 }
 
 }// namespace algo::puzzle::sudoku

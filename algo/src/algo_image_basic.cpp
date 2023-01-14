@@ -19,12 +19,12 @@ namespace algo::image {
 /// 8-bit image
 ///////////////////////////////////
 
-uint8_t Img::At(int x, int y) const
+uint8_t Img::At(const int& x, const int& y) const
 {
   return data[y * size.cols + x];
 }
 
-void Img::Set(int x, int y, uint8_t value)
+void Img::Set(const int& x, const int& y, const uint8_t& value)
 {
   data[y * size.cols + x] = value;
 }
@@ -38,7 +38,7 @@ uint8_t& Img::operator[](int i)
 /// Float image
 ///////////////////////////////////
 
-float ImgF::At(int x, int y) const
+float ImgF::At(const int& x, const int& y) const
 {
   return data[y * size.cols + x];
 }
@@ -57,12 +57,12 @@ float& ImgF::operator[](int i)
 /// Integral image
 ///////////////////////////////////
 
-uint32_t IntegralImage::At(int x, int y) const
+uint32_t IntegralImage::At(const int& x, const int& y) const
 {
   return data[y * size.cols + x];
 }
 
-void IntegralImage::Set(int x, int y, uint32_t value)
+void IntegralImage::Set(const int& x, const int& y, const uint32_t& value)
 {
   data[y * size.cols + x] = value;
 }
@@ -71,7 +71,7 @@ void IntegralImage::Set(int x, int y, uint32_t value)
 /// Fundamental functions
 /////////////////////////////////////////////
 
-Img NewImgGray(int rows, int cols)
+Img NewImgGray(const int& rows, const int& cols)
 {
   Img im;
   im.size.rows = rows;
@@ -212,8 +212,7 @@ IntegralImage ImgToIntegralImage(const Img& im)
 
 uint32_t IntegralBoxSum(const IntegralImage& img, const Rectangle& box)
 {
-  return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1)
-      - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
+  return img.At(box.x, box.y) + img.At(box.x + box.width - 1, box.y + box.height - 1) - img.At(box.x + box.width - 1, box.y) - img.At(box.x, box.y + box.height - 1);
 }
 
 }//namespace algo::image

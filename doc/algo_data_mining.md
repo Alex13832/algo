@@ -1,82 +1,75 @@
 Data mining algorithms
 ===============
 
-## Data structures 
-
-|Data structure| Description | Example |
-|:---|:---|:---|
-|`Centroid`|Describes a centre of a cluster of points. ||
-|`Centroids`|A list of centroids.||
-|`Clusters`|A list of a list of data points for a cluster.||
-|`LabeledPoint`|A data point with label.| `LabeledPoint p{1.0, 1.0, 2.0, "Label"};`|
-|`LabeledPoints`|A list of labeled points.||
+# Clustering algorithms
 
 ## K-Means Clustering
 
 ```cpp
-Clusters KMeans(geometry::Points points, const std::int8_t& k);
+std::vector<Point> points{{1.1, 1.0}, {1.2, 1.1}, ...};
+Cluster cluster{points};
+size_t nbr_clusters{2};
+auto clusters = cluster.KMeans(norms::Euclidean(), nbr_clusters);
 ```
-Outputs `k` clusters. The input 2D-points in `points` will be clustered based on the nearest cluster centroid, using the Euclidean distance.
+Returns a list of integers that indicates which cluster each point belongs to. 
+A cluster index may be found at the same position in `points` and `clusters`.
 
-### Usage
-Namespace(s) omitted. 
-```cpp
-#include "algo.hpp"
-
-using namespace algo::data_mining;
-using namespace algo::geometry;
-
-...
-
-Points points{{0.212603, 0.553522},
-              {0.194965, 0.527275},
-              ...,
-              {0.220029, 0.524992},
-              {0.211675, 0.536404}};
-
-Clusters clusters{KMeans(points, 3)};
-```
+KMeans can handle N dimensions.
 
 ### Examples
 ![Kmeans1](images/kmeans_1.png) ![Kmeans2](images/kmeans_2.png)
 
-## K-nearest neighbors
+## DBSCAN
+>Density-based spatial clustering of applications with noise (DBSCAN) is a data clustering algorithm [...]. It is a
+>density-based clustering non-parametric algorithm: given a set of points in some space, it groups together points
+>that are closely packed together (points with many nearby neighbors), marking as outliers points that lie alone in
+>low-density regions.
 
 ```cpp
-LabeledPoints KNearestNeighbor(const geometry::Points& unlabeled_data, LabeledPoints& labeled_data, const std::uint8_t& k);
+std::vector<Point> points{{0.0428843, 0.967891}, {0.0418432, 0.943829}, ...;
+
+// Min distance to neighbour points  
+double epsiolon{0.2};
+// Min number of points in a cluster
+size_t min_points_in_cluster{3};
+
+Cluster cluster{points};
+auto clusters = cluster.DbScan(norms::Euclidean(), epsilon, min_points_in_cluster);
 ```
+Returns a list of integers that indicates which cluster each point belongs to. 
+Noise is indicated with -1, which means, a cluster for that point was not found.
 
-Labels the points in `unlabeled_data` based on the `k` nearest neighbors in `labeled_data`. 
+### Examples
+
+![DBSCSAN-four-clusters](images/dbscan1.png) ![DBSCSAN-four-clusters](images/dbscan2.png)
+
+![DBSCSAN-four-clusters](images/dbscan3.png) ![DBSCSAN-four-clusters](images/dbscan4.png)
 
 
-### Usage
-Namespace(s) omitted.
- 
+# Classification algorithms
+
+## K-nearest neighbours
+
 ```cpp
-#include "algo.hpp"
+// Classify these, works with 1D ... ND
+std::vector<Point> unknown{{0.5}, {0.4}, {0.3}, {0.8}, {0.9}, {0.4},
+                             {6.1}, {6.0}, {5.9}, {5.8}, {5.6}, {5.3}};
 
-using namespace algo::data_mining;
-using namespace algo::geometry;
+// Data already known
+std::vector<int> known_labels{2, 2, 2, 2, 2, 1, 1, 1, 1, 1};
+std::vector<Point> known_points{{5.11}, {6.14}, {4.95}, {7.45}, {5.67},
+                              {0.33}, {0.39}, {0.45}, {0.66}, {0.57}};
 
-...
-
-Points unlabeled_data{
-  {0.186546, 0.811486},// C1
-  {0.266705, 0.872845},// C1
-  ...,
-  {0.660214, 0.214742},// C2
-  {0.63523, 0.433708}  // C2
-};
-
-LabeledPoints labeled_points{
-  {0.199039, 0.888485, 0.0, "C1"},
-  {0.125126, 0.860814, 0.0, "C1"},
-  ...,
-  {0.632107, 0.296553, 0.0, "C2"},
-  {0.539455, 0.348287, 0.0, "C2"}};
-
-LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
+Classifier classifier{unknown};
+// How many neighbours to compare an unknown point with.
+size_t nbr_neighbours{2};
+auto classified = classifier.KNearestNeighbour(norms::Euclidean(),
+                                               known_points, known_labels,
+                                               nbr_neighbours);
 ```
+
+Returns a list of classified labels for each point in `unknown`.
+The algorithm needs a set of already known points and labels.
 
 ### Examples
  `k = 5`.
@@ -86,44 +79,3 @@ LabeledPoints classified{KNearestNeighbor(unlabeled_data, labeled_points, 2)};
 ![Knn-four-clusters](images/knn_in2.png) ![Knn-four-clusters](images/knn_out2.png)
 
 
-## DBSCAN
->Density-based spatial clustering of applications with noise (DBSCAN) is a data clustering algorithm [...]. It is a 
->density-based clustering non-parametric algorithm: given a set of points in some space, it groups together points 
->that are closely packed together (points with many nearby neighbors), marking as outliers points that lie alone in 
->low-density regions.
-
-```cpp
-LabeledPoints DBSCAN(const geometry::Points& points, const DistFunc& dist_func, const float& eps, const int& min_pts);
-```
-
-Returns a list of two-dimensional points with an assigned label. Label "0" is equal to noise, or outlier. If the
-label is greater than "0" then it is the assigned cluster number.
-
-### Usage
-Namespace(s) omitted.
-
-```cpp
-#include "algo.hpp"
-
-using namespace algo::data_mining;
-using namespace algo::geometry;
-
-...
-
-Points pts_{
-  {0.0428843, 0.967891},
-  {0.0418432, 0.943829},
-  ...,
-  {0.0907716, 0.0980396},
-  {0.917348, 0.972703}};
-
-LabeledPoints lpts{DBSCAN(pts_, DistFunc::Euclidean, 0.2, 3)};
-```
-
-### Examples
-
-`DBSCAN(points, DistFunc::Euclidean, 0.1, 50)` 
-
-![DBSCSAN-four-clusters](images/dbscan1.png) ![DBSCSAN-four-clusters](images/dbscan2.png)
-
-![DBSCSAN-four-clusters](images/dbscan3.png) ![DBSCSAN-four-clusters](images/dbscan4.png)

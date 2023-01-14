@@ -17,7 +17,7 @@ using namespace algo::puzzle::sudoku;
 /// Sudoku
 /////////////////////////////////////////////
 
-TEST(test_algo_puzzle, soduku_difficult)
+TEST(Puzzle, SodukuDifficult)
 {
   Grid correct{{{5, 8, 1, 6, 7, 2, 4, 3, 9},
                 {7, 9, 2, 8, 4, 3, 6, 5, 1},
@@ -39,12 +39,11 @@ TEST(test_algo_puzzle, soduku_difficult)
              {9, 0, 3, 0, 0, 0, 0, 0, 0},
              {0, 2, 0, 0, 0, 0, 1, 0, 0}}};
 
-  Grid solved{Solve(grid)};
-
+  auto solved = Solve(grid);
   EXPECT_TRUE(equal(correct.begin(), correct.end(), solved.begin()));
 }
 
-TEST(test_algo_puzzle, sudoku_extreme)
+TEST(Puzzle, SudokuExtreme)
 {
   Grid correct{{{4, 5, 2, 1, 6, 7, 8, 3, 9},
                 {7, 1, 9, 2, 8, 3, 4, 6, 5},
@@ -66,11 +65,11 @@ TEST(test_algo_puzzle, sudoku_extreme)
              {0, 4, 0, 0, 3, 0, 0, 1, 0},
              {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
-  Grid solved{Solve(grid)};
+  auto solved = Solve(grid);
   EXPECT_TRUE(equal(correct.begin(), correct.end(), solved.begin()));
 }
 
-TEST(test_algo_puzzle, sudoky_invalid_row)
+TEST(Puzzle, SudokuInvalidRow)
 {
   Grid grid{{{0, 0, 2, 1, 0, 0, 0, 0, 9},
              {0, 1, 0, 0, 8, 0, 0, 6, 0},
@@ -82,12 +81,11 @@ TEST(test_algo_puzzle, sudoky_invalid_row)
              {0, 4, 0, 0, 3, 0, 0, 1, 0},
              {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
-  Grid solved{Solve(grid)};
-
+  auto solved = Solve(grid);
   EXPECT_TRUE(equal(grid.begin(), grid.end(), solved.begin()));
 }
 
-TEST(test_algo_puzzle, sudoku_invalid_column)
+TEST(Puzzle, SudokuInvalidColumn)
 {
   Grid grid{{{0, 0, 2, 1, 0, 9, 0, 0, 9},
              {0, 1, 0, 0, 8, 0, 0, 6, 0},
@@ -99,12 +97,11 @@ TEST(test_algo_puzzle, sudoku_invalid_column)
              {0, 4, 0, 0, 3, 0, 0, 1, 0},
              {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
-  Grid solved{Solve(grid)};
-
+  auto solved = Solve(grid);
   EXPECT_TRUE(equal(grid.begin(), grid.end(), solved.begin()));
 }
 
-TEST(test_algo_puzzle, sudokU_invalid_cell)
+TEST(Puzzle, SudokuInvalidCell)
 {
   Grid grid{{{0, 0, 2, 1, 0, 0, 6, 0, 9},
              {0, 1, 0, 0, 8, 0, 0, 6, 0},
@@ -116,7 +113,6 @@ TEST(test_algo_puzzle, sudokU_invalid_cell)
              {0, 4, 0, 0, 3, 0, 0, 1, 0},
              {8, 0, 0, 0, 0, 9, 2, 0, 0}}};
 
-  Grid solved{Solve(grid)};
-
+  auto solved = Solve(grid);
   EXPECT_TRUE(equal(grid.begin(), grid.end(), solved.begin()));
 }

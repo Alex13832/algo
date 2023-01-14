@@ -89,12 +89,7 @@ struct c_comp {
 
 }// namespace
 
-Points Corners(const Img& im,
-               int threshold,
-               const CornerDetType& det_type,
-               int n_best,
-               int min_dist,
-               const GaussWindowSettings& g_win_set)
+Points Corners(const Img& im, const int& threshold, const CornerDetType& det_type, const int& n_best, const int& min_dist, const GaussWindowSettings& g_win_set)
 {
   // http://dept.me.umn.edu/courses/me5286/vision/Notes/2015/ME5286-Lecture8.pdf
   // Blur image with Gaussian, compute derivatives, do some tricks.
@@ -176,10 +171,7 @@ Points Corners(const Img& im,
 
 namespace {
 // These points will be used to get the circumference on the Bresenham disc.
-constexpr std::array<Point, 32> bresenham
-    {{{3, 0}, {3, -1}, {2, -2}, {1, -3}, {0, -3}, {-1, -3}, {-2, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-2, 2}, {-1, 3},
-      {0, 3}, {1, 3}, {2, 2}, {3, 1}, {3, 0}, {3, -1}, {2, -2}, {1, -3}, {0, -3}, {-1, -3}, {-2, -2}, {-3, -1}, {-3, 0},
-      {-3, 1}, {-2, 2}, {-1, 3}, {0, 3}, {1, 3}, {2, 2}, {3, 1}}};
+constexpr std::array<Point, 32> bresenham{{{3, 0}, {3, -1}, {2, -2}, {1, -3}, {0, -3}, {-1, -3}, {-2, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-2, 2}, {-1, 3}, {0, 3}, {1, 3}, {2, 2}, {3, 1}, {3, 0}, {3, -1}, {2, -2}, {1, -3}, {0, -3}, {-1, -3}, {-2, -2}, {-3, -1}, {-3, 0}, {-3, 1}, {-2, 2}, {-1, 3}, {0, 3}, {1, 3}, {2, 2}, {3, 1}}};
 
 ///\brief Returns a counter for how many pixels that are darker and brighter (+- pixel_thr) than the candidate pixel (x,y).
 // If the pixels are not continuous, the counter(s) will be reset.
@@ -207,7 +199,7 @@ constexpr auto CornerMeasure = [](const Img& im, auto x, auto y, auto count_thr,
 
 }// namespace
 
-Points FASTCorners(const Img& im, int intensity_threshold, int corner_threshold)
+Points FASTCorners(const Img& im, const int& intensity_threshold, const int& corner_threshold)
 {
   Points points;
   for (int i = 3; i < im.size.cols - 3; i++) {
@@ -230,7 +222,7 @@ using Mat = std::vector<std::vector<float>>;
 
 std::vector<Mat> gaussians;
 
-constexpr auto DoGPyramid = [](const Img& img, auto nbr_octaves, auto nbr_gaussians) {
+constexpr auto DoGPyramid = [](const Img& img, const auto& nbr_octaves, const auto& nbr_gaussians) {
   //std::vector<Img> pyramid;// DoG images.
   float sigma{1.6};// Starting value for std in DoG.
   float k = M_SQRT2;
@@ -308,7 +300,7 @@ inline void SolveEq(const Mat& H, const std::vector<float>& d, float& x, float& 
 
 }// namespace
 
-Keypoints SiftKeypoints(const Img& img, int nbr_gaussians, int nbr_octaves, float contrast_offset, float edge_threshold)
+Keypoints SiftKeypoints(const Img& img, const int& nbr_gaussians, const int& nbr_octaves, const float& contrast_offset, const float& edge_threshold)
 {
   std::vector<Mat> pyr{DoGPyramid(img, nbr_octaves, nbr_gaussians)};
   std::vector<float> d_deriv(3, 0);
@@ -336,8 +328,7 @@ Keypoints SiftKeypoints(const Img& img, int nbr_gaussians, int nbr_octaves, floa
           dxx = (pyr[i + 1][y][x + 1] + pyr[i + 1][y][x - 1] - v2) * kSc2Nd;
           dyy = (pyr[i + 1][y + 1][x] + pyr[i + 1][y - 1][x] - v2) * kSc2Nd;
           dss = (pyr[i + 2][y][x] + pyr[i][y][x] - v2) * kSc2Nd;
-          dxy = (pyr[i + 1][y + 1][x + 1] - pyr[i + 1][y + 1][x - 1] - pyr[i + 1][y - 1][x + 1]
-              + pyr[i + 1][y - 1][x - 1]) * kScXy;
+          dxy = (pyr[i + 1][y + 1][x + 1] - pyr[i + 1][y + 1][x - 1] - pyr[i + 1][y - 1][x + 1] + pyr[i + 1][y - 1][x - 1]) * kScXy;
           dxs = (pyr[i + 2][y][x + 1] - pyr[i + 2][y][x - 1] - pyr[i][y][x + 1] - pyr[i][y][x - 1]) * kScXy;
           dys = (pyr[i + 2][y + 1][x] - pyr[i + 2][y - 1][x] - pyr[i][y + 1][x] + pyr[i][y - 1][x]) * kScXy;
 

@@ -18,11 +18,8 @@
 #include "include/algo_image_filter.hpp"
 #include "include/algo_image_object.hpp"
 #include "include/algo_math.hpp"
-#include "include/algo_network.hpp"
 #include "include/algo_puzzle.hpp"
-#include "include/algo_search.hpp"
 #include "include/algo_sequence.hpp"
-#include "include/algo_sort.hpp"
 #include "include/algo_string.hpp"
 #include "include/algo_transform.hpp"
 

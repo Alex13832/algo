@@ -14,7 +14,6 @@ set(PROJECT_SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/src)
 set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_data_mining.cpp
         ${PROJECT_SOURCE_DIR}/algo_geometry.cpp
-        ${PROJECT_SOURCE_DIR}/algo_geometry_ds.cpp
         ${PROJECT_SOURCE_DIR}/algo_graph.cpp
         ${PROJECT_SOURCE_DIR}/algo_greedy.cpp
         ${PROJECT_SOURCE_DIR}/algo_image_basic.cpp
@@ -22,11 +21,8 @@ set(ALGO_SRCS
         ${PROJECT_SOURCE_DIR}/algo_image_filter.cpp
         ${PROJECT_SOURCE_DIR}/algo_image_object.cpp
         ${PROJECT_SOURCE_DIR}/algo_math.cpp
-        ${PROJECT_SOURCE_DIR}/algo_network.cpp
         ${PROJECT_SOURCE_DIR}/algo_puzzle.cpp
-        ${PROJECT_SOURCE_DIR}/algo_search.cpp
         ${PROJECT_SOURCE_DIR}/algo_sequence.cpp
-        ${PROJECT_SOURCE_DIR}/algo_sort.cpp
         ${PROJECT_SOURCE_DIR}/algo_string.cpp
         ${PROJECT_SOURCE_DIR}/algo_transform.cpp
         )

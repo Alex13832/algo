@@ -24,7 +24,7 @@ int LastOccurrence(std::string str, char c)
   return 0;
 }
 
-std::vector<int> SearchBoyerMoore(std::string& text, const std::string& pattern)
+std::vector<int> SearchBoyerMoore(std::string &text, const std::string &pattern)
 {
   int m = pattern.length(), n = text.length(), i = m - 1, j = i;
   int chunk = 0, w_length = m;
@@ -96,7 +96,7 @@ constexpr auto Fingerprint = [](auto str) {
 };
 }//namespace
 
-std::vector<int> SearchRabinKarpSingle(const std::string& text, const std::string& pattern)
+std::vector<int> SearchRabinKarpSingle(const std::string &text, const std::string &pattern)
 {
   std::vector<int> pos;
   size_t n = text.length();
@@ -114,13 +114,13 @@ std::vector<int> SearchRabinKarpSingle(const std::string& text, const std::strin
   return pos;
 }
 
-std::vector<int> SearchRabinKarpMulti(const std::string& text, std::set<std::string> patterns, int m)
+std::vector<int> SearchRabinKarpMulti(const std::string &text, std::set<std::string> patterns, int m)
 {
   std::set<unsigned long> hash_pm;
   std::vector<int> pos;
   size_t n = text.length();
 
-  for (const auto& pattern : patterns) {
+  for (const auto &pattern : patterns) {
     hash_pm.insert(Fingerprint(pattern));
   }
 
@@ -141,7 +141,7 @@ std::vector<int> SearchRabinKarpMulti(const std::string& text, std::set<std::str
 /// \param n Size of str;
 /// \param str The input string.
 /// \param vec The permutations.
-void Heaps(size_t n, std::string& str, std::vector<std::string>& vec)
+void Heaps(size_t n, std::string &str, std::vector<std::string> &vec)
 {
   if (n == 1) {
     vec.emplace_back(str);
@@ -156,7 +156,7 @@ void Heaps(size_t n, std::string& str, std::vector<std::string>& vec)
     }
 }
 
-std::vector<std::string> GenerateAllPermutations(std::string& str)
+std::vector<std::string> GenerateAllPermutations(std::string &str)
 {
   size_t n{str.size()};
   std::vector<std::string> vec;
@@ -164,7 +164,7 @@ std::vector<std::string> GenerateAllPermutations(std::string& str)
   return vec;
 }
 
-bool IsRotated(const std::string& str1, const std::string& str2)
+bool IsRotated(const std::string &str1, const std::string &str2)
 {
   if (str1.empty() && str2.empty()) {
     return true;
@@ -176,7 +176,7 @@ bool IsRotated(const std::string& str1, const std::string& str2)
   return str11.find(str2) != std::string::npos;
 }
 
-std::string Compress(const std::string& str)
+std::string Compress(const std::string &str)
 {
   const size_t n{str.size()};
   std::string res;
@@ -211,11 +211,11 @@ std::string Compress(const std::string& str)
   return res;
 }
 
-bool HasUniqueChars(const std::string& str)
+bool HasUniqueChars(const std::string &str)
 {
   std::vector<int> visited(255, 0);
 
-  for (const auto& x : str) {
+  for (const auto &x : str) {
     int xi{x - '0'};
     visited[xi]++;
     if (visited[xi] > 1) {
@@ -231,7 +231,7 @@ bool HasUniqueChars(const std::string& str)
 
 namespace metric {
 
-int Levenshtein(const std::string& word_a, const std::string& word_b)
+int Levenshtein(const std::string &word_a, const std::string &word_b)
 {
   size_t a_size{word_a.length()};
   size_t b_size{word_b.length()};
@@ -255,7 +255,7 @@ int Levenshtein(const std::string& word_a, const std::string& word_b)
   return d[a_size][b_size];
 }
 
-int Hamming(const std::string& word_a, const std::string& word_b)
+int Hamming(const std::string &word_a, const std::string &word_b)
 {
   if (word_a.size() != word_b.size()) {
     return -1;
@@ -271,7 +271,7 @@ int Hamming(const std::string& word_a, const std::string& word_b)
   return counter;
 }
 
-double Dice(const std::string& word_a, const std::string& word_b)
+double Dice(const std::string &word_a, const std::string &word_b)
 {
   std::vector<std::string> bigrams_a, bigrams_b;
 
@@ -285,7 +285,7 @@ double Dice(const std::string& word_a, const std::string& word_b)
   }
   // Find the intersect of bigrams
   int intersect{0};
-  for (const auto& bigram : bigrams_a) {
+  for (const auto &bigram : bigrams_a) {
     if (find(bigrams_b.begin(), bigrams_b.end(), bigram) != bigrams_b.end()) {
       intersect++;
     }
@@ -296,7 +296,7 @@ double Dice(const std::string& word_a, const std::string& word_b)
 
 namespace {
 
-constexpr auto Jaro = [](const std::string& word_a, const std::string& word_b) {
+constexpr auto Jaro = [](const std::string &word_a, const std::string &word_b) {
   double max_dist = std::floor(std::max(word_a.size(), word_b.size()) / 2.0) - 1.0;
   std::string wa{word_a}, wb{word_b};
 
@@ -315,7 +315,7 @@ constexpr auto Jaro = [](const std::string& word_a, const std::string& word_b) {
   }
   auto m = static_cast<double>(match.size());
   double t{0.0};
-  for (const auto& mt : match) {
+  for (const auto &mt : match) {
     if (mt.first > mt.second) {
       t += 1.0;
     }
@@ -328,7 +328,7 @@ constexpr auto Jaro = [](const std::string& word_a, const std::string& word_b) {
 
 }// namespace
 
-double JaroWinkler(const std::string& word_a, const std::string& word_b)
+double JaroWinkler(const std::string &word_a, const std::string &word_b)
 {
   if (word_a == word_b) {
     return 1.0;// Max score.

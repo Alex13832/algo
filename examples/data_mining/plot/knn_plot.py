@@ -6,11 +6,11 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('../testfiles/knn_labeled2.csv');
+df_res = pd.read_csv('knn_out2.csv')
 
-x_in = df_res['x']
-y_in = df_res['y']
-cluster = df_res['Class']
+x_in = df_res['x0']
+y_in = df_res['x1']
+cluster = df_res['label']
 print(max(cluster))
 
 nodes = go.Scatter(x=x_in, y=y_in, mode='markers', hoverinfo='text',

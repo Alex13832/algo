@@ -6,11 +6,11 @@
 import pandas as pd
 import plotly.graph_objects as go
 
-df_res = pd.read_csv('../testfiles/kmeans_out2.csv');
+df_res = pd.read_csv('kmeans_out1.csv')
 
-x_in = df_res['x']
-y_in = df_res['y']
-cluster = df_res['Cluster']
+x_in = df_res['x0']
+y_in = df_res['x1']
+cluster = df_res['label']
 
 nodes = go.Scatter(x=x_in, y=y_in, mode='markers', hoverinfo='text',
                    marker=dict(showscale=False,

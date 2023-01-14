@@ -64,7 +64,7 @@ Img3 Convolve3(const Img3& im, KernelType filter_type);
 /// \param sigma The standard deviation of the Gaussian kernel.
 /// \return Gaussian blurred im.
 /// \link <a href="https://en.wikipedia.org/wiki/Gaussian_blur">Gaussian blur, Wikipedia.</a>
-Img GaussianBlur(const Img& im, const Size& size, float sigma);
+Img GaussianBlur(const Img& im, const Size& size, const float& sigma);
 
 ImgF GaussianBlurF(const ImgF& im, const Size& size, const float& sigma);
 
@@ -101,7 +101,7 @@ namespace threshold {
 /// \param threshold Fixed value 0-255.
 /// \param cut_white Flip values to 255 or 0.
 /// \return A new image.
-Img Fixed(const Img& im, uint8_t threshold, bool cut_white);
+Img Fixed(const Img& im, const uint8_t& threshold, const bool& cut_white);
 
 /// \brief Computes the adaptive threshold of the input image. The thresholding decision is based on the mean value of the
 /// chose region size, e.g. 10x10 pixels (region_size^2).
@@ -109,7 +109,7 @@ Img Fixed(const Img& im, uint8_t threshold, bool cut_white);
 /// \param region_size The region size to base the threshold decision on.
 /// \param cut_white Flip values to 255 or 0.
 /// \return A new image.
-Img Adaptive(const Img& im, int region_size, bool cut_white);
+Img Adaptive(const Img& im, const int& region_size, const bool& cut_white);
 
 }// namespace threshold
 
