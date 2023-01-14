@@ -22,9 +22,7 @@ namespace algo::geometry {
 // /////////////////////////////
 // MARK: Point
 
-Point::Point(double x, double y) : x_{x},
-                                   y_{y}
-{}
+Point::Point(double x, double y) : x_{x}, y_{y} {}
 
 void Point::Set(double x, double y)
 {
@@ -75,12 +73,9 @@ double Point::Y() const
 // /////////////////////////////
 // MARK: Edge
 
-Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1},
-                                                 pt2_{pt2}
+Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1}, pt2_{pt2}
 {
-  if (pt1 == pt2) {
-    throw std::invalid_argument("Points cannot be equal.");
-  }
+  if (pt1 == pt2) { throw std::invalid_argument("Points cannot be equal."); }
 }
 
 bool Edge::operator==(const Edge& e) const
@@ -131,14 +126,10 @@ double Edge::Dist(const Point& pt) const
 
   // The x value of pt is larger than largest x, then the distance to the
   // line is the same as the distance to the right most coordinate.
-  if (pt.X() > pt_max.X()) {
-    return pt.Dist(pt_max);
-  }
+  if (pt.X() > pt_max.X()) { return pt.Dist(pt_max); }
   // The x value of pt is smaller than smallest x, then the distance to the
   // line is the same as the distance to the left most coordinate.
-  if (pt.X() < pt_min.X()) {
-    return pt.Dist(pt_min);
-  }
+  if (pt.X() < pt_min.X()) { return pt.Dist(pt_min); }
 
   // pt.x is withing bounds.
   const auto x1 = pt1_.X();
@@ -184,6 +175,22 @@ double Circle::Area() const
 bool Circle::IsInside(const Point& pt) const
 {
   return origin_.Dist(pt) <= radius_;
+}
+
+Triangle Circle::EnclosingTriangle() const
+{
+  // The distance from each corner point of the triangle to the point on
+  // the triangle's base perpendicular to the origin.
+  const auto phi = radius_ / tan(30.0 * M_PI / 180.0);
+  // The distance from the origin to each corner point.
+  const auto sigma = std::sqrt(std::pow(radius_, 2) + std::pow(phi, 2));
+
+  // An equal sided triangle of these points.
+  const Point p1{origin_.X() - phi, origin_.Y() - radius_};
+  const Point p2{origin_.X() + phi, origin_.Y() - radius_};
+  const Point p3{origin_.X(), origin_.Y() + sigma};
+
+  return Triangle{p1, p2, p3};
 }
 
 Point Circle::Origin() const
@@ -424,8 +431,7 @@ double Rectangle::GetHeight() const
 // /////////////////////////////
 // MARK: Grid
 
-Grid::Grid(const std::vector<Point>& points) : points_{points}
-{}
+Grid::Grid(const std::vector<Point>& points) : points_{points} {}
 
 // /////////////////////////////
 // MARK: Closest pair of points
@@ -722,13 +728,9 @@ Circle CircleOf3(const Point& p1, const Point& p2, const Point& p3)
 /// \return A circle.
 Circle TrivialCircumcircle(std::vector<Point> pts)
 {
-  if (pts.empty() || pts.size() > 3) {
-    return Circle{{0, 0}, 0};
-  }
+  if (pts.empty() || pts.size() > 3) { return Circle{{0, 0}, 0}; }
   // Single point given
-  if (pts.size() == 1) {
-    return Circle{pts.front(), 0};
-  }
+  if (pts.size() == 1) { return Circle{pts.front(), 0}; }
   // Two points on the circle
   if (pts.size() == 2) {
     const Point p1 = pts.at(0);
@@ -747,17 +749,13 @@ Circle TrivialCircumcircle(std::vector<Point> pts)
 /// \return A circle around the points in pts.
 Circle Welzl(std::vector<Point> pts, std::vector<Point> r)
 {
-  if (pts.empty() || r.size() == 3) {
-    return TrivialCircumcircle(r);
-  }
+  if (pts.empty() || r.size() == 3) { return TrivialCircumcircle(r); }
   auto index = std::rand() % pts.size();
   auto p = pts.at(index);
   pts.erase(pts.begin() + static_cast<long>(index));
   auto circle = Welzl(pts, r);
 
-  if (circle.IsInside(p)) {
-    return circle;
-  }
+  if (circle.IsInside(p)) { return circle; }
 
   r.emplace_back(p);
   return Welzl(pts, r);

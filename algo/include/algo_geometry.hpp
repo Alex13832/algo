@@ -123,6 +123,8 @@ class Edge {
 // /////////////////////////////
 // MARK: Circle
 
+class Triangle;
+
 class Circle {
 
  public:
@@ -137,6 +139,10 @@ class Circle {
   /// \param pt The point.
   /// \return true if inside.
   bool IsInside(const Point& pt) const;
+
+  /// \brief Returns an equal sided triangle that encloses the circle.
+  /// \return A triangle.
+  Triangle EnclosingTriangle() const;
 
   /// \brief Returns the origin of this circle.
   /// \return The origin.

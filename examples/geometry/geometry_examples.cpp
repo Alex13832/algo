@@ -13,12 +13,13 @@
 using namespace std;
 using namespace algo::geometry;
 
+const auto TS = [](auto x) { return to_string(x); };
+
 void WriteToFile(const Circle& circle, const string& file_name)
 {
   string header{"x,y,radius"};
-  string row{to_string(circle.Origin().X()) + ","
-             + to_string(circle.Origin().Y()) + "," + to_string(circle.Radius())
-             + '\n'};
+  string row{TS(circle.Origin().X()) + "," + TS(circle.Origin().Y()) + ","
+             + TS(circle.Radius()) + '\n'};
   vector<string> rows{header, row};
   io::ToCsv(rows, file_name);
 }
@@ -29,10 +30,8 @@ void WriteToFile(const std::vector<Edge>& lines, const string& file_name)
   vector<string> rows{header};
 
   for (const auto& line : lines) {
-    string row{to_string(line.GetStart().X()) + ","
-               + to_string(line.GetStart().Y()) + ","
-               + to_string(line.GetEnd().X()) + ","
-               + to_string(line.GetEnd().Y())};
+    string row{TS(line.GetStart().X()) + "," + TS(line.GetStart().Y()) + ","
+               + TS(line.GetEnd().X()) + "," + TS(line.GetEnd().Y())};
     rows.emplace_back(row);
   }
   io::ToCsv(rows, file_name);
@@ -92,12 +91,25 @@ int main(int argc, char* argv[])
 
   // Minimum enclosing circle
   if (arg1 == "mec") {
-    const string kFileNameIn{"./testfiles/mbbox_in1.csv"};
+    const string kFileNameIn{"./testfiles/convex_hull_in1.csv"};
     const string kFileNameOut{"./testfiles/mec_out1.csv"};
     auto points = io::ReadPointsFile(kFileNameIn);
     Grid grid{points};
     auto mec = grid.MinEnclosingCircle();
     WriteToFile(mec, kFileNameOut);
+  }
+
+  // Enclosing triangle
+  if (arg1 == "etri") {
+    const string kFileNameIn{"./testfiles/convex_hull_in1.csv"};
+    const string kFileNameOut{"./testfiles/etri_out1.csv"};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto mec = grid.MinEnclosingCircle();
+    auto triangle = mec.EnclosingTriangle();
+    auto tri_points = triangle.GetPoints();
+    tri_points.emplace_back(tri_points.front());
+    io::ToCsv(tri_points, points, kFileNameOut);
   }
 
   // Triangulate
