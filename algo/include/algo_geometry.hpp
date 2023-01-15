@@ -11,6 +11,7 @@
 /// 2021-02-06 Rotating calipers, minimum bounding box
 /// 2021-01-18 Minimum enclosing circle
 /// 2022-01-06 Object oriented design
+/// 2022-01-15 Delaunay triangulation
 ///
 
 #ifndef ALGO_ALGO_INCLUDE_ALGO_GEOMETRY_HPP_
