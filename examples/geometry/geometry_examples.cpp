@@ -118,7 +118,17 @@ int main(int argc, char* argv[])
     const string kFileNameOut{"./testfiles/triangulate_out.csv"};
     auto points = io::ReadPointsFile(kFileNameIn);
     Grid grid{points};
-    auto lines = grid.Triangulate();
+    auto lines = grid.Triangulation();
+    WriteToFile(lines, kFileNameOut);
+  }
+
+  if (arg1 == "del") {
+    const string kFileNameIn{"./testfiles/closest_pair_in2.csv"};
+    const string kFileNameOut{"./testfiles/triangulate_out.csv"};
+    auto points = io::ReadPointsFile(kFileNameIn);
+    Grid grid{points};
+    auto lines = grid.DelaunayTriangulation();
+    std::cout << lines.size() << std::endl;
     WriteToFile(lines, kFileNameOut);
   }
 

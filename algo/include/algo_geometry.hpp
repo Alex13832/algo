@@ -222,19 +222,28 @@ class Triangle : public Polygon {
   /// \return The area.
   double Area() const override;
 
+  std::vector<Edge> GetEdges() const;
+
   /// \brief Checks if pt is inside this triangle.
-  /// \param pt The point.
+  /// \param[in] pt The point.
   /// \return true if inside.
   bool IsInside(const Point& pt) const;
+
+  /// \brief Checks if edges is an edge of this triangle.
+  /// \param[in] edge Edge.
+  /// \return true if edge is an edge of this triangle.
+  bool HasEdge(const Edge& edge) const;
 
   /// \brief Returns a circum circle of this triangle.
   /// \return Circum circle.
   Circle CircumCircle() const;
 
+  bool operator==(const Triangle& tr) const;
+
  private:
-  Point& pt1_;
-  Point& pt2_;
-  Point& pt3_;
+  Point pt1_;
+  Point pt2_;
+  Point pt3_;
 };
 
 // /////////////////////////////
@@ -313,7 +322,11 @@ class Grid {
 
   /// \brief Returns a triangulation of this grid.
   /// \return A triangulation.
-  std::vector<Edge> Triangulate() const;
+  std::vector<Edge> Triangulation() const;
+
+  /// \brief Returns the Delaunay triangulation of this grid.
+  /// \return Thed edges that construct the triangulation.
+  std::vector<Edge> DelaunayTriangulation() const;
 
  private:
   std::vector<Point> points_;
