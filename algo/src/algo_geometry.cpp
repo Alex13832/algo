@@ -1,7 +1,6 @@
 ///
-/// \brief Data structures for geometry algorithms.
+/// \brief Data structures for computational geometry algorithms.
 /// \author alex011235
-/// \date 2021-02-07
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
 
@@ -75,7 +74,7 @@ double Point::Y() const
 
 Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1}, pt2_{pt2}
 {
-  if (pt1 == pt2) { throw std::invalid_argument("Points cannot be equal."); }
+  //  if (pt1 == pt2) { throw std::invalid_argument("Points cannot be equal."); }
 }
 
 bool Edge::operator==(const Edge& e) const
@@ -306,9 +305,9 @@ Triangle::Triangle(const Point& pt1, const Point& pt2, const Point& pt3)
       pt2_{points_.at(1)},
       pt3_{points_.at(2)}
 {
-  if ((pt1_ == pt2_) || (pt2_ == pt3_) || (pt1_ == pt3_)) {
-    throw std::invalid_argument("Two points may not be equal.");
-  }
+  //  if ((pt1_ == pt2_) || (pt2_ == pt3_) || (pt1_ == pt3_)) {
+  //    throw std::invalid_argument("Two points may not be equal.");
+  //  }
 }
 
 double Triangle::Area() const

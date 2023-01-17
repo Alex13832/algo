@@ -88,4 +88,4 @@ edges of the triangulation.
 
 ### Examples
 
-![Mec1](images/del_tri2.png) ![Mec1](images/del_tri3.png)
+![Mec1](images/del_tri4.png) ![Mec1](images/del_tri3.png)

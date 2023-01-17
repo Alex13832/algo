@@ -117,13 +117,14 @@ int main(int argc, char* argv[])
     const string kFileNameIn{"./testfiles/closest_pair_in1.csv"};
     const string kFileNameOut{"./testfiles/triangulate_out.csv"};
     auto points = io::ReadPointsFile(kFileNameIn);
+    std::reverse(points.begin(), points.end());
     Grid grid{points};
     auto lines = grid.Triangulation();
     WriteToFile(lines, kFileNameOut);
   }
 
   if (arg1 == "del") {
-    const string kFileNameIn{"./testfiles/closest_pair_in2.csv"};
+    const string kFileNameIn{"./testfiles/facial_landmarks.csv"};
     const string kFileNameOut{"./testfiles/triangulate_out.csv"};
     auto points = io::ReadPointsFile(kFileNameIn);
     Grid grid{points};
