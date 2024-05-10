@@ -148,6 +148,7 @@ img::Img GetTestImage() {
 
   return img::Img{data, img::Size{75, 47}};
 }
+
 }  // namespace
 
 /////////////////////////////////////////////

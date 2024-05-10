@@ -11,7 +11,9 @@
 #include "gtest/gtest.h"
 #include "include/algo_data_mining.hpp"
 
+namespace {
 namespace dm = algo::data_mining;
+}  // namespace
 
 // //////////////////////////////////////////
 // MARK: KMeans

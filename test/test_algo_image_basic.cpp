@@ -13,7 +13,7 @@
 
 namespace {
 namespace img = algo::image;
-}
+}  // namespace
 
 /////////////////////////////////////////////
 /// Ops

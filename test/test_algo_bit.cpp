@@ -7,10 +7,8 @@
 
 #include <climits>
 
-#include "algo.hpp"
 #include "gtest/gtest.h"
-
-using namespace std;
+#include "include/algo_bit.hpp"
 
 TEST(TestAlgoBit, TestSignof) {
   EXPECT_EQ(algo::bit::Sign(-1), -1);
