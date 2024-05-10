@@ -6,31 +6,33 @@
 ///
 
 #include <algorithm>
+#include <cstddef>
 #include <fstream>
 #include <iostream>
+#include <stdexcept>
 #include <string>
+#include <vector>
 
 #include "algo.hpp"
 #include "gtest/gtest.h"
 
-using namespace std;
-using namespace algo::graph;
+namespace {
+namespace graph = algo::graph;
+}  // namespace
 
 /////////////////////////////////////////////
 /// - MARK: UndirectedGraph -
 
-TEST(UndirectedGraph, InsertEdge)
-{
-  UndirectedGraph ug{3};
+TEST(UndirectedGraph, InsertEdge) {
+  graph::UndirectedGraph ug{3};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   auto edges = ug.GetEdges();
   EXPECT_EQ(edges.size(), 4);
 }
 
-TEST(UndirectedGraph, RemoveEdge)
-{
-  UndirectedGraph ug{3};
+TEST(UndirectedGraph, RemoveEdge) {
+  graph::UndirectedGraph ug{3};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   auto edges = ug.GetEdges();
@@ -42,23 +44,20 @@ TEST(UndirectedGraph, RemoveEdge)
 
 // MARK: BFS
 
-TEST(UndirectedGraph, BreadthFirstSearchInvalidA)
-{
-  UndirectedGraph ug{0};
+TEST(UndirectedGraph, BreadthFirstSearchInvalidA) {
+  const graph::UndirectedGraph ug{0};
   auto nodes = ug.BFS(0);
   EXPECT_TRUE(nodes.empty());
 }
 
-TEST(UndirectedGraph, BreadthFirstSearchInvalidB)
-{
-  UndirectedGraph ug{1};
-  EXPECT_TRUE(ug.BFS(-1).empty());// Source < 0
-  EXPECT_TRUE(ug.BFS(1).empty()); // Source >= size
+TEST(UndirectedGraph, BreadthFirstSearchInvalidB) {
+  const graph::UndirectedGraph ug{1};
+  EXPECT_TRUE(ug.BFS(-1).empty());  // Source < 0
+  EXPECT_TRUE(ug.BFS(1).empty());   // Source >= size
 }
 
-TEST(UndirectedGraph, BreadthFirstSearchA)
-{
-  UndirectedGraph ug{6};
+TEST(UndirectedGraph, BreadthFirstSearchA) {
+  graph::UndirectedGraph ug{6};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   ug.InsertEdge(1, 3);
@@ -67,15 +66,14 @@ TEST(UndirectedGraph, BreadthFirstSearchA)
   ug.InsertEdge(2, 4);
   ug.InsertEdge(4, 5);
 
-  Nodes corr{0, 2, 4, 5};
+  graph::Nodes corr{0, 2, 4, 5};
   auto path = ug.ShortestPathBFS(0, 5);
   EXPECT_TRUE(path.is_path);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
 }
 
-TEST(UndirectedGraph, BreadthFirstSearchB)
-{
-  UndirectedGraph ug{7};
+TEST(UndirectedGraph, BreadthFirstSearchB) {
+  graph::UndirectedGraph ug{7};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   ug.InsertEdge(2, 3);
@@ -83,7 +81,7 @@ TEST(UndirectedGraph, BreadthFirstSearchB)
   ug.InsertEdge(3, 5);
   ug.InsertEdge(3, 6);
 
-  Nodes corr{0, 2, 3, 6};
+  graph::Nodes corr{0, 2, 3, 6};
   auto path = ug.ShortestPathBFS(0, 6);
   EXPECT_TRUE(path.is_path);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
@@ -91,15 +89,13 @@ TEST(UndirectedGraph, BreadthFirstSearchB)
 
 // MARK: Is bipartite
 
-TEST(UndirectedGraph, IsBipartiteInvalid)
-{
-  EXPECT_FALSE(UndirectedGraph{0}.IsBipartite());
-  EXPECT_FALSE(UndirectedGraph{1}.IsBipartite());
+TEST(UndirectedGraph, IsBipartiteInvalid) {
+  EXPECT_FALSE(graph::UndirectedGraph{0}.IsBipartite());
+  EXPECT_FALSE(graph::UndirectedGraph{1}.IsBipartite());
 }
 
-TEST(UndirectedGraph, IsBipartiteA)
-{
-  UndirectedGraph ug{6};
+TEST(UndirectedGraph, IsBipartiteA) {
+  graph::UndirectedGraph ug{6};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   ug.InsertEdge(1, 3);
@@ -109,11 +105,10 @@ TEST(UndirectedGraph, IsBipartiteA)
   EXPECT_TRUE(ug.IsBipartite());
 }
 
-TEST(UndirectedGraph, IsBipartiteB)
-{
-  UndirectedGraph ug{8};
-  Nodes as{0, 2, 4, 6, 7};
-  Nodes bs{1, 3, 5};
+TEST(UndirectedGraph, IsBipartiteB) {
+  graph::UndirectedGraph ug{8};
+  const graph::Nodes as{0, 2, 4, 6, 7};
+  const graph::Nodes bs{1, 3, 5};
 
   for (const auto& a : as) {
     for (const auto& b : bs) {
@@ -124,9 +119,8 @@ TEST(UndirectedGraph, IsBipartiteB)
   EXPECT_TRUE(ug.IsBipartite());
 }
 
-TEST(UndirectedGraph, IsNotBipartite)
-{
-  UndirectedGraph ug{5};
+TEST(UndirectedGraph, IsNotBipartite) {
+  graph::UndirectedGraph ug{5};
   ug.InsertEdge(0, 1);
   ug.InsertEdge(0, 2);
   ug.InsertEdge(1, 3);
@@ -138,22 +132,20 @@ TEST(UndirectedGraph, IsNotBipartite)
 /////////////////////////////////////////////
 /// - MARK: DirectedGraph -
 
-TEST(DirectedGraph, InsertEdgeBounds)
-{
-  size_t graph_size{3};
-  DirectedGraph dg{graph_size};
+TEST(DirectedGraph, InsertEdgeBounds) {
+  const size_t graph_size{3};
+  graph::DirectedGraph dg{graph_size};
   dg.InsertEdge(graph_size, graph_size - 1);
   dg.InsertEdge(graph_size - 1, graph_size);
   dg.InsertEdge(graph_size, graph_size);
-  dg.InsertEdge(graph_size - 1, graph_size - 2);// Valid
+  dg.InsertEdge(graph_size - 1, graph_size - 2);  // Valid
   auto edges = dg.GetEdges();
   EXPECT_EQ(edges.size(), 1);
 }
 
-TEST(DirectedGraph, RemoveEdge)
-{
-  size_t graph_size{2};
-  DirectedGraph dg{graph_size};
+TEST(DirectedGraph, RemoveEdge) {
+  const size_t graph_size{2};
+  graph::DirectedGraph dg{graph_size};
   dg.InsertEdge(0, 1);
   dg.InsertEdge(1, 0);
 
@@ -169,16 +161,15 @@ TEST(DirectedGraph, RemoveEdge)
   EXPECT_EQ(edges.size(), 0);
 }
 
-TEST(DirectedGraph, BreadthFirstSearch)
-{
-  DirectedGraph dg{5};
+TEST(DirectedGraph, BreadthFirstSearch) {
+  graph::DirectedGraph dg{5};
   dg.InsertEdge(0, 1);
   dg.InsertEdge(0, 2);
   dg.InsertEdge(1, 3);
   dg.InsertEdge(2, 4);
   dg.InsertEdge(3, 4);
 
-  Nodes corr{0, 2, 4};
+  graph::Nodes corr{0, 2, 4};
   auto path = dg.ShortestPathBFS(0, 4);
   EXPECT_TRUE(path.is_path);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path.nodes.begin()));
@@ -186,16 +177,15 @@ TEST(DirectedGraph, BreadthFirstSearch)
 
 // MARK: Strongly connected components
 
-TEST(DirectedGraph, StronglyConnectedComponentsA)
-{
-  DirectedGraph dg{5};
+TEST(DirectedGraph, StronglyConnectedComponentsA) {
+  graph::DirectedGraph dg{5};
   dg.InsertEdge(1, 0);
   dg.InsertEdge(2, 1);
   dg.InsertEdge(0, 2);
   dg.InsertEdge(0, 3);
   dg.InsertEdge(3, 4);
 
-  NodeMat corr{{0, 1, 2}, {3}, {4}};
+  graph::NodeMat corr{{0, 1, 2}, {3}, {4}};
   auto scc = dg.StronglyConnectedComponentsKosaraju();
 
   for (size_t i = 0; i < corr.size(); ++i) {
@@ -204,9 +194,8 @@ TEST(DirectedGraph, StronglyConnectedComponentsA)
   EXPECT_EQ(scc.size(), 3);
 }
 
-TEST(DirectedGraph, StronglyConnectedComponentsB)
-{
-  DirectedGraph dg{8};
+TEST(DirectedGraph, StronglyConnectedComponentsB) {
+  graph::DirectedGraph dg{8};
   dg.InsertEdge(0, 1);
   dg.InsertEdge(1, 4);
   dg.InsertEdge(4, 0);
@@ -222,7 +211,7 @@ TEST(DirectedGraph, StronglyConnectedComponentsB)
   dg.InsertEdge(3, 7);
   dg.InsertEdge(7, 3);
 
-  NodeMat corr{{0, 4, 1}, {2, 3, 7}, {5, 6}};
+  graph::NodeMat corr{{0, 4, 1}, {2, 3, 7}, {5, 6}};
   auto scc = dg.StronglyConnectedComponentsKosaraju();
 
   for (size_t i = 0; i < corr.size(); ++i) {
@@ -231,31 +220,28 @@ TEST(DirectedGraph, StronglyConnectedComponentsB)
   EXPECT_EQ(scc.size(), 3);
 }
 
-TEST(DirectedGraph, StronglyConnectedComponentsC)
-{
-  DirectedGraph dg{2};
+TEST(DirectedGraph, StronglyConnectedComponentsC) {
+  graph::DirectedGraph dg{2};
   dg.InsertEdge(0, 1);
 
-  NodeMat corr{{0, 1}};
+  graph::NodeMat corr{{0, 1}};
   auto scc = dg.StronglyConnectedComponentsKosaraju();
 
   EXPECT_EQ(scc.size(), 2);
   EXPECT_EQ(corr[0][0], scc[0][0]);
-  EXPECT_EQ(corr[0][1], scc[1][0]);// Goofy order, I know.
+  EXPECT_EQ(corr[0][1], scc[1][0]);  // Goofy order, I know.
 }
 
-TEST(DirectedGraph, StronglyConnectedComponentsInvalid)
-{
-  EXPECT_TRUE(DirectedGraph{1}.StronglyConnectedComponentsKosaraju().empty());
+TEST(DirectedGraph, StronglyConnectedComponentsInvalid) {
+  EXPECT_TRUE(graph::DirectedGraph{1}.StronglyConnectedComponentsKosaraju().empty());
 }
 
 /////////////////////////////////////////////
 /// - MARK: UndirectedWeightedGraph -
 
-TEST(UndirectedWeightedGraph, CreateGraph)
-{
-  size_t graph_size{3};
-  UndirectedWeightedGraph uwg{graph_size};
+TEST(UndirectedWeightedGraph, CreateGraph) {
+  const size_t graph_size{3};
+  graph::UndirectedWeightedGraph uwg{graph_size};
   uwg.InsertEdge(0, 1, 1);
   uwg.InsertEdge(0, 2, 2);
   uwg.InsertEdge(1, 2, 3);
@@ -263,10 +249,9 @@ TEST(UndirectedWeightedGraph, CreateGraph)
   EXPECT_EQ(edges.size(), 2 * graph_size);
 }
 
-TEST(UndirectedWeightedGraph, MakeEdgeBounds)
-{
-  size_t graph_size{3};
-  UndirectedWeightedGraph uwg{graph_size};
+TEST(UndirectedWeightedGraph, MakeEdgeBounds) {
+  const size_t graph_size{3};
+  graph::UndirectedWeightedGraph uwg{graph_size};
   uwg.InsertEdge(graph_size, graph_size - 1, 1.0);
   uwg.InsertEdge(graph_size - 1, graph_size, 1.0);
   uwg.InsertEdge(1, 1, 1.0);
@@ -275,11 +260,10 @@ TEST(UndirectedWeightedGraph, MakeEdgeBounds)
   EXPECT_EQ(edges.size(), 2);
 }
 
-TEST(UndirectedWeightedGraph, SetGetWeightBounds)
-{
-  size_t graph_size{2};
-  double default_weight{1.0};
-  UndirectedWeightedGraph wg{graph_size};
+TEST(UndirectedWeightedGraph, SetGetWeightBounds) {
+  const size_t graph_size{2};
+  const double default_weight{1.0};
+  graph::UndirectedWeightedGraph wg{graph_size};
   wg.InsertEdge(0, 1, default_weight);
   wg.SetWeight(0, 2, 5.0);
   wg.SetWeight(2, 1, 5.0);
@@ -287,23 +271,21 @@ TEST(UndirectedWeightedGraph, SetGetWeightBounds)
   EXPECT_EQ(wg.GetWeight(0, 1), default_weight);
 }
 
-TEST(UndirectedWeightedGraph, SetGetWeight)
-{
-  size_t graph_size{2};
-  double default_weight{1.0};
-  double updated_weight{1.0};
-  UndirectedWeightedGraph wg{graph_size};
+TEST(UndirectedWeightedGraph, SetGetWeight) {
+  const size_t graph_size{2};
+  const double default_weight{1.0};
+  const double updated_weight{1.0};
+  graph::UndirectedWeightedGraph wg{graph_size};
   wg.InsertEdge(0, 1, default_weight);
   wg.SetWeight(0, 1, updated_weight);
   EXPECT_EQ(wg.GetWeight(0, 1), updated_weight);
 }
 
-TEST(UndirectedWeightedGraph, RemoveEdge)
-{
-  size_t graph_size{2};
-  double default_weight{1.0};
+TEST(UndirectedWeightedGraph, RemoveEdge) {
+  const size_t graph_size{2};
+  const double default_weight{1.0};
 
-  UndirectedWeightedGraph wg{graph_size};
+  graph::UndirectedWeightedGraph wg{graph_size};
   wg.InsertEdge(0, 1, default_weight);
 
   auto edges = wg.GetEdges();
@@ -314,17 +296,15 @@ TEST(UndirectedWeightedGraph, RemoveEdge)
   EXPECT_EQ(edges.size(), 0);
 }
 
-TEST(UndirectedWeightedGraph, AllWeightsPositive)
-{
-  UndirectedWeightedGraph uwg{3};
+TEST(UndirectedWeightedGraph, AllWeightsPositive) {
+  graph::UndirectedWeightedGraph uwg{3};
   uwg.InsertEdge(0, 1, 10.0);
   uwg.InsertEdge(0, 2, 11.0);
   EXPECT_TRUE(uwg.AllWeightsPositive());
 }
 
-TEST(UndirectedWeightedGraph, AllWeightsNotPositive)
-{
-  UndirectedWeightedGraph uwg{3};
+TEST(UndirectedWeightedGraph, AllWeightsNotPositive) {
+  graph::UndirectedWeightedGraph uwg{3};
   uwg.InsertEdge(0, 1, 10.0);
   uwg.InsertEdge(0, 2, -11.0);
   EXPECT_FALSE(uwg.AllWeightsPositive());
@@ -332,17 +312,15 @@ TEST(UndirectedWeightedGraph, AllWeightsNotPositive)
 
 // MARK: Minimum spanning tree
 
-TEST(UndirectedWeightedGraph, MinimumSpanningTreeInvalid)
-{
+TEST(UndirectedWeightedGraph, MinimumSpanningTreeInvalid) {
   double total_weight{0.0};
-  UndirectedWeightedGraph uwg2{0};
+  const graph::UndirectedWeightedGraph uwg2{0};
   auto mst3 = uwg2.MinSpanningTreePrim(total_weight);
   EXPECT_EQ(mst3.Size(), 0);
 }
 
-TEST(UndirectedWeightedGraph, MinimumSpanningTreeContainsNegative)
-{
-  UndirectedWeightedGraph uwg{3};
+TEST(UndirectedWeightedGraph, MinimumSpanningTreeContainsNegative) {
+  graph::UndirectedWeightedGraph uwg{3};
   uwg.InsertEdge(0, 1, 1.0);
   uwg.InsertEdge(0, 2, 2.0);
   uwg.InsertEdge(1, 2, -3.0);
@@ -352,9 +330,8 @@ TEST(UndirectedWeightedGraph, MinimumSpanningTreeContainsNegative)
   EXPECT_EQ(total_weight, 0.0);
 }
 
-TEST(UndirectedWeightedGraph, MinimumSpanningTreeA)
-{
-  UndirectedWeightedGraph uwg{7};
+TEST(UndirectedWeightedGraph, MinimumSpanningTreeA) {
+  graph::UndirectedWeightedGraph uwg{7};
   uwg.InsertEdge(0, 1, 16);
   uwg.InsertEdge(0, 3, 21);
   uwg.InsertEdge(0, 2, 12);
@@ -373,28 +350,27 @@ TEST(UndirectedWeightedGraph, MinimumSpanningTreeA)
   EXPECT_EQ(total_weight, 93);
 }
 
-//Test-case file is downloaded from "Project Euler", problem 107
-UndirectedWeightedGraph ReadPrimsFile()
-{
-  UndirectedWeightedGraph uwg{40};
-  vector<int> total;
-  ifstream infile("testfiles/prims/p107_network.txt");
-  string line;
+// Test-case file is downloaded from "Project Euler", problem 107
+graph::UndirectedWeightedGraph ReadPrimsFile() {
+  graph::UndirectedWeightedGraph uwg{40};
+  std::vector<int> total;
+  std::ifstream infile("testfiles/prims/p107_network.txt");
+  std::string line;
   int row = 0;
   int col = 0;
 
   while (getline(infile, line)) {
     size_t pos;
-    string token;
-    while ((pos = line.find(',')) != string::npos) {
+    std::string token;
+    while ((pos = line.find(',')) != std::string::npos) {
       token = line.substr(0, pos);
 
       try {
         auto weight = stoi(token);
         total.push_back(weight);
         uwg.InsertEdge(col, row, weight);
-      } catch (std::invalid_argument&) {
-        //std::cerr << "Didn't go well!" << std::endl;
+      } catch (const std::invalid_argument& e) {
+        std::cout << "Exception caught: " << e.what() << '\n';
       }
 
       line.erase(0, pos + 1);
@@ -405,7 +381,8 @@ UndirectedWeightedGraph ReadPrimsFile()
       auto weight = stoi(line);
       total.push_back(weight);
       uwg.InsertEdge(col, row, weight);
-    } catch (std::invalid_argument&) {
+    } catch (const std::invalid_argument& e) {
+      std::cout << "Exception caught: " << e.what() << '\n';
     }
 
     row++;
@@ -414,8 +391,7 @@ UndirectedWeightedGraph ReadPrimsFile()
   return uwg;
 }
 
-TEST(UndirectedWeightedGraph, MinimumSpanningTreeProjectEuler107)
-{
+TEST(UndirectedWeightedGraph, MinimumSpanningTreeProjectEuler107) {
   auto uwg = ReadPrimsFile();
   double total_weight{0.0};
   auto mst = uwg.MinSpanningTreePrim(total_weight);
@@ -425,22 +401,20 @@ TEST(UndirectedWeightedGraph, MinimumSpanningTreeProjectEuler107)
 
 // MARK: Shortest path Dijkstra
 
-TEST(UndirectedWeightedGraph, ShortestPathDijkstraInvalid)
-{
-  UndirectedWeightedGraph uwg{1};
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, 1).empty());// Size < 2
+TEST(UndirectedWeightedGraph, ShortestPathDijkstraInvalid) {
+  const graph::UndirectedWeightedGraph uwg{1};
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, 1).empty());  // Size < 2
 
-  UndirectedWeightedGraph uwg1{2};
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, 3).empty()); // Dest > size
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(3, 2).empty()); // Source > size
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(-1, 1).empty());// Source < 0
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, -1).empty());// Dest < 0
-  EXPECT_TRUE(uwg.ShortestPathDijkstra(1, 1).empty()); // Source == dest
+  const graph::UndirectedWeightedGraph uwg1{2};
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, 3).empty());   // Dest > size
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(3, 2).empty());   // Source > size
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(-1, 1).empty());  // Source < 0
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(0, -1).empty());  // Dest < 0
+  EXPECT_TRUE(uwg.ShortestPathDijkstra(1, 1).empty());   // Source == dest
 }
 
-TEST(UndirectedWeightedGraph, ShortestPathDijkstraA)
-{
-  UndirectedWeightedGraph uwg{7};
+TEST(UndirectedWeightedGraph, ShortestPathDijkstraA) {
+  graph::UndirectedWeightedGraph uwg{7};
   uwg.InsertEdge(0, 1, 5.0);
   uwg.InsertEdge(0, 2, 10.0);
   uwg.InsertEdge(2, 4, 2.0);
@@ -451,18 +425,17 @@ TEST(UndirectedWeightedGraph, ShortestPathDijkstraA)
   uwg.InsertEdge(4, 6, 2.0);
   uwg.InsertEdge(6, 5, 2.0);
 
-  Nodes correct1{0, 1, 4, 6};
+  graph::Nodes correct1{0, 1, 4, 6};
   auto nodes1 = uwg.ShortestPathDijkstra(0, 6);
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct1.begin()));
 
-  Nodes correct2{4, 6, 5};
+  graph::Nodes correct2{4, 6, 5};
   auto nodes2 = uwg.ShortestPathDijkstra(4, 5);
   EXPECT_TRUE(equal(nodes2.begin(), nodes2.end(), correct2.begin()));
 }
 
-TEST(UndirectedWeightedGraph, ShortestPathDijkstraB)
-{
-  UndirectedWeightedGraph uwg{6};
+TEST(UndirectedWeightedGraph, ShortestPathDijkstraB) {
+  graph::UndirectedWeightedGraph uwg{6};
   uwg.InsertEdge(0, 2, 2.0);
   uwg.InsertEdge(0, 1, 4.0);
   uwg.InsertEdge(1, 2, 1.0);
@@ -473,7 +446,7 @@ TEST(UndirectedWeightedGraph, ShortestPathDijkstraB)
   uwg.InsertEdge(3, 4, 2.0);
   uwg.InsertEdge(3, 5, 6.0);
 
-  Nodes correct{0, 2, 1, 3, 4, 5};
+  graph::Nodes correct{0, 2, 1, 3, 4, 5};
   auto nodes = uwg.ShortestPathDijkstra(0, 5);
   EXPECT_TRUE(equal(nodes.begin(), nodes.end(), correct.begin()));
 
@@ -485,34 +458,31 @@ TEST(UndirectedWeightedGraph, ShortestPathDijkstraB)
 /////////////////////////////////////////////
 /// - MARK: DirectedWeightedGraph -
 
-TEST(DirectedWeightedGraph, MakeEdgeBounds)
-{
-  size_t graph_size{3};
-  DirectedWeightedGraph dwg{graph_size};
+TEST(DirectedWeightedGraph, MakeEdgeBounds) {
+  const size_t graph_size{3};
+  graph::DirectedWeightedGraph dwg{graph_size};
   dwg.InsertEdge(graph_size, graph_size - 1, 2.0);
   dwg.InsertEdge(graph_size - 1, graph_size, 2.0);
   dwg.InsertEdge(graph_size, graph_size, 2.0);
-  dwg.InsertEdge(graph_size - 1, graph_size - 2, 2.0);// Valid
+  dwg.InsertEdge(graph_size - 1, graph_size - 2, 2.0);  // Valid
   auto edges = dwg.GetEdges();
   EXPECT_EQ(edges.size(), 1);
 }
 
-TEST(DirectedWeightedGraph, SetWeightBounds)
-{
-  size_t graph_size{2};
-  double w{42.0};
-  DirectedWeightedGraph dwg{graph_size};
+TEST(DirectedWeightedGraph, SetWeightBounds) {
+  const size_t graph_size{2};
+  const double w{42.0};
+  graph::DirectedWeightedGraph dwg{graph_size};
   dwg.InsertEdge(0, graph_size - 1, w);
   EXPECT_EQ(dwg.GetWeight(0, graph_size - 1), w);
   dwg.SetWeight(0, graph_size - 1, 2 * w);
   EXPECT_EQ(dwg.GetWeight(0, graph_size - 1), 2 * w);
 }
 
-TEST(DirectedWeightedGraph, RemoveEdge)
-{
-  size_t graph_size{3};
-  double w{42.0};
-  DirectedWeightedGraph dwg{graph_size};
+TEST(DirectedWeightedGraph, RemoveEdge) {
+  const size_t graph_size{3};
+  const double w{42.0};
+  graph::DirectedWeightedGraph dwg{graph_size};
   dwg.InsertEdge(0, 1, w);
   dwg.InsertEdge(0, 2, w);
   auto edges = dwg.GetEdges();
@@ -523,17 +493,15 @@ TEST(DirectedWeightedGraph, RemoveEdge)
   EXPECT_EQ(edges.size(), 1);
 }
 
-TEST(DirectedWeightedGraph, AllWeightsPositive)
-{
-  DirectedWeightedGraph dwg{3};
+TEST(DirectedWeightedGraph, AllWeightsPositive) {
+  graph::DirectedWeightedGraph dwg{3};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(1, 2, 12.0);
   EXPECT_TRUE(dwg.AllWeightsPositive());
 }
 
-TEST(DirectedWeightedGraph, AllWeightsNotPositive)
-{
-  DirectedWeightedGraph dwg{3};
+TEST(DirectedWeightedGraph, AllWeightsNotPositive) {
+  graph::DirectedWeightedGraph dwg{3};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(1, 2, -12.0);
   EXPECT_FALSE(dwg.AllWeightsPositive());
@@ -541,9 +509,8 @@ TEST(DirectedWeightedGraph, AllWeightsNotPositive)
 
 // MARK: Shortest path Dijkstra
 
-TEST(DirectedWeightedGraph, ShortestPathDijkstraA)
-{
-  DirectedWeightedGraph dwg{7};
+TEST(DirectedWeightedGraph, ShortestPathDijkstraA) {
+  graph::DirectedWeightedGraph dwg{7};
   dwg.InsertEdge(0, 1, 5.0);
   dwg.InsertEdge(0, 2, 10.0);
   dwg.InsertEdge(2, 4, 2.0);
@@ -554,30 +521,28 @@ TEST(DirectedWeightedGraph, ShortestPathDijkstraA)
   dwg.InsertEdge(4, 6, 2.0);
   dwg.InsertEdge(6, 5, 2.0);
 
-  Nodes correct1{0, 1, 4, 6};
+  graph::Nodes correct1{0, 1, 4, 6};
   auto nodes1 = dwg.ShortestPathDijkstra(0, 6);
   EXPECT_TRUE(equal(nodes1.begin(), nodes1.end(), correct1.begin()));
 
-  Nodes correct2{4, 6, 5};
+  graph::Nodes correct2{4, 6, 5};
   auto nodes2 = dwg.ShortestPathDijkstra(4, 5);
   EXPECT_TRUE(equal(nodes2.begin(), nodes2.end(), correct2.begin()));
 }
 
 // MARK: ShortestPathBellmanFord
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordInvalid)
-{
-  DirectedWeightedGraph dwg1{2};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordInvalid) {
+  const graph::DirectedWeightedGraph dwg1{2};
   EXPECT_TRUE(dwg1.ShortestPathBellmanFord(0).first.empty());
 
-  DirectedWeightedGraph dwg2{3};
+  const graph::DirectedWeightedGraph dwg2{3};
   EXPECT_TRUE(dwg2.ShortestPathBellmanFord(-1).first.empty());
   EXPECT_TRUE(dwg2.ShortestPathBellmanFord(3).first.empty());
 }
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordNegativeWeightCycle)
-{
-  DirectedWeightedGraph dwg{5};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordNegativeWeightCycle) {
+  graph::DirectedWeightedGraph dwg{5};
   dwg.InsertEdge(0, 1, 3.0);
   dwg.InsertEdge(1, 2, 4.0);
   dwg.InsertEdge(1, 3, 5.0);
@@ -587,9 +552,8 @@ TEST(DirectedWeightedGraph, ShortestPathBellmanFordNegativeWeightCycle)
   EXPECT_TRUE(dwg.ShortestPathBellmanFord(0).second.empty());
 }
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordA)
-{
-  DirectedWeightedGraph dwg{5};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordA) {
+  graph::DirectedWeightedGraph dwg{5};
   dwg.InsertEdge(0, 1, 4.0);
   dwg.InsertEdge(0, 2, 2.0);
   dwg.InsertEdge(1, 2, 3.0);
@@ -600,14 +564,13 @@ TEST(DirectedWeightedGraph, ShortestPathBellmanFordA)
   dwg.InsertEdge(2, 4, 5.0);
   dwg.InsertEdge(4, 3, -5.0);
 
-  Nodes corr{0, 3, 2, 1, 6};
+  graph::Nodes corr{0, 3, 2, 1, 6};
   auto res = dwg.ShortestPathBellmanFord(0);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
 }
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordB)
-{
-  DirectedWeightedGraph dwg{6};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordB) {
+  graph::DirectedWeightedGraph dwg{6};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(0, 5, 8.0);
   dwg.InsertEdge(1, 3, 2.0);
@@ -617,14 +580,13 @@ TEST(DirectedWeightedGraph, ShortestPathBellmanFordB)
   dwg.InsertEdge(4, 1, -4.0);
   dwg.InsertEdge(5, 4, 1.0);
 
-  Nodes corr{0, 5, 5, 7, 9, 8};
+  graph::Nodes corr{0, 5, 5, 7, 9, 8};
   auto res = dwg.ShortestPathBellmanFord(0);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), res.first.begin()));
 }
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordSinglePathA)
-{
-  DirectedWeightedGraph dwg{6};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordSinglePathA) {
+  graph::DirectedWeightedGraph dwg{6};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(0, 5, 8.0);
   dwg.InsertEdge(1, 3, 2.0);
@@ -634,33 +596,31 @@ TEST(DirectedWeightedGraph, ShortestPathBellmanFordSinglePathA)
   dwg.InsertEdge(4, 1, -4.0);
   dwg.InsertEdge(5, 4, 1.0);
 
-  Nodes corr{0, 5, 4, 1, 3, 2};
+  graph::Nodes corr{0, 5, 4, 1, 3, 2};
   auto path_weight = dwg.ShortestPathSinglePathBellmanFord(0, 2);
   EXPECT_TRUE(equal(corr.begin(), corr.end(), path_weight.first.begin()));
   EXPECT_EQ(path_weight.second, 5.0);
 }
 
-TEST(DirectedWeightedGraph, ShortestPathBellmanFordSinglePathInvalid)
-{
-  DirectedWeightedGraph dwg1{2};
+TEST(DirectedWeightedGraph, ShortestPathBellmanFordSinglePathInvalid) {
+  const graph::DirectedWeightedGraph dwg1{2};
   EXPECT_TRUE(dwg1.ShortestPathSinglePathBellmanFord(0, 1).first.empty());
 
-  DirectedWeightedGraph dwg2{3};
+  const graph::DirectedWeightedGraph dwg2{3};
   auto res = dwg2.ShortestPathSinglePathBellmanFord(-1, 1);
-  EXPECT_TRUE(res.first.empty());// Source < 0
+  EXPECT_TRUE(res.first.empty());  // Source < 0
   res = dwg2.ShortestPathSinglePathBellmanFord(3, 1);
-  EXPECT_TRUE(res.first.empty());// Source >= size
+  EXPECT_TRUE(res.first.empty());  // Source >= size
   res = dwg2.ShortestPathSinglePathBellmanFord(0, -1);
-  EXPECT_TRUE(res.first.empty());// Dest < 0
+  EXPECT_TRUE(res.first.empty());  // Dest < 0
   res = dwg2.ShortestPathSinglePathBellmanFord(0, 3);
-  EXPECT_TRUE(res.first.empty());// Dest >= size
+  EXPECT_TRUE(res.first.empty());  // Dest >= size
 }
 
 // - MARK: ShortestDistAllPairsFloydWarshall
 
-TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallA)
-{
-  DirectedWeightedGraph dwg{4};
+TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallA) {
+  graph::DirectedWeightedGraph dwg{4};
   dwg.InsertEdge(0, 1, 2);
   dwg.InsertEdge(0, 2, 1);
   dwg.InsertEdge(1, 0, 3);
@@ -670,14 +630,13 @@ TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallA)
   dwg.InsertEdge(2, 3, 3);
   dwg.InsertEdge(3, 0, 4);
 
-  Nodes corr{0, 1, 3};
+  graph::Nodes corr{0, 1, 3};
   auto path = dwg.ShortestDistAllPairsPathFloydWarshall(0, 3);
   EXPECT_TRUE(equal(path.begin(), path.end(), corr.begin()));
 }
 
-TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallB)
-{
-  DirectedWeightedGraph dwg{5};
+TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallB) {
+  graph::DirectedWeightedGraph dwg{5};
   dwg.InsertEdge(0, 1, 5);
   dwg.InsertEdge(0, 3, 2);
   dwg.InsertEdge(1, 2, 2);
@@ -688,19 +647,17 @@ TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallB)
   dwg.InsertEdge(4, 0, 1);
   dwg.InsertEdge(4, 1, 3);
 
-  Nodes corr{0, 3, 4};
+  graph::Nodes corr{0, 3, 4};
   auto path = dwg.ShortestDistAllPairsPathFloydWarshall(0, 4);
   EXPECT_TRUE(equal(path.begin(), path.end(), corr.begin()));
 }
 
-TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallInvalid)
-{
-
-  DirectedWeightedGraph dwg0{2};
+TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallInvalid) {
+  const graph::DirectedWeightedGraph dwg0{2};
   auto path = dwg0.ShortestDistAllPairsPathFloydWarshall(0, 1);
   EXPECT_TRUE(path.empty());
 
-  DirectedWeightedGraph dwg{3};
+  const graph::DirectedWeightedGraph dwg{3};
 
   path = dwg.ShortestDistAllPairsPathFloydWarshall(-1, 1);
   EXPECT_TRUE(path.empty());
@@ -720,9 +677,8 @@ TEST(DirectedWeightedGraph, ShortestDistAllPairsFloydWarshallInvalid)
 
 // - MARK: MaxFlowEdmondsKarp
 
-TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpA)
-{
-  DirectedWeightedGraph dwg{6};
+TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpA) {
+  graph::DirectedWeightedGraph dwg{6};
   dwg.InsertEdge(0, 1, 160.0);
   dwg.InsertEdge(0, 2, 130.0);
   dwg.InsertEdge(2, 1, 40.0);
@@ -738,9 +694,8 @@ TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpA)
   EXPECT_EQ(max_flow, 230.0);
 }
 
-TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpB)
-{
-  DirectedWeightedGraph dwg{6};
+TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpB) {
+  graph::DirectedWeightedGraph dwg{6};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(0, 2, 10.0);
   dwg.InsertEdge(1, 2, 2.0);
@@ -755,28 +710,27 @@ TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpB)
   EXPECT_EQ(max_flow, 19.0);
 }
 
-TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpInvalid)
-{
-  DirectedWeightedGraph dwg{4};
+TEST(DirectedWeightedGraph, MaxFlowEdmondsKarpInvalid) {
+  graph::DirectedWeightedGraph dwg{4};
   dwg.InsertEdge(0, 1, 10.0);
   dwg.InsertEdge(2, 3, 10.0);
 
   auto max_flow = dwg.MaxFlowEdmondsKarp(0, 2);
-  EXPECT_EQ(max_flow, 0.0);// No path in graph
+  EXPECT_EQ(max_flow, 0.0);  // No path in graph
 
-  DirectedWeightedGraph dwg1{2};
+  graph::DirectedWeightedGraph dwg1{2};
   max_flow = dwg1.MaxFlowEdmondsKarp(-1, 1);
-  EXPECT_EQ(max_flow, 0.0);// source < size
+  EXPECT_EQ(max_flow, 0.0);  // source < size
 
   max_flow = dwg1.MaxFlowEdmondsKarp(0, -1);
-  EXPECT_EQ(max_flow, 0.0);// dest < size
+  EXPECT_EQ(max_flow, 0.0);  // dest < size
 
   max_flow = dwg1.MaxFlowEdmondsKarp(1, 1);
-  EXPECT_EQ(max_flow, 0.0);// dest == source
+  EXPECT_EQ(max_flow, 0.0);  // dest == source
 
   max_flow = dwg1.MaxFlowEdmondsKarp(2, 1);
-  EXPECT_EQ(max_flow, 0.0);// source >= size
+  EXPECT_EQ(max_flow, 0.0);  // source >= size
 
   max_flow = dwg1.MaxFlowEdmondsKarp(1, 2);
-  EXPECT_EQ(max_flow, 0.0);// dest >= size
+  EXPECT_EQ(max_flow, 0.0);  // dest >= size
 }
