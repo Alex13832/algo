@@ -8,10 +8,13 @@
 #include "algo_data_mining.hpp"
 
 #include <algorithm>
-#include <chrono>
 #include <cmath>
+#include <cstddef>
+#include <functional>
+#include <limits>
 #include <queue>
 #include <set>
+#include <vector>
 
 #include "algo_math.hpp"
 
@@ -22,22 +25,18 @@ namespace algo::data_mining {
 
 /// \brief Represents a centroid in  for K-Means.
 struct Centroid {
-
   /// \brief Adds data to centroid mean.
   /// \param pt Data array.
-  void AddToMean(const Point& pt)
-  {
+  void AddToMean(const Point& pt) {
     if (mean_.empty()) {
       mean_.resize(pt.size());
     }
-    std::transform(pt.begin(), pt.end(), mean_.begin(), mean_.begin(),
-                   std::plus<>());
+    std::transform(pt.begin(), pt.end(), mean_.begin(), mean_.begin(), std::plus<>());
     size_++;
   }
 
   /// \brief Computes the mean.
-  void ComputeMean()
-  {
+  void ComputeMean() {
     if (size_ == 0) return;
     for (auto& pt : mean_) {
       pt /= static_cast<double>(size_);
@@ -46,14 +45,10 @@ struct Centroid {
 
   /// \brief Checks if mean is equal to point.
   /// \return true if equal.
-  bool PointEqualToMean()
-  {
-    return std::equal(mean_.begin(), mean_.end(), point_.begin());
-  }
+  bool PointEqualToMean() { return std::equal(mean_.begin(), mean_.end(), point_.begin()); }
 
   /// \brief Sets the point to the centroid's mean values.
-  void SetPointToMean()
-  {
+  void SetPointToMean() {
     std::copy(mean_.begin(), mean_.end(), point_.begin());
     std::fill(mean_.begin(), mean_.end(), 0);
     size_ = 0;
@@ -66,8 +61,7 @@ struct Centroid {
 
 // MARK: Norm functions
 
-std::function<double(Point, Point)> norms::Manhattan()
-{
+std::function<double(Point, Point)> norms::Manhattan() {
   return [](Point p1, Point p2) {
     if (p1.size() != p2.size()) {
       return std::numeric_limits<double>::max();
@@ -80,8 +74,7 @@ std::function<double(Point, Point)> norms::Manhattan()
   };
 }
 
-std::function<double(Point, Point)> norms::Euclidean()
-{
+std::function<double(Point, Point)> norms::Euclidean() {
   return [](Point p1, Point p2) {
     if (p1.size() != p2.size()) {
       return std::numeric_limits<double>::max();
@@ -103,16 +96,13 @@ namespace {
 /// \param points To sample random points from.
 /// \param num_centroids The number of centroids to generate.
 /// \return num_centroids Centroids.
-std::vector<Centroid> GenerateRandCentroids(const std::vector<Point> points,
-                                            size_t num_centroids)
-{
+std::vector<Centroid> GenerateRandCentroids(const std::vector<Point> points, size_t num_centroids) {
   std::vector<Centroid> ctr(num_centroids);
   auto N = points.size();
   // Initialize random centroids
   std::generate(ctr.begin(), ctr.end(), [&]() {
     const auto num_d = static_cast<double>(N);
-    const auto random_index =
-        static_cast<int>(math::random_num::cont::Uniform(0, num_d));
+    const auto random_index = static_cast<int>(math::random_num::cont::Uniform(0, num_d));
     return Centroid{points.at(random_index), {}, 0};
   });
 
@@ -124,15 +114,13 @@ std::vector<Centroid> GenerateRandCentroids(const std::vector<Point> points,
 /// \param centroids The Centroids.
 /// \param norm_func Norm function.
 /// \return The index that indicates which centroid is closest to point.
-int FindClosestCentroid(const Point& point,
-                        const std::vector<Centroid>& centroids,
-                        const std::function<double(Point, Point)>& norm_func)
-{
+int FindClosestCentroid(const Point& point, const std::vector<Centroid>& centroids,
+                        const std::function<double(Point, Point)>& norm_func) {
   auto dist_min = std::numeric_limits<double>::max();
   int cluster{0};
   int min_cluster{0};
 
-  for (auto& ct : centroids) {
+  for (const auto& ct : centroids) {
     auto dist_curr = norm_func(ct.point_, point);
 
     if (dist_curr < dist_min) {
@@ -151,10 +139,8 @@ int FindClosestCentroid(const Point& point,
 /// \param centroids Centroids to compare points with.
 /// \param norm_func Norm function.
 /// \return A vector of cluster indices.
-std::vector<int> MakeClusters(
-    const std::vector<Point>& points, const std::vector<Centroid>& centroids,
-    const std::function<double(Point, Point)>& norm_func)
-{
+std::vector<int> MakeClusters(const std::vector<Point>& points, const std::vector<Centroid>& centroids,
+                              const std::function<double(Point, Point)>& norm_func) {
   std::vector<int> clusters;
   for (const auto& pt : points) {
     auto min_cluster = FindClosestCentroid(pt, centroids, norm_func);
@@ -163,11 +149,9 @@ std::vector<int> MakeClusters(
   return clusters;
 }
 
-}// namespace
+}  // namespace
 
-std::vector<int> Cluster::KMeans(
-    const std::function<double(Point, Point)>& norm_func, size_t k) const
-{
+std::vector<int> Cluster::KMeans(const std::function<double(Point, Point)>& norm_func, size_t k) const {
   if (k >= size_ || k == 0) {
     return {};
   }
@@ -195,11 +179,11 @@ std::vector<int> Cluster::KMeans(
 
 namespace {
 struct LabeledPoint {
-  size_t index{0}; ///< Index to a point in some vector.
-  int label{-1};   ///< Label, an integer. No strings!
-  double dist{0.0};///< Distance if needed.
+  size_t index{0};   ///< Index to a point in some vector.
+  int label{-1};     ///< Label, an integer. No strings!
+  double dist{0.0};  ///< Distance if needed.
 };
-}//namespace
+}  // namespace
 
 // //////////////////////////////////////////
 // MARK: DbScan
@@ -217,17 +201,13 @@ constexpr int kNoise{-1};
 /// \param labeled_point The main point of interest.
 /// \param eps The maximum distance between two points for index inclusion.
 /// \return Indices that fulfills description above.
-std::queue<size_t> RangeQuery(
-    const std::function<double(Point, Point)>& norm_func,
-    const std::vector<Point>& points,
-    const std::vector<LabeledPoint>& labeled_points, LabeledPoint labeled_point,
-    double eps)
-{
+std::queue<size_t> RangeQuery(const std::function<double(Point, Point)>& norm_func, const std::vector<Point>& points,
+                              const std::vector<LabeledPoint>& labeled_points, LabeledPoint labeled_point, double eps) {
   std::queue<size_t> labels;
   for (size_t i = 0; i < labeled_points.size(); i++) {
     const auto idx_0 = labeled_point.index;
     const auto idx_1 = labeled_points.at(i).index;
-    if (idx_0 == idx_1) continue;// Skip self.
+    if (idx_0 == idx_1) continue;  // Skip self.
 
     const auto distance = norm_func(points.at(idx_0), points.at(idx_1));
     if (distance < eps) labels.push(i);
@@ -238,23 +218,18 @@ std::queue<size_t> RangeQuery(
 /// \brief Copies the indices from labeled points.
 /// \param labeled_pts For each point, there's an index.
 /// \return Indices.
-std::vector<int> GetLabels(const std::vector<LabeledPoint>& labeled_pts)
-{
+std::vector<int> GetLabels(const std::vector<LabeledPoint>& labeled_pts) {
   std::vector<int> labels;
   labels.reserve(labeled_pts.size());
-  for (const auto& lp : labeled_pts)
-    labels.emplace_back(lp.label);
+  for (const auto& lp : labeled_pts) labels.emplace_back(lp.label);
   return labels;
 }
 
-}// namespace
+}  // namespace
 
-std::vector<int> Cluster::DbScan(
-    const std::function<double(Point, Point)>& norm_func, double eps,
-    size_t min_points) const
-{
-  if ((min_points >= size_) || (min_points == 0) || points_.empty()
-      || (eps <= 0.0)) {
+std::vector<int> Cluster::DbScan(const std::function<double(Point, Point)>& norm_func, double eps,
+                                 size_t min_points) const {
+  if ((min_points >= size_) || (min_points == 0) || points_.empty() || (eps <= 0.0)) {
     return {};
   }
   std::vector<LabeledPoint> labeled_pts;
@@ -268,8 +243,7 @@ std::vector<int> Cluster::DbScan(
     if (labeled_pts.at(idx).label != kUndefined) {
       continue;
     }
-    auto neighbours =
-        RangeQuery(norm_func, points_, labeled_pts, labeled_pts.at(idx), eps);
+    auto neighbours = RangeQuery(norm_func, points_, labeled_pts, labeled_pts.at(idx), eps);
 
     if (neighbours.size() < min_points) {
       labeled_pts.at(idx).label = kNoise;
@@ -287,8 +261,7 @@ std::vector<int> Cluster::DbScan(
       }
       if (lpt.label == kUndefined) {
         lpt.label = cluster_count;
-        auto neighbours_n =
-            RangeQuery(norm_func, points_, labeled_pts, lpt, eps);
+        auto neighbours_n = RangeQuery(norm_func, points_, labeled_pts, lpt, eps);
 
         if (neighbours_n.size() >= min_points) {
           while (!neighbours_n.empty()) {
@@ -307,13 +280,11 @@ std::vector<int> Cluster::DbScan(
 // //////////////////////////////////////////
 // MARK: KNN
 
-std::vector<int> Classifier::KNearestNeighbour(
-    const std::function<double(Point, Point)>& norm_func,
-    const std::vector<Point>& known_points,
-    const std::vector<int>& known_labels, size_t k) const
-{
-  if ((k > size_) || (k == 0) || known_points.empty() || known_labels.empty()
-      || (known_points.size() != known_labels.size())) {
+std::vector<int> Classifier::KNearestNeighbour(const std::function<double(Point, Point)>& norm_func,
+                                               const std::vector<Point>& known_points,
+                                               const std::vector<int>& known_labels, size_t k) const {
+  if ((k > size_) || (k == 0) || known_points.empty() || known_labels.empty() ||
+      (known_points.size() != known_labels.size())) {
     return {};
   }
 
@@ -326,21 +297,18 @@ std::vector<int> Classifier::KNearestNeighbour(
   std::vector<int> ret_labeled;
 
   for (const auto& point : points_) {
-
     for (auto& ld : classified) {
       ld.dist = norm_func(point, known_points.at(ld.index));
       labels.insert(ld.label);
     }
-    std::sort(classified.begin(), classified.end(),
-              [](auto p1, auto p2) { return p1.dist < p2.dist; });
+    std::sort(classified.begin(), classified.end(), [](auto p1, auto p2) { return p1.dist < p2.dist; });
 
     int label_to_use;
     long max_count{0L};
 
     for (const auto& label : labels) {
-      auto count = std::count_if(
-          classified.begin(), classified.begin() + static_cast<long>(k),
-          [&label](const LabeledPoint& lp) { return lp.label == label; });
+      auto count = std::count_if(classified.begin(), classified.begin() + static_cast<long>(k),
+                                 [&label](const LabeledPoint& lp) { return lp.label == label; });
 
       if (count > max_count) {
         max_count = count;
@@ -354,4 +322,4 @@ std::vector<int> Classifier::KNearestNeighbour(
   return ret_labeled;
 }
 
-}// namespace algo::data_mining
+}  // namespace algo::data_mining

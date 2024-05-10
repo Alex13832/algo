@@ -11,15 +11,11 @@
 /// 2022-12-28 Make algorithms handle multi dimensional data.
 ///
 
-#ifndef ALGORITHM_DATA_MINING_DATA_MINING_ALGORITHMS_HPP_
-#define ALGORITHM_DATA_MINING_DATA_MINING_ALGORITHMS_HPP_
+#pragma once
 
-#include <iostream>
-#include <string>
-#include <utility>
+#include <cstddef>
+#include <functional>
 #include <vector>
-
-#include "algo_geometry.hpp"
 
 namespace algo::data_mining {
 
@@ -38,20 +34,17 @@ std::function<double(Point, Point)> Manhattan();
 /// \return L2 Norm function.
 std::function<double(Point, Point)> Euclidean();
 
-}// namespace norms
+}  // namespace norms
 
 class Miner {
  protected:
-  explicit Miner(const std::vector<Point>& points)
-      : points_{points},
-        size_{points.size()} {};
+  explicit Miner(const std::vector<Point>& points) : points_{points}, size_{points.size()} {};
 
   std::vector<Point> points_;
   size_t size_;
 };
 
 class Cluster : public Miner {
-
  public:
   explicit Cluster(const std::vector<Point>& points) : Miner(points){};
 
@@ -63,8 +56,7 @@ class Cluster : public Miner {
   /// predefined or custom made function.
   /// \param k Number of clusters.
   /// \return A vector of cluster indices.
-  std::vector<int> KMeans(const std::function<double(Point, Point)>& norm_func,
-                          size_t k) const;
+  std::vector<int> KMeans(const std::function<double(Point, Point)>& norm_func, size_t k) const;
 
   /// \brief Runs the DBSCAN algorithm and returns a vector of labels
   /// representing each point's cluster index.
@@ -74,8 +66,7 @@ class Cluster : public Miner {
   /// \param min_pts The minimum number of neighbors within the distance eps
   /// that a point must have.
   /// \return A vector of cluster indices.
-  std::vector<int> DbScan(const std::function<double(Point, Point)>& norm_func,
-                          double eps, size_t min_points) const;
+  std::vector<int> DbScan(const std::function<double(Point, Point)>& norm_func, double eps, size_t min_points) const;
 };
 
 class Classifier : public Miner {
@@ -90,12 +81,9 @@ class Classifier : public Miner {
   /// \param known_labels Known labels for known_points.
   /// \param k Number of neighbours to check.
   /// \return A vector of labels.
-  std::vector<int> KNearestNeighbour(
-      const std::function<double(Point, Point)>& norm_func,
-      const std::vector<Point>& known_points,
-      const std::vector<int>& known_labels, size_t k) const;
+  std::vector<int> KNearestNeighbour(const std::function<double(Point, Point)>& norm_func,
+                                     const std::vector<Point>& known_points, const std::vector<int>& known_labels,
+                                     size_t k) const;
 };
 
-}// namespace algo::data_mining
-
-#endif//ALGORITHM_DATA_MINING_DATA_MINING_ALGORITHMS_HPP_
+}  // namespace algo::data_mining
