@@ -14,21 +14,36 @@
 /// 2022-01-15 Delaunay triangulation
 ///
 
-#ifndef ALGO_ALGO_INCLUDE_ALGO_GEOMETRY_HPP_
-#define ALGO_ALGO_INCLUDE_ALGO_GEOMETRY_HPP_
+#pragma once
 
-#include <cmath>
+#include <cstddef>
+#include <utility>
 #include <vector>
 
 namespace algo::geometry {
+
+class Point;
+
+namespace helpers {
+
+/// \brief Returns a vector of sorted points in a CCW order.
+/// \param pts Input points.
+/// \return Sorted points CCW order.
+std::vector<Point> SortCounterClockWise(const std::vector<Point>& pts);
+
+}  // namespace helpers
 
 // /////////////////////////////
 // MARK: Point
 
 class Point {
-
  public:
   Point(double x, double y);
+  Point() = delete;
+  Point(const Point& other) = default;
+  Point(Point&& other) noexcept = default;
+  Point& operator=(const Point& other) = default;
+  Point& operator=(Point&& other) noexcept = default;
   virtual ~Point() = default;
 
   /// \brief Updates the x and y coordinates.
@@ -84,6 +99,11 @@ class Point {
 class Edge {
  public:
   Edge(const Point& pt1, const Point& pt2);
+  Edge() = delete;
+  Edge(const Edge& other) = default;
+  Edge(Edge&& other) noexcept = default;
+  Edge& operator=(const Edge& other) = delete;
+  Edge& operator=(Edge&& other) noexcept = default;
   virtual ~Edge() = default;
 
   /// \brief Equals operator overloading.
@@ -127,9 +147,13 @@ class Edge {
 class Triangle;
 
 class Circle {
-
  public:
-  Circle(const Point& point, double radius);
+  Circle(Point point, double radius);
+  Circle() = delete;
+  Circle(const Circle& other) = default;
+  Circle(Circle&& other) noexcept = default;
+  Circle& operator=(const Circle& other) = delete;
+  Circle& operator=(Circle&& other) noexcept = delete;
   virtual ~Circle() = default;
 
   /// \brief Calculates and returns the area of this circle.
@@ -154,8 +178,8 @@ class Circle {
   double Radius() const;
 
  private:
-  Point origin_;
-  double radius_;
+  const Point origin_;
+  const double radius_;
 };
 
 class Rectangle;
@@ -164,14 +188,28 @@ class Rectangle;
 // MARK: Polygon
 
 class Polygon {
-
  public:
   explicit Polygon(const std::vector<Point>& points);
+  Polygon() = delete;
+  Polygon(const Polygon& other) = default;
+  Polygon(Polygon&& other) noexcept = default;
+  Polygon& operator=(const Polygon& other) = default;
+  Polygon& operator=(Polygon&& other) noexcept = default;
   virtual ~Polygon() = default;
+
+  /// \brief Calculates and returns the area by using the Sholace formula.
+  /// \return The area.
+  double Area() const;
 
   /// \brief Returns the number of edges in this polygon.
   /// \return The number of edges.
-  size_t EdgeCount();
+  size_t EdgeCount() const;
+
+  /// \brief Returns the i:th edge.
+  /// \return The i:ith edge.
+  Point GetEdge(size_t i) const;
+
+  std::vector<Edge> GetEdges() const;
 
   /// \brief Rotates this polygon with an angle and around a point center.
   /// \param angle The rotation angle.
@@ -189,7 +227,7 @@ class Polygon {
   Point GetCenter() const;
 
   /// \brief Returns the bounding rectangle.
-  /// \note Not the minimum bound rectangle.
+  /// \note Not the minimum bounding rectangle.
   /// \return Bounding rectangle.
   Rectangle BoundingRectangle() const;
 
@@ -197,18 +235,9 @@ class Polygon {
   /// \return Points.
   std::vector<Point> GetPoints() const;
 
-  /// \brief Returns the i:th edge.
-  /// \return The i:ith edge.
-  Point GetEdge(size_t i) const;
-
  protected:
   std::vector<Point> points_;
   Point center_;
-
- private:
-  /// \brief Calculates and returns the area.
-  /// \return The area.
-  virtual double Area() const;
 };
 
 // /////////////////////////////
@@ -217,13 +246,12 @@ class Polygon {
 class Triangle : public Polygon {
  public:
   Triangle(const Point& pt1, const Point& pt2, const Point& pt3);
+  Triangle() = delete;
+  Triangle(const Triangle& other) = default;
+  Triangle(Triangle&& other) noexcept = default;
+  Triangle& operator=(const Triangle& other) = default;
+  Triangle& operator=(Triangle&& other) noexcept = default;
   ~Triangle() override = default;
-
-  /// \brief Calculates and returns the area.
-  /// \return The area.
-  double Area() const override;
-
-  std::vector<Edge> GetEdges() const;
 
   /// \brief Checks if pt is inside this triangle.
   /// \param[in] pt The point.
@@ -254,18 +282,12 @@ class Rhombus : public Polygon {
  public:
   Rhombus(const Point& pt1, const Point& pt2, const Point& pt3,
           const Point& pt4);
-  explicit Rhombus(const std::vector<Point>& pts);
+  Rhombus() = delete;
+  Rhombus(const Rhombus& other) = default;
+  Rhombus(Rhombus&& other) noexcept = default;
+  Rhombus& operator=(const Rhombus& other) = delete;
+  Rhombus& operator=(Rhombus&& other) noexcept = delete;
   ~Rhombus() override = default;
-
-  /// \brief Calculates and returns the area.
-  /// \return The area.
-  double Area() const override;
-
- private:
-  Point& pt_a_;
-  Point& pt_b_;
-  Point& pt_c_;
-  Point& pt_d_;
 };
 
 // /////////////////////////////
@@ -274,11 +296,12 @@ class Rhombus : public Polygon {
 class Rectangle : public Polygon {
  public:
   Rectangle(const Point& pt1, double width, double height);
+  Rectangle() = delete;
+  Rectangle(const Rectangle& other) = default;
+  Rectangle(Rectangle&& other) noexcept = default;
+  Rectangle& operator=(const Rectangle& other) = delete;
+  Rectangle& operator=(Rectangle&& other) noexcept = delete;
   ~Rectangle() override = default;
-
-  /// \brief Calculates and returns the area.
-  /// \return The area.
-  double Area() const override;
 
   /// \brief Returns the input corner points.
   /// \return Corner point.
@@ -293,8 +316,8 @@ class Rectangle : public Polygon {
   double GetHeight() const;
 
  private:
-  Point& pt_;
-  double width_, height_;
+  const double width_;
+  const double height_;
 };
 
 // /////////////////////////////
@@ -303,19 +326,25 @@ class Rectangle : public Polygon {
 class Grid {
  public:
   explicit Grid(const std::vector<Point>& points);
+  Grid() = delete;
+  Grid(const Grid& other) = default;
+  Grid(Grid&& other) noexcept = default;
+  Grid& operator=(const Grid& other) = delete;
+  Grid& operator=(Grid&& other) noexcept = delete;
+  ~Grid() = default;
 
   /// \brief Returns the two points that are closest in distance to each other.
   /// \return Closest pair of points.
-  std::pair<Point, Point> ClosestPairOfPoints();
+  std::pair<Point, Point> ClosestPairOfPoints() const;
 
   /// \brief Returns the convex hull of this grid.
   /// \details Using quick hull algorithm.
   /// \return The polygon than makes the convex hull.
-  Polygon ConvexHull();
+  Polygon ConvexHull() const;
 
   /// \brief Returns the minimum bounding box if this grid.
   /// \return Minimum bounding box.
-  Polygon MinBoundingBox();
+  Polygon MinBoundingBox() const;
 
   /// \brief Returns the minimum enclosing circle.
   /// \return Minimum enclosing circle.
@@ -330,11 +359,9 @@ class Grid {
   std::vector<Edge> DelaunayTriangulation() const;
 
  private:
-  std::vector<Point> points_;
+  const std::vector<Point> points_;
 };
 
 using Points = std::vector<Point>;
 
-}// namespace algo::geometry
-
-#endif//ALGO_ALGO_INCLUDE_ALGO_GEOMETRY_HPP_
+}  // namespace algo::geometry

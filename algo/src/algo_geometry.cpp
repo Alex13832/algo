@@ -6,81 +6,116 @@
 
 #include "algo_geometry.hpp"
 
+#include <algorithm>
 #include <cmath>
+#include <cstddef>
+#include <cstdlib>
+#include <iterator>
+#include <limits>
+#include <stdexcept>
 #include <utility>
+#include <vector>
 
 namespace {
+constexpr double kPi{3.14159265358979323846264338327950288};
 
-const auto x_comp = [](auto p1, auto p2) { return p1.X() < p2.X(); };
-const auto y_comp = [](auto p1, auto p2) { return p1.Y() < p2.Y(); };
+constexpr size_t kMinPolygonPoints{3UL};
+constexpr size_t kMinBoundingBoxPoints{3UL};
+constexpr size_t kMinDelaunayTriangulationPoints{3UL};
+constexpr size_t kMinConvexHullPoints{3UL};
+constexpr size_t kMinClosestPairPoints{3UL};
 
-}// namespace
+constexpr auto kXComp = [](auto p1, auto p2) { return p1.X() < p2.X(); };
+constexpr auto kYComp = [](auto p1, auto p2) { return p1.Y() < p2.Y(); };
+
+}  // namespace
 
 namespace algo::geometry {
+
+std::vector<Point> helpers::SortCounterClockWise(
+    const std::vector<Point>& pts) {
+  std::vector<Point> points{pts};
+  // Find point with lowest y-value
+  double y_lowest{std::numeric_limits<double>::max()};
+  Point pt_y_lowest{0.0, 0.0};
+
+  for (const auto& pt : points) {
+    if (pt.Y() < y_lowest) {
+      y_lowest = pt.Y();
+      pt_y_lowest = pt;
+    }
+  }
+
+  const auto comp = [pt_y_lowest](const Point& p1, const Point& p2) {
+    const double polar_p1{
+        std::atan2(p1.Y() - pt_y_lowest.Y(), p1.X() - pt_y_lowest.X())};
+    const double polar_p2{
+        std::atan2(p2.Y() - pt_y_lowest.Y(), p2.X() - pt_y_lowest.X())};
+    return polar_p1 < polar_p2;
+  };
+
+  std::sort(points.begin(), points.end(), comp);
+
+  return points;
+}
 
 // /////////////////////////////
 // MARK: Point
 
 Point::Point(double x, double y) : x_{x}, y_{y} {}
 
-void Point::Set(double x, double y)
-{
+void Point::Set(double x, double y) {
   x_ = x;
   y_ = y;
 }
 
-bool Point::operator==(const Point& p) const
-{
-  return x_ == p.x_ && y_ == p.y_;
+bool Point::operator==(const Point& p) const {
+  return (x_ == p.x_) && (y_ == p.y_);
 }
 
-bool Point::operator!=(const Point& p) const
-{
-  return x_ != p.x_ || y_ != p.y_;
+bool Point::operator!=(const Point& p) const {
+  return (x_ != p.x_) || (y_ != p.y_);
 }
-Point Point::operator-(const Point& p) const
-{
+Point Point::operator-(const Point& p) const {
   return Point{x_ - p.x_, y_ - p.y_};
 }
 
-Point Point::operator+(const Point& p) const
-{
+Point Point::operator+(const Point& p) const {
   return Point{x_ + p.x_, y_ + p.y_};
 }
 
-double Point::Dist(const Point& point) const
-{
+double Point::Dist(const Point& point) const {
   return std::sqrt(std::pow(x_ - point.x_, 2) + std::pow(y_ - point.y_, 2));
 }
 
-Point Point::Normalize() const
-{
+Point Point::Normalize() const {
   const auto magnitude = std::sqrt(x_ * x_ + y_ * y_);
+  if (magnitude == 0) {
+    return Point{0, 0};
+  }
   return Point{x_ / magnitude, y_ / magnitude};
 }
 
-double Point::X() const
-{
+double Point::X() const {
   return x_;
 }
 
-double Point::Y() const
-{
+double Point::Y() const {
   return y_;
 }
 
 // /////////////////////////////
 // MARK: Edge
 
-Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1}, pt2_{pt2}
-{
-  //  if (pt1 == pt2) { throw std::invalid_argument("Points cannot be equal."); }
+Edge::Edge(const Point& pt1, const Point& pt2) : pt1_{pt1}, pt2_{pt2} {
+  if (pt1 == pt2) {
+    throw std::invalid_argument("Points are equal.");
+  }
 }
 
-bool Edge::operator==(const Edge& e) const
-{
-  return ((pt1_ == e.pt1_) && (pt2_ == e.pt2_))
-      or ((pt2_ == e.pt1_) && (pt1_ == e.pt2_));
+bool Edge::operator==(const Edge& e) const {
+  return ((pt1_ == e.pt1_) && (pt2_ == e.pt2_)) or
+         ((pt2_ == e.pt1_) && (pt1_ == e.pt2_));
 }
 
 namespace {
@@ -88,117 +123,113 @@ namespace {
 // Edge intersection
 // http://jeffe.cs.illinois.edu/teaching/373/notes/x06-sweepline.pdf
 
-constexpr auto CCW = [](const Point& p1, const Point& p2, const Point& p3) {
-  return ((p3.Y() - p1.Y()) * (p2.X() - p1.X()))
-      >= ((p2.Y() - p1.Y()) * (p3.X() - p1.X()));
-};
+}  // namespace
 
-}// namespace
+bool Edge::Intersect(const Edge& edge) const {
+  const Point& p1{pt1_};
+  const Point& p2{pt2_};
+  const Point& p3{edge.pt1_};
+  const Point& p4{edge.pt2_};
 
-bool Edge::Intersect(const Edge& edge) const
-{
-  auto p1 = pt1_;
-  auto p2 = pt2_;
-  auto p3 = edge.pt1_;
-  auto p4 = edge.pt2_;
+  const auto ccw = [](const Point& p1, const Point& p2, const Point& p3) {
+    return ((p3.Y() - p1.Y()) * (p2.X() - p1.X())) >=
+           ((p2.Y() - p1.Y()) * (p3.X() - p1.X()));
+  };
 
-  bool a = (CCW(p1, p3, p4) != CCW(p2, p3, p4))
-      && (CCW(p1, p2, p3) != CCW(p1, p2, p4));
+  const bool is_ccw{(ccw(p1, p3, p4) != ccw(p2, p3, p4)) &&
+                    (ccw(p1, p2, p3) != ccw(p1, p2, p4))};
 
   // Degeneracy, if two points are equal, they should not count as intersection
-  auto b = p1 != p3;
-  auto c = p1 != p4;
-  auto d = p2 != p3;
-  auto e = p2 != p4;
-  auto f = p1 != p3;
-  auto g = p3 != p4;
+  const bool b{p1 != p3};
+  const bool c{p1 != p4};
+  const bool d{p2 != p3};
+  const bool e{p2 != p4};
+  const bool f{p1 != p3};
+  const bool g{p3 != p4};
 
-  return a && b && c && d && e && f && g;
+  return is_ccw && b && c && d && e && f && g;
 }
 
-double Edge::Dist(const Point& pt) const
-{
-  auto pt_max = pt2_;
-  if (pt1_.X() > pt_max.X()) pt_max = pt1_;
+double Edge::Dist(const Point& pt) const {
+  Point pt_max{pt2_};
+  if (pt1_.X() > pt_max.X()) {
+    pt_max = pt1_;
+  }
   auto pt_min = pt1_;
-  if (pt2_.X() < pt_min.X()) pt_min = pt2_;
+  if (pt2_.X() < pt_min.X()) {
+    pt_min = pt2_;
+  }
 
   // The x value of pt is larger than largest x, then the distance to the
   // line is the same as the distance to the right most coordinate.
-  if (pt.X() > pt_max.X()) { return pt.Dist(pt_max); }
+  if (pt.X() > pt_max.X()) {
+    return pt.Dist(pt_max);
+  }
   // The x value of pt is smaller than smallest x, then the distance to the
   // line is the same as the distance to the left most coordinate.
-  if (pt.X() < pt_min.X()) { return pt.Dist(pt_min); }
+  if (pt.X() < pt_min.X()) {
+    return pt.Dist(pt_min);
+  }
 
   // pt.x is withing bounds.
-  const auto x1 = pt1_.X();
-  const auto x2 = pt2_.X();
-  const auto y1 = pt1_.Y();
-  const auto y2 = pt2_.Y();
-  const auto A = 1;
-  const auto B = (y1 - y2) / (x2 - x1);
-  const auto C = x1 * (y2 - y1) / (x2 - x1) - y1;
-  return std::abs(A * pt.X() + B * pt.Y() + C) / std::sqrt(A * A + B * B);
+  const double x1{pt1_.X()};
+  const double x2{pt2_.X()};
+  const double y1{pt1_.Y()};
+  const double y2{pt2_.Y()};
+  const double a{1.0};
+  const double b{(y1 - y2) / (x2 - x1)};
+  const double c{x1 * (y2 - y1) / (x2 - x1) - y1};
+  return std::abs(a * pt.X() + b * pt.Y() + c) / std::sqrt(a * a + b * b);
 }
 
-Point Edge::GetStart() const
-{
+Point Edge::GetStart() const {
   return pt1_;
 }
 
-Point Edge::GetEnd() const
-{
+Point Edge::GetEnd() const {
   return pt2_;
 }
 
-int Edge::Location(const Point& pt) const
-{
-  auto temp = (pt2_.X() - pt1_.X()) * (pt.Y() - pt1_.Y())
-      - (pt2_.Y() - pt1_.Y()) * (pt.X() - pt1_.X());
-  return temp > 0 ? 1 : -1;
+int Edge::Location(const Point& pt) const {
+  const double temp{(pt2_.X() - pt1_.X()) * (pt.Y() - pt1_.Y()) -
+                    (pt2_.Y() - pt1_.Y()) * (pt.X() - pt1_.X())};
+  return temp > 0.0 ? 1 : -1;
 }
 
 // /////////////////////////////
 // MARK: Circle
 
-Circle::Circle(const Point& point, double radius)
-    : origin_{point},
-      radius_{radius}
-{}
+Circle::Circle(Point point, double radius)
+    : origin_{std::move(point)}, radius_{radius} {}
 
-double Circle::Area() const
-{
-  return radius_ * radius_ * M_PI;
+double Circle::Area() const {
+  return radius_ * radius_ * kPi;
 }
 
-bool Circle::IsInside(const Point& pt) const
-{
+bool Circle::IsInside(const Point& pt) const {
   return origin_.Dist(pt) <= radius_;
 }
 
-Triangle Circle::EnclosingTriangle() const
-{
+Triangle Circle::EnclosingTriangle() const {
   // The distance from each corner point of the triangle to the point on
   // the triangle's base perpendicular to the origin.
-  const auto phi = radius_ / tan(30.0 * M_PI / 180.0);
+  const double phi{radius_ / tan(30.0 * kPi / 180.0)};
   // The distance from the origin to each corner point.
-  const auto sigma = std::sqrt(std::pow(radius_, 2) + std::pow(phi, 2));
+  const double sigma{std::sqrt(std::pow(radius_, 2) + std::pow(phi, 2))};
 
   // An equal sided triangle of these points.
-  const Point p1{origin_.X() - phi, origin_.Y() - radius_};
+  const Point p1{(origin_.X() - phi), origin_.Y() - radius_};
   const Point p2{origin_.X() + phi, origin_.Y() - radius_};
   const Point p3{origin_.X(), origin_.Y() + sigma};
 
   return Triangle{p1, p2, p3};
 }
 
-Point Circle::Origin() const
-{
+Point Circle::Origin() const {
   return origin_;
 }
 
-double Circle::Radius() const
-{
+double Circle::Radius() const {
   return radius_;
 }
 
@@ -207,47 +238,105 @@ double Circle::Radius() const
 
 namespace {
 
-/// \brief Calculates the center point of the points in pts.
-constexpr auto CalcCenter = [](const std::vector<Point>& pts) {
+inline Point CenterOfPoints(const std::vector<Point>& pts) {
   double x_sum{0.0};
   double y_sum{0.0};
+
+  if (pts.empty()) {
+    throw std::invalid_argument("Division by zero.");
+  }
+
   auto n = static_cast<double>(pts.size());
   for (const auto& pt : pts) {
     x_sum += pt.X();
     y_sum += pt.Y();
   }
   return Point{x_sum / n, y_sum / n};
-};
+}
 
-}// namespace
+inline bool IsSortedCounterClockwise(const std::vector<Point>& pts) {
+  // Skipping checks since that was done in constructor.
+  // Get any three points.
+  const Point& pt1{pts.at(0)};
+  const Point& pt2{pts.at(1)};
+  const Point& pt3{pts.at(2)};
+
+  const double cross_product{(pt2.X() - pt1.X()) * (pt3.Y() - pt1.Y()) -
+                             (pt3.X() - pt1.X()) * (pt2.Y() - pt1.Y())};
+
+  return cross_product > 0.0;
+}
+
+inline bool AnyPointPairEqual(const std::vector<Point>& pts) {
+  for (size_t i = 0; i < pts.size() - 1; i++) {
+    if (pts.at(i) == pts.at(i + 1)) {
+      return true;
+    }
+  }
+  return pts.back() == pts.front();
+}
+
+}  // namespace
 
 Polygon::Polygon(const std::vector<Point>& points)
-    : points_{points},
-      center_{CalcCenter(points)} {};
+    : points_{points}, center_{CenterOfPoints(points)} {
+  if (points.size() < kMinPolygonPoints) {
+    throw std::invalid_argument("Less than three points");
+  }
+  if (AnyPointPairEqual(points)) {
+    throw ::std::invalid_argument("Contains equal point pairs.");
+  }
+  if (not IsSortedCounterClockwise(points)) {
+    throw std::invalid_argument("Not sorted counter clockwise");
+  }
+};
 
-size_t Polygon::EdgeCount()
-{
+size_t Polygon::EdgeCount() const {
   return points_.size() <= 2 ? (points_.size() - 1) : points_.size();
 }
 
-double Polygon::Area() const
-{
-  return 0.0;
+Point Polygon::GetEdge(const size_t i) const {
+  const size_t index_next{(i + 1) % points_.size()};
+  const Point pt1{points_.at(i)};
+  const Point pt2{points_.at(index_next)};
+  return pt2 - pt1;
 }
 
-Polygon Polygon::Rotate(double angle, const Point& center) const
-{
+std::vector<Edge> Polygon::GetEdges() const {
+  std::vector<Edge> edges;
+  for (size_t i = 0; i < points_.size() - 1; i++) {
+    edges.emplace_back(points_.at(i), points_.at(i + 1));
+  }
+  edges.emplace_back(points_.back(), points_.front());
+  return edges;
+}
+
+double Polygon::Area() const {
+  double area{0.0};
+
+  const auto det = [](const Point& p1, const Point& p2) {
+    return p1.X() * p2.Y() - p1.Y() * p2.X();
+  };
+
+  for (size_t i = 0; i < points_.size() - 1; i++) {
+    area += det(points_.at(i), points_.at(i + 1));
+  }
+  // Includes last point to first point, closed loop.
+  area += det(points_.back(), points_.front());
+
+  return area / 2.0;
+}
+
+Polygon Polygon::Rotate(const double angle, const Point& center) const {
   auto points = points_;
 
   for (auto& pt : points) {
-    auto x = pt.X() - center.X();
-    auto y = pt.Y() - center.Y();
-    const auto tx = x;
-    const auto sin_of_angle = std::sin(angle);
-    const auto cos_of_angle = std::cos(angle);
+    double x{pt.X() - center.X()};
+    double y{pt.Y() - center.Y()};
+    const double tx{x};
 
-    x = x * cos_of_angle - y * sin_of_angle;
-    y = tx * sin_of_angle + y * cos_of_angle;
+    x = tx * std::cos(angle) - y * std::sin(angle);
+    y = tx * std::sin(angle) + y * std::cos(angle);
     x += center.X();
     y += center.Y();
     pt.Set(x, y);
@@ -255,18 +344,15 @@ Polygon Polygon::Rotate(double angle, const Point& center) const
   return Polygon{points};
 }
 
-Polygon Polygon::Rotate(double angle) const
-{
+Polygon Polygon::Rotate(const double angle) const {
   return Rotate(angle, center_);
 }
 
-Point Polygon::GetCenter() const
-{
+Point Polygon::GetCenter() const {
   return center_;
 }
 
-Rectangle Polygon::BoundingRectangle() const
-{
+Rectangle Polygon::BoundingRectangle() const {
   auto x_min = std::numeric_limits<double>::max();
   auto y_min = std::numeric_limits<double>::max();
   double x_max{0.0};
@@ -274,121 +360,108 @@ Rectangle Polygon::BoundingRectangle() const
 
   // Find minimum a maximum values of coordinates.
   for (const Point& pt : points_) {
-    if (pt.X() > x_max) x_max = pt.X();
-    if (pt.Y() > y_max) y_max = pt.Y();
-    if (pt.X() < x_min) x_min = pt.X();
-    if (pt.Y() < y_min) y_min = pt.Y();
+    x_max = std::max(pt.X(), x_max);
+    y_max = std::max(pt.Y(), y_max);
+    x_min = std::min(pt.X(), x_min);
+    y_min = std::min(pt.Y(), y_min);
   }
 
   return Rectangle{{x_min, y_min}, x_max - x_min, y_max - y_min};
 }
 
-std::vector<Point> Polygon::GetPoints() const
-{
+std::vector<Point> Polygon::GetPoints() const {
   return points_;
-}
-
-Point Polygon::GetEdge(size_t i) const
-{
-  const auto index_next{(i + 1) % points_.size()};
-  const auto pt1 = points_.at(i);
-  const auto pt2 = points_.at(index_next);
-  return pt2 - pt1;
 }
 
 // /////////////////////////////
 // MARK: Triangle
 
 Triangle::Triangle(const Point& pt1, const Point& pt2, const Point& pt3)
-    : Polygon({pt1, pt2, pt3}),
-      pt1_{points_.at(0)},
-      pt2_{points_.at(1)},
-      pt3_{points_.at(2)}
-{
-  //  if ((pt1_ == pt2_) || (pt2_ == pt3_) || (pt1_ == pt3_)) {
-  //    throw std::invalid_argument("Two points may not be equal.");
-  //  }
-}
+    : Polygon({pt1, pt2, pt3}), pt1_{pt1}, pt2_{pt2}, pt3_{pt3} {}
 
-double Triangle::Area() const
-{
-  return std::abs((pt1_.X() * (pt2_.Y() - pt3_.Y())
-                   + pt2_.X() * (pt3_.Y() - pt1_.Y())
-                   + pt3_.X() * (pt1_.Y() - pt2_.Y()))
-                  / 2.0);
-}
-
-std::vector<Edge> Triangle::GetEdges() const
-{
-  std::vector<Edge> edges;
-  edges.emplace_back(pt1_, pt2_);
-  edges.emplace_back(pt2_, pt3_);
-  edges.emplace_back(pt3_, pt1_);
-  return edges;
-}
-
-bool Triangle::IsInside(const Point& pt) const
-{
+bool Triangle::IsInside(const Point& pt) const {
   if ((pt == pt1_) || (pt == pt2_) || (pt == pt3_)) {
     // pt is a corner point -> "inside" ?
     return true;
   }
-  const auto area = Area();
-  const auto area1 = Triangle(pt, pt2_, pt3_).Area();
-  const auto area2 = Triangle(pt1_, pt, pt3_).Area();
-  const auto area3 = Triangle(pt1_, pt2_, pt).Area();
-  return area == (area1 + area2 + area3);
+
+  const auto area_of_triangle = [](const Point& pt1, const Point& pt2,
+                                   const Point& pt3) {
+    return std::abs((pt1.X() * (pt2.Y() - pt3.Y()) +
+                     pt2.X() * (pt3.Y() - pt1.Y()) +
+                     pt3.X() * (pt1.Y() - pt2.Y())) /
+                    2.0);
+  };
+
+  const double area0{Area()};
+  const double area1{area_of_triangle(pt, pt2_, pt3_)};
+  const double area2{area_of_triangle(pt1_, pt, pt3_)};
+  const double area3{area_of_triangle(pt1_, pt2_, pt)};
+  return area0 == (area1 + area2 + area3);
 }
 
-bool Triangle::HasEdge(const Edge& edge) const
-{
-  if (edge.GetStart() == pt1_ and edge.GetEnd() == pt2_) return true;
-  if (edge.GetStart() == pt1_ and edge.GetEnd() == pt3_) return true;
-  if (edge.GetStart() == pt2_ and edge.GetEnd() == pt3_) return true;
-  if (edge.GetStart() == pt2_ and edge.GetEnd() == pt1_) return true;
-  if (edge.GetStart() == pt3_ and edge.GetEnd() == pt2_) return true;
-  if (edge.GetStart() == pt3_ and edge.GetEnd() == pt1_) return true;
+bool Triangle::HasEdge(const Edge& edge) const {
+  if ((edge.GetStart() == pt1_) && (edge.GetEnd() == pt2_)) {
+    return true;
+  }
+  if ((edge.GetStart() == pt1_) && (edge.GetEnd() == pt3_)) {
+    return true;
+  }
+  if ((edge.GetStart() == pt2_) && (edge.GetEnd() == pt3_)) {
+    return true;
+  }
+  if ((edge.GetStart() == pt2_) && (edge.GetEnd() == pt1_)) {
+    return true;
+  }
+  if ((edge.GetStart() == pt3_) && (edge.GetEnd() == pt1_)) {
+    return true;
+  }
+  if ((edge.GetStart() == pt3_) && (edge.GetEnd() == pt2_)) {
+    return true;
+  }
   return false;
 }
 
-namespace {
+Circle Triangle::CircumCircle() const {
+  const double x1{pt1_.X()};
+  const double y1{pt1_.Y()};
+  const double x2{pt2_.X()};
+  const double y2{pt2_.Y()};
+  const double x3{pt3_.X()};
+  const double y3{pt3_.Y()};
 
-auto angle = [](auto pt3, auto pt1, auto pt2) {
-  return atan2(pt3.Y() - pt1.Y(), pt3.X() - pt1.X())
-      - atan2(pt2.Y() - pt1.Y(), pt2.X() - pt1.X());
-};
+  const auto angle = [](const Point& pt3, const Point& pt1, const Point& pt2) {
+    return atan2(pt3.Y() - pt1.Y(), pt3.X() - pt1.X()) -
+           atan2(pt2.Y() - pt1.Y(), pt2.X() - pt1.X());
+  };
 
-}
+  const double angle_a{angle(pt3_, pt1_, pt2_)};  // P1
+  const double angle_b{angle(pt1_, pt2_, pt3_)};  // P2
+  const double angle_c{angle(pt2_, pt3_, pt1_)};  // P3
 
-Circle Triangle::CircumCircle() const
-{
-  const auto x1 = pt1_.X();
-  const auto y1 = pt1_.Y();
-  const auto x2 = pt2_.X();
-  const auto y2 = pt2_.Y();
-  const auto x3 = pt3_.X();
-  const auto y3 = pt3_.Y();
+  const double s_ox{
+      (x1 * sin(2 * angle_a) + x2 * sin(2 * angle_b) + x3 * sin(2 * angle_c)) /
+      (sin(2 * angle_a) + sin(2 * angle_b) + sin(2 * angle_c))};
+  const double s_oy{
+      (y1 * sin(2 * angle_a) + y2 * sin(2 * angle_b) + y3 * sin(2 * angle_c)) /
+      (sin(2 * angle_a) + sin(2 * angle_b) + sin(2 * angle_c))};
 
-  const auto A = angle(pt3_, pt1_, pt2_);// P1
-  const auto B = angle(pt1_, pt2_, pt3_);// P2
-  const auto C = angle(pt2_, pt3_, pt1_);// P3
-
-  const auto Ox = (x1 * sin(2 * A) + x2 * sin(2 * B) + x3 * sin(2 * C))
-      / (sin(2 * A) + sin(2 * B) + sin(2 * C));
-  const auto Oy = (y1 * sin(2 * A) + y2 * sin(2 * B) + y3 * sin(2 * C))
-      / (sin(2 * A) + sin(2 * B) + sin(2 * C));
-
-  const Point cc{Ox, Oy};
-  const auto radius = cc.Dist(pt1_);
+  const Point cc{s_ox, s_oy};
+  const double radius{cc.Dist(pt1_)};
 
   return Circle{cc, radius};
 }
 
-bool Triangle::operator==(const Triangle& tr) const
-{
-  if (pt1_ == tr.pt1_ and pt2_ == tr.pt2_ and pt3_ == tr.pt3_) return true;
-  if (pt1_ == tr.pt3_ and pt2_ == tr.pt1_ and pt3_ == tr.pt2_) return true;
-  if (pt1_ == tr.pt2_ and pt2_ == tr.pt3_ and pt3_ == tr.pt1_) return true;
+bool Triangle::operator==(const Triangle& tr) const {
+  if ((pt1_ == tr.pt1_) && (pt2_ == tr.pt2_) && (pt3_ == tr.pt3_)) {
+    return true;
+  }
+  if ((pt1_ == tr.pt3_) && (pt2_ == tr.pt1_) && (pt3_ == tr.pt2_)) {
+    return true;
+  }
+  if ((pt1_ == tr.pt2_) && (pt2_ == tr.pt3_) && (pt3_ == tr.pt1_)) {
+    return true;
+  }
   return false;
 }
 
@@ -397,30 +470,14 @@ bool Triangle::operator==(const Triangle& tr) const
 
 Rhombus::Rhombus(const Point& pt1, const Point& pt2, const Point& pt3,
                  const Point& pt4)
-    : Polygon({pt1, pt2, pt3, pt4}),
-      pt_a_{points_.at(0)},
-      pt_b_{points_.at(1)},
-      pt_c_{points_.at(2)},
-      pt_d_{points_.at(3)}
-{
-  //  const auto ab = pt_a_.Dist(pt_b_);
-  //  const auto bc = pt_b_.Dist(pt_c_);
-  //  const auto cd = pt_c_.Dist(pt_d_);
-  //  const auto da = pt_d_.Dist(pt_a_);
-  //  if ((ab != bc) || (bc != cd) || (cd != da) || (da != ab)) {
-  //    throw std::invalid_argument("Side lengths must be equal in a rhombus.");
-  //  }
-}
-
-Rhombus::Rhombus(const std::vector<Point>& pts)
-    : Rhombus(pts.at(0), pts.at(1), pts.at(2), pts.at(3))
-{}
-
-double Rhombus::Area() const
-{
-  const auto d1 = pt_b_.Dist(pt_d_);
-  const auto d2 = pt_a_.Dist(pt_c_);
-  return 0.5 * d1 * d2;
+    : Polygon({pt1, pt2, pt3, pt4}) {
+  const double ab{pt1.Dist(pt2)};
+  const double bc{pt2.Dist(pt3)};
+  const double cd{pt3.Dist(pt4)};
+  const double da{pt4.Dist(pt1)};
+  if ((ab != bc) || (bc != cd) || (cd != da) || (da != ab)) {
+    throw std::invalid_argument("Side lengths not equal.");
+  }
 }
 
 // /////////////////////////////
@@ -430,28 +487,18 @@ Rectangle::Rectangle(const Point& pt1, double width, double height)
     : Polygon({pt1, Point{pt1.X() + width, pt1.Y()},
                Point{pt1.X() + width, pt1.Y() + height},
                Point{pt1.X(), pt1.Y() + height}}),
-      pt_{points_.at(0)},
       width_{width},
-      height_{height}
-{}
+      height_{height} {}
 
-double Rectangle::Area() const
-{
-  return std::abs(width_ * height_);
+Point Rectangle::GetPoint() const {
+  return points_.front();
 }
 
-Point Rectangle::GetPoint() const
-{
-  return pt_;
-}
-
-double Rectangle::GetWidth() const
-{
+double Rectangle::GetWidth() const {
   return width_;
 }
 
-double Rectangle::GetHeight() const
-{
+double Rectangle::GetHeight() const {
   return height_;
 }
 
@@ -465,21 +512,20 @@ Grid::Grid(const std::vector<Point>& points) : points_{points} {}
 
 namespace {
 
-/// \brief Returns the closes pair of points, brute force. Only to be used on a very small set of points.
+/// \brief Returns the closes pair of points, brute force. Only to be used on a
+/// very small set of points.
 /// \param xp Input points.
 /// \param yp Input points.
 /// \return Closest pair of points.
 std::pair<double, std::vector<Point>> ClosestPairBF(
-    const std::vector<Point>& xp, const std::vector<Point>& yp)
-{
+    const std::vector<Point>& xp, const std::vector<Point>& yp) {
   auto min_dist = std::numeric_limits<double>::max();
   Point xp_min{0.0, 0.0};
   Point yp_min{0.0, 0.0};
 
   for (const auto& px : xp) {
     for (const auto& py : yp) {
-
-      if (!(px.X() == py.X() && px.Y() == py.Y())) {
+      if (px.X() != py.X() || px.Y() != py.Y()) {
         if (px.Dist(py) < min_dist) {
           min_dist = px.Dist(py);
           xp_min = px;
@@ -496,23 +542,24 @@ std::pair<double, std::vector<Point>> ClosestPairBF(
 /// \param xp Set of points.
 /// \param yp Set of points.
 /// \return The min distance and the two closest points.
-std::pair<double, std::vector<Point>> ClosestPair(const std::vector<Point>& xp,
-                                                  const std::vector<Point>& yp)
-{
-  auto N = static_cast<int>(xp.size());
-
+// NOLINTNEXTLINE
+std::pair<double, std::vector<Point>> ClosestPair(
+    const std::vector<Point>& xp, const std::vector<Point>& yp) {
   // Brute force if size <= 3
-  if (N <= 3) return ClosestPairBF(xp, yp);
+  if (xp.size() <= kMinClosestPairPoints) {
+    return ClosestPairBF(xp, yp);
+  }
+  auto n = static_cast<int>(xp.size());
 
   std::vector<Point> x_left;
   std::vector<Point> x_right;
   std::vector<Point> y_left;
   std::vector<Point> y_right;
 
-  std::copy(xp.begin(), xp.begin() + (N / 2), std::back_inserter(x_left));
-  std::copy(xp.begin() + (N / 2), xp.end(), std::back_inserter(x_right));
+  std::copy(xp.begin(), xp.begin() + (n / 2), std::back_inserter(x_left));
+  std::copy(xp.begin() + (n / 2), xp.end(), std::back_inserter(x_right));
   // Mid point on x-axis
-  auto mid_x_pt = xp.at(N / 2);
+  const Point& mid_x_pt{xp.at(n / 2)};
 
   std::copy_if(yp.begin(), yp.end(), std::back_inserter(y_left),
                [&mid_x_pt](auto pt) { return pt.X() <= mid_x_pt.X(); });
@@ -521,11 +568,11 @@ std::pair<double, std::vector<Point>> ClosestPair(const std::vector<Point>& xp,
                [&mid_x_pt](auto pt) { return pt.X() > mid_x_pt.X(); });
 
   // Recursive calls
-  auto cL = ClosestPair(x_left, y_left);
-  auto cR = ClosestPair(x_right, y_right);
+  auto c_l = ClosestPair(x_left, y_left);
+  auto c_r = ClosestPair(x_right, y_right);
 
-  auto p_min = cL.first < cR.first ? cL.second : cR.second;
-  auto dist_min = cL.first < cR.first ? cL.first : cR.first;
+  auto p_min = c_l.first < c_r.first ? c_l.second : c_r.second;
+  const double dist_min{c_l.first < c_r.first ? c_l.first : c_r.first};
 
   std::vector<Point> ys;
   std::copy_if(xp.begin(), xp.end(), std::back_inserter(ys),
@@ -533,11 +580,11 @@ std::pair<double, std::vector<Point>> ClosestPair(const std::vector<Point>& xp,
                  return std::abs(mid_x_pt.X() - pt.X()) < dist_min;
                });
 
-  auto closest_dist = dist_min;
+  double closest_dist{dist_min};
   auto closest_pair = p_min;
 
   for (size_t i = 0; i < ys.size(); ++i) {
-    size_t k = i + 1;
+    size_t k{i + 1};
 
     while (k < ys.size() && ((ys.at(k).Y() - ys.at(i).Y()) < dist_min)) {
       if (ys.at(k).Dist(ys.at(i)) < closest_dist) {
@@ -551,18 +598,18 @@ std::pair<double, std::vector<Point>> ClosestPair(const std::vector<Point>& xp,
   return std::make_pair(closest_dist, closest_pair);
 }
 
-}// namespace
+}  // namespace
 
-std::pair<Point, Point> Grid::ClosestPairOfPoints()
-{
+std::pair<Point, Point> Grid::ClosestPairOfPoints() const {
   auto ptsx = points_;
   auto ptsy = points_;
-  std::sort(ptsx.begin(), ptsx.end(), x_comp);
-  std::sort(ptsy.begin(), ptsy.end(), y_comp);
+  std::sort(ptsx.begin(), ptsx.end(), kXComp);
+  std::sort(ptsy.begin(), ptsy.end(), kYComp);
 
-  auto closest = ClosestPair(ptsx, ptsy);
-  auto p1 = closest.second.front();
-  auto p2 = closest.second.back();
+  const auto closest = ClosestPair(ptsx, ptsy);
+  // Closest points in input:
+  const Point& p1{closest.second.front()};
+  const Point& p2{closest.second.back()};
   return std::make_pair(p1, p2);
 }
 
@@ -572,25 +619,25 @@ std::pair<Point, Point> Grid::ClosestPairOfPoints()
 namespace {
 
 /// \brief Determines the distance between a point p and the line ln.
-/// \param ln The line.
 /// \param p The point.
+/// \param ln The line.
 /// \return Distance.
-constexpr auto LDistance = [](const Edge& ln, const Point& p) {
-  auto abx = ln.GetEnd().X() - ln.GetStart().X();
-  auto aby = ln.GetEnd().Y() - ln.GetStart().Y();
-  auto dist =
-      abx * (ln.GetStart().Y() - p.Y()) - aby * (ln.GetStart().X() - p.X());
+inline double DistanceToLine(const Point& p, const Edge& ln) {
+  const double abx{ln.GetEnd().X() - ln.GetStart().X()};
+  const double aby{ln.GetEnd().Y() - ln.GetStart().Y()};
+  const double dist{abx * (ln.GetStart().Y() - p.Y()) -
+                    aby * (ln.GetStart().X() - p.X())};
   return dist < 0 ? -1.0 * dist : dist;
-};
+}
 
-int MaxEdgeDistanceIndex(const std::vector<Point>& pts, const Edge& edge)
-{
+inline int MaxEdgeDistanceIndex(const std::vector<Point>& pts,
+                                const Edge& edge) {
   int ci{0};
   int k{0};
   double max_dist{0.0};
 
   for (const auto& p : pts) {
-    auto curr_dist = LDistance(edge, p);
+    const double curr_dist{DistanceToLine(p, edge)};
     if (curr_dist > max_dist) {
       max_dist = curr_dist;
       ci = k;
@@ -600,11 +647,14 @@ int MaxEdgeDistanceIndex(const std::vector<Point>& pts, const Edge& edge)
   return ci;
 }
 
-/// \brief Subroutine of Quickhull. Not to be accessible from outside of this file. Use ConvexHull.
+/// \brief Subroutine of Quickhull. Not to be accessible from outside of this
+/// file. Use ConvexHull.
+// NOLINTNEXTLINE
 void QuickHull(const Point& a, const Point& b, std::vector<Point>& pts,
-               std::vector<Point>& conv_hull_pts)
-{
-  if (pts.empty()) return;
+               std::vector<Point>& conv_hull_pts) {
+  if (pts.empty()) {
+    return;
+  }
 
   if (pts.size() == 1) {
     conv_hull_pts.emplace_back(pts.front());
@@ -612,8 +662,8 @@ void QuickHull(const Point& a, const Point& b, std::vector<Point>& pts,
     return;
   }
 
-  const auto max_edge_index = MaxEdgeDistanceIndex(pts, Edge{a, b});
-  const auto point_at_max_index = pts.at(max_edge_index);
+  const int max_edge_index{MaxEdgeDistanceIndex(pts, Edge{a, b})};
+  const Point point_at_max_index{pts.at(max_edge_index)};
 
   conv_hull_pts.push_back(point_at_max_index);
   pts.erase(pts.begin() + max_edge_index);
@@ -626,8 +676,12 @@ void QuickHull(const Point& a, const Point& b, std::vector<Point>& pts,
 
   for (const auto& p : pts) {
     // Checking which side of edge p is.
-    if (edge1.Location(p) == 1) pts_a.emplace_back(p);
-    if (edge2.Location(p) == 1) pts_b.emplace_back(p);
+    if (edge1.Location(p) == 1) {
+      pts_a.emplace_back(p);
+    }
+    if (edge2.Location(p) == 1) {
+      pts_b.emplace_back(p);
+    }
   }
 
   // Recursive calls
@@ -635,19 +689,19 @@ void QuickHull(const Point& a, const Point& b, std::vector<Point>& pts,
   QuickHull(point_at_max_index, b, pts_b, conv_hull_pts);
 }
 
-}// namespace
+}  // namespace
 
-Polygon Grid::ConvexHull()
-{
-  if (points_.size() < 3) return Polygon{Points{}};
+Polygon Grid::ConvexHull() const {
+  if (points_.size() < kMinConvexHullPoints) {
+    throw std::invalid_argument("To few points in input.");
+  }
 
   auto pts = points_;
-
-  std::sort(pts.begin(), pts.end(), x_comp);
+  std::sort(pts.begin(), pts.end(), kXComp);
 
   // b and a with min and max x-coordinates respectively
-  auto b = pts.front();
-  auto a = pts.back();
+  const Point b{pts.front()};
+  const Point a{pts.back()};
   std::vector<Point> pts_ch{a, b};
   pts.erase(pts.begin());
   pts.erase(pts.end() - 1);
@@ -662,10 +716,10 @@ Polygon Grid::ConvexHull()
   }
 
   // Call qhull with two sets
-  QuickHull(a, b, right, pts_ch);
-  QuickHull(b, a, left, pts_ch);
+  QuickHull(a, b, right, pts_ch);  // NOLINT
+  QuickHull(b, a, left, pts_ch);   // NOLINT
 
-  std::sort(pts_ch.begin(), pts_ch.end(), x_comp);
+  pts_ch = helpers::SortCounterClockWise(pts_ch);
   return Polygon{pts_ch};
 }
 
@@ -677,44 +731,43 @@ namespace {
 /// Minimum bounding box, rotating calipers
 /// https://github.com/Glissando/Rotating-Calipers
 
-std::vector<Polygon> RotatingCalipers(Polygon convex_hull_pts)
-{
+std::vector<Polygon> RotatingCalipers(const Polygon& convex_hull_pts) {
   std::vector<Polygon> polygons;
 
   for (size_t i = 0; i < convex_hull_pts.EdgeCount(); i++) {
-    auto edge = convex_hull_pts.GetEdge(i);
-    auto angle1 = std::acos(edge.Normalize().Y());
+    const Point edge{convex_hull_pts.GetEdge(i)};
+    const double angle1{std::acos(edge.Normalize().Y())};
     auto polygon1 = convex_hull_pts.Rotate(angle1);
-    auto box = polygon1.BoundingRectangle();
+    const auto box = polygon1.BoundingRectangle();
     polygon1 = polygon1.Rotate(-angle1);
-    auto center = polygon1.GetCenter();
-    Polygon pg{box.GetPoints()};
+    const Point center{polygon1.GetCenter()};
+    const Polygon pg{box.GetPoints()};
     polygons.emplace_back(pg.Rotate(-angle1, center));
   }
 
   return polygons;
 }
 
-Polygon GetMinBox(const std::vector<Polygon>& polygons)
-{
-
-  auto iter = std::min_element(polygons.begin(), polygons.end(),
-                               [](const auto& polygon1, const auto& polygon2) {
-                                 const auto pts1 = polygon1.GetPoints();
-                                 const Rhombus rhombus1{pts1};
-                                 const auto pts2 = polygon2.GetPoints();
-                                 const Rhombus rhombus2{pts2};
-                                 return rhombus1.Area() < rhombus2.Area();
-                               });
+Polygon GetMinBox(const std::vector<Polygon>& polygons) {
+  auto iter = std::min_element(
+      polygons.begin(), polygons.end(),
+      [](const auto& polygon1, const auto& polygon2) {
+        const auto pts1 = polygon1.GetPoints();
+        const Rhombus rhombus1{pts1.at(0), pts1.at(1), pts1.at(2), pts1.at(3)};
+        const auto pts2 = polygon2.GetPoints();
+        const Rhombus rhombus2{pts2.at(0), pts2.at(1), pts2.at(2), pts2.at(3)};
+        return rhombus1.Area() < rhombus2.Area();
+      });
   return *iter;
 }
 
-}// namespace
+}  // namespace
 
-Polygon Grid::MinBoundingBox()
-{
+Polygon Grid::MinBoundingBox() const {
   // The only other constraint is if all points are on the same line.
-  if (points_.size() < 3) return Polygon{Points{}};
+  if (points_.size() < kMinBoundingBoxPoints) {
+    throw std::invalid_argument("Too few points in input.");
+  }
 
   auto convex_hull_pts = ConvexHull();
   auto polygons = RotatingCalipers(convex_hull_pts);
@@ -732,20 +785,19 @@ namespace {
 /// \param p2 Point 2.
 /// \param p3 Point 3.
 /// \return A circle of p1, p2, p3.
-Circle CircleOf3(const Point& p1, const Point& p2, const Point& p3)
-{
-  const auto bx = p2.X() - p1.X();
-  const auto by = p2.Y() - p1.Y();
-  const auto cx = p3.X() - p1.X();
-  const auto cy = p3.Y() - p1.Y();
-  const auto b = bx * bx + by * by;
-  const auto c = cx * cx + cy * cy;
-  const auto d = bx * cy - by * cx;
+inline Circle CircleOf3(const Point& p1, const Point& p2, const Point& p3) {
+  const double bx{p2.X() - p1.X()};
+  const double by{p2.Y() - p1.Y()};
+  const double cx{p3.X() - p1.X()};
+  const double cy{p3.Y() - p1.Y()};
+  const double b{bx * bx + by * by};
+  const double c{cx * cx + cy * cy};
+  const double d{bx * cy - by * cx};
 
-  const auto mid_x = p1.X() + (cy * b - by * c) / (2.0 * d);
-  const auto mid_y = p1.Y() + (bx * c - cx * b) / (2.0 * d);
+  const double mid_x{p1.X() + (cy * b - by * c) / (2.0 * d)};
+  const double mid_y{p1.Y() + (bx * c - cx * b) / (2.0 * d)};
   const Point center{mid_x, mid_y};
-  const auto radius = center.Dist(p1);
+  const double radius{center.Dist(p1)};
 
   return {center, radius};
 }
@@ -753,17 +805,20 @@ Circle CircleOf3(const Point& p1, const Point& p2, const Point& p3)
 /// \brief Returns a circle out of either 1, 2 or 3 points.
 /// \param pts Given points, |points| ≤ 3.
 /// \return A circle.
-Circle TrivialCircumcircle(std::vector<Point> pts)
-{
-  if (pts.empty() || pts.size() > 3) { return Circle{{0, 0}, 0}; }
+inline Circle TrivialCircumcircle(std::vector<Point> pts) {
+  if (pts.empty() || pts.size() > 3) {
+    return Circle{{0, 0}, 0};
+  }
   // Single point given
-  if (pts.size() == 1) { return Circle{pts.front(), 0}; }
+  if (pts.size() == 1) {
+    return Circle{pts.front(), 0};
+  }
   // Two points on the circle
   if (pts.size() == 2) {
     const Point p1 = pts.at(0);
     const Point p2 = pts.at(1);
     const Point mid{(p1.X() + p2.X()) / 2.0, (p1.Y() + p2.Y()) / 2.0};
-    const auto diameter = p1.Dist(p2);
+    const double diameter{p1.Dist(p2)};
     return Circle{mid, diameter / 2.0};
   }
   // Last case, three points are on the circle
@@ -774,25 +829,28 @@ Circle TrivialCircumcircle(std::vector<Point> pts)
 /// \param pts Points to construct a circle around.
 /// \param r Input plane.
 /// \return A circle around the points in pts.
-Circle Welzl(std::vector<Point> pts, std::vector<Point> r)
-{
-  if (pts.empty() || r.size() == 3) { return TrivialCircumcircle(r); }
+// NOLINTNEXTLINE
+inline Circle Welzl(std::vector<Point> pts, std::vector<Point> r) {
+  if (pts.empty() || r.size() == 3) {
+    return TrivialCircumcircle(r);
+  }
   auto index = std::rand() % pts.size();
   auto p = pts.at(index);
   pts.erase(pts.begin() + static_cast<long>(index));
   auto circle = Welzl(pts, r);
 
-  if (circle.IsInside(p)) { return circle; }
+  if (circle.IsInside(p)) {
+    return circle;
+  }
 
   r.emplace_back(p);
   return Welzl(pts, r);
 }
 
-}// namespace
+}  // namespace
 
-Circle Grid::MinEnclosingCircle() const
-{
-  std::vector<Point> r;
+Circle Grid::MinEnclosingCircle() const {
+  const std::vector<Point> r;
   return Welzl(points_, r);
 }
 
@@ -803,15 +861,14 @@ namespace {
 
 /// \brief Sorts the input points lexicographically,
 /// \param pts The input points.
-void LexSortPoints(std::vector<Point>& pts)
-{
+inline void LexSortPoints(std::vector<Point>& pts) {
   auto x = pts.front().X();
   std::vector<Point> pts2;
   std::vector<Point> pts_res;
 
   for (auto& pt : pts) {
     if (pt.X() != x) {
-      std::sort(pts2.begin(), pts2.end(), x_comp);
+      std::sort(pts2.begin(), pts2.end(), kXComp);
       std::copy(pts2.begin(), pts2.end(), std::back_inserter(pts_res));
       pts2.clear();
       x = pt.X();
@@ -827,10 +884,9 @@ void LexSortPoints(std::vector<Point>& pts)
   pts = pts_res;
 }
 
-}//namespace
+}  // namespace
 
-std::vector<Edge> Grid::Triangulation() const
-{
+std::vector<Edge> Grid::Triangulation() const {
   auto pts = points_;
   LexSortPoints(pts);
 
@@ -838,9 +894,9 @@ std::vector<Edge> Grid::Triangulation() const
   bool intersection{false};
 
   // The three first points constructs a triangle.
-  Edge l0{pts.at(0), pts.at(1)};
-  Edge l1{pts.at(0), pts.at(2)};
-  Edge l2{pts.at(1), pts.at(2)};
+  const Edge l0{pts.at(0), pts.at(1)};
+  const Edge l1{pts.at(0), pts.at(2)};
+  const Edge l2{pts.at(1), pts.at(2)};
   std::vector<Edge> lines{l0, l1, l2};
 
   // From this point add points to the only triangulate incrementally.
@@ -855,12 +911,12 @@ std::vector<Edge> Grid::Triangulation() const
       for (auto e = lines.rbegin(); e != lines.rend(); ++e) {
         if (edge1.Intersect(*e)) {
           intersection = true;
-          break;// when something intersects
+          break;  // when something intersects
         }
       }
 
       if (!intersection) {
-        Edge line{pt0, *pi};
+        const Edge line{pt0, *pi};
         lines.emplace_back(line);
       }
       intersection = false;
@@ -879,8 +935,7 @@ namespace {
 /// \brief Returns all the edges from the triangles.
 /// \param triangles Triangles.
 /// \return All edges.
-std::vector<Edge> TrianglesToEdges(const std::vector<Triangle>& triangles)
-{
+std::vector<Edge> TrianglesToEdges(const std::vector<Triangle>& triangles) {
   std::vector<Edge> all_edges;
   for (const auto& triangle : triangles) {
     auto edges = triangle.GetEdges();
@@ -894,20 +949,23 @@ std::vector<Edge> TrianglesToEdges(const std::vector<Triangle>& triangles)
 /// \brief Returns all edges that are not shared with no other triangle.
 /// \param[in] triangles Triangles.
 /// \return Edges.
-std::vector<Edge> GetNonSharingEdges(const std::vector<Triangle>& triangles)
-{
+std::vector<Edge> GetNonSharingEdges(const std::vector<Triangle>& triangles) {
   std::vector<Edge> polygon;
   for (const auto& triangle_i : triangles) {
     for (const auto& edge : triangle_i.GetEdges()) {
       bool sharing_edge{false};
       for (const auto& triangle_j : triangles) {
-        if (triangle_i == triangle_j) continue;
+        if (triangle_i == triangle_j) {
+          continue;
+        }
         if (triangle_j.HasEdge(edge)) {
           sharing_edge = true;
           break;
         }
       }
-      if (not sharing_edge) polygon.emplace_back(edge);
+      if (not sharing_edge) {
+        polygon.emplace_back(edge);
+      }
     }
   }
   return polygon;
@@ -916,9 +974,8 @@ std::vector<Edge> GetNonSharingEdges(const std::vector<Triangle>& triangles)
 /// \brief Removes triangles that are equal in triangulation and bad_triangles.
 /// \param[in,out] triangulation Triangles.
 /// \param[in] bad_triangles Triangles.
-void RemoveEqualTriangles(std::vector<Triangle>& triangulation,
-                          const std::vector<Triangle>& bad_triangles)
-{
+inline void RemoveEqualTriangles(std::vector<Triangle>& triangulation,
+                                 const std::vector<Triangle>& bad_triangles) {
   auto iter = triangulation.begin();
 
   while (iter != triangulation.end()) {
@@ -926,7 +983,9 @@ void RemoveEqualTriangles(std::vector<Triangle>& triangulation,
       iter = std::find_if(triangulation.begin(), triangulation.end(),
                           [bt](const Triangle& tri) { return tri == bt; });
 
-      if (iter != triangulation.end()) triangulation.erase(iter);
+      if (iter != triangulation.end()) {
+        triangulation.erase(iter);
+      }
     }
   }
 }
@@ -935,9 +994,8 @@ void RemoveEqualTriangles(std::vector<Triangle>& triangulation,
 /// with the super triangle.
 /// \param[in] del_edges Delaunay triangulation with super triangle around it.
 /// \param[in] super_triangle Known super triangle.
-void RemoveSuperVertices(std::vector<Edge>& del_edges,
-                         const Triangle& super_triangle)
-{
+inline void RemoveSuperVertices(std::vector<Edge>& del_edges,
+                                const Triangle& super_triangle) {
   const auto st_vertices = super_triangle.GetPoints();
   auto iter = del_edges.begin();
   while (iter != del_edges.end()) {
@@ -945,37 +1003,43 @@ void RemoveSuperVertices(std::vector<Edge>& del_edges,
         del_edges.begin(), del_edges.end(), [st_vertices](const Edge& edge) {
           const auto get_start = edge.GetStart();
           const auto get_end = edge.GetEnd();
-          return get_start == st_vertices.at(0) or get_end == st_vertices.at(0)
-              or get_start == st_vertices.at(1) or get_end == st_vertices.at(1)
-              or get_start == st_vertices.at(2) or get_end == st_vertices.at(2);
+          return get_start == st_vertices.at(0) or
+                 get_end == st_vertices.at(0) or
+                 get_start == st_vertices.at(1) or
+                 get_end == st_vertices.at(1) or
+                 get_start == st_vertices.at(2) or get_end == st_vertices.at(2);
         });
-    if (iter != del_edges.end()) del_edges.erase(iter);
+    if (iter != del_edges.end()) {
+      del_edges.erase(iter);
+    }
   }
 }
 
 /// \brief Removes the duplicated edges.
 /// \param edges Edges.
 /// \return What's left.
-std::vector<Edge> GetNonDuplicates(const std::vector<Edge>& edges)
-{
+inline std::vector<Edge> GetNonDuplicates(const std::vector<Edge>& edges) {
   std::vector<Edge> non_duplicates;
 
   for (const auto& e1 : edges) {
     auto iter = std::find_if(non_duplicates.begin(), non_duplicates.end(),
                              [e1](const Edge& e2) { return e1 == e2; });
-    if (iter == non_duplicates.end()) non_duplicates.emplace_back(e1);
+    if (iter == non_duplicates.end()) {
+      non_duplicates.emplace_back(e1);
+    }
   }
   return non_duplicates;
 }
 
-}// namespace
+}  // namespace
 
 // Delaunay triangulation using the Bowyer–Watson algorithm
 // https://en.wikipedia.org/wiki/Bowyer–Watson_algorithm
 
-std::vector<Edge> Grid::DelaunayTriangulation() const
-{
-  if (points_.size() < 3) return {};
+std::vector<Edge> Grid::DelaunayTriangulation() const {
+  if (points_.size() < kMinDelaunayTriangulationPoints) {
+    return {};
+  }
   const auto super_triangle = MinEnclosingCircle().EnclosingTriangle();
   std::vector<Triangle> triangulation{super_triangle};
 
@@ -1001,4 +1065,4 @@ std::vector<Edge> Grid::DelaunayTriangulation() const
   return GetNonDuplicates(del_edges);
 }
 
-}// namespace algo::geometry
+}  // namespace algo::geometry
