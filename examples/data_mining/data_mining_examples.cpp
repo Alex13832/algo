@@ -4,39 +4,39 @@
 /// \date 2020-02-27
 /// \link <a href=https://github.com/alex011235/algo>Algo, Github</a>
 ///
+#include <cstddef>
 #include <iostream>
 #include <string>
+#include <vector>
 
-#include "algo.hpp"
+#include "include/algo_data_mining.hpp"
 #include "io.hpp"
 
+namespace {
 using namespace algo::geometry;
 using namespace algo::data_mining;
 using namespace std;
 
 namespace dm = algo::data_mining;
 
-namespace {
 auto S = [](auto x) { return std::to_string(x); };
-}
+}  // namespace
 
-void SaveData(const std::vector<dm::Point>& pts, const std::vector<int>& labels,
-              const string& file_name)
-{
+void SaveData(const std::vector<dm::Datum>& data,
+              const std::vector<int>& labels, const string& file_name) {
   std::string header;
-  for (size_t i = 0; i < pts[0].size(); i++) {
+  for (size_t i = 0; i < data[0].size(); i++) {
     header += "x" + S(i) + ",";
   }
   header += "label";
 
   vector<string> rows{header};
 
-  for (size_t i = 0; i < pts.size(); i++) {
-
+  for (size_t i = 0; i < data.size(); i++) {
     std::string line;
 
-    for (size_t j = 0; j < pts.at(i).size(); j++) {
-      line += S(pts[i][j]) + ",";
+    for (size_t j = 0; j < data.at(i).size(); j++) {
+      line += S(data[i][j]) + ",";
     }
     line += S(labels.at(i));
     rows.emplace_back(line);
@@ -45,15 +45,13 @@ void SaveData(const std::vector<dm::Point>& pts, const std::vector<int>& labels,
 }
 
 /// \brief Prints help information.
-void PrintHelp()
-{
+void PrintHelp() {
   cout << "Algorithms: Density based spatial clustering <DBSCAN>, K-Means "
           "clustering <kmeans>, K-nearest-neighbors <KNN>."
        << endl;
 }
 
-int main(int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
   if (argc < 2) {
     PrintHelp();
     return -1;
@@ -69,15 +67,15 @@ int main(int argc, char* argv[])
     const string kFileNameIn{"./testfiles/dbscan_in1.csv"};
     const string kFileNameOut{"./testfiles/dbscan_out1.csv"};
 
-    std::cout << "Running DBSCAN on " << kFileNameIn << std::endl;
+    std::cout << "Running DBSCAN on " << kFileNameIn << '\n';
 
-    auto points = io::ReadDoubles(kFileNameIn);
-    dm::Cluster miner{points};
+    auto data = io::ReadDoubles(kFileNameIn);
+    const dm::Cluster miner{data};
     auto labels = miner.DbScan(dm::norms::Euclidean(), 0.2, 50);
 
-    std::cout << labels.size() << " Labels from DBSCAN returned" << std::endl;
+    std::cout << labels.size() << " Labels from DBSCAN returned" << '\n';
 
-    SaveData(points, labels, kFileNameOut);
+    SaveData(data, labels, kFileNameOut);
     return 0;
   }
 
@@ -86,25 +84,25 @@ int main(int argc, char* argv[])
     const string kFileNameInUnknown{"./testfiles/knn_unlabeled2.csv"};
     const string kFileNameOut{"./testfiles/knn_out2.csv"};
 
-    std::cout << "Running KNN" << std::endl;
+    std::cout << "Running KNN" << '\n';
 
     auto lines_known = io::ReadDoubles(kFileNameInKnown);
 
     std::vector<int> known_labels;
-    std::vector<dm::Point> known_points;
+    std::vector<dm::Datum> known_data;
     auto lines_unknown = io::ReadDoubles(kFileNameInUnknown);
 
     for (auto& lk : lines_known) {
       known_labels.emplace_back(static_cast<int>(lk.back()));
       lk.pop_back();
-      known_points.emplace_back(lk);
+      known_data.emplace_back(lk);
     }
 
-    std::cout << known_points.size() << " Points" << std::endl;
+    std::cout << known_data.size() << " Data" << '\n';
 
-    dm::Classifier classifier{lines_unknown};
+    const dm::Classifier classifier{lines_unknown};
     auto labels = classifier.KNearestNeighbour(dm::norms::Manhattan(),
-                                               known_points, known_labels, 3);
+                                               known_data, known_labels, 3);
     SaveData(lines_unknown, labels, kFileNameOut);
 
     return 0;
@@ -115,15 +113,15 @@ int main(int argc, char* argv[])
     const string kFileNameOut{"./testfiles/kmeans_out1.csv"};
     const int kNbrClusters{4};
 
-    std::cout << "Running KMeans" << std::endl;
+    std::cout << "Running KMeans" << '\n';
 
-    auto points = io::ReadDoubles(kFileNameIn);
-    dm::Cluster miner{points};
+    auto data = io::ReadDoubles(kFileNameIn);
+    const dm::Cluster miner{data};
     auto clusters = miner.KMeans(dm::norms::Euclidean(), kNbrClusters);
 
-    std::cout << clusters.size() << " entries returned " << std::endl;
+    std::cout << clusters.size() << " entries returned " << '\n';
 
-    SaveData(points, clusters, kFileNameOut);
+    SaveData(data, clusters, kFileNameOut);
     return 0;
   }
   return 0;
